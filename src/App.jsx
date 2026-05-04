@@ -7,13 +7,7 @@ We were missing a huge part of the market
 
 That one artifact secured $10k+ in investment.
 
-Then analyzing exit surveys, heat maps and extensive A/B testing we defined a design strategy with need-based segmentation
-
-One Constraint:
-We were working within an older design system but we still pushed for a more modern foundation that led to a redesigned rates page improved calculators built for real user needs.
-
-That work made it onto the roadmap
-And is live today`,
+Then analyzing exit surveys, heat maps and extensive A/B testing we defined a design strategy with need-based segmentation`,
   "Tell me your story": `Here’s how it happened:
 
 I joined Paycom as an Associate Product Designer and threw myself into the work completely. Not just doing my job, I became one of the founding members of a brand new subteam, helping build something from scratch while most people were still finding their footing.
@@ -120,6 +114,12 @@ when i present, i focus on:
 because good design doesn’t land
 unless people understand it`
 };
+
+const DATA_DRIVEN_REST = `One Constraint:
+We were working within an older design system but we still pushed for a more modern foundation that led to a redesigned rates page improved calculators built for real user needs.
+
+That work made it onto the roadmap
+And is live today`;
 
 const PILLS = Object.keys(CONTENT);
 const NAV_ITEMS = ["my work", "what i'm good at", "resume", "contact"];
@@ -389,16 +389,16 @@ function ProjectModal({ projectKey, onClose }) {
 
         <div className="max-h-[74vh] overflow-y-auto rounded-[32px] border border-[#E4E2E1] bg-white p-8 shadow-sm">
           <article className="space-y-12">
-            <section className="rounded-[32px] bg-[#F8F7F6] p-10">
+            <section className="rounded-[32px] bg-gradient-to-br from-[#F8F7F6] to-[#F3EEEA] p-12 border border-[#E4E2E1]">
               <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
                 <div>
                   <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176]">{project.role} • {project.date}</p>
-                  <h1 className="mt-5 text-[48px] font-semibold leading-[1.02] tracking-[-0.05em] text-[#221B16]">{project.title}</h1>
+                  <h1 className="mt-5 text-[52px] font-semibold leading-[1.02] tracking-[-0.05em] text-[#1A1512]">{project.title}</h1>
                   <p className="mt-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#D96F45]">{project.eyebrow}</p>
-                  <p className="mt-5 max-w-[560px] text-[18px] leading-[1.55] text-[#6B625C]">{project.subtitle}</p>
+                  <p className="mt-5 max-w-[560px] text-[18px] leading-[1.6] text-[#5F5149]">{project.subtitle}</p>
                   <a href={project.live} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full bg-[#9C3F14] px-6 py-3 text-[14px] text-white transition hover:scale-[1.03]">Open original page →</a>
                 </div>
-                <div className="overflow-hidden rounded-[32px] bg-[#EDEAE8] shadow-sm">
+                <div className="overflow-hidden rounded-[32px] bg-[#EDEAE8] shadow-lg transition-all duration-300 hover:scale-[1.02]">
                   <img src={project.hero} alt={project.title} className="h-[420px] w-full object-cover" onError={(event) => { event.currentTarget.style.display = "none"; }} />
                 </div>
               </div>
@@ -413,14 +413,14 @@ function ProjectModal({ projectKey, onClose }) {
             </section>
 
             {project.sections.map((section, index) => (
-              <section key={section.id} ref={(el) => (sectionRefs.current[section.id] = el)} className="grid gap-8 scroll-mt-6 lg:grid-cols-[0.85fr_1.15fr]">
+              <section key={section.id} ref={(el) => (sectionRefs.current[section.id] = el)} className="flex flex-col gap-6 scroll-mt-6">
                 <div className="rounded-[32px] border border-[#E4E2E1] bg-white p-8 shadow-sm">
                   <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#D96F45]">{section.label}</p>
                   <h2 className="mt-4 text-[32px] font-semibold tracking-[-0.04em] text-[#221B16]">{section.title}</h2>
                   <p className="mt-5 text-[16px] leading-[1.65] text-[#6B625C]">{section.body}</p>
                 </div>
                 <div className="overflow-hidden rounded-[32px] border border-[#E4E2E1] bg-[#F5F3F2] shadow-sm">
-                  <img src={section.image} alt={section.title} className="h-[360px] w-full object-cover" onError={(event) => { event.currentTarget.style.display = "none"; }} />
+                  <img src={section.image} alt={section.title} className="w-full h-auto object-contain" onError={(event) => { event.currentTarget.style.display = "none"; }} />
                 </div>
                 {projectKey === "chase-hl-public" && index === 1 && (
                   <div className="grid gap-6 lg:col-span-2 md:grid-cols-3">
@@ -518,11 +518,13 @@ export default function PortfolioHome() {
   const [showPills, setShowPills] = useState(false);
   const [showResponse, setShowResponse] = useState(false);
   const [showThinking, setShowThinking] = useState(false);
+  const [showDataDrivenRest, setShowDataDrivenRest] = useState(false);
 
   useEffect(() => {
     setShowExamplesFollowUp(false);
     setShowPills(false);
     setShowResponse(false);
+    setShowDataDrivenRest(false);
     setShowThinking(true);
     const timer = setTimeout(() => {
       setShowThinking(false);
@@ -591,9 +593,32 @@ export default function PortfolioHome() {
           {showResponse && (
             <>
               <div className="rounded-[0px_48px_48px_48px] bg-[#F1EFED] p-8 animate-[answerBubbleIn_0.45s_ease_forwards]">
-                <Typewriter text={CONTENT[active]} shouldStart={showResponse} onDone={() => { setShowPills(true); setShowExamplesFollowUp(active !== "Tell me your story" && Boolean(PROJECT_FOR_PILL[active])); }} />
-                {active === "Show data-driven design" && <SegmentationDiagram />}
+                <Typewriter
+                  text={CONTENT[active]}
+                  shouldStart={showResponse}
+                  onDone={() => {
+                    if (active === "Show data-driven design") {
+                      setShowDataDrivenRest(true);
+                    }
+                    setShowPills(true);
+                    setShowExamplesFollowUp(active !== "Tell me your story" && Boolean(PROJECT_FOR_PILL[active]));
+                  }}
+                />
               </div>
+
+              {active === "Show data-driven design" && showDataDrivenRest && (
+                <>
+                  <div className="mt-5 rounded-[0px_48px_48px_48px] bg-[#F1EFED] p-8 animate-[answerBubbleIn_0.45s_ease_forwards]">
+                    <SegmentationDiagram />
+                  </div>
+
+                  <div className="mt-5 rounded-[0px_48px_48px_48px] bg-[#F1EFED] p-8 animate-[answerBubbleIn_0.45s_ease_forwards]">
+                    <p className="whitespace-pre-line text-[14px] leading-[1.65] text-[#221B16]">
+                      {DATA_DRIVEN_REST}
+                    </p>
+                  </div>
+                </>
+              )}
 
               {showExamplesFollowUp && (
                 <div className="px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
