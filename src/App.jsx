@@ -259,7 +259,7 @@ const PROJECTS = {
     date: "Jan 2025 — Sept 2025",
     eyebrow: "Public redesign • Need-based segmentation",
     subtitle: "Driving a 38% boost in conversions with need-based segmentation.",
-    hero: "/work-chase-public-hero.jpg",
+    hero: "/chasepublic-header.jpg",
     live: "https://sanjanavenkat.framer.website/works/chase-hl-public",
     sections: [
       {
@@ -267,35 +267,35 @@ const PROJECTS = {
         label: "Data discovery",
         title: "High traffic — low conversion",
         body: "Raw data showed conversion rates across touch points. The story was clear: people were visiting but not converting. I created a simple visualization to show the market we were missing, helping leadership understand the bottleneck and securing $10K+ in investment for the redesign.",
-        image: "/chase-public-data-discovery.jpg"
+        image: "/chasepublic-datadiscovery.jpg"
       },
       {
         id: "define",
         label: "Define",
         title: "3-day design workshop",
         body: "The design team led a workshop to step outside tech constraints, define a clear vision for stakeholders, create concepts, and plan the roadmap. Research revealed habits and anxieties around credit, education before decision, and the need to see value before commitment.",
-        image: "/chase-public-workshop.jpg"
+        image: "/chasepublic-define.jpg"
       },
       {
         id: "solution",
         label: "Solution",
         title: "Earn trust, establish trust, keep trust",
         body: "Customer research led us to three segments based on needs and trust: early explorers, rate shoppers, and customers ready to apply. This shaped the new page hierarchy, CTA strategy, calculator placement, and content model.",
-        image: "/Frame 1618872809.png"
+        image: "/segmentation.png"
       },
       {
         id: "impact",
         label: "Impact",
         title: "Conversion impact",
         body: "The redesigned public experience drove a 38% increase in lead initiate and 30.9% increase in lead submit conversion for the variant compared to control.",
-        image: "/chase-public-impact.jpg"
+        image: "/chasepublic-datadiscovery2.jpg"
       },
       {
         id: "optimize",
         label: "Optimize",
         title: "Data-based enhancements",
         body: "After launch, we continued improving with ECI cookie optimization, calculator improvements, multivariate L2 navigation testing, page decommissioning, and paid channel strategy updates.",
-        image: "/chase-public-optimize.jpg"
+        image: "/chasepublic-datadiscovery3.jpg"
       }
     ],
     metrics: ["38% lead initiate lift", "30.9% lead submit lift", "$10K+ investment secured"]
@@ -356,7 +356,7 @@ function Typewriter({ text, shouldStart, onDone }) {
 }
 
 function SegmentationDiagram() {
-  return <img src="/Frame 1618872809.png" alt="Audience segmentation framework" className="mt-8 w-full rounded-[20px] object-contain" />;
+  return <img src="/segmentation.png" alt="Audience segmentation framework" className="mt-8 w-full rounded-[20px] object-contain" />;
 }
 
 function ProjectModal({ projectKey, onClose }) {
@@ -387,9 +387,9 @@ function ProjectModal({ projectKey, onClose }) {
           </div>
         </div>
 
-        <div className="max-h-[74vh] overflow-y-auto rounded-[32px] border border-[#E4E2E1] bg-white p-8 shadow-sm">
+        <div className="max-h-[74vh] overflow-y-auto rounded-[36px] bg-white p-8 ">
           <article className="space-y-12">
-            <section className="rounded-[32px] bg-gradient-to-br from-[#F8F7F6] to-[#F3EEEA] p-12 border border-[#E4E2E1]">
+            <section className="rounded-[36px] bg-gradient-to-br from-[#FBF7F4] via-[#F7F2EF] to-[#EFEAE6] p-12 ">
               <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
                 <div>
                   <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176]">{project.role} • {project.date}</p>
@@ -398,7 +398,7 @@ function ProjectModal({ projectKey, onClose }) {
                   <p className="mt-5 max-w-[560px] text-[18px] leading-[1.6] text-[#5F5149]">{project.subtitle}</p>
                   <a href={project.live} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full bg-[#9C3F14] px-6 py-3 text-[14px] text-white transition hover:scale-[1.03]">Open original page →</a>
                 </div>
-                <div className="overflow-hidden rounded-[32px] bg-[#EDEAE8] shadow-lg transition-all duration-300 hover:scale-[1.02]">
+                <div className="overflow-hidden rounded-[32px] bg-white border border-[#E4E2E1]  transition-all duration-300 hover:scale-[1.01]">
                   <img src={project.hero} alt={project.title} className="h-[420px] w-full object-cover" onError={(event) => { event.currentTarget.style.display = "none"; }} />
                 </div>
               </div>
@@ -406,7 +406,7 @@ function ProjectModal({ projectKey, onClose }) {
 
             <section className="grid gap-6 md:grid-cols-3">
               {project.metrics.map((metric) => (
-                <article key={metric} className="rounded-[28px] bg-[#F8F7F6] p-7">
+                <article key={metric} className="rounded-[30px] bg-[#F8F7F6] p-7 ">
                   <p className="text-[26px] font-semibold tracking-[-0.04em] text-[#9C3F14]">{metric}</p>
                 </article>
               ))}
@@ -414,18 +414,20 @@ function ProjectModal({ projectKey, onClose }) {
 
             {project.sections.map((section, index) => (
               <section key={section.id} ref={(el) => (sectionRefs.current[section.id] = el)} className="flex flex-col gap-6 scroll-mt-6">
-                <div className="rounded-[32px] border border-[#E4E2E1] bg-white p-8 shadow-sm">
+                <div className="rounded-[34px] bg-white p-9 ">
                   <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#D96F45]">{section.label}</p>
                   <h2 className="mt-4 text-[32px] font-semibold tracking-[-0.04em] text-[#221B16]">{section.title}</h2>
                   <p className="mt-5 text-[16px] leading-[1.65] text-[#6B625C]">{section.body}</p>
                 </div>
-                <div className="overflow-hidden rounded-[32px] border border-[#E4E2E1] bg-[#F5F3F2] shadow-sm">
-                  <img src={section.image} alt={section.title} className="w-full h-auto object-contain" onError={(event) => { event.currentTarget.style.display = "none"; }} />
-                </div>
+                {section.image && (
+                  <div className="overflow-hidden rounded-[34px] bg-white border border-[#E4E2E1]">
+                    <img src={section.image} alt={section.title} className="w-full h-auto object-contain" onError={(event) => { event.currentTarget.style.display = "none"; }} />
+                  </div>
+                )}
                 {projectKey === "chase-hl-public" && index === 1 && (
                   <div className="grid gap-6 lg:col-span-2 md:grid-cols-3">
                     {["Scenario mapping", "Habits and anxieties", "Design values"].map((title, i) => (
-                      <article key={title} className="rounded-[28px] border border-[#E4E2E1] bg-white p-7 shadow-sm">
+                      <article key={title} className="rounded-[30px] bg-white p-8 ">
                         <h3 className="text-[18px] font-semibold text-[#221B16]">{title}</h3>
                         <p className="mt-3 text-[14px] leading-[1.6] text-[#6B625C]">
                           {i === 0 && "We mapped the full public Home Lending journey by customer readiness instead of treating every visitor as ready to apply."}
@@ -447,7 +449,7 @@ function ProjectModal({ projectKey, onClose }) {
 
 function WhatIBelieveCard() {
   return (
-    <article className="rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[14px] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+    <article className="rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[14px]  transition-all duration-300 hover:-translate-y-1 ">
       <p className="mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176]">what i believe in</p>
       <p className="leading-[1.65] text-[#5F5149]">i believe good products don't just solve problems. they reveal ones people didn't know they had.</p>
       <p className="mt-6 leading-[1.65] text-[#5F5149]">with AI and personalization, that gap gets smaller. But the real work is still human: listening, framing, building things that help people move forward.</p>
@@ -467,7 +469,7 @@ function HorizontalTimeline() {
   ];
 
   return (
-    <section className="h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+    <section className="h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8  transition-all duration-300 hover:-translate-y-1 ">
       <p className="mb-8 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176]">timeline</p>
       <div className="relative grid grid-cols-1 gap-8 md:grid-cols-3">
         <div className="absolute left-0 top-[18px] hidden h-px w-full bg-[#E8D8D0] md:block" />
@@ -494,7 +496,7 @@ function TestimonialCarousel() {
   }, []);
 
   return (
-    <article className="h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 text-[13px] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+    <article className="h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 text-[13px]  transition-all duration-300 hover:-translate-y-1 ">
       <p className="mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176]">what people say about me</p>
       <div key={index} className="min-h-[235px] animate-[slideIn_0.35s_ease_forwards]">
         <p className="italic leading-[1.55] text-[#4F4741]">“{quote}”</p>
@@ -567,21 +569,21 @@ export default function PortfolioHome() {
             <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7B6258]">or start here:</p>
             <div className="flex flex-col gap-3">
               {NAV_ITEMS.map((item) => (
-                <button key={item} onClick={() => handleNav(item)} className="w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB] hover:shadow-sm">{item}</button>
+                <button key={item} onClick={() => handleNav(item)} className="w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB] hover:border-[#D8C5BB]">{item}</button>
               ))}
             </div>
           </nav>
 
-          <div className="overflow-hidden rounded-[32px] border border-[#E4E2E1] bg-white shadow-sm">
+          <div className="overflow-hidden rounded-[32px] border border-[#E4E2E1] bg-white ">
             <img src="/profile.jpg" alt="Sanjana Venkat" className="h-[290px] w-full object-cover grayscale transition-all duration-500 hover:scale-[1.035] hover:grayscale-0" />
           </div>
 
           <WhatIBelieveCard />
         </aside>
 
-        <section ref={chatCardRef} className="rounded-[32px] border border-[#E4E2E1] bg-white p-12 shadow-sm transition-all duration-300 hover:shadow-md">
+        <section ref={chatCardRef} className="rounded-[32px] border border-[#E4E2E1] bg-white p-12  transition-all duration-300 ">
           <div className="mb-8 flex justify-end">
-            <div className="rounded-[48px_48px_0px_48px] bg-[#A5522A] px-6 py-3 text-[16px] text-white shadow-sm animate-[messageSend_0.35s_ease_forwards]">{active}</div>
+            <div className="rounded-[48px_48px_0px_48px] bg-[#A5522A] px-6 py-3 text-[16px] text-white  animate-[messageSend_0.35s_ease_forwards]">{active}</div>
           </div>
 
           {showThinking && (
@@ -631,7 +633,7 @@ export default function PortfolioHome() {
           {showPills && (
             <div className="mt-8 flex flex-wrap gap-3 animate-[fadeUp_0.45s_ease_forwards]">
               {PILLS.map((pill) => (
-                <button key={pill} onClick={() => handlePillSelect(pill)} className={`rounded-full border px-5 py-2 text-[12px] transition-all duration-200 hover:scale-[1.04] ${active === pill ? "border-[#A5522A] bg-white text-[#A5522A] shadow-sm" : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#D8C5BB]"}`}>{pill}</button>
+                <button key={pill} onClick={() => handlePillSelect(pill)} className={`rounded-full border px-5 py-2 text-[12px] transition-all duration-200 hover:scale-[1.04] ${active === pill ? "border-[#A5522A] bg-white text-[#A5522A] " : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#D8C5BB]"}`}>{pill}</button>
               ))}
             </div>
           )}
