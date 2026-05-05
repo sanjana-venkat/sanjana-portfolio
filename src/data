@@ -1,1 +1,21 @@
+export const CONTENT = {
+  // paste CONTENT object here
+};
 
+export const DATA_DRIVEN_REST = `...`;
+
+export const PILLS = Object.keys(CONTENT);
+
+export const NAV_ITEMS = ["my work", "what i'm good at", "resume", "contact"];
+
+export const PROJECT_FOR_PILL = {
+  // paste PROJECT_FOR_PILL here
+};
+
+export const PROJECTS = {
+  // paste PROJECTS here
+};
+
+export const TESTIMONIALS = [
+  // paste TESTIMONIALS here
+];
