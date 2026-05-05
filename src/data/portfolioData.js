@@ -24,11 +24,9 @@ Turns out I had helped someone with a presentation at a conference I organized b
 
 I applied. I got the role.
 
-And they brought me in as a Senior Product Designer, a real bump, because of how I presented myself and my work.
+And they brought me in as a Senior Product Designer.
 
-From there, I moved fast.
-
-Required little to no guidance. Owned AI initiatives, set the foundation for the marketing design team, and built things that still run today.
+From there, I moved fast. Owned AI initiatives and built things that still run today.
 `,
 
   "How I think about AI systems": `
@@ -41,27 +39,22 @@ I’ve shipped AI across multiple surfaces at JPMC.
 2. Casey AI
 - conversational AI (call + text)
 - enabled 1000+ customer calls
-- used as a learning system to improve SMS-based experiences
 
 3. AI-first search
 - explored Gemini + ChatGPT as decision layers
-- influenced product direction and interaction patterns
 
-What I’ve learned is AI is only as good as the system around it.
-Design systems, consistency, and decision clarity matter more than the model itself.
+AI is only as strong as the system around it.
 `
 };
 
 export const DATA_DRIVEN_REST = `
 This work didn’t stop at segmentation.
 
-We continued iterating through experiments, learning where users dropped off and what actually drove action.
+One constraint was the design system wasn’t modern enough.
 
-One key constraint was that the existing design system wasn’t modern enough to support the experience we wanted to build.
+We aligned with leadership and got it onto the roadmap.
 
-Instead of forcing it, we aligned with leadership and got it onto the roadmap.
-
-Today, that updated system is live and continues to evolve.
+Today, that system is live and evolving.
 `;
 
 export const PILLS = Object.keys(CONTENT);
@@ -88,23 +81,18 @@ export const PROJECTS = {
 
 export const TESTIMONIALS = [
   [
-    "Sanjana is the best designer at Chase that I've worked with. She is proactive, thoughtful, eager to learn and produces ideas and designs at both a high quality and speed.",
+    "Sanjana is the best designer at Chase that I've worked with.",
     "Manager",
     "JPMC"
   ],
   [
-    "Your leadership, drive, and unwavering commitment have been nothing short of inspiring. You've been the champion behind so much of our progress.",
-    "Williams Cava",
-    "Leadership"
+    "Your leadership and drive have been inspiring.",
+    "Leadership",
+    "JPMC"
   ],
   [
-    "Sanjana has been instrumental in the Encompass build UX, providing solutions and quickly adjusting to our changing needs.",
-    "Sonia Zacheo",
-    "CMH Product VP"
-  ],
-  [
-    "You jumped into the Apply world with both feet and I've loved exploring ways to improve our customers' experience.",
-    "Andrew Kennerley",
-    "Content VP"
+    "Instrumental in UX delivery and adapting quickly.",
+    "Product VP",
+    "JPMC"
   ]
 ];
