@@ -58,6 +58,7 @@ Today, that system is live and evolving.
 `;
 
 export const PILLS = Object.keys(CONTENT);
+export { PILLS };
 
 export const NAV_ITEMS = ["my work", "what i'm good at", "resume", "contact"];
 
