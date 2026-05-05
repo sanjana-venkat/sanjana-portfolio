@@ -293,8 +293,8 @@ const PROJECTS = {
       {
         id: "optimize",
         label: "Optimize",
-        title: "Data-based enhancements",
-        body: "After launch, we continued improving with ECI cookie optimization, calculator improvements, multivariate L2 navigation testing, page decommissioning, and paid channel strategy updates.",
+        title: "Constraint into roadmap",
+        body: "One constraint: we were working within an older design system, but we still pushed for a more modern foundation. That led to a redesigned rates page and improved calculators built for real user needs. The work made it onto the roadmap and is live today.",
         image: ""
       }
     ],
@@ -404,13 +404,15 @@ function ProjectModal({ projectKey, onClose }) {
               </div>
             </section>
 
-            <section className="grid gap-6 md:grid-cols-3">
-              {project.metrics.map((metric) => (
-                <article key={metric} className="rounded-[30px] bg-[#F8F7F6] p-7 ">
-                  <p className="text-[26px] font-semibold tracking-[-0.04em] text-[#9C3F14]">{metric}</p>
-                </article>
-              ))}
-            </section>
+            {projectKey !== "chase-hl-public" && (
+              <section className="grid gap-6 md:grid-cols-3">
+                {project.metrics.map((metric) => (
+                  <article key={metric} className="rounded-[30px] bg-[#F8F7F6] p-7 ">
+                    <p className="text-[26px] font-semibold tracking-[-0.04em] text-[#9C3F14]">{metric}</p>
+                  </article>
+                ))}
+              </section>
+            )}
 
             {project.sections.map((section, index) => {
               const isChasePublic = projectKey === "chase-hl-public";
@@ -434,7 +436,7 @@ function ProjectModal({ projectKey, onClose }) {
                       <h3 className="text-[32px] font-semibold tracking-[-0.04em] text-[#221B16]">Deeper look at data</h3>
                       <p className="mt-3 text-[18px] leading-[1.55] text-[#6B625C]">Let's analyze the points of friction and the clicks to try to understand customer intent and needs</p>
                     </div>
-                    <div className="grid gap-10 lg:grid-cols-[0.32fr_0.68fr] lg:items-start">
+                    <div className="grid grid-cols-1 gap-8 lg:grid-cols-[0.32fr_0.68fr] lg:items-start">
                       <div className="flex flex-col gap-10">
                         {[
                           ["↯", "KYC Flow", "\"Start online\" takes customers through an account creation flow with sensitive questions like SSN"],
@@ -449,7 +451,7 @@ function ProjectModal({ projectKey, onClose }) {
                         ))}
                       </div>
                       <div className="overflow-hidden rounded-[28px] bg-white">
-                        <img src="/chasepublic-datadiscovery2.jpg" alt="Annotated original Chase public page data" className="w-full h-auto object-contain" onError={(event) => { event.currentTarget.style.display = "none"; }} />
+                        <img src="/chasepublic-datadiscovery2.jpg" alt="Annotated original Chase public page data" className="w-full max-h-[680px] object-contain object-top" onError={(event) => { event.currentTarget.style.display = "none"; }} />
                       </div>
                     </div>
                   </section>
@@ -457,7 +459,7 @@ function ProjectModal({ projectKey, onClose }) {
 
                 {projectKey === "chase-hl-public" && index === 1 && (
                   <div className="flex flex-col gap-6 lg:col-span-2">
-                    <div className="grid gap-6 md:grid-cols-3">
+                    <div className="grid gap-6 md:grid-cols-2">
                       <article className="rounded-[30px] bg-white p-8 border border-[#E4E2E1]">
                         <h3 className="text-[18px] font-semibold text-[#221B16]">Scenario mapping</h3>
                         <p className="mt-3 text-[14px] leading-[1.6] text-[#6B625C]">
@@ -470,32 +472,101 @@ function ProjectModal({ projectKey, onClose }) {
                           Research surfaced credit concerns, the need to learn before deciding, and the importance of seeing value before commitment. The real drop-off was emotional readiness, not just page usability.
                         </p>
                       </article>
-                      <article className="rounded-[30px] bg-white p-8 border border-[#E4E2E1]">
-                        <h3 className="text-[18px] font-semibold text-[#221B16]">Design values</h3>
-                        <p className="mt-3 text-[14px] leading-[1.6] text-[#6B625C]">
-                          We grounded the design in what customers should think, feel, say and do: feel reassured, see clear options, understand the path, and know the next best step without pressure.
-                        </p>
-                      </article>
                     </div>
 
                     <div className="overflow-hidden rounded-[34px] bg-white border border-[#E4E2E1]">
                       <img src="/chasepublic-define.jpg" alt="Scenario mapping and four forces workshop board" className="w-full h-auto object-contain" onError={(event) => { event.currentTarget.style.display = "none"; }} />
                     </div>
 
-                    <div className="grid gap-6 md:grid-cols-[0.95fr_0.75fr_1.25fr]">
+                    <section className="rounded-[34px] bg-white border border-[#E4E2E1] p-8">
+                      <h3 className="text-[32px] font-semibold tracking-[-0.04em] text-[#221B16]">Habits and anxieties</h3>
+                      <p className="mt-3 text-[18px] leading-[1.55] text-[#6B625C]">Customers told us why they needed more context before moving into an application.</p>
+                      <div className="mt-8 grid gap-6 md:grid-cols-[0.95fr_0.75fr_1.25fr]">
+                        {[
+                          "I notice the apply button but I would definitely be spending more time in the learn before deciding to understand everything first",
+                          "Just to understand the steps before I commit to clicking on the apply to buy button",
+                          "I don't [feel ready] because I would want to consider my husband's finances as part of the loan and, um, we're still working over the next couple of months to get his credit to a better place"
+                        ].map((quote) => (
+                          <article key={quote} className="rounded-[28px] bg-[#EFEFEF] p-8">
+                            <div className="text-[56px] leading-none text-[#221B16]">“</div>
+                            <p className="mt-4 text-[18px] leading-[1.55] text-[#221B16]">“{quote}”</p>
+                          </article>
+                        ))}
+                      </div>
+                    </section>
+
+                    <section className="rounded-[34px] bg-white border border-[#E4E2E1] p-8">
+                      <h3 className="text-[32px] font-semibold tracking-[-0.04em] text-[#221B16]">Design values</h3>
+                      <p className="mt-3 text-[18px] leading-[1.55] text-[#6B625C]">We set the values for our new design, grounding decisions in customers' thoughts, feelings and actions to understand both what we want and what we don't want.</p>
+                      <div className="mt-8 grid gap-6 md:grid-cols-2">
+                        <div>
+                          <div className="rounded-[24px] bg-[#CFEBD5] p-6 text-[18px] font-semibold text-[#111827]">👍&nbsp;&nbsp; What we want</div>
+                          <div className="mt-5 rounded-[24px] bg-[#EFEFEF] p-6 text-[15px] leading-[1.65] text-[#221B16]">
+                            <p><strong>Think:</strong><br />Chase is reliable and offers clear options that fit my needs. I can make an informed decision if I am ready.</p>
+                            <p className="mt-5"><strong>Feel:</strong><br />Confident, reassured, and supported. Empowered to step into home ownership.</p>
+                            <p className="mt-5"><strong>Say:</strong><br />“I know what to do, this looks easy to start.”</p>
+                            <p className="mt-5"><strong>Do:</strong><br />Use tools, start an application, reach out for help.</p>
+                          </div>
+                        </div>
+                        <div>
+                          <div className="rounded-[24px] bg-[#F3C7C7] p-6 text-[18px] font-semibold text-[#111827]">👎&nbsp;&nbsp; What we don't want</div>
+                          <div className="mt-5 rounded-[24px] bg-[#EFEFEF] p-6 text-[15px] leading-[1.65] text-[#221B16]">
+                            <p><strong>Think:</strong><br />I don't know where to look, I am confused and distracted. This is complicated.</p>
+                            <p className="mt-5"><strong>Feel:</strong><br />Overwhelmed, anxious, or skeptical. Lose trust in Chase to help achieve home goals.</p>
+                            <p className="mt-5"><strong>Say:</strong><br />“This is too complicated. I’m not sure what to do.”</p>
+                            <p className="mt-5"><strong>Do:</strong><br />Leave the page, give up, or look elsewhere.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                )}
+
+                {projectKey === "chase-hl-public" && section.id === "impact" && (
+                  <section className="rounded-[34px] bg-white border border-[#E4E2E1] p-8 lg:col-span-2">
+                    <div className="grid gap-8 md:grid-cols-3">
                       {[
-                        "I notice the apply button but I would definitely be spending more time in the learn before deciding to understand everything first",
-                        "Just to understand the steps before I commit to clicking on the apply to buy button",
-                        "I don't [feel ready] because I would want to consider my husband's finances as part of the loan and, um, we're still working over the next couple of months to get his credit to a better place"
-                      ].map((quote) => (
-                        <article key={quote} className="rounded-[28px] bg-[#EFEFEF] p-8">
-                          <div className="text-[56px] leading-none text-[#221B16]">“</div>
-                          <p className="mt-4 text-[18px] leading-[1.55] text-[#221B16]">“{quote}”</p>
+                        ["↑", "38%", "Increase in lead initiate for variant compared to control", "text-[#3F9B4F]"],
+                        ["↓", "-0.5%", "Reduced conversion in mobile - split flag issues and further investigation", "text-[#EF3E36]"],
+                        ["↑", "30.9%", "Increase in lead submit (conversion) in variant compared to control", "text-[#3F9B4F]"]
+                      ].map(([arrow, metric, body, color]) => (
+                        <article key={metric} className="flex gap-5">
+                          <div className={`text-[62px] leading-none ${color}`}>{arrow}</div>
+                          <div>
+                            <p className="text-[40px] font-semibold tracking-[-0.04em] text-[#111827]">{metric}</p>
+                            <p className="mt-3 text-[20px] leading-[1.35] text-[#6B625C]">{body}</p>
+                          </div>
                         </article>
                       ))}
                     </div>
-                  </div>
+                  </section>
                 )}
+
+                {projectKey === "chase-hl-public" && section.id === "optimize" && (
+                  <div className="grid gap-6 lg:col-span-2 md:grid-cols-2">
+  <div className="overflow-hidden rounded-[34px] bg-white border border-[#E4E2E1]">
+    <img src="/calculator.jpg" alt="Mortgage calculator improvements" className="w-full h-full object-contain" onError={(event) => { event.currentTarget.style.display = "none"; }} />
+  </div>
+  <div className="overflow-hidden rounded-[34px] bg-white border border-[#E4E2E1]">
+    {projectKey === "chase-hl-public" && section.id === "optimize" && (
+  <div className="grid gap-6 lg:col-span-2 md:grid-cols-2">
+    <div className="overflow-hidden rounded-[34px] bg-white border border-[#E4E2E1]">
+      <img
+        src="/calculator.jpg"
+        alt="Mortgage calculator improvements"
+        className="w-full h-full object-contain"
+      />
+    </div>
+
+    <div className="overflow-hidden rounded-[34px] bg-white border border-[#E4E2E1]">
+      <img
+        src="/rates.jpg"
+        alt="Rates page redesign"
+        className="w-full h-full object-contain"
+      />
+    </div>
+  </div>
+)}
 
                 {projectKey === "chase-hl-public" && section.id === "solution" && (
                   <div className="flex flex-col gap-12 lg:col-span-2">
@@ -661,107 +732,9 @@ export default function PortfolioHome() {
 
   return (
     <main onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })} className="relative min-h-screen w-full overflow-x-hidden bg-[#F8F7F6] px-8 py-10 text-[#221B16]">
-      {projectOpen && <ProjectModal projectKey={projectOpen} onClose={() => setProjectOpen(null)} />}
-
-      <div className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl transition-transform duration-150" style={{ left: cursor.x - 150, top: cursor.y - 150 }} />
-
-      <section className="relative z-10 mx-auto grid w-full max-w-[1180px] grid-cols-1 gap-x-10 gap-y-8 lg:grid-cols-[280px_1fr]">
-        <aside className="flex flex-col gap-8">
-          <div>
-            <h1 className="text-[32px] font-semibold leading-[1.03] tracking-[-0.04em] text-[#A5522A]">Sanjana<br />Venkat</h1>
-            <p className="mt-3 max-w-[240px] text-[16px] leading-[1.45] text-[#5F5149]">I turn ambiguity into direction. Let me show you.</p>
-          </div>
-
-          <nav>
-            <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7B6258]">or start here:</p>
-            <div className="flex flex-col gap-3">
-              {NAV_ITEMS.map((item) => (
-                <button key={item} onClick={() => handleNav(item)} className="w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB]">{item}</button>
-              ))}
-            </div>
-          </nav>
-
-          <div className="overflow-hidden rounded-[32px] border border-[#E4E2E1] bg-white ">
-            <img src="/profile.jpg" alt="Sanjana Venkat" className="h-[290px] w-full object-cover grayscale transition-all duration-500 hover:scale-[1.035] hover:grayscale-0" />
-          </div>
-
-          <WhatIBelieveCard />
-        </aside>
-
-        <section ref={chatCardRef} className="rounded-[32px] border border-[#E4E2E1] bg-white p-12  transition-all duration-300 ">
-          <div className="mb-8 flex justify-end">
-            <div className="rounded-[48px_48px_0px_48px] bg-[#A5522A] px-6 py-3 text-[16px] text-white  animate-[messageSend_0.35s_ease_forwards]">{active}</div>
-          </div>
-
-          {showThinking && (
-            <div className="rounded-[0px_48px_48px_48px] bg-white p-8 animate-[fadeUp_0.25s_ease_forwards]">
-              <div className="flex items-center gap-2 text-[12px] text-[#8A817B]"><span className="h-2 w-2 rounded-full bg-[#A5522A] animate-pulse" />thinking</div>
-            </div>
-          )}
-
-          {showResponse && (
-            <>
-              <div className="rounded-[0px_48px_48px_48px] bg-[#F1EFED] p-8 animate-[answerBubbleIn_0.45s_ease_forwards]">
-                <Typewriter
-                  text={CONTENT[active]}
-                  shouldStart={showResponse}
-                  onDone={() => {
-                    if (active === "Show data-driven design") {
-                      setShowDataDrivenRest(true);
-                    }
-                    setShowPills(true);
-                    setShowExamplesFollowUp(active !== "Tell me your story" && Boolean(PROJECT_FOR_PILL[active]));
-                  }}
-                />
-              </div>
-
-              {active === "Show data-driven design" && showDataDrivenRest && (
-                <>
-                  <div className="mt-5 rounded-[0px_48px_48px_48px] bg-[#F1EFED] p-8 animate-[answerBubbleIn_0.45s_ease_forwards]">
-                    <SegmentationDiagram />
-                  </div>
-
-                  <div className="mt-5 rounded-[0px_48px_48px_48px] bg-[#F1EFED] p-8 animate-[answerBubbleIn_0.45s_ease_forwards]">
-                    <p className="whitespace-pre-line text-[14px] leading-[1.65] text-[#221B16]">
-                      {DATA_DRIVEN_REST}
-                    </p>
-                  </div>
-                </>
-              )}
-
-              {showExamplesFollowUp && (
-                <div className="px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
-                  <button onClick={openProjectForActivePill} className="inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A]">show me examples of this work →</button>
-                </div>
-              )}
-            </>
-          )}
-
-          {showPills && (
-            <div className="mt-8 flex flex-wrap gap-3 animate-[fadeUp_0.45s_ease_forwards]">
-              {PILLS.map((pill) => (
-                <button key={pill} onClick={() => handlePillSelect(pill)} className={`rounded-full border px-5 py-2 text-[12px] transition-all duration-200 hover:scale-[1.04] ${active === pill ? "border-[#A5522A] bg-white text-[#A5522A] " : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#D8C5BB]"}`}>{pill}</button>
-              ))}
-            </div>
-          )}
-        </section>
-
-        <section className="grid grid-cols-1 gap-8 lg:col-span-2 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
-          <HorizontalTimeline />
-          <TestimonialCarousel />
-        </section>
-      </section>
-
-      <style>{`
-@keyframes glow {
-  0% { box-shadow: 0 0 0 0 rgba(217,111,69,0.6); }
-  50% { box-shadow: 0 0 0 12px rgba(217,111,69,0); }
-  100% { box-shadow: 0 0 0 0 rgba(217,111,69,0); }
-}
-.animate-glow {
-  animation: glow 2s ease-in-out infinite;
-}
-`}</style>
-    </main>
-  );
-}
+ {projectOpen && (
+  <ProjectModal
+    projectKey={projectOpen}
+    onClose={() => setProjectOpen(null)}
+  />
+)}
