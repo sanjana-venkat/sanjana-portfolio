@@ -79,7 +79,7 @@ export const PROJECTS = {
   }
 };
 
-export const TESTIMONIALS = [
+
   export const TESTIMONIALS = [
   [
     "Sanjana is the best designer at Chase that I've worked with. She is proactive, thoughtful, eager to learn and produces ideas and designs at both a high quality and high volume, which is rare!",
