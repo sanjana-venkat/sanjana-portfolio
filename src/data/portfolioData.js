@@ -141,8 +141,10 @@ export const NAV_ITEMS = ["my work", "what i'm good at", "resume", "contact"];
 
 export const PROJECT_FOR_PILL = {
   "Show data-driven design": "chase-hl-public",
-  "Tell me your story": null,
-  "How I think about AI systems": null
+ "How I get exec buy-in": "demo-video",
+  "How I think about AI systems": "ai-first-interfaces",
+  "Product strategy thinking": "marketing-tiles",
+  "Design systems under constraints": "chase-apply"
 };
 
 export const PROJECTS = {
