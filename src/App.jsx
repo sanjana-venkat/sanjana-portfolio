@@ -274,7 +274,7 @@ const PROJECTS = {
         label: "Define",
         title: "3-day design workshop",
         body: "The design team led a workshop to step outside tech constraints, define a clear vision for stakeholders, create concepts, and plan the roadmap. Research revealed habits and anxieties around credit, education before decision, and the need to see value before commitment.",
-        image: "/chasepublic-define.jpg"
+        image: "/chasepublic-datadiscovery3.jpg"
       },
       {
         id: "solution",
@@ -370,24 +370,24 @@ function ProjectModal({ projectKey, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-6 py-10 animate-[modalIn_0.35s_ease_forwards]">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards]">
       <div className="mx-auto max-w-[1180px]">
-        <div className="mb-6 flex items-center gap-4">
-          <button onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] text-[#6B625C] transition hover:text-[#A5522A]">‹</button>
-          <h2 className="text-[40px] font-semibold tracking-[-0.04em] text-[#9C3F14]">{project.title}</h2>
+        <div className="mb-5 flex items-center gap-3 sm:mb-6 sm:gap-4">
+          <button onClick={onClose} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] text-[#6B625C] transition hover:text-[#A5522A]">‹</button>
+          <h2 className="min-w-0 text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#9C3F14] sm:text-[40px] sm:leading-none">{project.title}</h2>
         </div>
 
-        <div className="mb-6 rounded-full border border-[#E4E2E1] bg-white p-4">
-          <div className="flex flex-wrap gap-3">
+        <div className="mb-6 rounded-[28px] border border-[#E4E2E1] bg-white p-3 sm:rounded-full sm:p-4">
+          <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:pb-0">
             {project.sections.map((section) => (
-              <button key={section.id} onClick={() => scrollTo(section.id)} className="rounded-full border border-[#E4E2E1] bg-white px-5 py-2 text-[12px] font-medium text-[#6B625C] transition hover:border-[#9C3F14] hover:text-[#9C3F14]">
+              <button key={section.id} onClick={() => scrollTo(section.id)} className="shrink-0 rounded-full border border-[#E4E2E1] bg-white px-4 py-2 text-[12px] font-medium text-[#6B625C] transition hover:border-[#9C3F14] hover:text-[#9C3F14] sm:px-5">
                 {section.label.toLowerCase()}
               </button>
             ))}
           </div>
         </div>
 
-        <div className="max-h-[74vh] overflow-y-auto rounded-[36px] bg-white p-8 ">
+        <div className="max-h-[74vh] overflow-y-auto rounded-[28px] bg-white p-4 sm:rounded-[36px] sm:p-8">
           <article className="space-y-12">
             <section className="rounded-[36px] bg-gradient-to-br from-[#FBF7F4] via-[#F7F2EF] to-[#EFEAE6] p-12 ">
               <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
@@ -412,8 +412,11 @@ function ProjectModal({ projectKey, onClose }) {
               ))}
             </section>
 
-            {project.sections.map((section, index) => (
-              <section key={section.id} ref={(el) => (sectionRefs.current[section.id] = el)} className="flex flex-col gap-6 scroll-mt-6">
+            {project.sections.map((section, index) => {
+              const isChasePublic = projectKey === "chase-hl-public";
+              const isDataDiscovery = isChasePublic && section.id === "data-discovery";
+              return (
+              <section key={section.id} ref={(el) => (sectionRefs.current[section.id] = el)} className={isDataDiscovery ? "grid gap-6 scroll-mt-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-stretch" : "flex flex-col gap-6 scroll-mt-6"}>
                 <div className="rounded-[34px] bg-white p-9 ">
                   <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#D96F45]">{section.label}</p>
                   <h2 className="mt-4 text-[32px] font-semibold tracking-[-0.04em] text-[#221B16]">{section.title}</h2>
@@ -425,21 +428,97 @@ function ProjectModal({ projectKey, onClose }) {
                   </div>
                 )}
                 {projectKey === "chase-hl-public" && index === 1 && (
-                  <div className="grid gap-6 lg:col-span-2 md:grid-cols-3">
-                    {["Scenario mapping", "Habits and anxieties", "Design values"].map((title, i) => (
-                      <article key={title} className="rounded-[30px] bg-white p-8 ">
-                        <h3 className="text-[18px] font-semibold text-[#221B16]">{title}</h3>
+                  <div className="flex flex-col gap-6 lg:col-span-2">
+                    <div className="grid gap-6 md:grid-cols-3">
+                      <article className="rounded-[30px] bg-white p-8 border border-[#E4E2E1]">
+                        <h3 className="text-[18px] font-semibold text-[#221B16]">Scenario mapping</h3>
                         <p className="mt-3 text-[14px] leading-[1.6] text-[#6B625C]">
-                          {i === 0 && "We mapped the full public Home Lending journey by customer readiness instead of treating every visitor as ready to apply."}
-                          {i === 1 && "Customers were cautious before commitment. They wanted to understand credit impact, affordability, loan options, and what Chase already knew about them."}
-                          {i === 2 && "We translated insights into design values: earn trust before asking for action, make value visible earlier, reduce pressure, and guide the next best step."}
+                          Applying the four forces model, we tried to understand what would push customers out of renting and pull them into home ownership. Habits and anxieties can outweigh motivation, so this helped us frame what customers needed before they were ready to act.
                         </p>
                       </article>
-                    ))}
+                      <article className="rounded-[30px] bg-white p-8 border border-[#E4E2E1]">
+                        <h3 className="text-[18px] font-semibold text-[#221B16]">Habits and anxieties</h3>
+                        <p className="mt-3 text-[14px] leading-[1.6] text-[#6B625C]">
+                          Research surfaced credit concerns, the need to learn before deciding, and the importance of seeing value before commitment. The real drop-off was emotional readiness, not just page usability.
+                        </p>
+                      </article>
+                      <article className="rounded-[30px] bg-white p-8 border border-[#E4E2E1]">
+                        <h3 className="text-[18px] font-semibold text-[#221B16]">Design values</h3>
+                        <p className="mt-3 text-[14px] leading-[1.6] text-[#6B625C]">
+                          We grounded the design in what customers should think, feel, say and do: feel reassured, see clear options, understand the path, and know the next best step without pressure.
+                        </p>
+                      </article>
+                    </div>
+
+                    <div className="overflow-hidden rounded-[34px] bg-white border border-[#E4E2E1]">
+                      <img src="/chasepublic-define.jpg" alt="Scenario mapping and four forces workshop board" className="w-full h-auto object-contain" onError={(event) => { event.currentTarget.style.display = "none"; }} />
+                    </div>
+
+                    <div className="grid gap-6 md:grid-cols-[0.95fr_0.75fr_1.25fr]">
+                      {[
+                        "I notice the apply button but I would definitely be spending more time in the learn before deciding to understand everything first",
+                        "Just to understand the steps before I commit to clicking on the apply to buy button",
+                        "I don't [feel ready] because I would want to consider my husband's finances as part of the loan and, um, we're still working over the next couple of months to get his credit to a better place"
+                      ].map((quote) => (
+                        <article key={quote} className="rounded-[28px] bg-[#EFEFEF] p-8">
+                          <div className="text-[56px] leading-none text-[#221B16]">“</div>
+                          <p className="mt-4 text-[18px] leading-[1.55] text-[#221B16]">“{quote}”</p>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {projectKey === "chase-hl-public" && section.id === "solution" && (
+                  <div className="flex flex-col gap-12 lg:col-span-2">
+                    <section className="rounded-[34px] bg-white border border-[#E4E2E1] p-10">
+                      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+                        <div>
+                          <h3 className="text-[30px] font-semibold tracking-[-0.04em] text-[#221B16]">Ready to apply segment</h3>
+                          <p className="mt-5 text-[18px] leading-[1.55] text-[#6B625C]">“Start online” might get clicks, but customers who are actually ready to apply will click “Apply to buy.”</p>
+                          <p className="mt-5 text-[18px] leading-[1.55] text-[#6B625C]">Value proposition “Our priority is you” with discounts and benefits to trust Chase.</p>
+                        </div>
+                        <img src="/chasepublic-solution.jpg" alt="Ready to apply segment screens" className="w-full rounded-[28px] object-contain" onError={(event) => { event.currentTarget.style.display = "none"; }} />
+                      </div>
+                    </section>
+
+                    <section className="rounded-[34px] bg-white border border-[#E4E2E1] p-10">
+                      <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+                        <img src="/chasepublic-solution2.jpg" alt="Rates decision point screens" className="w-full rounded-[28px] object-contain" onError={(event) => { event.currentTarget.style.display = "none"; }} />
+                        <div>
+                          <h3 className="text-[30px] font-semibold tracking-[-0.04em] text-[#221B16]">Rates as decision point</h3>
+                          <p className="mt-5 text-[18px] leading-[1.55] text-[#6B625C]">Rates was 4 scrolls below in the old page. New page has value, personalized context, and rates in the first scroll.</p>
+                          <p className="mt-5 text-[18px] leading-[1.55] text-[#6B625C]">Clear branding, warm tone images, no illustrations, and stronger content helped imbibe trust in Chase.</p>
+                        </div>
+                      </div>
+                    </section>
+
+                    <section className="rounded-[34px] bg-white border border-[#E4E2E1] p-10">
+                      <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+                        <div>
+                          <h3 className="text-[30px] font-semibold tracking-[-0.04em] text-[#221B16]">Shopping segment</h3>
+                          <p className="mt-5 text-[18px] leading-[1.55] text-[#6B625C]">Reduce CTA overload in the new design with clear, purposeful CTAs.</p>
+                          <p className="mt-5 text-[18px] leading-[1.55] text-[#6B625C]">Mortgage calculator and affordability calculator were highlighted with HLA guide content.</p>
+                        </div>
+                        <img src="/chasepublic-solution3.jpg" alt="Shopping segment" className="w-full rounded-[28px] object-contain" onError={(event) => { event.currentTarget.style.display = "none"; }} />
+                      </div>
+                    </section>
+
+                    <section className="rounded-[34px] bg-white border border-[#E4E2E1] p-10">
+                      <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+                        <img src="/chasepublic-solution4.jpg" alt="Early explorer segment" className="w-full rounded-[28px] object-contain" onError={(event) => { event.currentTarget.style.display = "none"; }} />
+                        <div>
+                          <h3 className="text-[30px] font-semibold tracking-[-0.04em] text-[#221B16]">Early explorer segment</h3>
+                          <p className="mt-5 text-[18px] leading-[1.55] text-[#6B625C]">Top 3 action-oriented educational articles replaced 7 hyperlinks.</p>
+                          <p className="mt-5 text-[18px] leading-[1.55] text-[#6B625C]">We removed the sticky footer that forced customers toward “Start online” before they were ready.</p>
+                        </div>
+                      </div>
+                    </section>
                   </div>
                 )}
               </section>
-            ))}
+              );
+            })}
           </article>
         </div>
       </div>
@@ -569,7 +648,7 @@ export default function PortfolioHome() {
             <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7B6258]">or start here:</p>
             <div className="flex flex-col gap-3">
               {NAV_ITEMS.map((item) => (
-                <button key={item} onClick={() => handleNav(item)} className="w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB] hover:border-[#D8C5BB]">{item}</button>
+                <button key={item} onClick={() => handleNav(item)} className="w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB]">{item}</button>
               ))}
             </div>
           </nav>
