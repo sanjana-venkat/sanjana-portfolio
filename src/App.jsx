@@ -288,14 +288,14 @@ const PROJECTS = {
         label: "Impact",
         title: "Conversion impact",
         body: "The redesigned public experience drove a 38% increase in lead initiate and 30.9% increase in lead submit conversion for the variant compared to control.",
-        image: "/chasepublic-datadiscovery2.jpg"
+        image: ""
       },
       {
         id: "optimize",
         label: "Optimize",
         title: "Data-based enhancements",
         body: "After launch, we continued improving with ECI cookie optimization, calculator improvements, multivariate L2 navigation testing, page decommissioning, and paid channel strategy updates.",
-        image: "/chasepublic-datadiscovery3.jpg"
+        image: ""
       }
     ],
     metrics: ["38% lead initiate lift", "30.9% lead submit lift", "$10K+ investment secured"]
@@ -427,6 +427,34 @@ function ProjectModal({ projectKey, onClose }) {
                     <img src={section.image} alt={section.title} className="w-full h-auto object-contain" onError={(event) => { event.currentTarget.style.display = "none"; }} />
                   </div>
                 )}
+
+                {projectKey === "chase-hl-public" && index === 0 && (
+                  <section className="rounded-[34px] bg-white border border-[#E4E2E1] p-8 lg:col-span-2">
+                    <div className="mb-8">
+                      <h3 className="text-[32px] font-semibold tracking-[-0.04em] text-[#221B16]">Deeper look at data</h3>
+                      <p className="mt-3 text-[18px] leading-[1.55] text-[#6B625C]">Let's analyze the points of friction and the clicks to try to understand customer intent and needs</p>
+                    </div>
+                    <div className="grid gap-10 lg:grid-cols-[0.32fr_0.68fr] lg:items-start">
+                      <div className="flex flex-col gap-10">
+                        {[
+                          ["↯", "KYC Flow", "\"Start online\" takes customers through an account creation flow with sensitive questions like SSN"],
+                          ["✦", "Outdated design", "Over 800 public pages, lack of branding and 20+ CTAs with unclear pathways"],
+                          ["↖", "Clicks", "Top clicks were for miscellaneous actions like hamburger menu and sign-in. The most desired action, rates, was the 4th click and 3 scrolls below"]
+                        ].map(([icon, title, body]) => (
+                          <div key={title}>
+                            <div className="text-[34px] leading-none text-[#221B16]">{icon}</div>
+                            <h4 className="mt-5 text-[18px] font-semibold text-[#221B16]">{title}</h4>
+                            <p className="mt-3 text-[17px] leading-[1.45] text-[#6B625C]">{body}</p>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="overflow-hidden rounded-[28px] bg-white">
+                        <img src="/chasepublic-datadiscovery2.jpg" alt="Annotated original Chase public page data" className="w-full h-auto object-contain" onError={(event) => { event.currentTarget.style.display = "none"; }} />
+                      </div>
+                    </div>
+                  </section>
+                )}
+
                 {projectKey === "chase-hl-public" && index === 1 && (
                   <div className="flex flex-col gap-6 lg:col-span-2">
                     <div className="grid gap-6 md:grid-cols-3">
