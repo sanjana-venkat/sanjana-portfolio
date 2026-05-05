@@ -80,19 +80,25 @@ export const PROJECTS = {
 };
 
 export const TESTIMONIALS = [
+  export const TESTIMONIALS = [
   [
-    "Sanjana is the best designer at Chase that I've worked with.",
-    "Manager",
-    "JPMC"
+    "Sanjana is the best designer at Chase that I've worked with. She is proactive, thoughtful, eager to learn and produces ideas and designs at both a high quality and high volume, which is rare!",
+    "Bart Piela",
+    "Marketing/Public Executive Director"
   ],
   [
-    "Your leadership and drive have been inspiring.",
-    "Leadership",
-    "JPMC"
+    "Your leadership, drive, and unwavering commitment have been nothing short of inspiring. You’ve been the champion behind so much of our progress.",
+    "Williams Cavalcante",
+    "CMH Design Lead"
   ],
   [
-    "Instrumental in UX delivery and adapting quickly.",
-    "Product VP",
-    "JPMC"
+    "Sanjana has been instrumental in the Encompass build UX, providing solutions and quickly adjusting to our changing needs.",
+    "Sonia Zacheo",
+    "CMH Product VP"
+  ],
+  [
+    "You jumped into the Apply world with both feet and I've loved exploring ways to improve our customers' experience.",
+    "Andrew Kennerley",
+    "Content VP"
   ]
 ];
