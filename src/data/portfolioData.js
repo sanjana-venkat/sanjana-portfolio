@@ -150,110 +150,18 @@ export const PROJECT_FOR_PILL = {
 export const PROJECTS = {
   "chase-hl-public": {
     title: "Chase HL Public",
-
     sections: [
-      {
-        id: "intro",
-        label: "intro",
-        slides: [
-          "/jpmc-slides/1.png",
-          "/jpmc-slides/2.png",
-          "/jpmc-slides/3.png",
-          "/jpmc-slides/4.png"
-        ]
-      },
-
-      {
-        id: "exec-buy-in",
-        label: "exec buy-in",
-        slides: [
-          "/jpmc-slides/5.png",
-          "/jpmc-slides/6.png",
-          "/jpmc-slides/7.png",
-          "/jpmc-slides/8.png",
-          "/jpmc-slides/9.png"
-        ]
-      },
-
-      {
-        id: "problem",
-        label: "problem",
-        slides: [
-          "/jpmc-slides/10.png",
-          "/jpmc-slides/11.png",
-          "/jpmc-slides/12.png",
-          "/jpmc-slides/13.png",
-          "/jpmc-slides/14.png",
-          "/jpmc-slides/15.png",
-          "/jpmc-slides/16.png",
-          "/jpmc-slides/17.png"
-        ]
-      },
-
-      {
-        id: "research",
-        label: "research",
-        slides: [
-          "/jpmc-slides/18.png",
-          "/jpmc-slides/19.png",
-          "/jpmc-slides/20.png"
-        ]
-      },
-
-      {
-        id: "design-strategy",
-        label: "design strategy",
-        slides: [
-          "/jpmc-slides/21.png",
-          "/jpmc-slides/22.png",
-          "/jpmc-slides/23.png",
-          "/jpmc-slides/24.png",
-          "/jpmc-slides/25.png"
-        ]
-      },
-
-      {
-        id: "impact",
-        label: "impact",
-        slides: [
-          "/jpmc-slides/26.png",
-          "/jpmc-slides/27.png",
-          "/jpmc-slides/28.png"
-        ]
-      },
-
-      {
-        id: "data-driven-optimization",
-        label: "data-driven optimization",
-        slides: [
-          "/jpmc-slides/29.png",
-          "/jpmc-slides/30.png",
-          "/jpmc-slides/31.png"
-        ]
-      },
-
-      {
-        id: "ai-modernization",
-        label: "ai modernization",
-        slides: [
-          "/jpmc-slides/32.png",
-          "/jpmc-slides/33.png",
-          "/jpmc-slides/34.png",
-          "/jpmc-slides/35.png",
-          "/jpmc-slides/36.png",
-          "/jpmc-slides/37.png",
-          "/jpmc-slides/38.png",
-          "/jpmc-slides/39.png",
-          "/jpmc-slides/40.png",
-          "/jpmc-slides/41.png",
-          "/jpmc-slides/42.png",
-          "/jpmc-slides/43.png"
-        ]
-      }
+      { id: "intro", label: "intro", slides: ["/jpmc-slides/1.png", "/jpmc-slides/2.png", "/jpmc-slides/4.png"] },
+      { id: "exec", label: "exec buy-in", slides: ["/jpmc-slides/5.png", "/jpmc-slides/6.png", "/jpmc-slides/7.png", "/jpmc-slides/8.png", "/jpmc-slides/9.png", "/jpmc-slides/10.png", "/jpmc-slides/11.png"] },
+      { id: "problem", label: "problem", slides: ["/jpmc-slides/12.png", "/jpmc-slides/13.png", "/jpmc-slides/14.png", "/jpmc-slides/15.png", "/jpmc-slides/16.png", "/jpmc-slides/17.png"] },
+      { id: "research", label: "research", slides: ["/jpmc-slides/18.png", "/jpmc-slides/19.png", "/jpmc-slides/20.png"] },
+      { id: "design", label: "design strategy", slides: ["/jpmc-slides/21.png", "/jpmc-slides/22.png", "/jpmc-slides/23.png", "/jpmc-slides/24.png"] },
+      { id: "impact", label: "impact", slides: ["/jpmc-slides/25.png", "/jpmc-slides/26.png", "/jpmc-slides/27.png", "/jpmc-slides/28.png", "/jpmc-slides/29.png", "/jpmc-slides/30.png"] },
+      { id: "data", label: "data-driven optimization", slides: ["/jpmc-slides/31.png", "/jpmc-slides/32.png", "/jpmc-slides/33.png", "/jpmc-slides/34.png", "/jpmc-slides/35.png", "/jpmc-slides/36.png", "/jpmc-slides/37.png"] },
+      { id: "ai", label: "ai modernization", slides: ["/jpmc-slides/38.png", "/jpmc-slides/39.png", "/jpmc-slides/40.png", "/jpmc-slides/41.png", "/jpmc-slides/42.png", "/jpmc-slides/43.png"] }
     ]
   }
 };
-
   export const TESTIMONIALS = [
   [
     "Sanjana is the best designer at Chase that I've worked with. She is proactive, thoughtful, eager to learn and produces ideas and designs at both a high quality and high volume, which is rare!",
