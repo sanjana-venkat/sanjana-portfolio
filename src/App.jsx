@@ -1,4 +1,3 @@
-import "@fontsource/special-elite"; 
 import React, { useEffect, useState, useRef } from "react";
 import {
   CONTENT,
