@@ -255,5 +255,5 @@ export const TESTIMONIALS = [
     "Hello Sanjana, Samuel - This is to appreciate your efforts in running unmoderated customer research towards the discovery item for our AOA Home Lending flow. Amazing work, great insights and nicely presented. Hope to continue the wonderful partnership to deliver quality experience with customer focus in mind. Keep up the good work.",
     "Saurabh Shreedhar",
     "Product VP"
-  ],
+  ]
 ];
