@@ -118,15 +118,13 @@ because good design doesn’t land
 unless people understand it`
 };
 
-export const DATA_DRIVEN_REST = `
-This work didn’t stop at segmentation.
+export const DATA_DRIVEN_REST = `This work didn’t stop at segmentation.
 
 One constraint was the design system wasn’t modern enough.
 
 We aligned with leadership and got it onto the roadmap.
 
-Today, that system is live and evolving.
-`;
+Today, that system is live and evolving.`;
 
 export const PILLS = [
   "Show data-driven design",
@@ -141,7 +139,7 @@ export const NAV_ITEMS = ["my work", "what i'm good at", "resume", "contact"];
 
 export const PROJECT_FOR_PILL = {
   "Show data-driven design": "chase-hl-public",
- "How I get exec buy-in": "demo-video",
+  "How I get exec buy-in": "chase-hl-public",
   "How I think about AI systems": "ai-first-interfaces",
   "Product strategy thinking": "marketing-tiles",
   "Design systems under constraints": "chase-apply"
@@ -151,36 +149,113 @@ export const PROJECTS = {
   "chase-hl-public": {
     title: "Chase HL Public",
     sections: [
-      { id: "intro", label: "intro", slides: ["/jpmc-slides/1.png", "/jpmc-slides/2.png", "/jpmc-slides/4.png"] },
-      { id: "exec", label: "exec buy-in", slides: ["/jpmc-slides/5.png", "/jpmc-slides/6.png", "/jpmc-slides/7.png", "/jpmc-slides/8.png", "/jpmc-slides/9.png", "/jpmc-slides/10.png", "/jpmc-slides/11.png"] },
-      { id: "problem", label: "problem", slides: ["/jpmc-slides/12.png", "/jpmc-slides/13.png", "/jpmc-slides/14.png", "/jpmc-slides/15.png", "/jpmc-slides/16.png", "/jpmc-slides/17.png"] },
-      { id: "research", label: "research", slides: ["/jpmc-slides/18.png", "/jpmc-slides/19.png", "/jpmc-slides/20.png"] },
-      { id: "design", label: "design strategy", slides: ["/jpmc-slides/21.png", "/jpmc-slides/22.png", "/jpmc-slides/23.png", "/jpmc-slides/24.png"] },
-      { id: "impact", label: "impact", slides: ["/jpmc-slides/25.png", "/jpmc-slides/26.png", "/jpmc-slides/27.png", "/jpmc-slides/28.png", "/jpmc-slides/29.png", "/jpmc-slides/30.png"] },
-      { id: "data", label: "data-driven optimization", slides: ["/jpmc-slides/31.png", "/jpmc-slides/32.png", "/jpmc-slides/33.png", "/jpmc-slides/34.png", "/jpmc-slides/35.png", "/jpmc-slides/36.png", "/jpmc-slides/37.png"] },
-      { id: "ai", label: "ai modernization", slides: ["/jpmc-slides/38.png", "/jpmc-slides/39.png", "/jpmc-slides/40.png", "/jpmc-slides/41.png", "/jpmc-slides/42.png", "/jpmc-slides/43.png"] }
+      {
+        id: "intro",
+        label: "intro",
+        slides: ["/jpmc-slides/1.png", "/jpmc-slides/2.png", "/jpmc-slides/4.png"]
+      },
+      {
+        id: "exec",
+        label: "exec buy-in",
+        slides: [
+          "/jpmc-slides/5.png",
+          "/jpmc-slides/6.png",
+          "/jpmc-slides/7.png",
+          "/jpmc-slides/8.png",
+          "/jpmc-slides/9.png",
+          "/jpmc-slides/10.png",
+          "/jpmc-slides/11.png"
+        ]
+      },
+      {
+        id: "problem",
+        label: "problem",
+        slides: [
+          "/jpmc-slides/12.png",
+          "/jpmc-slides/13.png",
+          "/jpmc-slides/14.png",
+          "/jpmc-slides/15.png",
+          "/jpmc-slides/16.png",
+          "/jpmc-slides/17.png"
+        ]
+      },
+      {
+        id: "research",
+        label: "research",
+        slides: ["/jpmc-slides/18.png", "/jpmc-slides/19.png", "/jpmc-slides/20.png"]
+      },
+      {
+        id: "design",
+        label: "design strategy",
+        slides: ["/jpmc-slides/21.png", "/jpmc-slides/22.png", "/jpmc-slides/23.png", "/jpmc-slides/24.png"]
+      },
+      {
+        id: "impact",
+        label: "impact",
+        slides: [
+          "/jpmc-slides/25.png",
+          "/jpmc-slides/26.png",
+          "/jpmc-slides/27.png",
+          "/jpmc-slides/28.png",
+          "/jpmc-slides/29.png",
+          "/jpmc-slides/30.png"
+        ]
+      },
+      {
+        id: "data",
+        label: "data-driven optimization",
+        slides: [
+          "/jpmc-slides/31.png",
+          "/jpmc-slides/32.png",
+          "/jpmc-slides/33.png",
+          "/jpmc-slides/34.png",
+          "/jpmc-slides/35.png",
+          "/jpmc-slides/36.png",
+          "/jpmc-slides/37.png"
+        ]
+      },
+      {
+        id: "ai",
+        label: "ai modernization",
+        slides: [
+          "/jpmc-slides/38.png",
+          "/jpmc-slides/39.png",
+          "/jpmc-slides/40.png",
+          "/jpmc-slides/41.png",
+          "/jpmc-slides/42.png",
+          "/jpmc-slides/43.png"
+        ]
+      }
     ]
   }
 };
-  export const TESTIMONIALS = [
+
+export const TESTIMONIALS = [
   [
     "Sanjana is the best designer at Chase that I've worked with. She is proactive, thoughtful, eager to learn and produces ideas and designs at both a high quality and high volume, which is rare!",
     "Bart Piela",
     "Marketing/Public Executive Director"
   ],
   [
-    "Your leadership, drive, and unwavering commitment have been nothing short of inspiring. You’ve been the champion behind so much of our progress.",
+    "Hi Sanjana,
+
+    "I just wanted to take a moment to recognize the incredible impact you’ve had on the Public Transformation Home landing experience. Your leadership, drive, and unwavering commitment have been nothing short of inspiring. You’ve been the champion behind so much of our progress rallying the team, pushing for excellence, and making sure we never lose sight of the bigger picture. Your work is making a real difference, and I’m deeply grateful for everything you bring to the table. Thank you for being such a force of positivity and progress. We’re lucky to have you!",
     "Williams Cavalcante",
     "CMH Design Lead"
   ],
   [
-    "Sanjana has been instrumental in the Encompass build UX, providing solutions and quickly adjusting to our changing needs.",
+    "A very special call out and thank you to Sanjana for being such an amazing partner and consistently going above and beyond when it comes to projects we are working on. Sanjana has been instrumental in the Encompass build UX, providing solutions and quickly adjusting to our changing needs.",
     "Sonia Zacheo",
     "CMH Product VP"
   ],
   [
-    "You jumped into the Apply world with both feet and I've loved exploring ways to improve our customers' experience.",
+    "I wanted to send a special thanks for all your hard work, patience and collaboration this year! You jumped into the Apply world with both feet and I've loved exploring ways to improve our customers' experience. You approach every challenge or change in direction with a smile and you're open to everyone's feedback. Thank you for always being there and for being a wonderful teammate.",
     "Andrew Kennerley",
     "Content VP"
   ]
+  [
+    "Hello Sanjana, Samuel - This is to appreciate your efforts in running unmoderated customer research towards the discovery item for our AOA Home Lending flow. Amazing work, great insights and nicely presented. Hope to continue the wonderful partnership to deliver quality experience with customer focus in mind. Keep up the good work."
+    "Saurabh Shreedhar"
+    "Product VP"
+  ],
 ];
