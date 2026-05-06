@@ -53,7 +53,7 @@ function Typewriter({ text, shouldStart, onDone }) {
   }, [cleanText, shouldStart, typedText]);
 
   return (
-    <p className="whitespace-pre-line text-[15px] leading-[1.8] text-[#221B16] font-['Special_Elite']">
+    <p className="whitespace-pre-line text-[15px] leading-[1.8] text-[#221B16] [font-family:'Courier_New',monospace]">
       {displayed}
       {typedText !== cleanText && (
         <span className="animate-pulse text-[#A5522A]">|</span>
@@ -432,7 +432,7 @@ export default function PortfolioHome() {
 
               {active === "Show data-driven design" && showDataDrivenRest && (
                 <div className="mt-5 rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-                  <p className="whitespace-pre-line break-words text-[15px] leading-[1.8] text-[#221B16] font-['Special_Elite'] sm:text-[16px]">
+                  <p className="whitespace-pre-line break-words text-[15px] leading-[1.8] text-[#221B16] sm:text-[16px] [font-family:'Courier_New',monospace]">
                     {DATA_DRIVEN_REST?.trim()}
                   </p>
                 </div>
