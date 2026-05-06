@@ -61,7 +61,7 @@ function Typewriter({ text, shouldStart, onDone }) {
 
   return (
     <p
-      className={`whitespace-pre-line text-[12px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}
+      className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}
     >
       {displayed}
       {typedText !== cleanText && (
