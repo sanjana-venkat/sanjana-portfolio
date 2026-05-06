@@ -237,9 +237,7 @@ export const TESTIMONIALS = [
     "Marketing/Public Executive Director"
   ],
   [
-    "Hi Sanjana,
-
-    "I just wanted to take a moment to recognize the incredible impact you’ve had on the Public Transformation Home landing experience. Your leadership, drive, and unwavering commitment have been nothing short of inspiring. You’ve been the champion behind so much of our progress rallying the team, pushing for excellence, and making sure we never lose sight of the bigger picture. Your work is making a real difference, and I’m deeply grateful for everything you bring to the table. Thank you for being such a force of positivity and progress. We’re lucky to have you!",
+    "Hi Sanjana, I just wanted to take a moment to recognize the incredible impact you’ve had on the Public Transformation Home landing experience. Your leadership, drive, and unwavering commitment have been nothing short of inspiring. You’ve been the champion behind so much of our progress rallying the team, pushing for excellence, and making sure we never lose sight of the bigger picture. Your work is making a real difference, and I’m deeply grateful for everything you bring to the table. Thank you for being such a force of positivity and progress. We’re lucky to have you!",
     "Williams Cavalcante",
     "CMH Design Lead"
   ],
@@ -252,10 +250,10 @@ export const TESTIMONIALS = [
     "I wanted to send a special thanks for all your hard work, patience and collaboration this year! You jumped into the Apply world with both feet and I've loved exploring ways to improve our customers' experience. You approach every challenge or change in direction with a smile and you're open to everyone's feedback. Thank you for always being there and for being a wonderful teammate.",
     "Andrew Kennerley",
     "Content VP"
-  ]
+  ],
   [
     "Hello Sanjana, Samuel - This is to appreciate your efforts in running unmoderated customer research towards the discovery item for our AOA Home Lending flow. Amazing work, great insights and nicely presented. Hope to continue the wonderful partnership to deliver quality experience with customer focus in mind. Keep up the good work."
-    "Saurabh Shreedhar"
+    "Saurabh Shreedhar",
     "Product VP"
   ],
 ];
