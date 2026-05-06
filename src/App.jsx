@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   CONTENT,
   DATA_DRIVEN_REST,
@@ -12,6 +12,7 @@ const FIGMA_DECK_URL =
 
 const JAKARTA =
   "[font-family:'Plus_Jakarta_Sans',ui-sans-serif,system-ui,sans-serif]";
+
 const TYPEWRITE =
   "[font-family:'American_Typewriter','Courier_New','Lucida_Console',monospace]";
 
@@ -38,6 +39,7 @@ function Typewriter({ text, shouldStart, onDone }) {
 
     const startDelay = setTimeout(() => {
       let index = 0;
+
       interval = setInterval(() => {
         setDisplayed(cleanText.slice(0, index + 1));
         index += 1;
@@ -58,9 +60,13 @@ function Typewriter({ text, shouldStart, onDone }) {
   }, [cleanText, shouldStart, typedText]);
 
   return (
-    <p className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
+    <p
+      className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}
+    >
       {displayed}
-      {typedText !== cleanText && <span className="animate-pulse text-[#A5522A]">|</span>}
+      {typedText !== cleanText && (
+        <span className="animate-pulse text-[#A5522A]">|</span>
+      )}
     </p>
   );
 }
@@ -77,7 +83,9 @@ function SegmentationDiagram() {
 
 function FigmaDeckModal({ onClose }) {
   return (
-    <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}>
+    <div
+      className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}
+    >
       <div className="mx-auto max-w-[1180px]">
         <div className="mb-5 flex items-center gap-3 sm:mb-6">
           <button
@@ -109,7 +117,9 @@ function ChasePublicModal({ onClose }) {
   const sections = ["data discovery", "define", "solution", "impact", "optimize"];
 
   return (
-    <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}>
+    <div
+      className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}
+    >
       <div className="mx-auto max-w-[1180px]">
         <div className="mb-5 flex items-center gap-3 sm:mb-6">
           <button
@@ -152,6 +162,7 @@ function ChasePublicModal({ onClose }) {
                   Driving a 38% boost in conversions with need-based segmentation.
                 </p>
               </div>
+
               <img
                 src="/chasepublic-header.jpg"
                 alt="Chase public redesign"
@@ -178,10 +189,23 @@ function ChasePublicModal({ onClose }) {
 
             <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[0.32fr_0.68fr] lg:items-start">
               <div className="space-y-8">
-                <Insight icon="↯" title="KYC Flow" body="Start online takes customers through account creation with sensitive questions like SSN." />
-                <Insight icon="✦" title="Outdated design" body="Over 800 public pages, lack of branding, and 20+ CTAs with unclear pathways." />
-                <Insight icon="↖" title="Clicks" body="Top clicks were miscellaneous actions. Rates was the 4th click and 3 scrolls below." />
+                <Insight
+                  icon="↯"
+                  title="KYC Flow"
+                  body="Start online takes customers through account creation with sensitive questions like SSN."
+                />
+                <Insight
+                  icon="✦"
+                  title="Outdated design"
+                  body="Over 800 public pages, lack of branding, and 20+ CTAs with unclear pathways."
+                />
+                <Insight
+                  icon="↖"
+                  title="Clicks"
+                  body="Top clicks were miscellaneous actions. Rates was the 4th click and 3 scrolls below."
+                />
               </div>
+
               <img
                 src="/chasepublic-datadiscovery2.jpg"
                 alt="Annotated Chase page"
@@ -205,6 +229,7 @@ function ChasePublicModal({ onClose }) {
             <p className="mt-3 text-[18px] leading-[1.6] text-[#6B625C]">
               We used scenario mapping and the four forces model to understand what would push customers toward home ownership and what would hold them back.
             </p>
+
             <img
               src="/chasepublic-define.jpg"
               alt="Scenario mapping"
@@ -266,6 +291,7 @@ function CaseStudySection({ id, label, title, body, image }) {
         </h2>
         <p className="mt-5 text-[17px] leading-[1.7] text-[#6B625C]">{body}</p>
       </div>
+
       {image && (
         <img
           src={image}
@@ -299,6 +325,7 @@ function Quotes() {
       <h3 className="text-[32px] font-semibold tracking-[-0.04em] text-[#221B16]">
         Habits and anxieties
       </h3>
+
       <div className="mt-8 grid gap-6 md:grid-cols-3">
         {quotes.map((quote) => (
           <article key={quote} className="rounded-[28px] bg-[#EFEFEF] p-7">
@@ -320,6 +347,7 @@ function DesignValues() {
       <p className="mt-3 text-[18px] leading-[1.55] text-[#6B625C]">
         We grounded decisions in customers’ thoughts, feelings and actions.
       </p>
+
       <div className="mt-8 grid gap-6 md:grid-cols-2">
         <ValueCard
           good
@@ -389,7 +417,11 @@ function SolutionBlocks() {
         >
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center">
             {!flip && <SolutionText title={title} body={body} />}
-            <img src={image} alt={title} className="w-full rounded-[24px] object-contain" />
+            <img
+              src={image}
+              alt={title}
+              className="w-full rounded-[24px] object-contain"
+            />
             {flip && <SolutionText title={title} body={body} />}
           </div>
         </div>
@@ -480,9 +512,24 @@ function WhatIBelieveCard() {
 
 function HorizontalTimeline() {
   const items = [
-    ["2023", "B.S. Psychology, Design concentration", "UT Dallas • Understanding human behavior and design principles to build better experiences.", false],
-    ["2023", "Associate Product Designer", "Paycom • Founding member of a new subteam. Focused on B2B enterprise solutions and design system.", false],
-    ["2024 — PRESENT", "Senior Product Designer", "JP Morgan Chase • Leading Marketing and AI initiatives. Building 0-to-1 product and driving impact across the ecosystem.", true]
+    [
+      "2023",
+      "B.S. Psychology, Design concentration",
+      "UT Dallas • Understanding human behavior and design principles to build better experiences.",
+      false
+    ],
+    [
+      "2023",
+      "Associate Product Designer",
+      "Paycom • Founding member of a new subteam. Focused on B2B enterprise solutions and design system.",
+      false
+    ],
+    [
+      "2024 — PRESENT",
+      "Senior Product Designer",
+      "JP Morgan Chase • Leading Marketing and AI initiatives. Building 0-to-1 product and driving impact across the ecosystem.",
+      true
+    ]
   ];
 
   return (
@@ -544,7 +591,10 @@ function TestimonialCarousel() {
         what people say about me
       </p>
 
-      <div key={index} className="min-h-[235px] animate-[slideIn_0.35s_ease_forwards]">
+      <div
+        key={index}
+        className="min-h-[235px] animate-[slideIn_0.35s_ease_forwards]"
+      >
         <p className="italic leading-[1.55] text-[#4F4741]">“{quote}”</p>
         <p className="mt-5 text-[14px] font-semibold text-[#111827]">{name}</p>
         <p className="mt-1 text-[11px] uppercase tracking-[0.12em] text-[#9CA3AF]">
@@ -602,7 +652,10 @@ export default function PortfolioHome() {
 
   const handleNav = (item) => {
     if (item === "my work") setProjectOpen("chase-hl-public");
-    if (item === "contact") window.open("https://www.linkedin.com/in/sanjana-venkat/", "_blank");
+
+    if (item === "contact") {
+      window.open("https://www.linkedin.com/in/sanjana-venkat/", "_blank");
+    }
   };
 
   const openProjectForActivePill = () => {
@@ -625,8 +678,13 @@ export default function PortfolioHome() {
       onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })}
       className={`relative min-h-screen w-full overflow-x-hidden bg-[#F8F7F6] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${JAKARTA}`}
     >
-      {projectOpen === "figma-deck" && <FigmaDeckModal onClose={() => setProjectOpen(null)} />}
-      {projectOpen === "chase-hl-public" && <ChasePublicModal onClose={() => setProjectOpen(null)} />}
+      {projectOpen === "figma-deck" && (
+        <FigmaDeckModal onClose={() => setProjectOpen(null)} />
+      )}
+
+      {projectOpen === "chase-hl-public" && (
+        <ChasePublicModal onClose={() => setProjectOpen(null)} />
+      )}
 
       <div
         className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl transition-transform duration-150"
@@ -704,11 +762,15 @@ export default function PortfolioHome() {
                   text={CONTENT?.[active] || ""}
                   shouldStart={showResponse}
                   onDone={() => {
-                    if (active === "Show data-driven design") setShowDataDrivenRest(true);
+                    if (active === "Show data-driven design") {
+                      setShowDataDrivenRest(true);
+                    }
+
                     setShowPills(true);
                     setShowExamplesFollowUp(
                       active !== "Tell me your story" &&
-                        (Boolean(PROJECT_FOR_PILL?.[active]) || active === "How I get exec buy-in")
+                        (Boolean(PROJECT_FOR_PILL?.[active]) ||
+                          active === "How I get exec buy-in")
                     );
                   }}
                 />
@@ -720,7 +782,9 @@ export default function PortfolioHome() {
 
               {active === "Show data-driven design" && showDataDrivenRest && (
                 <div className="mt-5 rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-                  <p className={`whitespace-pre-line break-words text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
+                  <p
+                    className={`whitespace-pre-line break-words text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}
+                  >
                     {DATA_DRIVEN_REST?.trim()}
                   </p>
                 </div>
