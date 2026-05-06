@@ -66,7 +66,7 @@ function SegmentationDiagram() {
     <img
       src="/segmentation.png"
       alt="Audience segmentation framework"
-      className="mt-6 w-full rounded-[20px] object-contain"
+      className="mt-5 w-full rounded-[20px] border border-[#E4E2E1] object-contain"
     />
   );
 }
@@ -117,14 +117,14 @@ function ProjectModal({ projectKey, onClose }) {
           </div>
         </div>
 
-        <div className="max-h-[74vh] overflow-hidden rounded-[28px] bg-white p-4 sm:rounded-[36px] sm:p-8">
-          <div className="relative flex h-[70vh] items-center justify-center rounded-[24px] bg-[#F8F7F6]">
+        <div className="max-h-[74vh] overflow-hidden rounded-[28px] bg-white">
+          <div className="relative flex h-[70vh] items-center justify-center bg-white">
             {currentSlides.length > 0 ? (
               <img
                 key={currentSlides[slideIndex]}
                 src={currentSlides[slideIndex]}
                 alt={`${activeSection?.label || "case study"} slide ${slideIndex + 1}`}
-                className="max-h-full max-w-full rounded-[18px] object-contain"
+                className="max-h-full max-w-full object-contain animate-[softSlideFade_0.45s_ease_forwards]"
               />
             ) : (
               <div className="p-8 text-center text-[#6B625C]">
@@ -388,9 +388,9 @@ export default function PortfolioHome() {
 
         <section
           ref={chatCardRef}
-          className="rounded-[32px] border border-[#E4E2E1] bg-white p-5 transition-all duration-300 sm:p-8"
+          className="rounded-[32px] border border-[#E4E2E1] bg-white p-4 transition-all duration-300 sm:p-6"
         >
-          <div className="mb-8 flex justify-end">
+          <div className="mb-6 flex justify-end">
             <div className="rounded-[48px_48px_0px_48px] bg-[#A5522A] px-6 py-3 text-[16px] text-white animate-[messageSend_0.35s_ease_forwards]">
               {active}
             </div>
@@ -423,20 +423,18 @@ export default function PortfolioHome() {
                     );
                   }}
                 />
+
+                {active === "Show data-driven design" && showDataDrivenRest && (
+                  <SegmentationDiagram />
+                )}
               </div>
 
               {active === "Show data-driven design" && showDataDrivenRest && (
-                <>
-                  <div className="mt-5 rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-                    <SegmentationDiagram />
-                  </div>
-
-                  <div className="mt-5 rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-                    <p className="whitespace-pre-line break-words text-[15px] leading-[1.5] tracking-[-0.01em] text-[#221B16] sm:text-[16px]">
-                      {DATA_DRIVEN_REST?.trim()}
-                    </p>
-                  </div>
-                </>
+                <div className="mt-5 rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
+                  <p className="whitespace-pre-line break-words text-[15px] leading-[1.5] tracking-[-0.01em] text-[#221B16] sm:text-[16px]">
+                    {DATA_DRIVEN_REST?.trim()}
+                  </p>
+                </div>
               )}
 
               {showExamplesFollowUp && (
@@ -453,7 +451,7 @@ export default function PortfolioHome() {
           )}
 
           {showPills && (
-            <div className="mt-8 flex flex-wrap gap-3 animate-[fadeUp_0.45s_ease_forwards]">
+            <div className="mt-6 flex flex-wrap gap-3 animate-[fadeUp_0.45s_ease_forwards]">
               {PILLS.map((pill) => (
                 <button
                   key={pill}
@@ -501,6 +499,11 @@ export default function PortfolioHome() {
         @keyframes answerBubbleIn {
           from { opacity: 0; transform: translateY(14px) scale(0.98); }
           to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes softSlideFade {
+          from { opacity: 0; transform: scale(0.985); }
+          to { opacity: 1; transform: scale(1); }
         }
 
         @keyframes glow {
