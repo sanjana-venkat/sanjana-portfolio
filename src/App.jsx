@@ -11,6 +11,11 @@ import {
 const FIGMA_DECK_URL =
   "https://embed.figma.com/deck/rrAhQ5fBTULZu49L04zUZ8/jpmcpublic-slides?node-id=2-17943&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&embed-host=share";
 
+const JAKARTA =
+  "[font-family:'Plus_Jakarta_Sans',ui-sans-serif,system-ui,sans-serif]";
+const TYPEWRITE =
+  "[font-family:'American_Typewriter','Courier_New','Lucida_Console',monospace]";
+
 function Typewriter({ text, shouldStart, onDone }) {
   const cleanText = (text || "").trim();
   const [displayed, setDisplayed] = useState("");
@@ -55,7 +60,9 @@ function Typewriter({ text, shouldStart, onDone }) {
   }, [cleanText, shouldStart, typedText]);
 
   return (
-    <p className="whitespace-pre-line text-[15px] leading-[1.8] text-[#221B16] [font-family:'Courier_New',monospace]">
+    <p
+      className={`whitespace-pre-line text-[12px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}
+    >
       {displayed}
       {typedText !== cleanText && (
         <span className="animate-pulse text-[#A5522A]">|</span>
@@ -80,7 +87,9 @@ function ProjectModal({ projectKey, onClose }) {
   if (!project) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards]">
+    <div
+      className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}
+    >
       <div className="mx-auto max-w-[1180px]">
         <div className="mb-5 flex items-center gap-3 sm:mb-6">
           <button
@@ -114,12 +123,37 @@ function WhatIBelieveCard() {
       <p className="mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176]">
         what i believe in
       </p>
+
       <p className="leading-[1.65] text-[#5F5149]">
-        i believe good products don’t just solve problems. they reveal ones people didn’t know they had.
+        i believe good products don’t just solve problems. they reveal ones
+        people didn’t know they had.
       </p>
+
       <p className="mt-6 leading-[1.65] text-[#5F5149]">
-        with AI and personalization, that gap gets smaller. But the real work is still human: listening, framing, building things that help people move forward.
+        with AI and personalization, that gap gets smaller. But the real work is
+        still human: listening, framing, building things that help people move
+        forward.
       </p>
+
+      <div className="mt-7 flex items-center gap-4">
+        <a
+          href="mailto:sanjanavnkt20@gmail.com"
+          aria-label="Email Sanjana"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]"
+        >
+          ✉
+        </a>
+
+        <a
+          href="https://www.linkedin.com/in/sanjana-venkat/"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="LinkedIn"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] text-[13px] font-semibold text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]"
+        >
+          in
+        </a>
+      </div>
     </article>
   );
 }
@@ -205,7 +239,10 @@ function TestimonialCarousel() {
         what people say about me
       </p>
 
-      <div key={index} className="min-h-[235px] animate-[slideIn_0.35s_ease_forwards]">
+      <div
+        key={index}
+        className="min-h-[235px] animate-[slideIn_0.35s_ease_forwards]"
+      >
         <p className="italic leading-[1.55] text-[#4F4741]">“{quote}”</p>
         <p className="mt-5 text-[14px] font-semibold text-[#111827]">{name}</p>
         <p className="mt-1 text-[11px] uppercase tracking-[0.12em] text-[#9CA3AF]">
@@ -277,7 +314,7 @@ export default function PortfolioHome() {
   return (
     <main
       onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })}
-      className="relative min-h-screen w-full overflow-x-hidden bg-[#F8F7F6] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10"
+      className={`relative min-h-screen w-full overflow-x-hidden bg-[#F8F7F6] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${JAKARTA}`}
     >
       {projectOpen && (
         <ProjectModal
@@ -311,15 +348,17 @@ export default function PortfolioHome() {
             </p>
 
             <div className="flex flex-col gap-3">
-              {["my work", "what i'm good at", "resume", "contact"].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => handleNav(item)}
-                  className="w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB]"
-                >
-                  {item}
-                </button>
-              ))}
+              {["my work", "what i'm good at", "resume", "contact"].map(
+                (item) => (
+                  <button
+                    key={item}
+                    onClick={() => handleNav(item)}
+                    className="w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB]"
+                  >
+                    {item}
+                  </button>
+                )
+              )}
             </div>
           </nav>
 
@@ -339,7 +378,9 @@ export default function PortfolioHome() {
           className="rounded-[32px] border border-[#E4E2E1] bg-white p-4 transition-all duration-300 sm:p-6"
         >
           <div className="mb-6 flex justify-end">
-            <div className="rounded-[48px_48px_0px_48px] bg-[#A5522A] px-6 py-3 text-[16px] text-white animate-[messageSend_0.35s_ease_forwards]">
+            <div
+              className={`rounded-[48px_48px_0px_48px] bg-[#A5522A] px-6 py-3 text-[12px] leading-[1.8] text-white animate-[messageSend_0.35s_ease_forwards] ${TYPEWRITE}`}
+            >
               {active}
             </div>
           </div>
@@ -379,7 +420,9 @@ export default function PortfolioHome() {
 
               {active === "Show data-driven design" && showDataDrivenRest && (
                 <div className="mt-5 rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-                  <p className="whitespace-pre-line break-words text-[15px] leading-[1.8] text-[#221B16] sm:text-[16px] [font-family:'Courier_New',monospace]">
+                  <p
+                    className={`whitespace-pre-line break-words text-[12px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}
+                  >
                     {DATA_DRIVEN_REST?.trim()}
                   </p>
                 </div>
@@ -424,6 +467,8 @@ export default function PortfolioHome() {
       </section>
 
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
         @keyframes modalIn {
           from { opacity: 0; transform: translateY(18px) scale(0.98); }
           to { opacity: 1; transform: translateY(0) scale(1); }
