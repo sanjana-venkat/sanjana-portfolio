@@ -8,6 +8,9 @@ import {
   TESTIMONIALS
 } from "./data/portfolioData";
 
+const FIGMA_DECK_URL =
+  "https://embed.figma.com/deck/rrAhQ5fBTULZu49L04zUZ8/jpmcpublic-slides?node-id=2-17943&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&embed-host=share";
+
 function Typewriter({ text, shouldStart, onDone }) {
   const cleanText = (text || "").trim();
   const [displayed, setDisplayed] = useState("");
@@ -73,12 +76,8 @@ function SegmentationDiagram() {
 
 function ProjectModal({ projectKey, onClose }) {
   const project = PROJECTS?.[projectKey] || PROJECTS?.["chase-hl-public"];
-  const [activeSection, setActiveSection] = useState(project?.sections?.[0]);
-  const [slideIndex, setSlideIndex] = useState(0);
 
   if (!project) return null;
-
-  const currentSlides = activeSection?.slides || [];
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards]">
@@ -96,64 +95,13 @@ function ProjectModal({ projectKey, onClose }) {
           </h2>
         </div>
 
-        <div className="mb-6 rounded-[28px] border border-[#E4E2E1] bg-white p-3 sm:rounded-full sm:p-4">
-          <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:pb-0">
-            {project.sections?.map((section) => (
-              <button
-                key={section.id}
-                onClick={() => {
-                  setActiveSection(section);
-                  setSlideIndex(0);
-                }}
-                className={`shrink-0 rounded-full border px-4 py-2 text-[12px] font-medium transition sm:px-5 ${
-                  activeSection?.id === section.id
-                    ? "border-[#9C3F14] bg-[#FFF8F5] text-[#9C3F14]"
-                    : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
-                }`}
-              >
-                {section.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="max-h-[74vh] overflow-hidden rounded-[28px] bg-white">
-          <div className="relative flex h-[70vh] items-center justify-center bg-white">
-            {currentSlides.length > 0 ? (
-              <img
-                key={currentSlides[slideIndex]}
-                src={currentSlides[slideIndex]}
-                alt={`${activeSection?.label || "case study"} slide ${slideIndex + 1}`}
-                className="max-h-full max-w-full object-contain animate-[softSlideFade_0.45s_ease_forwards]"
-              />
-            ) : (
-              <div className="p-8 text-center text-[#6B625C]">
-                No slides found for this section.
-              </div>
-            )}
-
-            {slideIndex > 0 && (
-              <button
-                onClick={() => setSlideIndex((index) => index - 1)}
-                className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[#E4E2E1] bg-white/95 text-[24px] text-[#6B625C] shadow-sm transition hover:text-[#9C3F14]"
-              >
-                ‹
-              </button>
-            )}
-
-            {slideIndex < currentSlides.length - 1 && (
-              <button
-                onClick={() => setSlideIndex((index) => index + 1)}
-                className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[#E4E2E1] bg-white/95 text-[24px] text-[#6B625C] shadow-sm transition hover:text-[#9C3F14]"
-              >
-                ›
-              </button>
-            )}
-
-            <div className="absolute bottom-4 rounded-full border border-[#E4E2E1] bg-white/95 px-4 py-2 text-[12px] text-[#6B625C]">
-              {slideIndex + 1} / {currentSlides.length || 1}
-            </div>
-          </div>
+        <div className="overflow-hidden rounded-[28px] bg-white">
+          <iframe
+            src={FIGMA_DECK_URL}
+            title="JPMC Public case study deck"
+            className="h-[76vh] w-full rounded-[24px] border-0 bg-white"
+            allowFullScreen
+          />
         </div>
       </div>
     </div>
@@ -499,11 +447,6 @@ export default function PortfolioHome() {
         @keyframes answerBubbleIn {
           from { opacity: 0; transform: translateY(14px) scale(0.98); }
           to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        @keyframes softSlideFade {
-          from { opacity: 0; transform: scale(0.985); }
-          to { opacity: 1; transform: scale(1); }
         }
 
         @keyframes glow {
