@@ -1,4 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Courier+Prime:wght@400;700&display=swap');
 @import "tailwindcss";
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.typewriter-text {
+  font-family: 'Courier Prime', monospace;
+  font-size: 14px;
+  line-height: 2;
+}
+
 @keyframes glow {
   0% { box-shadow: 0 0 0 0 rgba(217,111,69,0.6); }
   50% { box-shadow: 0 0 0 12px rgba(217,111,69,0); }
