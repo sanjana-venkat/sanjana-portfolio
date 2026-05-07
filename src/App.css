@@ -1,3 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Courier+Prime:wght@400;700&display=swap');
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.typewriter-text {
+  font-family: 'Courier Prime', monospace;
+  font-size: 14px;
+  line-height: 2;
+}
 .counter {
   font-size: 16px;
   padding: 5px 10px;
