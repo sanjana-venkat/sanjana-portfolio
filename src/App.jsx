@@ -13,7 +13,8 @@ const FIGMA_DECK_URL =
 const JAKARTA =
   "[font-family:'Plus_Jakarta_Sans',ui-sans-serif,system-ui,sans-serif]";
 
-const TYPEWRITE = "typewriter-text";
+const TYPEWRITE =
+  "[font-family:'Courier_Prime','Courier_New',monospace]";
 
 function Typewriter({ text, shouldStart, onDone }) {
   const cleanText = (text || "").trim();
@@ -60,7 +61,7 @@ function Typewriter({ text, shouldStart, onDone }) {
 
   return (
     <p
-      className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}
+      className={`typewriter-text whitespace-pre-line text-[#221B16] ${TYPEWRITE}`}
     >
       {displayed}
       {typedText !== cleanText && (
@@ -83,7 +84,7 @@ function SegmentationDiagram() {
 function FigmaDeckModal({ onClose }) {
   return (
     <div
-      className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}
+      className={`fixed inset-0 z-50 overflow-y-auto no-scrollbar bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}
     >
       <div className="mx-auto max-w-[1180px]">
         <div className="mb-5 flex items-center gap-3 sm:mb-6">
@@ -117,7 +118,7 @@ function ChasePublicModal({ onClose }) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}
+      className={`fixed inset-0 z-50 overflow-y-auto no-scrollbar bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}
     >
       <div className="mx-auto max-w-[1180px]">
         <div className="mb-5 flex items-center gap-3 sm:mb-6">
@@ -147,7 +148,7 @@ function ChasePublicModal({ onClose }) {
           </div>
         </div>
 
-        <article className="max-h-[74vh] space-y-8 overflow-y-auto rounded-[28px] bg-white p-4 sm:rounded-[36px] sm:p-8">
+        <article className="max-h-[74vh] space-y-8 overflow-y-auto no-scrollbar rounded-[28px] bg-white p-4 sm:rounded-[36px] sm:p-8">
           <section className="rounded-[30px] bg-gradient-to-br from-[#FBF7F4] via-[#F7F2EF] to-[#EFEAE6] p-6 sm:p-10">
             <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
               <div>
@@ -351,17 +352,11 @@ function DesignValues() {
         <ValueCard
           good
           title="What we want"
-          body="Think: Chase is reliable and offers clear options;
-          Feel: Confident and supported;
-          Say: I know what to do;
-          Do: Use tools, start an application, reach out for help."
+          body="Think: Chase is reliable and offers clear options. Feel: Confident and supported. Say: I know what to do. Do: Use tools, start an application, reach out for help."
         />
         <ValueCard
           title="What we don’t want"
-          body="Think: I don’t know where to look., 
-          Feel: Overwhelmed or skeptical.,
-          Say: This is too complicated.,
-          Do: Leave the page or look elsewhere."
+          body="Think: I don’t know where to look. Feel: Overwhelmed or skeptical. Say: This is too complicated. Do: Leave the page or look elsewhere."
         />
       </div>
     </section>
@@ -470,6 +465,266 @@ function Results() {
                 {body}
               </p>
             </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function AIFirstInterfacesModal({ onClose }) {
+  const principles = [
+    [
+      "Conversational",
+      "Experiences should feel like a natural extension of AI interfaces, fitting seamlessly into the conversation flow and UI."
+    ],
+    [
+      "Intelligent",
+      "It should be aware of context, supporting and anticipating user intent. Responses and UI should feel individually relevant."
+    ],
+    [
+      "Simple",
+      "Each interaction should focus on a single action or outcome; feel fast and light without overwhelming the conversation."
+    ]
+  ];
+
+  const chatgptUseCase = [
+    [
+      "Fixing a real, time-sensitive gap",
+      "When buyers need a lower pre-approval letter while actively house shopping, ChatGPT updates the letter instantly, which is a task HLAs can’t always handle in real time and the current Chase app does not support digitally."
+    ],
+    [
+      "Making the offer smarter",
+      "Using public neighborhood and market data, ChatGPT explains why lowering the pre-approval can improve offer strength, then evaluates likelihood of acceptance and recommends tactics like an escalation clause."
+    ],
+    [
+      "Executing without friction",
+      "ChatGPT drafts the escalation clause and offer letter and sends it to the HLA or realtor using existing contacts, turning search-time intent into immediate action."
+    ]
+  ];
+
+  const geminiUseCase = [
+    [
+      "Starting with curiosity, not forms",
+      "The journey begins with a photo of a home. Gemini estimates value using public data and grounds the question in prior context, like the customer’s home savings goal."
+    ],
+    [
+      "A deliberate shift to a trusted system",
+      "When the task requires private financial data, Gemini hands off to the Chase app, reimagined as a conversational AI experience for banking needs."
+    ],
+    [
+      "Chase proactively turns interest into action",
+      "Chase AI analyzes down payment readiness, suggests concrete actions to increase buying power, checks credit eligibility, prepares documents, and schedules an advisor."
+    ]
+  ];
+
+  const reflections = [
+    "AI is valuable when it removes timing gaps. The biggest unlock was eliminating real-world delays.",
+    "The future of search is accountable action. AI search earns trust when it leads to clear next steps and ownership.",
+    "Trust is a design boundary. Deciding when to stay inside AI versus hand off to a secure system was a core UX decision.",
+    "Intent matters more than interface. Designing around what users are trying to accomplish creates more scalable interaction patterns."
+  ];
+
+  return (
+    <div
+      className={`fixed inset-0 z-50 overflow-y-auto no-scrollbar bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}
+    >
+      <div className="mx-auto max-w-[1180px]">
+        <div className="mb-5 flex items-center gap-3 sm:mb-6">
+          <button
+            onClick={onClose}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] text-[#6B625C] transition hover:text-[#A5522A]"
+          >
+            ‹
+          </button>
+
+          <h2 className="min-w-0 text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#9C3F14] sm:text-[40px]">
+            AI First Interfaces
+          </h2>
+        </div>
+
+        <article className="max-h-[78vh] overflow-y-auto no-scrollbar rounded-[36px] bg-white p-5 sm:p-8">
+          <section className="rounded-[32px] bg-gradient-to-br from-[#F6F3EF] via-[#F9F7F4] to-[#EFE7E1] p-6 sm:p-10">
+            <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+              <div>
+                <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#A5522A]">
+                  Designer • AI exploration
+                </p>
+                <p className="mt-3 text-[12px] uppercase tracking-[0.16em] text-[#9A8176]">
+                  Nov 2025 – Sept 2025
+                </p>
+                <h1 className="mt-5 text-[40px] font-semibold leading-[0.95] tracking-[-0.06em] text-[#221B16] sm:text-[64px]">
+                  AI First Interfaces
+                </h1>
+                <p className="mt-5 max-w-[620px] text-[18px] leading-[1.65] text-[#5F5149]">
+                  Exploring how AI interfaces become the default way people search and take action.
+                </p>
+                <a
+                  href="https://www.figma.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-7 inline-flex rounded-full bg-[#A5522A] px-5 py-3 text-[13px] font-semibold text-white transition hover:scale-[1.02]"
+                >
+                  See Gemini/ChatGPT prototype →
+                </a>
+              </div>
+
+              <div className="rounded-[32px] bg-[#221B16] p-5">
+                <img
+                  src="https://framerusercontent.com/images/25WhZJSmrMK0G7FEahIFObZUF0.png?height=982&width=2864"
+                  alt="AI workshop mapping"
+                  className="w-full rounded-[24px] object-contain"
+                />
+              </div>
+            </div>
+          </section>
+
+          <nav className="sticky top-0 z-10 my-6 rounded-full border border-[#E4E2E1] bg-white/95 p-3 backdrop-blur">
+            <div className="flex gap-2 overflow-x-auto no-scrollbar">
+              {["problem", "principles", "prototypes", "reflection"].map((item) => (
+                <a
+                  key={item}
+                  href={`#ai-${item}`}
+                  className="shrink-0 rounded-full border border-[#E4E2E1] px-5 py-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]"
+                >
+                  {item}
+                </a>
+              ))}
+            </div>
+          </nav>
+
+          <section id="ai-problem" className="scroll-mt-24 rounded-[32px] border border-[#E4E2E1] bg-white p-6 sm:p-9">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#D96F45]">
+              Problem
+            </p>
+            <h2 className="mt-4 text-[34px] font-semibold tracking-[-0.04em] text-[#221B16]">
+              AI is becoming the new front door for customer discovery.
+            </h2>
+            <p className="mt-5 text-[18px] leading-[1.7] text-[#6B625C]">
+              Customers increasingly seek financial guidance through ChatGPT, Gemini, and Perplexity, not bank websites or apps. If Chase doesn’t adapt, it risks losing visibility, trust, and relevance in an AI-first world.
+            </p>
+
+            <div className="mt-8 rounded-[28px] bg-[#F4F2EF] p-7">
+              <p className="text-[24px] font-semibold leading-[1.25] tracking-[-0.03em] text-[#221B16]">
+                How might we integrate Chase meaningfully within AI interfaces without breaking conversational flow?
+              </p>
+            </div>
+          </section>
+
+          <section id="ai-principles" className="scroll-mt-24 rounded-[32px] border border-[#E4E2E1] bg-white p-6 sm:p-9">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#D96F45]">
+              Principles
+            </p>
+            <h2 className="mt-4 text-[34px] font-semibold tracking-[-0.04em] text-[#221B16]">
+              Search is becoming action-oriented.
+            </h2>
+            <p className="mt-5 text-[18px] leading-[1.7] text-[#6B625C]">
+              Users are not just looking for information, they want to do something with it. AI changes search from navigation to execution.
+            </p>
+
+            <div className="mt-8 grid gap-5 md:grid-cols-3">
+              {principles.map(([title, body]) => (
+                <article key={title} className="rounded-[28px] bg-[#F4F2EF] p-6">
+                  <h3 className="text-[22px] font-semibold tracking-[-0.03em] text-[#221B16]">
+                    {title}
+                  </h3>
+                  <p className="mt-4 text-[15px] leading-[1.65] text-[#6B625C]">{body}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section id="ai-prototypes" className="scroll-mt-24 space-y-6">
+            <PrototypeSection
+              eyebrow="Use Case 1: ChatGPT"
+              title="Real-time pre-approval support inside an AI interface"
+              body="Why this works: the entire flow relies on user-owned documents, public data, and existing relationships, making it realistic and low-risk to complete inside an AI interface."
+              items={chatgptUseCase}
+              image="https://framerusercontent.com/images/25WhZJSmrMK0G7FEahIFObZUF0.png?height=982&width=2864"
+            />
+
+            <PrototypeSection
+              eyebrow="Use Case 2: Gemini x Chase"
+              title="Exploration in Gemini, execution in Chase"
+              body="Why the handoff matters: Gemini supports exploration; Chase owns execution. Together, they show how AI search can safely evolve into real financial action."
+              items={geminiUseCase}
+            />
+          </section>
+
+          <section id="ai-reflection" className="scroll-mt-24 rounded-[32px] border border-[#E4E2E1] bg-[#221B16] p-6 text-white sm:p-9">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#F2B79C]">
+              Reflection
+            </p>
+            <h2 className="mt-4 text-[34px] font-semibold tracking-[-0.04em]">
+              Prototypes helped make AI strategy tangible.
+            </h2>
+            <p className="mt-5 text-[18px] leading-[1.7] text-white/75">
+              Creating these prototypes in less than a week helped define concrete UX principles for AI integration conversations at Chase.
+            </p>
+
+            <div className="mt-8 grid gap-4 md:grid-cols-2">
+              {reflections.map((reflection) => (
+                <div key={reflection} className="rounded-[24px] bg-white/8 p-5 text-[15px] leading-[1.65] text-white/80">
+                  {reflection}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-9 rounded-[28px] bg-white p-6 text-[#221B16]">
+              <h3 className="text-[26px] font-semibold tracking-[-0.04em]">
+                Wish your vision meets impact soon?
+              </h3>
+              <p className="mt-2 text-[#6B625C]">Let’s bring it on sooner :)</p>
+              <div className="mt-5 flex gap-3">
+                <a
+                  href="mailto:sanjanavnkt20@gmail.com"
+                  className="rounded-full border border-[#E4E2E1] px-5 py-2 text-[13px] font-semibold transition hover:border-[#A5522A] hover:text-[#A5522A]"
+                >
+                  Email
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/sanjana-venkat/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-full border border-[#E4E2E1] px-5 py-2 text-[13px] font-semibold transition hover:border-[#A5522A] hover:text-[#A5522A]"
+                >
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+          </section>
+        </article>
+      </div>
+    </div>
+  );
+}
+
+function PrototypeSection({ eyebrow, title, body, items, image }) {
+  return (
+    <section className="rounded-[32px] border border-[#E4E2E1] bg-white p-6 sm:p-9">
+      <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#D96F45]">
+        {eyebrow}
+      </p>
+      <h2 className="mt-4 text-[34px] font-semibold tracking-[-0.04em] text-[#221B16]">
+        {title}
+      </h2>
+      <p className="mt-5 text-[18px] leading-[1.7] text-[#6B625C]">{body}</p>
+
+      {image && (
+        <img
+          src={image}
+          alt={title}
+          className="mt-8 w-full rounded-[28px] border border-[#E4E2E1] object-contain"
+        />
+      )}
+
+      <div className="mt-8 grid gap-5 md:grid-cols-3">
+        {items.map(([itemTitle, itemBody]) => (
+          <article key={itemTitle} className="rounded-[26px] bg-[#F4F2EF] p-6">
+            <h3 className="text-[20px] font-semibold tracking-[-0.03em] text-[#221B16]">
+              {itemTitle}
+            </h3>
+            <p className="mt-4 text-[15px] leading-[1.65] text-[#6B625C]">{itemBody}</p>
           </article>
         ))}
       </div>
@@ -691,6 +946,10 @@ export default function PortfolioHome() {
         <ChasePublicModal onClose={() => setProjectOpen(null)} />
       )}
 
+      {projectOpen === "ai-first-interfaces" && (
+        <AIFirstInterfacesModal onClose={() => setProjectOpen(null)} />
+      )}
+
       <div
         className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl transition-transform duration-150"
         style={{ left: cursor.x - 150, top: cursor.y - 150 }}
@@ -788,7 +1047,7 @@ export default function PortfolioHome() {
               {active === "Show data-driven design" && showDataDrivenRest && (
                 <div className="mt-5 rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
                   <p
-                    className={`whitespace-pre-line break-words text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}
+                    className={`typewriter-text whitespace-pre-line break-words text-[#221B16] ${TYPEWRITE}`}
                   >
                     {DATA_DRIVEN_REST?.trim()}
                   </p>
@@ -835,6 +1094,21 @@ export default function PortfolioHome() {
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Courier+Prime:wght@400;700&display=swap');
+
+        .typewriter-text {
+          font-family: 'Courier Prime', monospace;
+          font-size: 14px;
+          line-height: 2;
+        }
+
+        .no-scrollbar {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
 
         @keyframes modalIn {
           from { opacity: 0; transform: translateY(18px) scale(0.98); }
