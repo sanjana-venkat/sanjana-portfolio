@@ -351,11 +351,17 @@ function DesignValues() {
         <ValueCard
           good
           title="What we want"
-          body="Think: Chase is reliable and offers clear options. Feel: Confident and supported. Say: I know what to do. Do: Use tools, start an application, reach out for help."
+          body="Think: Chase is reliable and offers clear options.,
+          Feel: Confident and supported.,
+          Say: I know what to do.,
+          Do: Use tools, start an application, reach out for help."
         />
         <ValueCard
           title="What we don’t want"
-          body="Think: I don’t know where to look. Feel: Overwhelmed or skeptical. Say: This is too complicated. Do: Leave the page or look elsewhere."
+          body="Think: I don’t know where to look., 
+          Feel: Overwhelmed or skeptical.,
+          Say: This is too complicated.,
+          Do: Leave the page or look elsewhere."
         />
       </div>
     </section>
