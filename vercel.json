@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "sanjana-portfolio-scvk.vercel.app"
+        }
+      ],
+      "destination": "https://sanjanavenkat.com/$1",
+      "permanent": true
+    }
+  ]
+}
