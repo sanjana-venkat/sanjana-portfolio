@@ -13,8 +13,7 @@ const FIGMA_DECK_URL =
 const JAKARTA =
   "[font-family:'Plus_Jakarta_Sans',ui-sans-serif,system-ui,sans-serif]";
 
-const TYPEWRITE =
-  "[font-family:'American_Typewriter','Courier_New','Lucida_Console',monospace]";
+const TYPEWRITE = "typewriter-text";
 
 function Typewriter({ text, shouldStart, onDone }) {
   const cleanText = (text || "").trim();
@@ -829,7 +828,7 @@ export default function PortfolioHome() {
       </section>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Courier+Prime:wght@400;700&display=swap');
 
         @keyframes modalIn {
           from { opacity: 0; transform: translateY(18px) scale(0.98); }
