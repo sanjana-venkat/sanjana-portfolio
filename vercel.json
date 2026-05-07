@@ -8,7 +8,7 @@
           "value": "sanjana-portfolio-scvk.vercel.app"
         }
       ],
-      "destination": "https://sanjanavenkat.com/$1",
+      "destination": "https://sanjanavenkat.com/",
       "permanent": true
     }
   ]
