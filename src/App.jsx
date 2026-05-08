@@ -119,15 +119,9 @@ const USER_NEEDS_REST = `That one artifact:
 
 Then through exit surveys, heat maps, and extensive A/B testing, we defined a need-based segmentation strategy.
 
-The first outcome wasn’t perfectly clean. Overall lead submit decreased.
-
-So I went deep into the data again and found the breakthrough:
+The first outcome wasn’t perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
 
 38% increase in lead initiation with clearer Apply messaging.
-
-That changed the direction of the experience.
-
-One page wasn’t enough.
 
 In a few sprints, we pushed toward redesigning the full journey and got design system modernization onto the roadmap.
 
