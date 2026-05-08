@@ -148,6 +148,71 @@ function AIFramerModal({ onClose }) {
   );
 }
 
+
+function MarketingTilesModal({ onClose }) {
+  const baseUrl =
+    "https://sanjanavenkat.framer.website/works/marketing-tiles-2";
+
+  const sections = [
+    { label: "define", url: `${baseUrl}#define` },
+    { label: "workshop", url: `${baseUrl}#workshop` },
+    { label: "assumptions", url: `${baseUrl}#assumptions` },
+    { label: "strategy", url: `${baseUrl}#strategy` },
+    { label: "implementation", url: `${baseUrl}#implementation` }
+  ];
+
+  const [activeUrl, setActiveUrl] = useState(sections[0].url);
+
+  return (
+    <div
+      className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}
+    >
+      <div className="mx-auto max-w-[1180px]">
+        <div className="mb-5 flex items-center gap-3 sm:mb-6">
+          <button
+            onClick={onClose}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] text-[#6B625C] transition hover:text-[#A5522A]"
+          >
+            ‹
+          </button>
+
+          <h2 className="text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#9C3F14] sm:text-[40px]">
+            Data-driven Design
+          </h2>
+        </div>
+
+        <div className="mb-6 rounded-[28px] border border-[#E4E2E1] bg-white p-3 sm:rounded-full sm:p-4">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:pb-0">
+            {sections.map((section) => (
+              <button
+                key={section.label}
+                onClick={() => setActiveUrl(section.url)}
+                className={`shrink-0 rounded-full border px-5 py-2 text-[12px] font-medium transition ${
+                  activeUrl === section.url
+                    ? "border-[#9C3F14] bg-[#FFF8F5] text-[#9C3F14]"
+                    : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
+                }`}
+              >
+                {section.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-[36px] bg-white">
+          <iframe
+            key={activeUrl}
+            src={activeUrl}
+            title="Marketing Tiles case study"
+            className="h-[82vh] w-full border-0 bg-white"
+            allowFullScreen
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ChasePublicModal({ onClose }) {
   const sections = ["data discovery", "define", "solution", "impact", "optimize"];
 
@@ -694,6 +759,11 @@ export default function PortfolioHome() {
   };
 
   const openProjectForActivePill = () => {
+    if (active === "Show data-driven design") {
+      setProjectOpen("marketing-tiles");
+      return;
+    }
+
     if (active === "How I get exec buy-in") {
       setProjectOpen("figma-deck");
       return;
@@ -724,6 +794,10 @@ export default function PortfolioHome() {
 
       {projectOpen === "ai-framer" && (
         <AIFramerModal onClose={() => setProjectOpen(null)} />
+      )}
+
+      {projectOpen === "marketing-tiles" && (
+        <MarketingTilesModal onClose={() => setProjectOpen(null)} />
       )}
 
       {projectOpen === "chase-hl-public" && (
@@ -814,7 +888,9 @@ export default function PortfolioHome() {
                     setShowExamplesFollowUp(
                       active !== "Tell me your story" &&
                         (Boolean(PROJECT_FOR_PILL?.[active]) ||
-                          active === "How I get exec buy-in")
+                          active === "Show data-driven design" ||
+                          active === "How I get exec buy-in" ||
+                          active === "How I think about AI systems")
                     );
                   }}
                 />
