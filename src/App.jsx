@@ -1,23 +1,170 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  CONTENT,
-  DATA_DRIVEN_REST,
-  PILLS,
-  PROJECT_FOR_PILL,
-  TESTIMONIALS
-} from "./data/portfolioData";
+import { TESTIMONIALS } from "./data/portfolioData";
 
 const FIGMA_DECK_URL =
   "https://embed.figma.com/deck/rrAhQ5fBTULZu49L04zUZ8/jpmcpublic-slides?node-id=2-17943&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&embed-host=share";
 
 const AI_FRAMER_URL =
-  "https://sanjanavenkat.framer.website/works/aifirstinterfaces";
+  "https://sanjanavenkat.framer.website/works/aifirstinterfaces-2";
+
+const USER_NEEDS_FRAMER_URL =
+  "https://sanjanavenkat.framer.website/works/chase-hl-public-2";
+
+const PRODUCT_STRATEGY_URL = "https://www.sanjanavenkat.com/#define";
 
 const JAKARTA =
   "[font-family:'Plus_Jakarta_Sans',ui-sans-serif,system-ui,sans-serif]";
 
 const TYPEWRITE =
-  "[font-family:'American_Typewriter','Courier_New','Lucida_Console',monospace]";
+  "[font-family:'Courier_Prime','American_Typewriter','Courier_New',monospace]";
+
+
+const PILLS = [
+  "how i uncover user needs",
+  "let's talk AI",
+  "product strategy thinking",
+  "how i ship fast",
+  "tell me your story",
+  "how i get exec-buy in"
+];
+
+const CONTENT = {
+  "how i uncover user needs": `I look beyond surface-level metrics to understand the intent behind user behavior.
+
+At JPMC, we were a small team trying to reduce drop-offs in an application flow. But we went deep into the data and I made a funnel visualization that revealed something simple but important:
+
+We were missing a huge part of the market.
+
+We needed to shift toward awareness and marketing with an upper-funnel engagement strategy.
+
+I presented this to leadership and that one artifact:
+• Secured $10K+ in investment
+• Got the 3rd highest Home Lending business case
+• Aligned leadership around the redesign
+
+Then through exit surveys, heat maps, and extensive A/B testing, we defined a design strategy with need-based segmentation.
+
+The first outcome was not perfectly clean. Overall lead submit decreased and navigation outside Home Lending was discouraging.
+
+So I went deep into the data again. Being a designer did not stop me from doing data analysis, and I found the breakthrough:
+
+38% increase in lead initiation with clear Apply messaging.
+
+Clear messaging created clearer user intent, and users were completing the goal.
+
+Something was working. Product realized what design had been advocating for: one page does not change the full experience.
+
+In a few sprints, we moved forward. One constraint was the design system, but we still got that onto the roadmap.
+
+Today, the full experience is live and evolving with AI.`,
+
+  "let's talk AI": `I believe good design is about getting closer to human intent.
+
+And with AI, that gap gets smaller.
+
+The better we understand intent, the better we can build systems that adapt dynamically to what people actually need in the moment.
+
+What excites me most is conversational AI.
+
+Because voice captures:
+• Uncertainty
+• Evolving thoughts
+• Emotional context
+
+In a way static interfaces and typing cannot.
+
+The next thing for AI in interfaces is personalization and conversation. That is where I capitalized on my team leading initiatives at JPMC and shipping across multiple surfaces:
+
+• A personalization model that drove a 17% CTR lift
+• An AI calling agent that handled 1,000+ customer conversations
+• ChatGPT + Gemini prototypes used by executive leadership to communicate future product direction to CEO Jamie Dimon
+
+I also see AI as a thinking partner within my own workflow. It helps me rapidly build ideas and explore a wider range of directions.
+
+But direction, prioritization, and clarity still come from my judgment and my skill in turning ambiguity into direction.`,
+
+  "product strategy thinking": `My biggest strength is framing the problem early.
+
+Before anything gets designed, I define:
+• What we are actually solving
+• Why it matters
+• Where the opportunity exists
+
+At JPMC, I led 3-day workshops with leadership.
+
+We would go from:
+“We need a redesign”
+
+to:
+• Here is the real problem
+• Here is the data
+• Here is the roadmap
+
+I have used this approach across:
+• AI personalization
+• The apply flow
+• Public home lending
+
+Everything tied back to clear direction and measurable outcomes that we all aligned on.`,
+
+  "how i ship fast": `I move quickly by combining systems thinking, rapid prototyping, and close engineering collaboration.
+
+Personally, I strongly believe in “launch and learn” so we do not spend too much time iterating before real behavior teaches us something. It is harder to achieve in bigger companies like JPMC, but here are a few times I did it.
+
+Within two days, I analyzed edge cases for over 20 offers and built a plug-and-play offer template using atomic design principles.
+
+In close collaboration with engineering, we quickly launched it.
+
+The result:
+• Zero additional design/dev lift for an offer page
+• Accelerated marketing velocity by 3 sprints
+• Scaled across multiple use cases
+
+I also rapidly prototype with AI tools like Codex, Google AI Studio, and Claude, while brainstorming ideas with Google Stitch.
+
+This portfolio itself was an idea I concepted, designed, and built in 2 days to envision a pre-interview experience so you can see how I think beyond lengthy case studies.
+
+Even before AI tools, I was known for creating a business case, product idea, design, and prototype in 24 hours during hackathons, often as the only designer on the team.`,
+
+  "tell me your story": `Here’s how it happened.
+
+I joined Paycom as an Associate Product Designer and threw myself into the work completely.
+
+Not just doing my job, I became one of the founding members of a brand new subteam, helping build something from scratch while most people were still finding their footing.
+
+Then out of nowhere, JPMC reached out.
+
+Turns out I had helped someone with a presentation at a conference I organized back in college, and that stuck with them. When they had an opening, they remembered.
+
+I applied. I got the role. And they brought me in as a Senior Product Designer, a real bump, because of how I presented myself and my work.
+
+From there, I moved fast. Required little to no guidance. Owned AI initiatives, set the foundation for the marketing design team, and built things that still run today.
+
+I learn by doing, and I do a lot.`,
+
+  "how i get exec-buy in": `I approach presentations with the same empathy I bring to design.
+
+Instead of trying to convince stakeholders, I start from where they are and guide them toward a shared vision.
+
+At JPMC, we built ChatGPT + Gemini prototypes in under a week.
+
+The output was not just a feature.
+
+It was a story.
+
+An executive leader used that work to present to senior leadership.
+
+When I present, I focus on:
+• What the opportunity is
+• Why it matters
+• What decision needs to be made
+
+Because I learned that good design does not land unless people understand it.`
+};
+
+const PROJECT_FOR_PILL = {};
+const DATA_DRIVEN_REST = "";
+
 
 function Typewriter({ text, shouldStart, onDone }) {
   const cleanText = (text || "").trim();
@@ -84,6 +231,39 @@ function SegmentationDiagram() {
   );
 }
 
+
+function UserNeedsModal({ onClose }) {
+  return (
+    <div
+      className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}
+    >
+      <div className="mx-auto max-w-[1180px]">
+        <div className="mb-5 flex items-center gap-3 sm:mb-6">
+          <button
+            onClick={onClose}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] text-[#6B625C] transition hover:text-[#A5522A]"
+          >
+            ‹
+          </button>
+
+          <h2 className="min-w-0 text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#9C3F14] sm:text-[40px]">
+            How I Uncover User Needs
+          </h2>
+        </div>
+
+        <div className="overflow-hidden rounded-[28px] bg-white">
+          <iframe
+            src={USER_NEEDS_FRAMER_URL}
+            title="Chase Home Lending public case study"
+            className="h-[82vh] w-full rounded-[24px] border-0 bg-white"
+            allowFullScreen
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function FigmaDeckModal({ onClose }) {
   return (
     <div
@@ -139,7 +319,7 @@ function AIFramerModal({ onClose }) {
           <iframe
             src={AI_FRAMER_URL}
             title="AI First Interfaces case study"
-            className="h-[76vh] w-full rounded-[24px] border-0 bg-white"
+            className="h-[82vh] w-full rounded-[24px] border-0 bg-white"
             allowFullScreen
           />
         </div>
@@ -759,35 +939,44 @@ export default function PortfolioHome() {
   };
 
   const openProjectForActivePill = () => {
-    if (active === "Show data-driven design") {
-      setProjectOpen("marketing-tiles");
+    if (active === "how i uncover user needs") {
+      setProjectOpen("user-needs");
       return;
     }
 
-    if (active === "How I get exec buy-in") {
-      setProjectOpen("figma-deck");
-      return;
-    }
-
-    if (active === "How I think about AI systems") {
+    if (active === "let's talk AI") {
       setProjectOpen("ai-framer");
       return;
     }
 
-    const projectKey = PROJECT_FOR_PILL?.[active];
-    if (projectKey) setProjectOpen(projectKey);
+    if (active === "product strategy thinking") {
+      window.open(PRODUCT_STRATEGY_URL, "_blank");
+      return;
+    }
+
+    if (active === "how i get exec-buy in") {
+      setProjectOpen("figma-deck");
+      return;
+    }
   };
 
-  const ctaText =
-    active === "How I get exec buy-in"
-      ? "walk me through the project →"
-      : "show me examples of this work →";
+  const ctaText = (() => {
+    if (active === "how i get exec-buy in") return "walk me through the project →";
+    if (active === "let's talk AI") return "show me how →";
+    if (active === "product strategy thinking") return "show me the strategy →";
+    if (active === "how i uncover user needs") return "show me the work →";
+    return "show me examples of this work →";
+  })();
 
   return (
     <main
       onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })}
       className={`relative min-h-screen w-full overflow-x-hidden bg-[#F8F7F6] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${JAKARTA}`}
     >
+      {projectOpen === "user-needs" && (
+        <UserNeedsModal onClose={() => setProjectOpen(null)} />
+      )}
+
       {projectOpen === "figma-deck" && (
         <FigmaDeckModal onClose={() => setProjectOpen(null)} />
       )}
@@ -886,11 +1075,10 @@ export default function PortfolioHome() {
 
                     setShowPills(true);
                     setShowExamplesFollowUp(
-                      active !== "Tell me your story" &&
-                        (Boolean(PROJECT_FOR_PILL?.[active]) ||
-                          active === "Show data-driven design" ||
-                          active === "How I get exec buy-in" ||
-                          active === "How I think about AI systems")
+                      active === "how i uncover user needs" ||
+                        active === "let's talk AI" ||
+                        active === "product strategy thinking" ||
+                        active === "how i get exec-buy in"
                     );
                   }}
                 />
@@ -949,7 +1137,7 @@ export default function PortfolioHome() {
       </section>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Courier+Prime:wght@400;700&display=swap');
 
         @keyframes modalIn {
           from { opacity: 0; transform: translateY(18px) scale(0.98); }
