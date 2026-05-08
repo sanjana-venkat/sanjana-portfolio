@@ -35,7 +35,13 @@ It started with a funnel visualization I built.
 
 It showed leadership something simple but important:
 
-We were missing a huge part of the market.`,
+We were missing a huge part of the market.
+That one artifact:
+• Secured $10K+ in investment
+• Got the 3rd highest Home Lending business case
+• Aligned leadership around the redesign
+
+Then through exit surveys, heat maps, and extensive A/B testing, we defined a need-based segmentation strategy.`,
 
   "let's talk AI": `I believe good design is about getting closer to human intent.
 
@@ -112,12 +118,7 @@ When I present, I focus on:
 Because I learned that good design does not land unless people understand it.`
 };
 
-const USER_NEEDS_REST = `That one artifact:
-• Secured $10K+ in investment
-• Got the 3rd highest Home Lending business case
-• Aligned leadership around the redesign
-
-Then through exit surveys, heat maps, and extensive A/B testing, we defined a need-based segmentation strategy.
+const USER_NEEDS_REST =
 
 The first outcome wasn’t perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
 
