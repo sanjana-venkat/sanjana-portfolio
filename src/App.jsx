@@ -118,9 +118,7 @@ When I present, I focus on:
 Because I learned that good design does not land unless people understand it.`
 };
 
-const USER_NEEDS_REST =
-
-The first outcome wasn’t perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
+const USER_NEEDS_REST = `The first outcome wasn’t perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
 
 38% increase in lead initiation with clearer Apply messaging.
 
@@ -429,7 +427,7 @@ export default function PortfolioHome() {
     }
 
     if (active === "product strategy thinking") {
-      window.open(PRODUCT_STRATEGY_URL, "_blank");
+      setProjectOpen("marketing-tiles");
       return;
     }
 
@@ -446,7 +444,7 @@ export default function PortfolioHome() {
   const ctaText = (() => {
     if (active === "how i get exec-buy in") return "walk me through the project →";
     if (active === "let's talk AI") return "show me how →";
-    if (active === "product strategy thinking") return "show me the strategy →";
+    if (active === "product strategy thinking") return "show me the strategy work →";
     if (active === "how i uncover user needs") return "show me the work →";
     if (active === "how i ship fast") return "what have you been building? →";
     return "show me examples of this work →";
@@ -480,6 +478,14 @@ export default function PortfolioHome() {
         <FramerModal
           title="AI First Interfaces"
           url={AI_FRAMER_URL}
+          onClose={() => setProjectOpen(null)}
+        />
+      )}
+
+      {projectOpen === "marketing-tiles" && (
+        <FramerModal
+          title="Product Strategy Thinking"
+          url="https://sanjanavenkat.framer.website/works/marketing-tiles-2#define"
           onClose={() => setProjectOpen(null)}
         />
       )}
