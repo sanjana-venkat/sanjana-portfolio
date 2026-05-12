@@ -4,6 +4,9 @@ import { TESTIMONIALS } from "./data/portfolioData";
 const FIGMA_DECK_URL =
   "https://embed.figma.com/slides/rrAhQ5fBTULZu49L04zUZ8/jpmcpublic-slides?node-id=2-16488&embed-host=share";
 
+const CASEY_AI_URL =
+  "https://embed.figma.com/slides/498Pw3UvKwQErQY2WQHJji/Casey-AI?node-id=1-90838&embed-host=share";
+
 const AI_FRAMER_URL =
   "https://sanjanavenkat.framer.website/works/aifirstinterfaces-2";
 
@@ -13,12 +16,14 @@ const USER_NEEDS_FRAMER_URL =
 const MARKETING_TILES_URL =
   "https://sanjanavenkat.framer.website/works/marketing-tiles-2#define";
 
-const RESUME_URL = "/SanjanaVenkat_ProductDesigner_Resume.pdf";
-
-const PRODUCT_STRATEGY_URL = "https://www.sanjanavenkat.com/#define";
+const CHASE_APPLY_URL =
+  "https://sanjanavenkat.framer.website/works/chase-apply-2";
 
 const WAYFARER_URL =
   "https://wayfarer-b1xt7lhgb-sanjanavnkt20-5780s-projects.vercel.app/";
+
+const GITHUB_URL = "https://github.com/sanjana-venkat";
+const RESUME_URL = "/SanjanaVenkat_ProductDesigner_Resume.pdf";
 
 const JAKARTA = "[font-family:'Open_Sans',sans-serif]";
 const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
@@ -28,6 +33,7 @@ const PILLS = [
   "how i uncover user needs",
   "let's talk AI",
   "product strategy thinking",
+  "designing systems at scale",
   "how i ship fast",
   "tell me your story",
   "how i get exec-buy in"
@@ -36,9 +42,7 @@ const PILLS = [
 const CONTENT = {
   "how i uncover user needs": `I look beyond surface-level metrics to understand the intent behind user behavior. At JPMC, we were a small team trying to reduce drop-offs in an application flow.
 
-But we went deep into the data and I made a funnel visualization that revealed something simple but important:
-
-We were missing a huge part of the market.
+But we went deep into the data and I made a funnel visualization that revealed something simple but important: We were missing a huge part of the market.
 
 That one artifact:
 • Secured $10K+ in investment
@@ -47,58 +51,44 @@ That one artifact:
 
 Then through exit surveys, heat maps, and extensive A/B testing, we defined a need-based segmentation strategy.`,
 
-  "let's talk AI": `I believe good design is about getting closer to human intent.
-
-And with AI, that gap gets smaller.
-
-The better we understand intent, the better we can build systems that adapt to what people actually need in the moment.
+  "let's talk AI": `I believe good design is about getting closer to human intent, and with AI, that gap gets smaller.
 
 What excites me most is conversational AI because voice captures uncertainty, evolving thoughts, and emotional context in a way static interfaces cannot.
 
-At JPMC, I’ve worked on AI across multiple surfaces:
-• A personalization model that drove a 17% CTR lift
-• An AI calling agent that handled 1,000+ customer conversations
-• ChatGPT + Gemini prototypes used by leadership to communicate future product direction
+At JPMC, I worked on AI across multiple surfaces: a personalization model that drove a 17% CTR lift, an AI calling agent that handled 1,000+ customer conversations, and ChatGPT + Gemini prototypes used by leadership to communicate future product direction.
 
 I also use AI as a thinking partner in my own workflow. It helps me explore ideas faster, but direction and clarity still come from judgment.`,
 
   "product strategy thinking": `My biggest strength is framing the problem early.
 
-Before anything gets designed, I define:
-• What we are actually solving
-• Why it matters
-• Where the opportunity exists
+Before anything gets designed, I define what we are actually solving, why it matters, and where the opportunity exists.
 
 At JPMC, I led 3-day workshops with leadership where we would go from “we need a redesign” to a clearer problem, data-backed direction, and roadmap.
 
-I’ve used this approach across AI personalization, the apply flow, and public home lending.
+I’ve used this approach across AI personalization, the apply flow, and public home lending. Everything tied back to clear direction and measurable outcomes that the team could align on.`,
 
-Everything tied back to clear direction and measurable outcomes that the team could align on.`,
+  "designing systems at scale": `I like working on problems that are bigger than one screen.
+
+At JPMC, I mapped the Apply & Fulfillment journey across customer steps, internal workflows, backend dependencies, and moments where confidence dropped.
+
+That helped me think less about pages and more about systems: how people move through complexity, where they need support, and how self-service experiences can scale.`,
 
   "how i ship fast": `I move quickly by combining systems thinking, rapid prototyping, and close engineering collaboration.
 
 At JPMC, I analyzed edge cases for 20+ offers and built a plug-and-play offer template using atomic design principles.
-
-In close collaboration with engineering, we launched it quickly.
 
 The result:
 • Zero additional design/dev lift for an offer page
 • Accelerated marketing velocity by 3 sprints
 • Scaled across multiple use cases
 
-I also prototype with tools like Codex, Google AI Studio, Claude, and Google Stitch.
-
 This portfolio itself was concepted, designed, and built in 2 days as an interactive pre-interview experience. Before AI tools, I was already building product ideas and prototypes in 24-hour hackathons, often as the only designer on the team.`,
 
   "tell me your story": `Here’s how it happened.
 
-I joined Paycom as an Associate Product Designer and threw myself into the work completely.
+I joined Paycom as an Associate Product Designer and threw myself into the work completely. I became one of the founding members of a brand new subteam, helping build something from scratch while most people were still finding their footing.
 
-Not just doing my job, I became one of the founding members of a brand new subteam, helping build something from scratch while most people were still finding their footing.
-
-Then JPMC reached out.
-
-Turns out I had helped someone with a presentation at a conference I organized in college, and that stuck with them.
+Then JPMC reached out. Turns out I had helped someone with a presentation at a conference I organized in college, and that stuck with them.
 
 I joined as a Senior Product Designer and moved quickly into AI initiatives, marketing strategy, personalization systems, and scalable design foundations.
 
@@ -108,18 +98,11 @@ I learn by doing, and I do a lot.`,
 
 Instead of trying to convince stakeholders, I start from where they are and guide them toward a shared vision.
 
-At JPMC, we built ChatGPT + Gemini prototypes in under a week.
-
-The output was not just a feature. It was a story.
+At JPMC, we built ChatGPT + Gemini prototypes in under a week. The output was not just a feature. It was a story.
 
 An executive leader used that work to present to senior leadership.
 
-When I present, I focus on:
-• What the opportunity is
-• Why it matters
-• What decision needs to be made
-
-Because I learned that good design does not land unless people understand it.`
+When I present, I focus on what the opportunity is, why it matters, and what decision needs to be made. Because I learned that good design does not land unless people understand it.`
 };
 
 const USER_NEEDS_REST = `The first outcome wasn’t perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
@@ -129,6 +112,44 @@ const USER_NEEDS_REST = `The first outcome wasn’t perfectly clean. Overall lea
 In a few sprints, we pushed toward redesigning the full journey and got design system modernization onto the roadmap.
 
 Today, the experience is live and evolving with AI.`;
+
+const WORK_PROJECTS = [
+  {
+    label: "uncovering user needs",
+    title: "Chase HL Public",
+    url: USER_NEEDS_FRAMER_URL
+  },
+  {
+    label: "AI interfaces",
+    title: "AI First Interfaces",
+    url: AI_FRAMER_URL
+  },
+  {
+    label: "product strategy",
+    title: "Marketing Tiles",
+    url: MARKETING_TILES_URL
+  },
+  {
+    label: "systems at scale",
+    title: "Apply & Fulfillment",
+    url: CHASE_APPLY_URL
+  },
+  {
+    label: "exec buy-in",
+    title: "JPMC Public Slides",
+    url: FIGMA_DECK_URL
+  },
+  {
+    label: "Casey AI",
+    title: "Casey AI Presentation",
+    url: CASEY_AI_URL
+  },
+  {
+    label: "rapid build",
+    title: "Wayfarer",
+    url: WAYFARER_URL
+  }
+];
 
 function Typewriter({ text, shouldStart, onDone }) {
   const cleanText = (text || "").trim();
@@ -193,6 +214,23 @@ function SegmentationDiagram() {
   );
 }
 
+function SystemsImageCard() {
+  return (
+    <a
+      href={CHASE_APPLY_URL}
+      target="_blank"
+      rel="noreferrer"
+      className="mt-8 block overflow-hidden rounded-[28px] border border-[#E4E2E1] bg-white transition hover:-translate-y-1 hover:shadow-sm"
+    >
+      <img
+        src="/journey-map.png"
+        alt="Journey map for Apply and Fulfillment"
+        className="w-full object-contain"
+      />
+    </a>
+  );
+}
+
 function FramerModal({ title, url, onClose }) {
   return (
     <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}>
@@ -224,44 +262,11 @@ function FramerModal({ title, url, onClose }) {
 }
 
 function WorkBrowserModal({ onClose }) {
-  const projects = [
-    {
-      label: "user needs",
-      title: "How I Uncover User Needs",
-      url: USER_NEEDS_FRAMER_URL
-    },
-    {
-      label: "ai systems",
-      title: "AI First Interfaces",
-      url: AI_FRAMER_URL
-    },
-    {
-      label: "strategy",
-      title: "Product Strategy Thinking",
-      url: MARKETING_TILES_URL
-    },
-    {
-      label: "exec buy-in",
-      title: "Chase HL Public Slides",
-      url: FIGMA_DECK_URL
-    },
-    {
-      label: "ship fast",
-      title: "Wayfarer",
-      url: WAYFARER_URL
-    },
-    {
-      label: "hackathon",
-      title: "UTD Hack",
-      url: "https://sanjanavenkat.framer.website/works/utdhack"
-    }
-  ];
-
-  const [activeProject, setActiveProject] = useState(projects[0]);
+  const [selectedProject, setSelectedProject] = useState(WORK_PROJECTS[0]);
 
   return (
     <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}>
-      <div className="mx-auto max-w-[1180px]">
+      <div className="mx-auto max-w-[1240px]">
         <div className="mb-5 flex items-center gap-3 sm:mb-6">
           <button
             onClick={onClose}
@@ -270,19 +275,19 @@ function WorkBrowserModal({ onClose }) {
             ‹
           </button>
 
-          <h2 className={`min-w-0 text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#9C3F14] sm:text-[40px] ${HEADING}`}>
+          <h2 className={`text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#9C3F14] sm:text-[44px] ${HEADING}`}>
             My Work
           </h2>
         </div>
 
-        <div className="mb-5 rounded-[28px] border border-[#E4E2E1] bg-white p-3 sm:rounded-full sm:p-4">
+        <div className="mb-6 rounded-[28px] border border-[#E4E2E1] bg-white p-3 sm:rounded-full sm:p-4">
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:pb-0">
-            {projects.map((project) => (
+            {WORK_PROJECTS.map((project) => (
               <button
                 key={project.label}
-                onClick={() => setActiveProject(project)}
+                onClick={() => setSelectedProject(project)}
                 className={`shrink-0 rounded-full border px-5 py-2 text-[12px] font-medium transition ${
-                  activeProject.label === project.label
+                  selectedProject.label === project.label
                     ? "border-[#9C3F14] bg-[#FFF8F5] text-[#9C3F14]"
                     : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
                 }`}
@@ -293,27 +298,17 @@ function WorkBrowserModal({ onClose }) {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-[28px] bg-white">
+        <div className="overflow-hidden rounded-[36px] bg-white">
           <iframe
-            key={activeProject.url}
-            src={activeProject.url}
-            title={activeProject.title}
-            className="h-[82vh] w-full rounded-[24px] border-0 bg-white"
+            key={selectedProject.url}
+            src={selectedProject.url}
+            title={selectedProject.title}
+            className="h-[82vh] w-full border-0 bg-white"
             allowFullScreen
           />
         </div>
       </div>
     </div>
-  );
-}
-
-function FigmaDeckModal({ onClose }) {
-  return (
-    <FramerModal
-      title="Chase HL Public"
-      url={FIGMA_DECK_URL}
-      onClose={onClose}
-    />
   );
 }
 
@@ -472,12 +467,14 @@ export default function PortfolioHome() {
   const [showResponse, setShowResponse] = useState(false);
   const [showThinking, setShowThinking] = useState(false);
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
+  const [showSystemsImage, setShowSystemsImage] = useState(false);
 
   useEffect(() => {
     setShowExamplesFollowUp(false);
     setShowPills(false);
     setShowResponse(false);
     setShowUserNeedsRest(false);
+    setShowSystemsImage(false);
     setShowThinking(true);
 
     const timer = setTimeout(() => {
@@ -496,18 +493,24 @@ export default function PortfolioHome() {
   };
 
   const handleNav = (item) => {
-    if (item === "my work") setProjectOpen("work-browser");
+    if (item === "my work") {
+      setProjectOpen("work-browser");
+      return;
+    }
 
     if (item === "what are you building now") {
       window.open(WAYFARER_URL, "_blank");
+      return;
     }
 
     if (item === "github") {
-      window.open("https://github.com/sanjana-venkat", "_blank");
+      window.open(GITHUB_URL, "_blank");
+      return;
     }
 
     if (item === "resume") {
       window.open(RESUME_URL, "_blank");
+      return;
     }
 
     if (item === "contact") {
@@ -515,7 +518,17 @@ export default function PortfolioHome() {
     }
   };
 
-  const openProjectForActivePill = () => {
+  const openProjectForActivePill = (target) => {
+    if (target === "casey-ai") {
+      setProjectOpen("casey-ai");
+      return;
+    }
+
+    if (target === "ai-framer") {
+      setProjectOpen("ai-framer");
+      return;
+    }
+
     if (active === "how i uncover user needs") {
       setProjectOpen("user-needs");
       return;
@@ -531,6 +544,11 @@ export default function PortfolioHome() {
       return;
     }
 
+    if (active === "designing systems at scale") {
+      setProjectOpen("chase-apply");
+      return;
+    }
+
     if (active === "how i ship fast") {
       window.open(WAYFARER_URL, "_blank");
       return;
@@ -543,9 +561,9 @@ export default function PortfolioHome() {
 
   const ctaText = (() => {
     if (active === "how i get exec-buy in") return "walk me through the project →";
-    if (active === "let's talk AI") return "show me how →";
     if (active === "product strategy thinking") return "show me the strategy work →";
     if (active === "how i uncover user needs") return "show me the work →";
+    if (active === "designing systems at scale") return "show me the system →";
     if (active === "how i ship fast") return "what have you been building? →";
     return "show me examples of this work →";
   })();
@@ -554,6 +572,7 @@ export default function PortfolioHome() {
     active === "how i uncover user needs" ||
     active === "let's talk AI" ||
     active === "product strategy thinking" ||
+    active === "designing systems at scale" ||
     active === "how i ship fast" ||
     active === "how i get exec-buy in";
 
@@ -562,6 +581,10 @@ export default function PortfolioHome() {
       onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })}
       className={`relative min-h-screen w-full overflow-x-hidden bg-[#F8F7F6] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${JAKARTA}`}
     >
+      {projectOpen === "work-browser" && (
+        <WorkBrowserModal onClose={() => setProjectOpen(null)} />
+      )}
+
       {projectOpen === "user-needs" && (
         <FramerModal
           title="How I Uncover User Needs"
@@ -571,7 +594,19 @@ export default function PortfolioHome() {
       )}
 
       {projectOpen === "figma-deck" && (
-        <FigmaDeckModal onClose={() => setProjectOpen(null)} />
+        <FramerModal
+          title="Chase HL Public"
+          url={FIGMA_DECK_URL}
+          onClose={() => setProjectOpen(null)}
+        />
+      )}
+
+      {projectOpen === "casey-ai" && (
+        <FramerModal
+          title="Casey AI"
+          url={CASEY_AI_URL}
+          onClose={() => setProjectOpen(null)}
+        />
       )}
 
       {projectOpen === "ai-framer" && (
@@ -590,8 +625,12 @@ export default function PortfolioHome() {
         />
       )}
 
-      {projectOpen === "work-browser" && (
-        <WorkBrowserModal onClose={() => setProjectOpen(null)} />
+      {projectOpen === "chase-apply" && (
+        <FramerModal
+          title="Designing Systems at Scale"
+          url={CHASE_APPLY_URL}
+          onClose={() => setProjectOpen(null)}
+        />
       )}
 
       <div
@@ -674,6 +713,10 @@ export default function PortfolioHome() {
                       setShowUserNeedsRest(true);
                     }
 
+                    if (active === "designing systems at scale") {
+                      setShowSystemsImage(true);
+                    }
+
                     setShowPills(true);
                     setShowExamplesFollowUp(shouldShowCta);
                   }}
@@ -681,6 +724,10 @@ export default function PortfolioHome() {
 
                 {active === "how i uncover user needs" && showUserNeedsRest && (
                   <SegmentationDiagram />
+                )}
+
+                {active === "designing systems at scale" && showSystemsImage && (
+                  <SystemsImageCard />
                 )}
               </div>
 
@@ -692,10 +739,28 @@ export default function PortfolioHome() {
                 </div>
               )}
 
-              {showExamplesFollowUp && (
+              {active === "let's talk AI" && showExamplesFollowUp && (
+                <div className="flex flex-wrap gap-3 px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
+                  <button
+                    onClick={() => openProjectForActivePill("ai-framer")}
+                    className="inline-flex rounded-full border border-[#E4E2E1] bg-white px-4 py-2 text-[13px] font-medium text-[#8A817B] transition-colors hover:border-[#A5522A] hover:text-[#A5522A]"
+                  >
+                    chatGPT/gemini integration →
+                  </button>
+
+                  <button
+                    onClick={() => openProjectForActivePill("casey-ai")}
+                    className="inline-flex rounded-full border border-[#E4E2E1] bg-white px-4 py-2 text-[13px] font-medium text-[#8A817B] transition-colors hover:border-[#A5522A] hover:text-[#A5522A]"
+                  >
+                    what’s casey AI? →
+                  </button>
+                </div>
+              )}
+
+              {active !== "let's talk AI" && showExamplesFollowUp && (
                 <div className="px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
                   <button
-                    onClick={openProjectForActivePill}
+                    onClick={() => openProjectForActivePill()}
                     className="inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A]"
                   >
                     {ctaText}
