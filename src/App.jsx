@@ -29,13 +29,10 @@ const PILLS = [
 ];
 
 const CONTENT = {
-  "how i uncover user needs": `I led the redesign of chase.com’s home lending experience.
-
-It started with a funnel visualization I built.
-
-It showed leadership something simple but important:
+  "how i uncover user needs": `I led the redesign of chase.com’s home lending experience. It started with a funnel visualization I built, which leadership something simple but important:
 
 We were missing a huge part of the market.
+
 That one artifact:
 • Secured $10K+ in investment
 • Got the 3rd highest Home Lending business case
