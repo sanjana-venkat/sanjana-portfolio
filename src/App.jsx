@@ -2,13 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { TESTIMONIALS } from "./data/portfolioData";
 
 const FIGMA_DECK_URL =
-  "https://embed.figma.com/deck/rrAhQ5fBTULZu49L04zUZ8/jpmcpublic-slides?node-id=2-17943&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&embed-host=share";
+  "https://embed.figma.com/slides/rrAhQ5fBTULZu49L04zUZ8/jpmcpublic-slides?node-id=2-16488&embed-host=share";
 
 const AI_FRAMER_URL =
   "https://sanjanavenkat.framer.website/works/aifirstinterfaces-2";
 
 const USER_NEEDS_FRAMER_URL =
   "https://sanjanavenkat.framer.website/works/chase-hl-public-2";
+
+const MARKETING_TILES_URL =
+  "https://sanjanavenkat.framer.website/works/marketing-tiles-2#define";
+
+const RESUME_URL = "/SanjanaVenkat_ProductDesigner_Resume.pdf";
 
 const PRODUCT_STRATEGY_URL = "https://www.sanjanavenkat.com/#define";
 
@@ -29,7 +34,11 @@ const PILLS = [
 ];
 
 const CONTENT = {
-  "how i uncover user needs": `I look beyond surface-level metrics. We were in a small team reducing drop-offs in the application flow. But we went deeper into the data and realized that we are actually missing a huge part of the market. I made a simple funnel visualization explaining the data to convince leadership.
+  "how i uncover user needs": `I look beyond surface-level metrics to understand the intent behind user behavior. At JPMC, we were a small team trying to reduce drop-offs in an application flow.
+
+But we went deep into the data and I made a funnel visualization that revealed something simple but important:
+
+We were missing a huge part of the market.
 
 That one artifact:
 • Secured $10K+ in investment
@@ -205,6 +214,90 @@ function FramerModal({ title, url, onClose }) {
           <iframe
             src={url}
             title={title}
+            className="h-[82vh] w-full rounded-[24px] border-0 bg-white"
+            allowFullScreen
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WorkBrowserModal({ onClose }) {
+  const projects = [
+    {
+      label: "user needs",
+      title: "How I Uncover User Needs",
+      url: USER_NEEDS_FRAMER_URL
+    },
+    {
+      label: "ai systems",
+      title: "AI First Interfaces",
+      url: AI_FRAMER_URL
+    },
+    {
+      label: "strategy",
+      title: "Product Strategy Thinking",
+      url: MARKETING_TILES_URL
+    },
+    {
+      label: "exec buy-in",
+      title: "Chase HL Public Slides",
+      url: FIGMA_DECK_URL
+    },
+    {
+      label: "ship fast",
+      title: "Wayfarer",
+      url: WAYFARER_URL
+    },
+    {
+      label: "hackathon",
+      title: "UTD Hack",
+      url: "https://sanjanavenkat.framer.website/works/utdhack"
+    }
+  ];
+
+  const [activeProject, setActiveProject] = useState(projects[0]);
+
+  return (
+    <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}>
+      <div className="mx-auto max-w-[1180px]">
+        <div className="mb-5 flex items-center gap-3 sm:mb-6">
+          <button
+            onClick={onClose}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] text-[#6B625C] transition hover:text-[#A5522A]"
+          >
+            ‹
+          </button>
+
+          <h2 className={`min-w-0 text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#9C3F14] sm:text-[40px] ${HEADING}`}>
+            My Work
+          </h2>
+        </div>
+
+        <div className="mb-5 rounded-[28px] border border-[#E4E2E1] bg-white p-3 sm:rounded-full sm:p-4">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:pb-0">
+            {projects.map((project) => (
+              <button
+                key={project.label}
+                onClick={() => setActiveProject(project)}
+                className={`shrink-0 rounded-full border px-5 py-2 text-[12px] font-medium transition ${
+                  activeProject.label === project.label
+                    ? "border-[#9C3F14] bg-[#FFF8F5] text-[#9C3F14]"
+                    : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
+                }`}
+              >
+                {project.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-[28px] bg-white">
+          <iframe
+            key={activeProject.url}
+            src={activeProject.url}
+            title={activeProject.title}
             className="h-[82vh] w-full rounded-[24px] border-0 bg-white"
             allowFullScreen
           />
@@ -403,7 +496,19 @@ export default function PortfolioHome() {
   };
 
   const handleNav = (item) => {
-    if (item === "my work") setProjectOpen("user-needs");
+    if (item === "my work") setProjectOpen("work-browser");
+
+    if (item === "what are you building now") {
+      window.open(WAYFARER_URL, "_blank");
+    }
+
+    if (item === "github") {
+      window.open("https://github.com/sanjana-venkat", "_blank");
+    }
+
+    if (item === "resume") {
+      window.open(RESUME_URL, "_blank");
+    }
 
     if (item === "contact") {
       window.open("https://www.linkedin.com/in/sanjana-venkat/", "_blank");
@@ -480,9 +585,13 @@ export default function PortfolioHome() {
       {projectOpen === "marketing-tiles" && (
         <FramerModal
           title="Product Strategy Thinking"
-          url="https://sanjanavenkat.framer.website/works/marketing-tiles-2#define"
+          url={MARKETING_TILES_URL}
           onClose={() => setProjectOpen(null)}
         />
+      )}
+
+      {projectOpen === "work-browser" && (
+        <WorkBrowserModal onClose={() => setProjectOpen(null)} />
       )}
 
       <div
@@ -510,7 +619,7 @@ export default function PortfolioHome() {
             </p>
 
             <div className="flex flex-col gap-3">
-              {["my work", "what i'm good at", "resume", "contact"].map((item) => (
+              {["my work", "what are you building now", "github", "resume", "contact"].map((item) => (
                 <button
                   key={item}
                   onClick={() => handleNav(item)}
