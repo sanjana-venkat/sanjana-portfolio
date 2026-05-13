@@ -168,6 +168,14 @@ function ChevronLeftIcon({ className = "h-5 w-5" }) {
   );
 }
 
+function ChevronDownIcon({ className = "h-4 w-4" }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
 function MailIcon({ className = "h-[18px] w-[18px]" }) {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="currentColor">
@@ -530,14 +538,32 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
 }
 
 function MobileChatModal({ active, setActive, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, onClose }) {
+  const [showHint, setShowHint] = useState(false);
+
   return (
     <div className={`fixed inset-0 z-[60] flex flex-col bg-[#FFF8F5] ${BODY}`}>
-      <div className="pointer-events-none fixed left-0 right-0 top-0 z-10 flex items-start justify-between px-4 pt-4">
-        <div className="pointer-events-auto rounded-full border border-[#E4E2E1] bg-white px-5 py-3 shadow-sm">
-          <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
-            ask sanjana
-          </p>
-          <p className="mt-1 text-[13px] text-[#6B625C]">Tap a chip to send a question.</p>
+      <div className="pointer-events-none fixed left-0 right-0 top-0 z-10 flex items-start justify-between gap-3 px-4 pt-4">
+        <div className="pointer-events-auto flex max-w-[calc(100%-72px)] items-start gap-3 rounded-[32px] border border-[#E4E2E1] bg-white px-5 py-4 shadow-sm">
+          <div className="min-w-0">
+            <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
+              ask sanjana
+            </p>
+
+            {showHint && (
+              <p className="mt-2 text-[13px] text-[#6B625C] animate-[fadeUp_0.25s_ease_forwards]">
+                Tap a chip to send a question.
+              </p>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setShowHint((current) => !current)}
+            aria-label={showHint ? "Hide hint" : "Show hint"}
+            className="mt-[1px] inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#8A817B] transition hover:text-[#A5522A]"
+          >
+            <ChevronDownIcon className={`h-4 w-4 transition-transform duration-300 ${showHint ? "rotate-180" : ""}`} />
+          </button>
         </div>
 
         <div className="pointer-events-auto">
