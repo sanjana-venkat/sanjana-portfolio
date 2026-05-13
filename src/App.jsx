@@ -25,9 +25,9 @@ const WAYFARER_URL =
 const RESUME_URL = "/SanjanaVenkat_ProductDesigner_Resume.pdf";
 const GITHUB_URL = "https://github.com/sanjana-venkat";
 
-const JAKARTA = "[font-family:'Open_Sans',sans-serif]";
-const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
-const TYPEWRITE = "[font-family:'JetBrains_Mono',monospace]";
+const JAKARTA = "font-body";
+const HEADING = "font-heading";
+const TYPEWRITE = "font-typewriter";
 
 const PILLS = [
   "how i uncover user needs",
@@ -356,12 +356,12 @@ function WorkBrowserModal({ onClose }) {
         </div>
 
         <div className="mb-5 rounded-[28px] border border-[#E4E2E1] bg-white p-3 sm:rounded-full sm:p-4">
-          <div className="flex flex-wrap gap-2 sm:gap-3">
+          <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:pb-0">
             {PROJECTS.map((project) => (
               <button
                 key={project.label}
                 onClick={() => setActiveProject(project)}
-                className={`rounded-full border px-5 py-2 text-[12px] font-medium transition ${
+                className={`shrink-0 rounded-full border px-5 py-2 text-[12px] font-medium transition ${
                   activeProject.label === project.label
                     ? "border-[#9C3F14] bg-[#FFF8F5] text-[#9C3F14]"
                     : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
@@ -1008,6 +1008,20 @@ export default function PortfolioHome() {
         h6,
         button {
           font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+
+
+        .font-body {
+          font-family: 'Open Sans', sans-serif;
+        }
+
+        .font-heading {
+          font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .font-typewriter {
+          font-family: 'JetBrains Mono', monospace;
         }
 
         .animate-glow {
