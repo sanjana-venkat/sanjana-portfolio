@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { TESTIMONIALS } from "./data/portfolioData";
 
 const FIGMA_DECK_URL =
@@ -177,6 +176,19 @@ function ChevronDownIcon({ className = "h-4 w-4" }) {
   );
 }
 
+function ChevronRightIcon({ className = "h-5 w-5" }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className={className}
+      fill="currentColor"
+    >
+      <path d="M9.29 6.71a1 1 0 0 1 1.42 0L16 12l-5.29 5.29a1 1 0 1 1-1.42-1.42L13.17 12 9.29 8.12a1 1 0 0 1 0-1.41Z" />
+    </svg>
+  );
+}
+
 function MailIcon({ className = "h-[18px] w-[18px]" }) {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="currentColor">
@@ -321,7 +333,7 @@ function WorkBrowserModal({ onClose }) {
             <ChevronLeftIcon />
           </CircleIconButton>
 
-          <h2 className={`min-w-0 text-[42px] font-semibold leading-[0.95] tracking-[-0.06em] text-[#9C3F14] sm:text-[56px] ${HEADING}`}>
+          <h2 className={`min-w-0 text-[32px] font-semibold leading-[1.03] tracking-[-0.04em] text-[#9C3F14] ${HEADING}`}>
             My Work
           </h2>
         </div>
@@ -561,11 +573,11 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
             type="button"
             onClick={() => setShowHint((current) => !current)}
             aria-label={showHint ? "Hide hint" : "Show hint"}
-            className="absolute right-7 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center text-[#8A817B] transition hover:text-[#A5522A]"
+            className="absolute right-7 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center p-0 leading-none text-[#8A817B] transition hover:text-[#A5522A]"
           >
             <ChevronRightIcon
-            className={`h-5 w-5 transition-transform duration-300 ${
-            showHint ? "rotate-90" : ""
+              className={`block h-5 w-5 transition-transform duration-300 ${
+                showHint ? "rotate-90" : ""
               }`}
             />
           </button>
