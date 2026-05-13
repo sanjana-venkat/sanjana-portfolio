@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { TESTIMONIALS } from "./data/portfolioData";
 
 const FIGMA_DECK_URL =
@@ -560,14 +561,13 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
             type="button"
             onClick={() => setShowHint((current) => !current)}
             aria-label={showHint ? "Hide hint" : "Show hint"}
-            className={`absolute right-7 top-[52%] flex h-5 w-5 -translate-y-1/2 items-center justify-center text-[22px] font-medium text-[#8A817B] transition hover:text-[#A5522A] ${HEADING}`}          >
-            <span
-  className={`relative top-[-1px] flex items-center justify-center leading-none transition-transform duration-300 ${
-    showHint ? "rotate-90" : ""
-  }`}
->
-              ›
-            </span>
+            className="absolute right-7 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center text-[#8A817B] transition hover:text-[#A5522A]"
+          >
+            <ChevronRightIcon
+            className={`h-5 w-5 transition-transform duration-300 ${
+            showHint ? "rotate-90" : ""
+              }`}
+            />
           </button>
         </div>
 
