@@ -14,7 +14,7 @@ const USER_NEEDS_FRAMER_URL =
   "https://sanjanavenkat.framer.website/works/chase-hl-public-2";
 
 const MARKETING_TILES_URL =
-  "https://sanjanavenkat.framer.website/works/marketing-tiles";
+  "https://sanjanavenkat.framer.website/works/marketing-tiles-2";
 
 const APPLY_SYSTEMS_URL =
   "https://sanjanavenkat.framer.website/works/chase-apply-2";
@@ -160,6 +160,69 @@ const PROJECTS = [
   { label: "Wayfarer", title: "Wayfarer", url: WAYFARER_URL }
 ];
 
+function ChevronLeftIcon({ className = "h-5 w-5" }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M15 18L9 12l6-6" />
+    </svg>
+  );
+}
+
+function MailIcon({ className = "h-[18px] w-[18px]" }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className={className}
+      fill="currentColor"
+    >
+      <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z" />
+    </svg>
+  );
+}
+
+function ChatIcon({ className = "h-6 w-6" }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
+    </svg>
+  );
+}
+
+function CloseIcon({ className = "h-5 w-5" }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+    >
+      <path d="M18 6 6 18M6 6l12 12" />
+    </svg>
+  );
+}
+
 function Typewriter({ text, shouldStart, onDone }) {
   const cleanText = (text || "").trim();
   const [displayed, setDisplayed] = useState("");
@@ -234,17 +297,29 @@ function JourneyMapPreview() {
   );
 }
 
+function CircleIconButton({ children, onClick, ariaLabel, className = "" }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={ariaLabel}
+      className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:text-[#A5522A] ${className}`}
+    >
+      <span className="flex h-full w-full items-center justify-center leading-none">
+        {children}
+      </span>
+    </button>
+  );
+}
+
 function FramerModal({ title, url, onClose }) {
   return (
     <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}>
       <div className="mx-auto max-w-[1180px]">
         <div className="mb-5 flex items-center gap-3 sm:mb-6">
-          <button
-            onClick={onClose}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] leading-none text-[#6B625C] transition hover:text-[#A5522A]"
-          >
-            ‹
-          </button>
+          <CircleIconButton onClick={onClose} ariaLabel="Close project">
+            <ChevronLeftIcon className="h-5 w-5" />
+          </CircleIconButton>
 
           <h2 className={`min-w-0 text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#9C3F14] sm:text-[40px] ${HEADING}`}>
             {title}
@@ -271,12 +346,9 @@ function WorkBrowserModal({ onClose }) {
     <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}>
       <div className="mx-auto max-w-[1180px]">
         <div className="mb-5 flex items-center gap-3 sm:mb-6">
-          <button
-            onClick={onClose}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] leading-none text-[#6B625C] transition hover:text-[#A5522A]"
-          >
-            ‹
-          </button>
+          <CircleIconButton onClick={onClose} ariaLabel="Close work browser">
+            <ChevronLeftIcon className="h-5 w-5" />
+          </CircleIconButton>
 
           <h2 className={`min-w-0 text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#9C3F14] sm:text-[40px] ${HEADING}`}>
             My Work
@@ -284,7 +356,7 @@ function WorkBrowserModal({ onClose }) {
         </div>
 
         <div className="mb-5 rounded-[28px] border border-[#E4E2E1] bg-white p-3 sm:rounded-full sm:p-4">
-          <div className="flex flex-wrap gap-2 pb-1 sm:gap-3 sm:pb-0">
+          <div className="flex flex-wrap gap-2 sm:gap-3">
             {PROJECTS.map((project) => (
               <button
                 key={project.label}
@@ -319,39 +391,6 @@ function FigmaDeckModal({ onClose }) {
   return <FramerModal title="Chase HL Public" url={FIGMA_DECK_URL} onClose={onClose} />;
 }
 
-function MailIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="18"
-      viewBox="0 -960 960 960"
-      width="18"
-      fill="currentColor"
-      aria-hidden="true"
-      className="block"
-    >
-      <path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z" />
-    </svg>
-  );
-}
-
-function ChatIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="24"
-      viewBox="0 -960 960 960"
-      width="24"
-      fill="currentColor"
-      aria-hidden="true"
-      className="block"
-    >
-      <path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z" />
-    </svg>
-  );
-}
-
-
 function WhatIBelieveCard() {
   return (
     <article className="rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[14px] transition-all duration-300 hover:-translate-y-1">
@@ -371,9 +410,11 @@ function WhatIBelieveCard() {
         <a
           href="mailto:sanjanavnkt20@gmail.com"
           aria-label="Email Sanjana"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[#6B625C] leading-none transition hover:border-[#A5522A] hover:text-[#A5522A]"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]"
         >
-          <MailIcon />
+          <span className="flex h-full w-full items-center justify-center leading-none">
+            <MailIcon />
+          </span>
         </a>
 
         <a
@@ -381,9 +422,11 @@ function WhatIBelieveCard() {
           target="_blank"
           rel="noreferrer"
           aria-label="LinkedIn"
-          className={`flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[13px] font-semibold leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A] ${HEADING}`}
+          className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 text-[13px] font-semibold leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A] ${HEADING}`}
         >
-          in
+          <span className="flex h-full w-full items-center justify-center leading-none">
+            in
+          </span>
         </a>
       </div>
     </article>
@@ -426,6 +469,22 @@ function HorizontalTimeline() {
   );
 }
 
+function PauseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+      <path d="M7 5h3v14H7V5Zm7 0h3v14h-3V5Z" />
+    </svg>
+  );
+}
+
+function PlayIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+      <path d="M8 5v14l11-7L8 5Z" />
+    </svg>
+  );
+}
+
 function TestimonialCarousel() {
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -442,7 +501,7 @@ function TestimonialCarousel() {
   }, [isPaused]);
 
   return (
-    <article className="relative h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 pr-16 text-[13px] transition-all duration-300 hover:-translate-y-1">
+    <article className="relative h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 text-[13px] transition-all duration-300 hover:-translate-y-1">
       <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         what people say about me
       </p>
@@ -453,7 +512,7 @@ function TestimonialCarousel() {
         <p className="mt-1 text-[11px] uppercase tracking-[0.12em] text-[#9CA3AF]">{title}</p>
       </div>
 
-      <div className="mt-5 flex gap-3">
+      <div className="mt-5 flex gap-3 pr-14">
         {TESTIMONIALS.map((_, dotIndex) => (
           <span
             key={dotIndex}
@@ -463,15 +522,14 @@ function TestimonialCarousel() {
       </div>
 
       <button
+        type="button"
         onClick={() => setIsPaused((current) => !current)}
         aria-label={isPaused ? "Play testimonials" : "Pause testimonials"}
-        className="absolute bottom-6 right-6 flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[#6B625C] leading-none transition hover:border-[#A5522A] hover:text-[#A5522A]"
+        className="absolute bottom-7 right-7 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]"
       >
-        {isPaused ? (
-          <span className="block translate-x-[1px] text-[15px] leading-none">▶</span>
-        ) : (
-          <span className="block text-[15px] leading-none">Ⅱ</span>
-        )}
+        <span className="flex h-full w-full items-center justify-center leading-none">
+          {isPaused ? <PlayIcon /> : <PauseIcon />}
+        </span>
       </button>
     </article>
   );
@@ -521,95 +579,117 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   );
 }
 
-function MobileChatModal({
+function ChatConversation({
   active,
   showThinking,
   showResponse,
   showPills,
   showUserNeedsRest,
-  handlePillSelect,
-  openProjectForActivePill,
-  onClose,
-  onUserNeedsDone
+  onTypeDone,
+  openProjectForActivePill
 }) {
   return (
-    <div className={`fixed inset-0 z-50 flex flex-col bg-[#FFF8F5] lg:hidden ${JAKARTA}`}>
-      <div className="flex items-center justify-between border-b border-[#E4E2E1] bg-white/90 px-4 py-4 backdrop-blur">
+    <>
+      <div className="mb-6 flex justify-end">
+        <div className={`rounded-[48px_48px_0px_48px] bg-[#A5522A] px-6 py-3 text-[14px] leading-[1.8] text-white animate-[messageSend_0.35s_ease_forwards] ${TYPEWRITE}`}>
+          {active}
+        </div>
+      </div>
+
+      {showThinking && (
+        <div className="rounded-[0px_36px_36px_36px] bg-white p-5 animate-[fadeUp_0.25s_ease_forwards] sm:p-6">
+          <div className="flex items-center gap-2 text-[12px] text-[#8A817B]">
+            <span className="h-2 w-2 rounded-full bg-[#A5522A] animate-pulse" />
+            thinking
+          </div>
+        </div>
+      )}
+
+      {showResponse && (
+        <>
+          <div className="rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
+            <Typewriter
+              text={CONTENT?.[active] || ""}
+              shouldStart={showResponse}
+              onDone={onTypeDone}
+            />
+
+            {active === "how i uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
+
+            {showPills && active === "designing systems at scale" && <JourneyMapPreview />}
+          </div>
+
+          {active === "how i uncover user needs" && showUserNeedsRest && (
+            <div className="mt-5 rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
+              <p className={`whitespace-pre-line break-words text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
+                {USER_NEEDS_REST}
+              </p>
+            </div>
+          )}
+
+          {showPills && (
+            <ResponseLinks
+              active={active}
+              openProjectForActivePill={openProjectForActivePill}
+            />
+          )}
+        </>
+      )}
+    </>
+  );
+}
+
+function MobileChatModal({
+  active,
+  setActive,
+  showThinking,
+  showResponse,
+  showPills,
+  showUserNeedsRest,
+  onTypeDone,
+  openProjectForActivePill,
+  onClose
+}) {
+  return (
+    <div className={`fixed inset-0 z-[60] flex flex-col bg-[#FFF8F5] ${JAKARTA}`}>
+      <div className="flex items-center justify-between border-b border-[#E4E2E1] bg-white/90 px-4 py-3">
         <div>
-          <p className={`text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-            ask me about my work
+          <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
+            ask sanjana
           </p>
-          <h2 className={`mt-1 text-[20px] font-semibold tracking-[-0.03em] text-[#9C3F14] ${HEADING}`}>
-            Sanjana AI-style portfolio
-          </h2>
+          <p className="mt-1 text-[13px] text-[#6B625C]">
+            Tap a chip to send a question.
+          </p>
         </div>
 
-        <button
-          onClick={onClose}
-          aria-label="Close chat"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] leading-none text-[#6B625C] transition hover:text-[#A5522A]"
-        >
-          ×
-        </button>
+        <CircleIconButton onClick={onClose} ariaLabel="Close chat">
+          <CloseIcon />
+        </CircleIconButton>
       </div>
 
-      <div className="no-scrollbar flex-1 overflow-y-auto px-4 py-5 pb-40">
-        <div className="mb-5 flex justify-end">
-          <div className={`max-w-[85%] rounded-[32px_32px_0px_32px] bg-[#A5522A] px-5 py-3 text-[13px] leading-[1.65] text-white animate-[messageSend_0.35s_ease_forwards] ${TYPEWRITE}`}>
-            {active}
-          </div>
-        </div>
-
-        {showThinking && (
-          <div className="rounded-[0px_30px_30px_30px] bg-white p-5 shadow-sm animate-[fadeUp_0.25s_ease_forwards]">
-            <div className="flex items-center gap-2 text-[12px] text-[#8A817B]">
-              <span className="h-2 w-2 rounded-full bg-[#A5522A] animate-pulse" />
-              thinking
-            </div>
-          </div>
-        )}
-
-        {showResponse && (
-          <>
-            <div className="rounded-[0px_30px_30px_30px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards]">
-              <Typewriter
-                text={CONTENT?.[active] || ""}
-                shouldStart={showResponse}
-                onDone={() => {
-                  if (active === "how i uncover user needs") {
-                    onUserNeedsDone();
-                  }
-                }}
-              />
-
-              {active === "how i uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
-              {showPills && active === "designing systems at scale" && <JourneyMapPreview />}
-            </div>
-
-            {active === "how i uncover user needs" && showUserNeedsRest && (
-              <div className="mt-5 rounded-[0px_30px_30px_30px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards]">
-                <p className={`whitespace-pre-line break-words text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
-                  {USER_NEEDS_REST}
-                </p>
-              </div>
-            )}
-
-            {showPills && <ResponseLinks active={active} openProjectForActivePill={openProjectForActivePill} />}
-          </>
-        )}
+      <div className="flex-1 overflow-y-auto px-4 py-5">
+        <ChatConversation
+          active={active}
+          showThinking={showThinking}
+          showResponse={showResponse}
+          showPills={showPills}
+          showUserNeedsRest={showUserNeedsRest}
+          onTypeDone={onTypeDone}
+          openProjectForActivePill={openProjectForActivePill}
+        />
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 border-t border-[#E4E2E1] bg-white/95 px-4 py-4 shadow-[0_-8px_24px_rgba(0,0,0,0.04)] backdrop-blur lg:hidden">
+      <div className="border-t border-[#E4E2E1] bg-white px-4 py-4">
         <div className="flex flex-wrap gap-2">
           {PILLS.map((pill) => (
             <button
               key={pill}
-              onClick={() => handlePillSelect(pill)}
+              onClick={() => setActive(pill)}
               className={`rounded-full border px-4 py-2 text-[11px] transition ${
                 active === pill
                   ? "border-[#A5522A] bg-[#FFF8F5] text-[#A5522A]"
                   : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#D8C5BB]"
-              }`}
+              } ${HEADING}`}
             >
               {pill}
             </button>
@@ -625,24 +705,25 @@ export default function PortfolioHome() {
   const [active, setActive] = useState(PILLS[0]);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [projectOpen, setProjectOpen] = useState(null);
-  const [mobileChatOpen, setMobileChatOpen] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [showPills, setShowPills] = useState(false);
   const [showResponse, setShowResponse] = useState(false);
   const [showThinking, setShowThinking] = useState(false);
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
+  const [mobileChatOpen, setMobileChatOpen] = useState(false);
 
   useEffect(() => {
-    let favicon = document.querySelector("link[rel~='icon']");
+    const existingIcon =
+      document.querySelector("link[rel='icon']") ||
+      document.createElement("link");
 
-    if (!favicon) {
-      favicon = document.createElement("link");
-      favicon.rel = "icon";
-      document.head.appendChild(favicon);
+    existingIcon.setAttribute("rel", "icon");
+    existingIcon.setAttribute("type", "image/jpeg");
+    existingIcon.setAttribute("href", "/logo.jpg");
+
+    if (!existingIcon.parentNode) {
+      document.head.appendChild(existingIcon);
     }
-
-    favicon.type = "image/jpeg";
-    favicon.href = "/logo.jpg";
   }, []);
 
   useEffect(() => {
@@ -659,6 +740,14 @@ export default function PortfolioHome() {
 
     return () => clearTimeout(timer);
   }, [active, hasLoaded]);
+
+  const handleTypeDone = () => {
+    if (active === "how i uncover user needs") {
+      setShowUserNeedsRest(true);
+    }
+
+    setShowPills(true);
+  };
 
   const handlePillSelect = (pill) => {
     if (pill === active) return;
@@ -765,23 +854,26 @@ export default function PortfolioHome() {
       {mobileChatOpen && (
         <MobileChatModal
           active={active}
+          setActive={setActive}
           showThinking={showThinking}
           showResponse={showResponse}
           showPills={showPills}
           showUserNeedsRest={showUserNeedsRest}
-          handlePillSelect={handlePillSelect}
+          onTypeDone={handleTypeDone}
           openProjectForActivePill={openProjectForActivePill}
-          onUserNeedsDone={() => setShowUserNeedsRest(true)}
           onClose={() => setMobileChatOpen(false)}
         />
       )}
 
       <button
+        type="button"
         onClick={() => setMobileChatOpen(true)}
         aria-label="Open chat"
-        className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#A5522A] text-white shadow-lg leading-none transition hover:scale-105 lg:hidden"
+        className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#A5522A] p-0 leading-none text-white shadow-lg transition hover:scale-105 md:hidden"
       >
-        <ChatIcon />
+        <span className="flex h-full w-full items-center justify-center leading-none">
+          <ChatIcon />
+        </span>
       </button>
 
       <div
@@ -832,53 +924,16 @@ export default function PortfolioHome() {
           <WhatIBelieveCard />
         </aside>
 
-        <section ref={chatCardRef} className="hidden rounded-[32px] border border-[#E4E2E1] bg-white p-4 transition-all duration-300 sm:p-6 lg:block">
-          <div className="mb-6 flex justify-end">
-            <div className={`rounded-[48px_48px_0px_48px] bg-[#A5522A] px-6 py-3 text-[14px] leading-[1.8] text-white animate-[messageSend_0.35s_ease_forwards] ${TYPEWRITE}`}>
-              {active}
-            </div>
-          </div>
-
-          {showThinking && (
-            <div className="rounded-[0px_36px_36px_36px] bg-white p-5 animate-[fadeUp_0.25s_ease_forwards] sm:p-6">
-              <div className="flex items-center gap-2 text-[12px] text-[#8A817B]">
-                <span className="h-2 w-2 rounded-full bg-[#A5522A] animate-pulse" />
-                thinking
-              </div>
-            </div>
-          )}
-
-          {showResponse && (
-            <>
-              <div className="rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-                <Typewriter
-                  text={CONTENT?.[active] || ""}
-                  shouldStart={showResponse}
-                  onDone={() => {
-                    if (active === "how i uncover user needs") {
-                      setShowUserNeedsRest(true);
-                    }
-
-                    setShowPills(true);
-                  }}
-                />
-
-                {active === "how i uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
-
-                {showPills && active === "designing systems at scale" && <JourneyMapPreview />}
-              </div>
-
-              {active === "how i uncover user needs" && showUserNeedsRest && (
-                <div className="mt-5 rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-                  <p className={`whitespace-pre-line break-words text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
-                    {USER_NEEDS_REST}
-                  </p>
-                </div>
-              )}
-
-              {showPills && <ResponseLinks active={active} openProjectForActivePill={openProjectForActivePill} />}
-            </>
-          )}
+        <section ref={chatCardRef} className="hidden rounded-[32px] border border-[#E4E2E1] bg-white p-4 transition-all duration-300 sm:p-6 md:block">
+          <ChatConversation
+            active={active}
+            showThinking={showThinking}
+            showResponse={showResponse}
+            showPills={showPills}
+            showUserNeedsRest={showUserNeedsRest}
+            onTypeDone={handleTypeDone}
+            openProjectForActivePill={openProjectForActivePill}
+          />
 
           {showPills && (
             <div className="mt-6 flex flex-wrap gap-3 animate-[fadeUp_0.45s_ease_forwards]">
