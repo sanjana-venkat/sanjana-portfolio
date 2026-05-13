@@ -241,7 +241,7 @@ function FramerModal({ title, url, onClose }) {
         <div className="mb-5 flex items-center gap-3 sm:mb-6">
           <button
             onClick={onClose}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] text-[#6B625C] transition hover:text-[#A5522A]"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] leading-none text-[#6B625C] transition hover:text-[#A5522A]"
           >
             ‹
           </button>
@@ -273,7 +273,7 @@ function WorkBrowserModal({ onClose }) {
         <div className="mb-5 flex items-center gap-3 sm:mb-6">
           <button
             onClick={onClose}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] text-[#6B625C] transition hover:text-[#A5522A]"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] leading-none text-[#6B625C] transition hover:text-[#A5522A]"
           >
             ‹
           </button>
@@ -284,12 +284,12 @@ function WorkBrowserModal({ onClose }) {
         </div>
 
         <div className="mb-5 rounded-[28px] border border-[#E4E2E1] bg-white p-3 sm:rounded-full sm:p-4">
-          <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:pb-0">
+          <div className="flex flex-wrap gap-2 pb-1 sm:gap-3 sm:pb-0">
             {PROJECTS.map((project) => (
               <button
                 key={project.label}
                 onClick={() => setActiveProject(project)}
-                className={`shrink-0 rounded-full border px-5 py-2 text-[12px] font-medium transition ${
+                className={`rounded-full border px-5 py-2 text-[12px] font-medium transition ${
                   activeProject.label === project.label
                     ? "border-[#9C3F14] bg-[#FFF8F5] text-[#9C3F14]"
                     : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
@@ -319,6 +319,39 @@ function FigmaDeckModal({ onClose }) {
   return <FramerModal title="Chase HL Public" url={FIGMA_DECK_URL} onClose={onClose} />;
 }
 
+function MailIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="18"
+      viewBox="0 -960 960 960"
+      width="18"
+      fill="currentColor"
+      aria-hidden="true"
+      className="block"
+    >
+      <path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z" />
+    </svg>
+  );
+}
+
+function ChatIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="24"
+      viewBox="0 -960 960 960"
+      width="24"
+      fill="currentColor"
+      aria-hidden="true"
+      className="block"
+    >
+      <path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z" />
+    </svg>
+  );
+}
+
+
 function WhatIBelieveCard() {
   return (
     <article className="rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[14px] transition-all duration-300 hover:-translate-y-1">
@@ -338,9 +371,9 @@ function WhatIBelieveCard() {
         <a
           href="mailto:sanjanavnkt20@gmail.com"
           aria-label="Email Sanjana"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[#6B625C] leading-none transition hover:border-[#A5522A] hover:text-[#A5522A]"
         >
-          ✉
+          <MailIcon />
         </a>
 
         <a
@@ -348,7 +381,7 @@ function WhatIBelieveCard() {
           target="_blank"
           rel="noreferrer"
           aria-label="LinkedIn"
-          className={`flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] text-[13px] font-semibold text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A] ${HEADING}`}
+          className={`flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[13px] font-semibold leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A] ${HEADING}`}
         >
           in
         </a>
@@ -395,20 +428,21 @@ function HorizontalTimeline() {
 
 function TestimonialCarousel() {
   const [index, setIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const [quote, name, title] = TESTIMONIALS[index] || [];
 
   useEffect(() => {
-    if (!TESTIMONIALS.length) return;
+    if (!TESTIMONIALS.length || isPaused) return;
 
     const timer = setInterval(() => {
       setIndex((current) => (current + 1) % TESTIMONIALS.length);
     }, 5200);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [isPaused]);
 
   return (
-    <article className="h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 text-[13px] transition-all duration-300 hover:-translate-y-1">
+    <article className="relative h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 pr-16 text-[13px] transition-all duration-300 hover:-translate-y-1">
       <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         what people say about me
       </p>
@@ -427,6 +461,18 @@ function TestimonialCarousel() {
           />
         ))}
       </div>
+
+      <button
+        onClick={() => setIsPaused((current) => !current)}
+        aria-label={isPaused ? "Play testimonials" : "Pause testimonials"}
+        className="absolute bottom-6 right-6 flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[#6B625C] leading-none transition hover:border-[#A5522A] hover:text-[#A5522A]"
+      >
+        {isPaused ? (
+          <span className="block translate-x-[1px] text-[15px] leading-none">▶</span>
+        ) : (
+          <span className="block text-[15px] leading-none">Ⅱ</span>
+        )}
+      </button>
     </article>
   );
 }
@@ -475,68 +521,47 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   );
 }
 
-
-function MobileChatModal({ onClose, openProjectForActivePill }) {
-  const [mobileActive, setMobileActive] = useState(PILLS[0]);
-  const [showMobileThinking, setShowMobileThinking] = useState(true);
-  const [showMobileResponse, setShowMobileResponse] = useState(false);
-  const [showMobileLinks, setShowMobileLinks] = useState(false);
-  const [showMobileUserNeedsRest, setShowMobileUserNeedsRest] = useState(false);
-  const messagesEndRef = useRef(null);
-
-  useEffect(() => {
-    setShowMobileThinking(true);
-    setShowMobileResponse(false);
-    setShowMobileLinks(false);
-    setShowMobileUserNeedsRest(false);
-
-    const timer = setTimeout(() => {
-      setShowMobileThinking(false);
-      setShowMobileResponse(true);
-    }, 650);
-
-    return () => clearTimeout(timer);
-  }, [mobileActive]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [mobileActive, showMobileThinking, showMobileResponse, showMobileLinks, showMobileUserNeedsRest]);
-
-  const handleMobilePillSelect = (pill) => {
-    if (pill === mobileActive) return;
-    setMobileActive(pill);
-  };
-
+function MobileChatModal({
+  active,
+  showThinking,
+  showResponse,
+  showPills,
+  showUserNeedsRest,
+  handlePillSelect,
+  openProjectForActivePill,
+  onClose,
+  onUserNeedsDone
+}) {
   return (
-    <div className={`fixed inset-0 z-[60] flex flex-col bg-[#FFF8F5] ${JAKARTA}`}>
+    <div className={`fixed inset-0 z-50 flex flex-col bg-[#FFF8F5] lg:hidden ${JAKARTA}`}>
       <div className="flex items-center justify-between border-b border-[#E4E2E1] bg-white/90 px-4 py-4 backdrop-blur">
         <div>
           <p className={`text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-            ask me anything
+            ask me about my work
           </p>
-          <h2 className={`mt-1 text-[22px] font-semibold tracking-[-0.04em] text-[#9C3F14] ${HEADING}`}>
-            Sanjana
+          <h2 className={`mt-1 text-[20px] font-semibold tracking-[-0.03em] text-[#9C3F14] ${HEADING}`}>
+            Sanjana AI-style portfolio
           </h2>
         </div>
 
         <button
           onClick={onClose}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[18px] text-[#6B625C]"
           aria-label="Close chat"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[20px] leading-none text-[#6B625C] transition hover:text-[#A5522A]"
         >
           ×
         </button>
       </div>
 
-      <div className="no-scrollbar flex-1 space-y-4 overflow-y-auto px-4 py-5">
-        <div className="flex justify-end">
-          <div className={`max-w-[86%] rounded-[28px_28px_0px_28px] bg-[#A5522A] px-5 py-3 text-[13px] leading-[1.7] text-white animate-[messageSend_0.35s_ease_forwards] ${TYPEWRITE}`}>
-            {mobileActive}
+      <div className="no-scrollbar flex-1 overflow-y-auto px-4 py-5 pb-40">
+        <div className="mb-5 flex justify-end">
+          <div className={`max-w-[85%] rounded-[32px_32px_0px_32px] bg-[#A5522A] px-5 py-3 text-[13px] leading-[1.65] text-white animate-[messageSend_0.35s_ease_forwards] ${TYPEWRITE}`}>
+            {active}
           </div>
         </div>
 
-        {showMobileThinking && (
-          <div className="max-w-[88%] rounded-[0px_28px_28px_28px] bg-white p-5 animate-[fadeUp_0.25s_ease_forwards]">
+        {showThinking && (
+          <div className="rounded-[0px_30px_30px_30px] bg-white p-5 shadow-sm animate-[fadeUp_0.25s_ease_forwards]">
             <div className="flex items-center gap-2 text-[12px] text-[#8A817B]">
               <span className="h-2 w-2 rounded-full bg-[#A5522A] animate-pulse" />
               thinking
@@ -544,60 +569,47 @@ function MobileChatModal({ onClose, openProjectForActivePill }) {
           </div>
         )}
 
-        {showMobileResponse && (
+        {showResponse && (
           <>
-            <div className="max-w-[94%] rounded-[0px_28px_28px_28px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards]">
+            <div className="rounded-[0px_30px_30px_30px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards]">
               <Typewriter
-                text={CONTENT?.[mobileActive] || ""}
-                shouldStart={showMobileResponse}
+                text={CONTENT?.[active] || ""}
+                shouldStart={showResponse}
                 onDone={() => {
-                  if (mobileActive === "how i uncover user needs") {
-                    setShowMobileUserNeedsRest(true);
+                  if (active === "how i uncover user needs") {
+                    onUserNeedsDone();
                   }
-
-                  setShowMobileLinks(true);
                 }}
               />
 
-              {mobileActive === "how i uncover user needs" && showMobileUserNeedsRest && <SegmentationDiagram />}
-
-              {showMobileLinks && mobileActive === "designing systems at scale" && <JourneyMapPreview />}
+              {active === "how i uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
+              {showPills && active === "designing systems at scale" && <JourneyMapPreview />}
             </div>
 
-            {mobileActive === "how i uncover user needs" && showMobileUserNeedsRest && (
-              <div className="max-w-[94%] rounded-[0px_28px_28px_28px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards]">
+            {active === "how i uncover user needs" && showUserNeedsRest && (
+              <div className="mt-5 rounded-[0px_30px_30px_30px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards]">
                 <p className={`whitespace-pre-line break-words text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
                   {USER_NEEDS_REST}
                 </p>
               </div>
             )}
 
-            {showMobileLinks && (
-              <ResponseLinks
-                active={mobileActive}
-                openProjectForActivePill={(override) => {
-                  onClose();
-                  openProjectForActivePill(override, mobileActive);
-                }}
-              />
-            )}
+            {showPills && <ResponseLinks active={active} openProjectForActivePill={openProjectForActivePill} />}
           </>
         )}
-
-        <div ref={messagesEndRef} />
       </div>
 
-      <div className="border-t border-[#E4E2E1] bg-white/95 px-4 py-4 backdrop-blur">
-        <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1">
+      <div className="fixed bottom-0 left-0 right-0 border-t border-[#E4E2E1] bg-white/95 px-4 py-4 shadow-[0_-8px_24px_rgba(0,0,0,0.04)] backdrop-blur lg:hidden">
+        <div className="flex flex-wrap gap-2">
           {PILLS.map((pill) => (
             <button
               key={pill}
-              onClick={() => handleMobilePillSelect(pill)}
-              className={`shrink-0 rounded-full border px-4 py-2 text-[11px] transition ${
-                mobileActive === pill
+              onClick={() => handlePillSelect(pill)}
+              className={`rounded-full border px-4 py-2 text-[11px] transition ${
+                active === pill
                   ? "border-[#A5522A] bg-[#FFF8F5] text-[#A5522A]"
-                  : "border-[#E4E2E1] bg-white text-[#6B625C]"
-              } ${HEADING}`}
+                  : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#D8C5BB]"
+              }`}
             >
               {pill}
             </button>
@@ -608,13 +620,12 @@ function MobileChatModal({ onClose, openProjectForActivePill }) {
   );
 }
 
-
 export default function PortfolioHome() {
   const chatCardRef = useRef(null);
   const [active, setActive] = useState(PILLS[0]);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [projectOpen, setProjectOpen] = useState(null);
-  const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
+  const [mobileChatOpen, setMobileChatOpen] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [showPills, setShowPills] = useState(false);
   const [showResponse, setShowResponse] = useState(false);
@@ -622,7 +633,7 @@ export default function PortfolioHome() {
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
 
   useEffect(() => {
-    let favicon = document.querySelector("link[rel='icon']");
+    let favicon = document.querySelector("link[rel~='icon']");
 
     if (!favicon) {
       favicon = document.createElement("link");
@@ -681,9 +692,7 @@ export default function PortfolioHome() {
     }
   };
 
-  const openProjectForActivePill = (override, pillOverride) => {
-    const selectedPill = pillOverride || active;
-
+  const openProjectForActivePill = (override) => {
     if (override === "ai-framer") {
       setProjectOpen("ai-framer");
       return;
@@ -694,32 +703,32 @@ export default function PortfolioHome() {
       return;
     }
 
-    if (selectedPill === "how i uncover user needs") {
+    if (active === "how i uncover user needs") {
       setProjectOpen("user-needs");
       return;
     }
 
-    if (selectedPill === "let's talk AI") {
+    if (active === "let's talk AI") {
       setProjectOpen("ai-framer");
       return;
     }
 
-    if (selectedPill === "product strategy thinking") {
+    if (active === "product strategy thinking") {
       setProjectOpen("marketing-tiles");
       return;
     }
 
-    if (selectedPill === "designing systems at scale") {
+    if (active === "designing systems at scale") {
       setProjectOpen("apply-systems");
       return;
     }
 
-    if (selectedPill === "how i ship fast") {
+    if (active === "how i ship fast") {
       window.open(WAYFARER_URL, "_blank");
       return;
     }
 
-    if (selectedPill === "how i get exec-buy in") {
+    if (active === "how i get exec-buy in") {
       setProjectOpen("figma-deck");
     }
   };
@@ -753,25 +762,32 @@ export default function PortfolioHome() {
         <FramerModal title="Designing Systems at Scale" url={APPLY_SYSTEMS_URL} onClose={() => setProjectOpen(null)} />
       )}
 
-      {isMobileChatOpen && (
+      {mobileChatOpen && (
         <MobileChatModal
-          onClose={() => setIsMobileChatOpen(false)}
+          active={active}
+          showThinking={showThinking}
+          showResponse={showResponse}
+          showPills={showPills}
+          showUserNeedsRest={showUserNeedsRest}
+          handlePillSelect={handlePillSelect}
           openProjectForActivePill={openProjectForActivePill}
+          onUserNeedsDone={() => setShowUserNeedsRest(true)}
+          onClose={() => setMobileChatOpen(false)}
         />
       )}
+
+      <button
+        onClick={() => setMobileChatOpen(true)}
+        aria-label="Open chat"
+        className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#A5522A] text-white shadow-lg leading-none transition hover:scale-105 lg:hidden"
+      >
+        <ChatIcon />
+      </button>
 
       <div
         className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl transition-transform duration-150"
         style={{ left: cursor.x - 150, top: cursor.y - 150 }}
       />
-
-      <button
-        onClick={() => setIsMobileChatOpen(true)}
-        className={`fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#A5522A] text-[22px] text-white shadow-lg transition hover:scale-105 lg:hidden ${HEADING}`}
-        aria-label="Open chat"
-      >
-        ✦
-      </button>
 
       <section className="relative z-10 mx-auto grid w-full max-w-[1180px] grid-cols-1 gap-x-10 gap-y-8 lg:grid-cols-[280px_1fr]">
         <aside className="flex flex-col gap-8">
