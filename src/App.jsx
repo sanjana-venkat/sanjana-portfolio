@@ -151,7 +151,7 @@ In a few sprints, we pushed toward redesigning the full journey and got design s
 Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
-  { label: "user needs", title: "How I Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
+  { label: "user needs", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
   { label: "product strategy", title: "Product Strategy Thinking", url: MARKETING_TILES_URL },
   { label: "systems at scale", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
   { label: "AI chat journeys", title: "AI Chat Journeys", url: AI_FRAMER_URL },
