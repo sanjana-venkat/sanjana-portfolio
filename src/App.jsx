@@ -550,34 +550,34 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
   const [showHint, setShowHint] = useState(false);
 
   return (
-    <div className="pointer-events-auto max-w-[calc(100%-72px)] rounded-[999px] border border-[#E4E2E1] bg-white px-7 py-5 shadow-sm">
-  <div className="flex items-center gap-2">
-    <p
-      className={`text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}
-    >
-      ask sanjana
-    </p>
+    <div className={`fixed inset-0 z-[60] flex flex-col bg-[#FFF8F5] ${BODY}`}>
+      <div className="pointer-events-none fixed left-0 right-0 top-0 z-10 flex items-start justify-between gap-3 px-4 pt-4">
+        <div className="pointer-events-auto max-w-[calc(100%-72px)] rounded-[999px] border border-[#E4E2E1] bg-white px-7 py-5 shadow-sm">
+          <div className="flex items-center gap-2">
+            <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
+              ask sanjana
+            </p>
 
-    <button
-      type="button"
-      onClick={() => setShowHint((current) => !current)}
-      aria-label={showHint ? "Hide hint" : "Show hint"}
-      className="flex h-4 w-4 items-center justify-center text-[#8A817B] transition hover:text-[#A5522A]"
-    >
-      <ChevronRightIcon
-        className={`h-4 w-4 transition-transform duration-300 ${
-          showHint ? "rotate-90" : ""
-        }`}
-      />
-    </button>
-  </div>
+            <button
+              type="button"
+              onClick={() => setShowHint((current) => !current)}
+              aria-label={showHint ? "Hide hint" : "Show hint"}
+              className="flex h-4 w-4 items-center justify-center p-0 leading-none text-[#8A817B] transition hover:text-[#A5522A]"
+            >
+              <ChevronRightIcon
+                className={`h-4 w-4 transition-transform duration-300 ${
+                  showHint ? "rotate-90" : ""
+                }`}
+              />
+            </button>
+          </div>
 
-  {showHint && (
-    <p className="mt-2 text-[13px] text-[#6B625C] animate-[fadeUp_0.25s_ease_forwards]">
-      Tap a chip to send a question.
-    </p>
-  )}
-</div>
+          {showHint && (
+            <p className="mt-2 text-[13px] text-[#6B625C] animate-[fadeUp_0.25s_ease_forwards]">
+              Tap a chip to send a question.
+            </p>
+          )}
+        </div>
 
         <div className="pointer-events-auto">
           <CircleIconButton onClick={onClose} ariaLabel="Close chat" className="shadow-sm">
