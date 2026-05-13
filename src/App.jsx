@@ -543,7 +543,7 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
   return (
     <div className={`fixed inset-0 z-[60] flex flex-col bg-[#FFF8F5] ${BODY}`}>
       <div className="pointer-events-none fixed left-0 right-0 top-0 z-10 flex items-start justify-between gap-3 px-4 pt-4">
-        <div className="pointer-events-auto flex max-w-[calc(100%-72px)] items-start gap-3 rounded-[32px] border border-[#E4E2E1] bg-white px-5 py-4 shadow-sm">
+        <div className="pointer-events-auto relative max-w-[calc(100%-72px)] rounded-[999px] border border-[#E4E2E1] bg-white px-7 py-5 pr-12 shadow-sm">
           <div className="min-w-0">
             <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
               ask sanjana
@@ -557,19 +557,15 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
           </div>
 
           <button
-  type="button"
-  onClick={() => setShowHint((current) => !current)}
-  aria-label={showHint ? "Hide hint" : "Show hint"}
-  className={`mt-[1px] inline-flex items-center justify-center text-[16px] font-medium leading-none text-[#8A817B] transition hover:text-[#A5522A] ${HEADING}`}
->
-  <span
-    className={`transition-transform duration-300 ${
-      showHint ? "rotate-90" : ""
-    }`}
-  >
-    ›
-  </span>
-</button>
+            type="button"
+            onClick={() => setShowHint((current) => !current)}
+            aria-label={showHint ? "Hide hint" : "Show hint"}
+            className={`absolute right-7 top-1/2 inline-flex -translate-y-1/2 items-center justify-center text-[18px] font-medium leading-none text-[#8A817B] transition hover:text-[#A5522A] ${HEADING}`}
+          >
+            <span className={`leading-none transition-transform duration-300 ${showHint ? "rotate-90" : ""}`}>
+              ›
+            </span>
+          </button>
         </div>
 
         <div className="pointer-events-auto">
