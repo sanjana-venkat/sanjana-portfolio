@@ -25,9 +25,9 @@ const WAYFARER_URL =
 const RESUME_URL = "/SanjanaVenkat_ProductDesigner_Resume.pdf";
 const GITHUB_URL = "https://github.com/sanjana-venkat";
 
-const JAKARTA = "font-body";
-const HEADING = "font-heading";
-const TYPEWRITE = "font-typewriter";
+const BODY = "[font-family:'Open_Sans',sans-serif]";
+const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
+const TYPEWRITE = "[font-family:'JetBrains_Mono',monospace]";
 
 const PILLS = [
   "how i uncover user needs",
@@ -162,16 +162,7 @@ const PROJECTS = [
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M15 18L9 12l6-6" />
     </svg>
   );
@@ -179,12 +170,7 @@ function ChevronLeftIcon({ className = "h-5 w-5" }) {
 
 function MailIcon({ className = "h-[18px] w-[18px]" }) {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className={className}
-      fill="currentColor"
-    >
+    <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="currentColor">
       <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z" />
     </svg>
   );
@@ -192,16 +178,7 @@ function MailIcon({ className = "h-[18px] w-[18px]" }) {
 
 function ChatIcon({ className = "h-6 w-6" }) {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
     </svg>
   );
@@ -209,16 +186,24 @@ function ChatIcon({ className = "h-6 w-6" }) {
 
 function CloseIcon({ className = "h-5 w-5" }) {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.4"
-      strokeLinecap="round"
-    >
+    <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
       <path d="M18 6 6 18M6 6l12 12" />
+    </svg>
+  );
+}
+
+function PauseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+      <path d="M7 5h3v14H7V5Zm7 0h3v14h-3V5Z" />
+    </svg>
+  );
+}
+
+function PlayIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+      <path d="M8 5v14l11-7L8 5Z" />
     </svg>
   );
 }
@@ -275,23 +260,12 @@ function Typewriter({ text, shouldStart, onDone }) {
 }
 
 function SegmentationDiagram() {
-  return (
-    <img
-      src="/segmentation.png"
-      alt="Audience segmentation framework"
-      className="mt-8 w-full object-contain"
-    />
-  );
+  return <img src="/segmentation.png" alt="Audience segmentation framework" className="mt-8 w-full object-contain" />;
 }
 
 function JourneyMapPreview() {
   return (
-    <a
-      href={APPLY_SYSTEMS_URL}
-      target="_blank"
-      rel="noreferrer"
-      className="mt-8 block overflow-hidden rounded-[28px] border border-[#E4E2E1] bg-white transition hover:-translate-y-1 hover:shadow-sm"
-    >
+    <a href={APPLY_SYSTEMS_URL} target="_blank" rel="noreferrer" className="mt-8 block overflow-hidden rounded-[28px] border border-[#E4E2E1] bg-white transition hover:-translate-y-1 hover:shadow-sm">
       <img src="/journey-map.png" alt="Service design journey map" className="w-full object-contain" />
     </a>
   );
@@ -299,26 +273,19 @@ function JourneyMapPreview() {
 
 function CircleIconButton({ children, onClick, ariaLabel, className = "" }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={ariaLabel}
-      className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:text-[#A5522A] ${className}`}
-    >
-      <span className="flex h-full w-full items-center justify-center leading-none">
-        {children}
-      </span>
+    <button type="button" onClick={onClick} aria-label={ariaLabel} className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:text-[#A5522A] ${className}`}>
+      <span className="flex h-full w-full items-center justify-center leading-none">{children}</span>
     </button>
   );
 }
 
 function FramerModal({ title, url, onClose }) {
   return (
-    <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}>
+    <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
       <div className="mx-auto max-w-[1180px]">
         <div className="mb-5 flex items-center gap-3 sm:mb-6">
           <CircleIconButton onClick={onClose} ariaLabel="Close project">
-            <ChevronLeftIcon className="h-5 w-5" />
+            <ChevronLeftIcon />
           </CircleIconButton>
 
           <h2 className={`min-w-0 text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#9C3F14] sm:text-[40px] ${HEADING}`}>
@@ -327,12 +294,7 @@ function FramerModal({ title, url, onClose }) {
         </div>
 
         <div className="overflow-hidden rounded-[28px] bg-white">
-          <iframe
-            src={url}
-            title={title}
-            className="h-[82vh] w-full rounded-[24px] border-0 bg-white"
-            allowFullScreen
-          />
+          <iframe src={url} title={title} className="h-[82vh] w-full rounded-[24px] border-0 bg-white" allowFullScreen />
         </div>
       </div>
     </div>
@@ -343,44 +305,36 @@ function WorkBrowserModal({ onClose }) {
   const [activeProject, setActiveProject] = useState(PROJECTS[0]);
 
   return (
-    <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${JAKARTA}`}>
+    <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
       <div className="mx-auto max-w-[1180px]">
-        <div className="mb-5 flex items-center gap-3 sm:mb-6">
+        <div className="mb-6 flex items-center gap-4">
           <CircleIconButton onClick={onClose} ariaLabel="Close work browser">
-            <ChevronLeftIcon className="h-5 w-5" />
+            <ChevronLeftIcon />
           </CircleIconButton>
 
-          <h2 className={`min-w-0 text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#9C3F14] sm:text-[40px] ${HEADING}`}>
+          <h2 className={`min-w-0 text-[42px] font-semibold leading-[0.95] tracking-[-0.06em] text-[#9C3F14] sm:text-[56px] ${HEADING}`}>
             My Work
           </h2>
         </div>
 
-        <div className="mb-5 rounded-[28px] border border-[#E4E2E1] bg-white p-3 sm:rounded-full sm:p-4">
-          <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:pb-0">
-            {PROJECTS.map((project) => (
-              <button
-                key={project.label}
-                onClick={() => setActiveProject(project)}
-                className={`shrink-0 rounded-full border px-5 py-2 text-[12px] font-medium transition ${
-                  activeProject.label === project.label
-                    ? "border-[#9C3F14] bg-[#FFF8F5] text-[#9C3F14]"
-                    : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
-                } ${HEADING}`}
-              >
-                {project.label}
-              </button>
-            ))}
-          </div>
+        <div className="no-scrollbar mb-6 flex gap-3 overflow-x-auto pb-2">
+          {PROJECTS.map((project) => (
+            <button
+              key={project.label}
+              onClick={() => setActiveProject(project)}
+              className={`shrink-0 rounded-full border px-6 py-3 text-[14px] font-medium transition sm:px-7 sm:text-[15px] ${
+                activeProject.label === project.label
+                  ? "border-[#9C3F14] bg-white text-[#9C3F14]"
+                  : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
+              } ${HEADING}`}
+            >
+              {project.label}
+            </button>
+          ))}
         </div>
 
         <div className="overflow-hidden rounded-[32px] bg-white">
-          <iframe
-            key={activeProject.url}
-            src={activeProject.url}
-            title={activeProject.title}
-            className="h-[80vh] w-full border-0 bg-white"
-            allowFullScreen
-          />
+          <iframe key={activeProject.url} src={activeProject.url} title={activeProject.title} className="h-[80vh] w-full border-0 bg-white" allowFullScreen />
         </div>
       </div>
     </div>
@@ -393,7 +347,7 @@ function FigmaDeckModal({ onClose }) {
 
 function WhatIBelieveCard() {
   return (
-    <article className="rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[14px] transition-all duration-300 hover:-translate-y-1">
+    <article className={`rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[14px] transition-all duration-300 hover:-translate-y-1 ${BODY}`}>
       <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         what i believe in
       </p>
@@ -407,26 +361,12 @@ function WhatIBelieveCard() {
       </p>
 
       <div className="mt-7 flex items-center gap-4">
-        <a
-          href="mailto:sanjanavnkt20@gmail.com"
-          aria-label="Email Sanjana"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]"
-        >
-          <span className="flex h-full w-full items-center justify-center leading-none">
-            <MailIcon />
-          </span>
+        <a href="mailto:sanjanavnkt20@gmail.com" aria-label="Email Sanjana" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
+          <span className="flex h-full w-full items-center justify-center leading-none"><MailIcon /></span>
         </a>
 
-        <a
-          href="https://www.linkedin.com/in/sanjana-venkat/"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="LinkedIn"
-          className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 text-[13px] font-semibold leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A] ${HEADING}`}
-        >
-          <span className="flex h-full w-full items-center justify-center leading-none">
-            in
-          </span>
+        <a href="https://www.linkedin.com/in/sanjana-venkat/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 text-[13px] font-semibold leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A] ${HEADING}`}>
+          <span className="flex h-full w-full items-center justify-center leading-none">in</span>
         </a>
       </div>
     </article>
@@ -441,7 +381,7 @@ function HorizontalTimeline() {
   ];
 
   return (
-    <section className="h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 transition-all duration-300 hover:-translate-y-1">
+    <section className={`h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 transition-all duration-300 hover:-translate-y-1 ${BODY}`}>
       <p className={`mb-8 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         timeline
       </p>
@@ -469,22 +409,6 @@ function HorizontalTimeline() {
   );
 }
 
-function PauseIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
-      <path d="M7 5h3v14H7V5Zm7 0h3v14h-3V5Z" />
-    </svg>
-  );
-}
-
-function PlayIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
-      <path d="M8 5v14l11-7L8 5Z" />
-    </svg>
-  );
-}
-
 function TestimonialCarousel() {
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -501,7 +425,7 @@ function TestimonialCarousel() {
   }, [isPaused]);
 
   return (
-    <article className="relative h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 text-[13px] transition-all duration-300 hover:-translate-y-1">
+    <article className={`relative h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 text-[13px] transition-all duration-300 hover:-translate-y-1 ${BODY}`}>
       <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         what people say about me
       </p>
@@ -514,19 +438,11 @@ function TestimonialCarousel() {
 
       <div className="mt-5 flex gap-3 pr-14">
         {TESTIMONIALS.map((_, dotIndex) => (
-          <span
-            key={dotIndex}
-            className={`h-3 rounded-full transition-all duration-300 ${index === dotIndex ? "w-10 bg-[#D96F45]" : "w-3 bg-[#EEF0F3]"}`}
-          />
+          <span key={dotIndex} className={`h-3 rounded-full transition-all duration-300 ${index === dotIndex ? "w-10 bg-[#D96F45]" : "w-3 bg-[#EEF0F3]"}`} />
         ))}
       </div>
 
-      <button
-        type="button"
-        onClick={() => setIsPaused((current) => !current)}
-        aria-label={isPaused ? "Play testimonials" : "Pause testimonials"}
-        className="absolute bottom-7 right-7 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]"
-      >
+      <button type="button" onClick={() => setIsPaused((current) => !current)} aria-label={isPaused ? "Play testimonials" : "Pause testimonials"} className="absolute bottom-7 right-7 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
         <span className="flex h-full w-full items-center justify-center leading-none">
           {isPaused ? <PlayIcon /> : <PauseIcon />}
         </span>
@@ -539,17 +455,11 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   if (active === "let's talk AI") {
     return (
       <div className="flex flex-wrap gap-x-6 gap-y-3 px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
-        <button
-          onClick={() => openProjectForActivePill("ai-framer")}
-          className="inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A]"
-        >
+        <button onClick={() => openProjectForActivePill("ai-framer")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
           AI chat journeys →
         </button>
 
-        <button
-          onClick={() => openProjectForActivePill("casey-ai")}
-          className="inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A]"
-        >
+        <button onClick={() => openProjectForActivePill("casey-ai")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
           what’s casey AI? →
         </button>
       </div>
@@ -569,25 +479,14 @@ function ResponseLinks({ active, openProjectForActivePill }) {
 
   return (
     <div className="px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
-      <button
-        onClick={() => openProjectForActivePill()}
-        className="inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A]"
-      >
+      <button onClick={() => openProjectForActivePill()} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
         {ctaText}
       </button>
     </div>
   );
 }
 
-function ChatConversation({
-  active,
-  showThinking,
-  showResponse,
-  showPills,
-  showUserNeedsRest,
-  onTypeDone,
-  openProjectForActivePill
-}) {
+function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill }) {
   return (
     <>
       <div className="mb-6 flex justify-end">
@@ -598,7 +497,7 @@ function ChatConversation({
 
       {showThinking && (
         <div className="rounded-[0px_36px_36px_36px] bg-white p-5 animate-[fadeUp_0.25s_ease_forwards] sm:p-6">
-          <div className="flex items-center gap-2 text-[12px] text-[#8A817B]">
+          <div className={`flex items-center gap-2 text-[12px] text-[#8A817B] ${HEADING}`}>
             <span className="h-2 w-2 rounded-full bg-[#A5522A] animate-pulse" />
             thinking
           </div>
@@ -608,11 +507,7 @@ function ChatConversation({
       {showResponse && (
         <>
           <div className="rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-            <Typewriter
-              text={CONTENT?.[active] || ""}
-              shouldStart={showResponse}
-              onDone={onTypeDone}
-            />
+            <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} />
 
             {active === "how i uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
 
@@ -627,47 +522,32 @@ function ChatConversation({
             </div>
           )}
 
-          {showPills && (
-            <ResponseLinks
-              active={active}
-              openProjectForActivePill={openProjectForActivePill}
-            />
-          )}
+          {showPills && <ResponseLinks active={active} openProjectForActivePill={openProjectForActivePill} />}
         </>
       )}
     </>
   );
 }
 
-function MobileChatModal({
-  active,
-  setActive,
-  showThinking,
-  showResponse,
-  showPills,
-  showUserNeedsRest,
-  onTypeDone,
-  openProjectForActivePill,
-  onClose
-}) {
+function MobileChatModal({ active, setActive, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, onClose }) {
   return (
-    <div className={`fixed inset-0 z-[60] flex flex-col bg-[#FFF8F5] ${JAKARTA}`}>
-      <div className="flex items-center justify-between border-b border-[#E4E2E1] bg-white/90 px-4 py-3">
-        <div>
+    <div className={`fixed inset-0 z-[60] flex flex-col bg-[#FFF8F5] ${BODY}`}>
+      <div className="pointer-events-none fixed left-0 right-0 top-0 z-10 flex items-start justify-between px-4 pt-4">
+        <div className="pointer-events-auto rounded-full border border-[#E4E2E1] bg-white px-5 py-3 shadow-sm">
           <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
             ask sanjana
           </p>
-          <p className="mt-1 text-[13px] text-[#6B625C]">
-            Tap a chip to send a question.
-          </p>
+          <p className="mt-1 text-[13px] text-[#6B625C]">Tap a chip to send a question.</p>
         </div>
 
-        <CircleIconButton onClick={onClose} ariaLabel="Close chat">
-          <CloseIcon />
-        </CircleIconButton>
+        <div className="pointer-events-auto">
+          <CircleIconButton onClick={onClose} ariaLabel="Close chat" className="shadow-sm">
+            <CloseIcon />
+          </CircleIconButton>
+        </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-4 py-5">
+      <div className="flex-1 overflow-y-auto px-4 pb-32 pt-28">
         <ChatConversation
           active={active}
           showThinking={showThinking}
@@ -679,16 +559,16 @@ function MobileChatModal({
         />
       </div>
 
-      <div className="border-t border-[#E4E2E1] bg-white px-4 py-4">
-        <div className="flex flex-wrap gap-2">
+      <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-[#FFF8F5] via-[#FFF8F5]/95 to-transparent px-4 pb-5 pt-8">
+        <div className="pointer-events-auto no-scrollbar flex gap-2 overflow-x-auto">
           {PILLS.map((pill) => (
             <button
               key={pill}
               onClick={() => setActive(pill)}
-              className={`rounded-full border px-4 py-2 text-[11px] transition ${
+              className={`shrink-0 rounded-full border bg-white px-4 py-2 text-[11px] transition ${
                 active === pill
-                  ? "border-[#A5522A] bg-[#FFF8F5] text-[#A5522A]"
-                  : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#D8C5BB]"
+                  ? "border-[#A5522A] text-[#A5522A]"
+                  : "border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
               } ${HEADING}`}
             >
               {pill}
@@ -713,9 +593,7 @@ export default function PortfolioHome() {
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
 
   useEffect(() => {
-    const existingIcon =
-      document.querySelector("link[rel='icon']") ||
-      document.createElement("link");
+    const existingIcon = document.querySelector("link[rel='icon']") || document.createElement("link");
 
     existingIcon.setAttribute("rel", "icon");
     existingIcon.setAttribute("type", "image/jpeg");
@@ -782,6 +660,8 @@ export default function PortfolioHome() {
   };
 
   const openProjectForActivePill = (override) => {
+    setMobileChatOpen(false);
+
     if (override === "ai-framer") {
       setProjectOpen("ai-framer");
       return;
@@ -823,33 +703,20 @@ export default function PortfolioHome() {
   };
 
   return (
-    <main
-      onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })}
-      className={`relative min-h-screen w-full overflow-x-hidden bg-[#F8F7F6] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${JAKARTA}`}
-    >
+    <main onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })} className={`relative min-h-screen w-full overflow-x-hidden bg-[#F8F7F6] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}>
       {projectOpen === "work-browser" && <WorkBrowserModal onClose={() => setProjectOpen(null)} />}
 
-      {projectOpen === "user-needs" && (
-        <FramerModal title="How I Uncover User Needs" url={USER_NEEDS_FRAMER_URL} onClose={() => setProjectOpen(null)} />
-      )}
+      {projectOpen === "user-needs" && <FramerModal title="How I Uncover User Needs" url={USER_NEEDS_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
 
       {projectOpen === "figma-deck" && <FigmaDeckModal onClose={() => setProjectOpen(null)} />}
 
-      {projectOpen === "ai-framer" && (
-        <FramerModal title="AI Chat Journeys" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />
-      )}
+      {projectOpen === "ai-framer" && <FramerModal title="AI Chat Journeys" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
 
-      {projectOpen === "casey-ai" && (
-        <FramerModal title="Casey AI" url={CASEY_AI_URL} onClose={() => setProjectOpen(null)} />
-      )}
+      {projectOpen === "casey-ai" && <FramerModal title="Casey AI" url={CASEY_AI_URL} onClose={() => setProjectOpen(null)} />}
 
-      {projectOpen === "marketing-tiles" && (
-        <FramerModal title="Product Strategy Thinking" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />
-      )}
+      {projectOpen === "marketing-tiles" && <FramerModal title="Product Strategy Thinking" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />}
 
-      {projectOpen === "apply-systems" && (
-        <FramerModal title="Designing Systems at Scale" url={APPLY_SYSTEMS_URL} onClose={() => setProjectOpen(null)} />
-      )}
+      {projectOpen === "apply-systems" && <FramerModal title="Designing Systems at Scale" url={APPLY_SYSTEMS_URL} onClose={() => setProjectOpen(null)} />}
 
       {mobileChatOpen && (
         <MobileChatModal
@@ -865,21 +732,11 @@ export default function PortfolioHome() {
         />
       )}
 
-      <button
-        type="button"
-        onClick={() => setMobileChatOpen(true)}
-        aria-label="Open chat"
-        className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#A5522A] p-0 leading-none text-white shadow-lg transition hover:scale-105 md:hidden"
-      >
-        <span className="flex h-full w-full items-center justify-center leading-none">
-          <ChatIcon />
-        </span>
+      <button type="button" onClick={() => setMobileChatOpen(true)} aria-label="Open chat" className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#A5522A] p-0 leading-none text-white shadow-lg transition hover:scale-105 md:hidden">
+        <span className="flex h-full w-full items-center justify-center leading-none"><ChatIcon /></span>
       </button>
 
-      <div
-        className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl transition-transform duration-150"
-        style={{ left: cursor.x - 150, top: cursor.y - 150 }}
-      />
+      <div className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl transition-transform duration-150" style={{ left: cursor.x - 150, top: cursor.y - 150 }} />
 
       <section className="relative z-10 mx-auto grid w-full max-w-[1180px] grid-cols-1 gap-x-10 gap-y-8 lg:grid-cols-[280px_1fr]">
         <aside className="flex flex-col gap-8">
@@ -902,11 +759,7 @@ export default function PortfolioHome() {
 
             <div className="flex flex-col gap-3">
               {["my work", "what are you building now", "resume", "github", "contact"].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => handleNav(item)}
-                  className="w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB]"
-                >
+                <button key={item} onClick={() => handleNav(item)} className={`w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB] ${HEADING}`}>
                   {item}
                 </button>
               ))}
@@ -914,11 +767,7 @@ export default function PortfolioHome() {
           </nav>
 
           <div className="overflow-hidden rounded-[32px] border border-[#E4E2E1] bg-white">
-            <img
-              src="/profile.jpg"
-              alt="Sanjana Venkat"
-              className="h-[290px] w-full object-cover grayscale transition-all duration-500 hover:scale-[1.035] hover:grayscale-0"
-            />
+            <img src="/profile.jpg" alt="Sanjana Venkat" className="h-[290px] w-full object-cover grayscale transition-all duration-500 hover:scale-[1.035] hover:grayscale-0" />
           </div>
 
           <WhatIBelieveCard />
@@ -938,15 +787,11 @@ export default function PortfolioHome() {
           {showPills && (
             <div className="mt-6 flex flex-wrap gap-3 animate-[fadeUp_0.45s_ease_forwards]">
               {PILLS.map((pill) => (
-                <button
-                  key={pill}
-                  onClick={() => handlePillSelect(pill)}
-                  className={`rounded-full border px-5 py-2 text-[12px] transition hover:scale-[1.04] ${
+                <button key={pill} onClick={() => handlePillSelect(pill)} className={`rounded-full border px-5 py-2 text-[12px] transition hover:scale-[1.04] ${
                     active === pill
                       ? "border-[#A5522A] bg-white text-[#A5522A]"
                       : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#D8C5BB]"
-                  }`}
-                >
+                  } ${HEADING}`}>
                   {pill}
                 </button>
               ))}
@@ -1008,20 +853,6 @@ export default function PortfolioHome() {
         h6,
         button {
           font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-
-
-        .font-body {
-          font-family: 'Open Sans', sans-serif;
-        }
-
-        .font-heading {
-          font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        .font-typewriter {
-          font-family: 'JetBrains Mono', monospace;
         }
 
         .animate-glow {
