@@ -475,16 +475,164 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   );
 }
 
+
+function MobileChatModal({ onClose, openProjectForActivePill }) {
+  const [mobileActive, setMobileActive] = useState(PILLS[0]);
+  const [showMobileThinking, setShowMobileThinking] = useState(true);
+  const [showMobileResponse, setShowMobileResponse] = useState(false);
+  const [showMobileLinks, setShowMobileLinks] = useState(false);
+  const [showMobileUserNeedsRest, setShowMobileUserNeedsRest] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    setShowMobileThinking(true);
+    setShowMobileResponse(false);
+    setShowMobileLinks(false);
+    setShowMobileUserNeedsRest(false);
+
+    const timer = setTimeout(() => {
+      setShowMobileThinking(false);
+      setShowMobileResponse(true);
+    }, 650);
+
+    return () => clearTimeout(timer);
+  }, [mobileActive]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [mobileActive, showMobileThinking, showMobileResponse, showMobileLinks, showMobileUserNeedsRest]);
+
+  const handleMobilePillSelect = (pill) => {
+    if (pill === mobileActive) return;
+    setMobileActive(pill);
+  };
+
+  return (
+    <div className={`fixed inset-0 z-[60] flex flex-col bg-[#FFF8F5] ${JAKARTA}`}>
+      <div className="flex items-center justify-between border-b border-[#E4E2E1] bg-white/90 px-4 py-4 backdrop-blur">
+        <div>
+          <p className={`text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+            ask me anything
+          </p>
+          <h2 className={`mt-1 text-[22px] font-semibold tracking-[-0.04em] text-[#9C3F14] ${HEADING}`}>
+            Sanjana
+          </h2>
+        </div>
+
+        <button
+          onClick={onClose}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white text-[18px] text-[#6B625C]"
+          aria-label="Close chat"
+        >
+          ×
+        </button>
+      </div>
+
+      <div className="no-scrollbar flex-1 space-y-4 overflow-y-auto px-4 py-5">
+        <div className="flex justify-end">
+          <div className={`max-w-[86%] rounded-[28px_28px_0px_28px] bg-[#A5522A] px-5 py-3 text-[13px] leading-[1.7] text-white animate-[messageSend_0.35s_ease_forwards] ${TYPEWRITE}`}>
+            {mobileActive}
+          </div>
+        </div>
+
+        {showMobileThinking && (
+          <div className="max-w-[88%] rounded-[0px_28px_28px_28px] bg-white p-5 animate-[fadeUp_0.25s_ease_forwards]">
+            <div className="flex items-center gap-2 text-[12px] text-[#8A817B]">
+              <span className="h-2 w-2 rounded-full bg-[#A5522A] animate-pulse" />
+              thinking
+            </div>
+          </div>
+        )}
+
+        {showMobileResponse && (
+          <>
+            <div className="max-w-[94%] rounded-[0px_28px_28px_28px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards]">
+              <Typewriter
+                text={CONTENT?.[mobileActive] || ""}
+                shouldStart={showMobileResponse}
+                onDone={() => {
+                  if (mobileActive === "how i uncover user needs") {
+                    setShowMobileUserNeedsRest(true);
+                  }
+
+                  setShowMobileLinks(true);
+                }}
+              />
+
+              {mobileActive === "how i uncover user needs" && showMobileUserNeedsRest && <SegmentationDiagram />}
+
+              {showMobileLinks && mobileActive === "designing systems at scale" && <JourneyMapPreview />}
+            </div>
+
+            {mobileActive === "how i uncover user needs" && showMobileUserNeedsRest && (
+              <div className="max-w-[94%] rounded-[0px_28px_28px_28px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards]">
+                <p className={`whitespace-pre-line break-words text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
+                  {USER_NEEDS_REST}
+                </p>
+              </div>
+            )}
+
+            {showMobileLinks && (
+              <ResponseLinks
+                active={mobileActive}
+                openProjectForActivePill={(override) => {
+                  onClose();
+                  openProjectForActivePill(override, mobileActive);
+                }}
+              />
+            )}
+          </>
+        )}
+
+        <div ref={messagesEndRef} />
+      </div>
+
+      <div className="border-t border-[#E4E2E1] bg-white/95 px-4 py-4 backdrop-blur">
+        <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1">
+          {PILLS.map((pill) => (
+            <button
+              key={pill}
+              onClick={() => handleMobilePillSelect(pill)}
+              className={`shrink-0 rounded-full border px-4 py-2 text-[11px] transition ${
+                mobileActive === pill
+                  ? "border-[#A5522A] bg-[#FFF8F5] text-[#A5522A]"
+                  : "border-[#E4E2E1] bg-white text-[#6B625C]"
+              } ${HEADING}`}
+            >
+              {pill}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 export default function PortfolioHome() {
   const chatCardRef = useRef(null);
   const [active, setActive] = useState(PILLS[0]);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [projectOpen, setProjectOpen] = useState(null);
+  const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [showPills, setShowPills] = useState(false);
   const [showResponse, setShowResponse] = useState(false);
   const [showThinking, setShowThinking] = useState(false);
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
+
+  useEffect(() => {
+    let favicon = document.querySelector("link[rel='icon']");
+
+    if (!favicon) {
+      favicon = document.createElement("link");
+      favicon.rel = "icon";
+      document.head.appendChild(favicon);
+    }
+
+    favicon.type = "image/jpeg";
+    favicon.href = "/logo.jpg";
+  }, []);
 
   useEffect(() => {
     setShowPills(false);
@@ -533,7 +681,9 @@ export default function PortfolioHome() {
     }
   };
 
-  const openProjectForActivePill = (override) => {
+  const openProjectForActivePill = (override, pillOverride) => {
+    const selectedPill = pillOverride || active;
+
     if (override === "ai-framer") {
       setProjectOpen("ai-framer");
       return;
@@ -544,32 +694,32 @@ export default function PortfolioHome() {
       return;
     }
 
-    if (active === "how i uncover user needs") {
+    if (selectedPill === "how i uncover user needs") {
       setProjectOpen("user-needs");
       return;
     }
 
-    if (active === "let's talk AI") {
+    if (selectedPill === "let's talk AI") {
       setProjectOpen("ai-framer");
       return;
     }
 
-    if (active === "product strategy thinking") {
+    if (selectedPill === "product strategy thinking") {
       setProjectOpen("marketing-tiles");
       return;
     }
 
-    if (active === "designing systems at scale") {
+    if (selectedPill === "designing systems at scale") {
       setProjectOpen("apply-systems");
       return;
     }
 
-    if (active === "how i ship fast") {
+    if (selectedPill === "how i ship fast") {
       window.open(WAYFARER_URL, "_blank");
       return;
     }
 
-    if (active === "how i get exec-buy in") {
+    if (selectedPill === "how i get exec-buy in") {
       setProjectOpen("figma-deck");
     }
   };
@@ -603,10 +753,25 @@ export default function PortfolioHome() {
         <FramerModal title="Designing Systems at Scale" url={APPLY_SYSTEMS_URL} onClose={() => setProjectOpen(null)} />
       )}
 
+      {isMobileChatOpen && (
+        <MobileChatModal
+          onClose={() => setIsMobileChatOpen(false)}
+          openProjectForActivePill={openProjectForActivePill}
+        />
+      )}
+
       <div
         className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl transition-transform duration-150"
         style={{ left: cursor.x - 150, top: cursor.y - 150 }}
       />
+
+      <button
+        onClick={() => setIsMobileChatOpen(true)}
+        className={`fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#A5522A] text-[22px] text-white shadow-lg transition hover:scale-105 lg:hidden ${HEADING}`}
+        aria-label="Open chat"
+      >
+        ✦
+      </button>
 
       <section className="relative z-10 mx-auto grid w-full max-w-[1180px] grid-cols-1 gap-x-10 gap-y-8 lg:grid-cols-[280px_1fr]">
         <aside className="flex flex-col gap-8">
@@ -651,7 +816,7 @@ export default function PortfolioHome() {
           <WhatIBelieveCard />
         </aside>
 
-        <section ref={chatCardRef} className="rounded-[32px] border border-[#E4E2E1] bg-white p-4 transition-all duration-300 sm:p-6">
+        <section ref={chatCardRef} className="hidden rounded-[32px] border border-[#E4E2E1] bg-white p-4 transition-all duration-300 sm:p-6 lg:block">
           <div className="mb-6 flex justify-end">
             <div className={`rounded-[48px_48px_0px_48px] bg-[#A5522A] px-6 py-3 text-[14px] leading-[1.8] text-white animate-[messageSend_0.35s_ease_forwards] ${TYPEWRITE}`}>
               {active}
