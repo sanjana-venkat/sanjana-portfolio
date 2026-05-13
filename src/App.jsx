@@ -72,7 +72,7 @@ At JPMC, I worked on AI across multiple surfaces:
 
 I also use AI as a thinking partner in my workflow to rapidly explore, prototype, and refine ideas.`,
 
-  "product strategy thinking": `I think product strategy starts with defining the right behavior to change, not jumping straight into screens.
+  "product strategy thinking": `In bigger companies, it's hard to avoid disagreeing and going through multiple iterations, but I learnt that defining the problem early and aligning all stakeholders helps us ship fast.
 
 At JPMC, I shaped the personalization framework by combining research, behavioral signals, and need-based segmentation. Instead of treating users as static personas, we looked at what they needed in the moment.
 
