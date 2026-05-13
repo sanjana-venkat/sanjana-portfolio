@@ -684,7 +684,7 @@ export default function PortfolioHome() {
 
                 {active === "how i uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
 
-                {active === "designing systems at scale" && <JourneyMapPreview />}
+                {showPills && active === "designing systems at scale" && <JourneyMapPreview />}
               </div>
 
               {active === "how i uncover user needs" && showUserNeedsRest && (
@@ -695,7 +695,7 @@ export default function PortfolioHome() {
                 </div>
               )}
 
-              <ResponseLinks active={active} openProjectForActivePill={openProjectForActivePill} />
+              {showPills && <ResponseLinks active={active} openProjectForActivePill={openProjectForActivePill} />}
             </>
           )}
 
