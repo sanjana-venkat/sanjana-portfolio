@@ -631,17 +631,41 @@ export default function PortfolioHome() {
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
 
-  useEffect(() => {
-    const existingIcon = document.querySelector("link[rel='icon']") || document.createElement("link");
+useEffect(() => {
+  const faviconPath = "/logo.jpg";
 
-    existingIcon.setAttribute("rel", "icon");
-    existingIcon.setAttribute("type", "image/jpeg");
-    existingIcon.setAttribute("href", "/logo.jpg");
+  const removeExistingFavicons = () => {
+    const links = document.querySelectorAll(
+      "link[rel*='icon'], link[rel='apple-touch-icon']"
+    );
 
-    if (!existingIcon.parentNode) {
-      document.head.appendChild(existingIcon);
-    }
-  }, []);
+    links.forEach((link) => {
+      if (link.parentNode) {
+        link.parentNode.removeChild(link);
+      }
+    });
+  };
+
+  const addFavicon = (rel, href, type = "image/jpeg") => {
+    const link = document.createElement("link");
+
+    link.rel = rel;
+    link.type = type;
+
+    // force browser refresh
+    link.href = `${href}?v=${Date.now()}`;
+
+    document.head.appendChild(link);
+  };
+
+  removeExistingFavicons();
+
+  addFavicon("icon", faviconPath);
+  addFavicon("shortcut icon", faviconPath);
+  addFavicon("apple-touch-icon", faviconPath);
+
+  document.title = "Sanjana Venkat";
+}, []);
 
   useEffect(() => {
     setShowPills(false);
