@@ -151,13 +151,13 @@ In a few sprints, we pushed toward redesigning the full journey and got design s
 Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
-  { label: "user needs", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
-  { label: "product strategy", title: "Product Strategy Thinking", url: MARKETING_TILES_URL },
-  { label: "systems at scale", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
+  { label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
+  { label: "AI Personalization", title: "Product Strategy Thinking", url: MARKETING_TILES_URL },
+  { label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
   { label: "AI chat journeys", title: "AI Chat Journeys", url: AI_FRAMER_URL },
-  { label: "Casey AI", title: "Casey AI", url: CASEY_AI_URL },
-  { label: "exec buy-in", title: "Executive Buy-in", url: FIGMA_DECK_URL },
-  { label: "Wayfarer", title: "Wayfarer", url: WAYFARER_URL }
+  { label: "Agentic Conversational AI", title: "Casey AI", url: CASEY_AI_URL },
+  { label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
+  { label: "Vibe Coding", title: "Wayfarer", url: WAYFARER_URL }
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
