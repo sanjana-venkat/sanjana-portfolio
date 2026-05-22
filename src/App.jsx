@@ -22,7 +22,7 @@ const APPLY_SYSTEMS_URL =
 const WAYFARER_URL =
   "https://wayfarer-b1xt7lhgb-sanjanavnkt20-5780s-projects.vercel.app/";
 
-const RESUME_URL = "/SanjanaVenkat_ProductDesigner_Resume.pdf";
+const RESUME_URL = "/SanjanaVenkat_ProductDesign_Resume.pdf";
 const GITHUB_URL = "https://github.com/sanjana-venkat";
 
 const BODY = "[font-family:'Open_Sans',sans-serif]";
