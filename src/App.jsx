@@ -19,8 +19,10 @@ const MARKETING_TILES_URL =
 const APPLY_SYSTEMS_URL =
   "https://sanjanavenkat.framer.website/works/chase-apply-2";
 
-const WAYFARER_URL =
-  "https://wayfarer-b1xt7lhgb-sanjanavnkt20-5780s-projects.vercel.app/";
+const TRAVEL_DNA_URL =
+  "https://travel-dna-kohl.vercel.app/";
+
+const WAYFARER_URL = TRAVEL_DNA_URL;
 
 const RESUME_URL = "/SanjanaVenkat_ProductDesign_Resume.pdf";
 const GITHUB_URL = "https://github.com/sanjana-venkat";
@@ -157,7 +159,7 @@ const PROJECTS = [
   { label: "AI chat journeys", title: "AI Chat Journeys", url: AI_FRAMER_URL },
   { label: "Agentic Conversational AI", title: "Casey AI", url: CASEY_AI_URL },
   { label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
-  { label: "Vibe Coding", title: "Wayfarer", url: WAYFARER_URL }
+  { label: "Vibe Coding", title: "Travel DNA", url: TRAVEL_DNA_URL }
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
@@ -703,7 +705,7 @@ useEffect(() => {
     }
 
     if (item === "what are you building now") {
-      window.open(WAYFARER_URL, "_blank");
+      window.open(TRAVEL_DNA_URL, "_blank");
       return;
     }
 
@@ -756,7 +758,7 @@ useEffect(() => {
     }
 
     if (active === "how i ship fast") {
-      window.open(WAYFARER_URL, "_blank");
+      window.open(TRAVEL_DNA_URL, "_blank");
       return;
     }
 
