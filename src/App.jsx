@@ -232,6 +232,7 @@ function Typewriter({ text, shouldStart, onDone }) {
   const [displayed, setDisplayed] = useState("");
   const [typedText, setTypedText] = useState(null);
   const onDoneRef = useRef(onDone);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     onDoneRef.current = onDone;
@@ -271,7 +272,7 @@ function Typewriter({ text, shouldStart, onDone }) {
   }, [cleanText, shouldStart, typedText]);
 
   return (
-    <p className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
+    <p ref={containerRef} className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
       {displayed}
       {typedText !== cleanText && <span className="animate-pulse text-[#A5522A]">|</span>}
     </p>
@@ -368,38 +369,49 @@ function FigmaDeckModal({ onClose }) {
 function HeroTile() {
   return (
     /*
-      overflow-visible so pic card pops out below the tile bottom.
-      Pic: tall portrait card anchored to bottom-right, extends below tile edge.
-      Drop shadow lifts it off the background.
+      Figma spec:
+      - bg: rgba(156,63,20,0.17) warm terracotta tint
+      - pic: 192x216, border 8.6px white, border-radius 22px, rotate(9.83deg)
+      - pic anchored top-right, overflows the tile boundary (overflow-visible)
+      - text: name 40px #9C3F14, tagline 16px #57423A
     */
     <div
-      className="relative overflow-visible rounded-[32px] bg-[#FFF8F5] p-8"
-      style={{ minHeight: "180px", paddingRight: "210px" }}
+      className="relative overflow-visible rounded-[32px] p-8 flex flex-col justify-center"
+      style={{
+        background: "rgba(156, 63, 20, 0.17)",
+        minHeight: "219px",
+        paddingRight: "220px",
+      }}
     >
-      {/* Name + tagline */}
-      <h1 className={`text-[52px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#7B3310] whitespace-nowrap ${HEADING}`}>
+      {/* Name */}
+      <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] whitespace-nowrap ${HEADING}`}
+        style={{ fontSize: "40px" }}>
         Sanjana Venkat
       </h1>
-      <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149]">
+      {/* Tagline */}
+      <p className="mt-2 text-[16px] leading-[1.5]" style={{ color: "#57423A" }}>
         I turn ambiguity into direction. Let me show you.
       </p>
 
-      {/* Portrait card — pops from the bottom-right, hangs below the tile */}
+      {/* Profile pic — top-right, tilted 9.83deg, white border, pops from bottom of tile */}
       <div
-        className="absolute overflow-hidden rounded-[20px] border-[3px] border-white"
+        className="absolute overflow-hidden"
         style={{
-          width: "175px",
-          height: "210px",
-          bottom: "-32px",
-          right: "20px",
+          width: "192px",
+          height: "216px",
+          top: "24px",
+          right: "-8px",
+          borderRadius: "22px",
+          border: "8px solid #FFFFFF",
+          boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
+          transform: "rotate(9.83deg)",
           zIndex: 30,
-          boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
         }}
       >
         <img
           src="/profile.jpg"
           alt="Sanjana Venkat"
-          className="w-full h-full object-cover object-top grayscale transition-all duration-500 hover:grayscale-0"
+          className="w-full h-full object-cover object-top"
         />
       </div>
     </div>
@@ -501,16 +513,19 @@ function MyWorkTile({ onOpen }) {
             </p>
             {/* Image card — taller cards feel like they come from bottom */}
             <div
-              className="relative overflow-hidden rounded-[20px] bg-[#EDEAE7] w-full"
+              className="relative overflow-hidden w-full"
               style={{
-                height: "170px",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.10)",
+                height: "200px",
+                borderRadius: "22px",
+                border: "6px solid rgba(221, 192, 182, 0.5)",
+                boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
+                background: "#EDEAE7",
               }}
             >
               <img
                 src={proj.src}
                 alt={proj.label}
-                className="w-full h-full object-cover object-top grayscale transition-all duration-500 hover:grayscale-0"
+                className="w-full h-full object-cover object-top"
                 onError={(e) => { e.target.style.opacity = "0"; }}
               />
             </div>
@@ -781,12 +796,7 @@ export default function PortfolioHome() {
     return () => clearTimeout(timer);
   }, [active, hasLoaded]);
 
-  // Scroll chat to bottom when pills appear (response fully typed)
-  useEffect(() => {
-    if (showPills && chatScrollRef.current) {
-      chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
-    }
-  }, [showPills]);
+
 
   const handleTypeDone = () => {
     if (active === "how i uncover user needs") {
@@ -930,7 +940,7 @@ export default function PortfolioHome() {
               </p>
             </div>
             {/* Scroll area — padding-bottom makes room for floating pills */}
-            <div ref={chatScrollRef} className="flex-1 overflow-y-auto px-6 no-scrollbar" style={{ paddingBottom: showPills ? "64px" : "16px" }}>
+            <div ref={chatScrollRef} data-chat-scroll className="flex-1 overflow-y-auto px-6 no-scrollbar" style={{ paddingBottom: showPills ? "64px" : "16px" }}>
               <ChatConversation
                 active={active}
                 showThinking={showThinking}
