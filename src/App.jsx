@@ -367,37 +367,25 @@ function FigmaDeckModal({ onClose }) {
 /* ─── BENTO TILE: Hero (name + tagline + profile pic popping out) ─── */
 function HeroTile() {
   return (
-    /*
-      Wrapper is overflow-visible so the pic card can pop out to the right.
-      Pic card is absolutely positioned — right edge aligned with tile right,
-      vertically centered, extending BEYOND the tile boundary via negative margins.
-      The tile itself only contains the text on the left.
-    */
-    <div className="relative overflow-visible" style={{ paddingRight: "170px" }}>
-      {/* The actual tile — text only */}
-      <div
-        className="rounded-[32px] bg-[#FFF8F5] p-8"
-        style={{ minHeight: "200px" }}
-      >
+    /* Pic is inside the tile bottom-right, cropped from bottom, with white border */
+    <div
+      className="relative overflow-hidden rounded-[32px] bg-[#FFF8F5] p-8 flex flex-col justify-between"
+      style={{ minHeight: "200px", paddingRight: "200px" }}
+    >
+      {/* Name + tagline */}
+      <div>
         <h1 className={`text-[52px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#7B3310] whitespace-nowrap ${HEADING}`}>
           Sanjana Venkat
         </h1>
-        <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149] max-w-[360px]">
+        <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149]">
           I turn ambiguity into direction. Let me show you.
         </p>
       </div>
 
-      {/* Profile pic card — floats to the right of the tile, overlapping it */}
+      {/* Profile pic — inside tile, anchored bottom-right, pops from bottom */}
       <div
-        className="absolute overflow-hidden rounded-[24px]"
-        style={{
-          width: "150px",
-          height: "195px",
-          top: "50%",
-          transform: "translateY(-50%)",
-          right: "0px",
-          zIndex: 30,
-        }}
+        className="absolute overflow-hidden rounded-t-[20px] rounded-bl-[20px] border-4 border-white"
+        style={{ width: "170px", height: "210px", bottom: "0px", right: "24px" }}
       >
         <img
           src="/profile.jpg"
@@ -476,8 +464,7 @@ const WORK_PREVIEWS = [
     url: AI_FRAMER_URL,
   },
   {
-    src: "/outdone-preview.png",
-    alt: "Travel DNA",     /* Image 3: Outdone / Travel DNA */
+    src: "/outdone-preview.png",     /* Image 3: Outdone / Travel DNA */
     fallbackSrc: null,
     label: "Travel DNA",
     url: TRAVEL_DNA_URL,
@@ -495,25 +482,27 @@ function MyWorkTile({ onOpen }) {
         my work
       </p>
 
-      {/* Three thumbnails in one row */}
+      {/* Three thumbnails in one row — label on top, image cropped from bottom */}
       <div className="flex gap-4 flex-1">
         {WORK_PREVIEWS.map((proj) => (
           <div
             key={proj.label}
-            className="flex-1 relative overflow-hidden rounded-[20px] bg-[#F0EDEB]"
-            style={{ height: "160px" }}
+            className="flex-1 relative overflow-hidden rounded-[20px] bg-[#EDEAE7] flex flex-col"
+            style={{ height: "180px" }}
           >
-            <img
-              src={proj.src}
-              alt={proj.label}
-              className="w-full h-full object-cover grayscale transition-all duration-500 hover:grayscale-0"
-              onError={(e) => { e.target.style.display = "none"; }}
-            />
-            {/* Label overlay */}
-            <div className="absolute bottom-0 left-0 right-0 px-3 py-2 bg-gradient-to-t from-black/40 to-transparent">
-              <p className={`text-[11px] font-semibold text-white leading-tight ${HEADING}`}>
-                {proj.label}
-              </p>
+            {/* Label on top */}
+            <p className={`px-4 pt-4 pb-2 text-[11px] font-semibold text-[#6B625C] leading-tight shrink-0 ${HEADING}`}>
+              {proj.label}
+            </p>
+            {/* Image crops from bottom */}
+            <div className="flex-1 relative overflow-hidden rounded-b-[20px]">
+              <img
+                src={proj.src}
+                alt={proj.label}
+                className="absolute bottom-0 left-0 w-full object-cover object-top grayscale transition-all duration-500 hover:grayscale-0"
+                style={{ height: "130px" }}
+                onError={(e) => { e.target.parentElement.style.background = "#E0DDD9"; }}
+              />
             </div>
           </div>
         ))}
@@ -941,20 +930,20 @@ export default function PortfolioHome() {
                 openProjectForActivePill={openProjectForActivePill}
               />
             </div>
-            {/* Pills float as absolute overlay at bottom — chat content scrolls behind them */}
+            {/* Pills: absolute bottom, fully transparent bg so chat content shows through */}
             {showPills && (
-              <div className="absolute bottom-0 left-0 right-0 px-6 pb-4 pt-6 animate-[fadeUp_0.45s_ease_forwards]"
-                style={{ background: "linear-gradient(to bottom, transparent, white 35%)" }}>
+              <div className="absolute bottom-0 left-0 right-0 px-6 pb-4 animate-[fadeUp_0.45s_ease_forwards]"
+                style={{ background: "none" }}>
                 <div className="no-scrollbar overflow-x-auto">
                   <div className="flex gap-2" style={{ width: "max-content" }}>
                     {PILLS.map((pill) => (
                       <button
                         key={pill}
                         onClick={() => handlePillSelect(pill)}
-                        className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] ${
+                        className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] backdrop-blur-sm ${
                           active === pill
-                            ? "bg-white border-[#A5522A] text-[#A5522A]"
-                            : "bg-white border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
+                            ? "bg-white/90 border-[#A5522A] text-[#A5522A]"
+                            : "bg-white/90 border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
                         } ${HEADING}`}
                       >
                         {pill}
