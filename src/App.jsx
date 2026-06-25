@@ -227,16 +227,15 @@ function PlayIcon() {
   );
 }
 
-function Typewriter({ text, shouldStart, onDone }) {
+function Typewriter({ text, shouldStart, onDone, scrollRef }) {
   const cleanText = (text || "").trim();
   const [displayed, setDisplayed] = useState("");
   const [typedText, setTypedText] = useState(null);
   const onDoneRef = useRef(onDone);
-  const containerRef = useRef(null);
+  const scrollRefInternal = useRef(scrollRef);
 
-  useEffect(() => {
-    onDoneRef.current = onDone;
-  }, [onDone]);
+  useEffect(() => { onDoneRef.current = onDone; }, [onDone]);
+  useEffect(() => { scrollRefInternal.current = scrollRef; }, [scrollRef]);
 
   useEffect(() => {
     if (!shouldStart) return;
@@ -256,6 +255,11 @@ function Typewriter({ text, shouldStart, onDone }) {
         setDisplayed(cleanText.slice(0, index + 1));
         index += 1;
 
+        // Scroll to bottom on every character via direct ref
+        if (scrollRefInternal.current) {
+          scrollRefInternal.current.scrollTop = scrollRefInternal.current.scrollHeight;
+        }
+
         if (index >= cleanText.length) {
           clearInterval(interval);
           setTypedText(cleanText);
@@ -272,12 +276,13 @@ function Typewriter({ text, shouldStart, onDone }) {
   }, [cleanText, shouldStart, typedText]);
 
   return (
-    <p ref={containerRef} className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
+    <p className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
       {displayed}
       {typedText !== cleanText && <span className="animate-pulse text-[#A5522A]">|</span>}
     </p>
   );
 }
+
 
 function SegmentationDiagram() {
   return <img src="/segmentation.png" alt="Audience segmentation framework" className="mt-8 w-full object-contain" />;
@@ -376,7 +381,7 @@ function HeroTile() {
       - text: name 40px #9C3F14, tagline 16px #57423A
     */
     <div
-      className="relative overflow-visible rounded-[32px] p-8 flex flex-col justify-center"
+      className="relative overflow-hidden rounded-[32px] p-8 flex flex-col justify-center"
       style={{
         background: "rgba(156, 63, 20, 0.17)",
         minHeight: "219px",
@@ -393,14 +398,14 @@ function HeroTile() {
         I turn ambiguity into direction. Let me show you.
       </p>
 
-      {/* Profile pic — top-right, tilted 9.83deg, white border, pops from bottom of tile */}
+      {/* Profile pic — bottom-right, tilted 9.83deg, white border, bottom clips at tile edge */}
       <div
         className="absolute overflow-hidden"
         style={{
-          width: "192px",
-          height: "216px",
-          top: "24px",
-          right: "-8px",
+          width: "200px",
+          height: "240px",
+          bottom: "-30px",
+          right: "8px",
           borderRadius: "22px",
           border: "8px solid #FFFFFF",
           boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
@@ -411,7 +416,7 @@ function HeroTile() {
         <img
           src="/profile.jpg"
           alt="Sanjana Venkat"
-          className="w-full h-full object-cover object-top"
+          className="w-full h-full object-cover object-center"
         />
       </div>
     </div>
@@ -487,7 +492,8 @@ const WORK_PREVIEWS = [
   {
     src: "/outdone-preview.png",     /* Image 3: Outdone / Travel DNA */
     fallbackSrc: null,
-    label: "Travel DNA",
+    label: "Outdone",
+    isNew: true,
     url: TRAVEL_DNA_URL,
   },
 ];
@@ -497,27 +503,29 @@ function MyWorkTile({ onOpen }) {
     /* Entire tile is one clickable button */
     <button
       onClick={onOpen}
-      className={`group relative w-full rounded-[32px] bg-white p-7 flex flex-col text-left ${BODY}`}
+      className={`group relative w-full rounded-[32px] bg-white flex flex-col text-left overflow-hidden ${BODY}`}
     >
-      <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+      {/* MY WORK label — inside padded area */}
+      <p className={`pt-7 px-7 pb-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
         my work
       </p>
 
-      {/* Three cards — label above, image fills full card, each slightly offset to suggest depth */}
-      <div className="flex gap-5 flex-1" style={{ alignItems: "flex-end" }}>
+      {/* Images bleed out left, right, and bottom — px-4 so left/right edges clip */}
+      <div className="flex gap-4 px-4 pb-0" style={{ alignItems: "flex-end", marginBottom: "-2px" }}>
         {WORK_PREVIEWS.map((proj, i) => (
-          <div key={proj.label} className="flex-1 flex flex-col gap-2">
+          <div key={proj.label} className="flex-1 flex flex-col gap-2" style={{ minWidth: 0 }}>
             {/* Label above card */}
             <p className={`text-[11px] font-semibold text-[#6B625C] leading-tight px-1 ${HEADING}`}>
               {proj.label}
             </p>
-            {/* Image card — taller cards feel like they come from bottom */}
+            {/* Image card — clips at tile bottom */}
             <div
               className="relative overflow-hidden w-full"
               style={{
-                height: "200px",
-                borderRadius: "22px",
+                height: "220px",
+                borderRadius: "18px 18px 0 0",
                 border: "6px solid rgba(221, 192, 182, 0.5)",
+                borderBottom: "none",
                 boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
                 background: "#EDEAE7",
               }}
@@ -528,6 +536,14 @@ function MyWorkTile({ onOpen }) {
                 className="w-full h-full object-cover object-top"
                 onError={(e) => { e.target.style.opacity = "0"; }}
               />
+              {/* NEW badge */}
+              {proj.isNew && (
+                <div
+                  className={`absolute top-3 right-3 px-2.5 py-1 bg-white rounded-full text-[8px] font-bold tracking-[0.9px] uppercase text-black ${HEADING}`}
+                >
+                  New
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -625,7 +641,7 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   );
 }
 
-function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill }) {
+function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, scrollRef }) {
   return (
     <>
       <div className="mb-6 flex justify-end">
@@ -646,7 +662,7 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
       {showResponse && (
         <>
           <div className="rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-            <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} />
+            <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} scrollRef={scrollRef} />
 
             {active === "how i uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
 
