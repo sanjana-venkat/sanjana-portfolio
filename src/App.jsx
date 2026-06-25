@@ -367,30 +367,15 @@ function FigmaDeckModal({ onClose }) {
 /* ─── BENTO TILE: Hero (name + tagline + profile pic popping out) ─── */
 function HeroTile() {
   return (
-    /*
-      Hero tile: full width across cols 2-3.
-      Profile pic card is absolutely positioned — anchored to bottom-right of the tile,
-      hanging ~110px below so it visually bridges into the Explore/Believe row below.
-      overflow-visible on this tile + z-20 on the pic card makes it layer on top.
-    */
+    /* Hero: name in one row, pic top-right, Resume link bottom-right */
     <div
-      className="relative overflow-visible rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-8 flex items-center"
-      style={{ minHeight: "190px" }}
+      className="relative overflow-hidden rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-8 flex flex-col justify-between"
+      style={{ minHeight: "200px" }}
     >
-      {/* Text — left side */}
-      <div className="flex-1 pr-4">
-        <h1 className={`text-[56px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#A5522A] ${HEADING}`}>
-          Sanjana<br />Venkat
-        </h1>
-        <p className="mt-4 text-[15px] leading-[1.5] text-[#5F5149] max-w-[320px]">
-          I turn ambiguity into direction. Let me show you.
-        </p>
-      </div>
-
-      {/* Profile pic card — right side, hangs below the tile bottom */}
+      {/* Profile pic — top right corner */}
       <div
-        className="absolute z-20 overflow-hidden rounded-[24px] border-4 border-white shadow-2xl"
-        style={{ width: "140px", height: "185px", bottom: "-95px", right: "32px" }}
+        className="absolute top-0 right-0 overflow-hidden rounded-bl-[28px] rounded-tr-[32px] border-b-4 border-l-4 border-white shadow-xl"
+        style={{ width: "120px", height: "150px" }}
       >
         <img
           src="/profile.jpg"
@@ -398,25 +383,50 @@ function HeroTile() {
           className="w-full h-full object-cover grayscale transition-all duration-500 hover:grayscale-0"
         />
       </div>
+
+      {/* Name — single row, large */}
+      <div>
+        <h1 className={`text-[52px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#A5522A] whitespace-nowrap ${HEADING}`}>
+          Sanjana Venkat
+        </h1>
+        <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149] max-w-[380px]">
+          I turn ambiguity into direction. Let me show you.
+        </p>
+      </div>
+
+      {/* Resume link — bottom right */}
+      <div className="flex justify-end mt-4">
+        <a
+          href="/SanjanaVenkat_ProductDesign_Resume.pdf"
+          target="_blank"
+          rel="noreferrer"
+          className={`inline-flex items-center gap-2 text-[13px] font-semibold text-[#A5522A] hover:opacity-70 transition ${HEADING}`}
+        >
+          Resume
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#A5522A] text-[#A5522A]">→</span>
+        </a>
+      </div>
     </div>
   );
 }
 
-/* ─── BENTO TILE: What I Believe In ─── */
+/* ─── BENTO TILE: What I Believe In (fixed height matching NavTile) ─── */
 function WhatIBelieveTile() {
   return (
-    <article className={`rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[14px] transition-all duration-300 hover:-translate-y-1 ${BODY}`}>
-      <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-        what i believe in
-      </p>
+    <article className={`rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[14px] h-full flex flex-col justify-between ${BODY}`} style={{ minHeight: "280px" }}>
+      <div>
+        <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+          what i believe in
+        </p>
 
-      <p className="leading-[1.65] text-[#5F5149]">
-        i believe good products don't just solve problems. they reveal ones people didn't know they had.
-      </p>
+        <p className="leading-[1.65] text-[#5F5149]">
+          i believe good products don't just solve problems. they reveal ones people didn't know they had.
+        </p>
 
-      <p className="mt-4 leading-[1.65] text-[#5F5149]">
-        with AI and personalization, that gap gets smaller. But the real work is still human: listening, framing, building things that help people move forward.
-      </p>
+        <p className="mt-4 leading-[1.65] text-[#5F5149]">
+          with AI and personalization, that gap gets smaller. But the real work is still human: listening, framing, building things that help people move forward.
+        </p>
+      </div>
 
       <div className="mt-6 flex items-center gap-4">
         <a href="mailto:sanjanavnkt20@gmail.com" aria-label="Email Sanjana" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
@@ -431,11 +441,11 @@ function WhatIBelieveTile() {
   );
 }
 
-/* ─── BENTO TILE: Nav Pills ─── */
+/* ─── BENTO TILE: Nav Pills (fixed height) ─── */
 function NavTile({ onNav }) {
   const items = ["what are you building now", "resume", "github", "contact"];
   return (
-    <div className={`rounded-[32px] border border-[#E4E2E1] bg-white p-7 flex flex-col gap-3 ${BODY}`}>
+    <div className={`rounded-[32px] border border-[#E4E2E1] bg-white p-7 flex flex-col gap-3 h-full ${BODY}`} style={{ minHeight: "280px" }}>
       <p className={`mb-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
         explore
       </p>
@@ -452,35 +462,72 @@ function NavTile({ onNav }) {
   );
 }
 
-/* ─── BENTO TILE: My Work preview ─── */
+/* ─── BENTO TILE: My Work — 3 project thumbnails in one row ─── */
+const WORK_PREVIEWS = [
+  {
+    src: "/marketing-preview.png",   /* Image 1: personalized marketing (JPMC phones) */
+    fallbackSrc: null,
+    label: "AI Personalization",
+    url: MARKETING_TILES_URL,
+  },
+  {
+    src: "/ai-chat-preview.png",     /* Image 2: AI chat journeys (Chase Assist screens) */
+    fallbackSrc: null,
+    label: "AI Chat Journeys",
+    url: AI_FRAMER_URL,
+  },
+  {
+    src: "/outdone-preview.png",     /* Image 3: Outdone / Travel DNA */
+    fallbackSrc: null,
+    label: "Travel DNA",
+    url: TRAVEL_DNA_URL,
+  },
+];
+
 function MyWorkTile({ onOpen }) {
-  const previews = PROJECTS.slice(0, 4);
   return (
-    <button
-      onClick={onOpen}
-      className={`group relative w-full rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-left transition-all duration-300 hover:-translate-y-1 ${BODY}`}
+    <div
+      className={`group relative w-full rounded-[32px] border border-[#E4E2E1] bg-white p-7 flex flex-col ${BODY}`}
     >
-      <p className={`mb-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+      <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         my work
       </p>
 
-      <div className="grid grid-cols-2 gap-3">
-        {previews.map((project) => (
-          <div
-            key={project.label}
-            className="flex h-[80px] items-end overflow-hidden rounded-[16px] bg-[#F8F7F6] border border-[#E4E2E1] p-3 transition group-hover:border-[#D8C5BB]"
+      {/* Three thumbnails in one row */}
+      <div className="flex gap-4 flex-1">
+        {WORK_PREVIEWS.map((proj) => (
+          <button
+            key={proj.label}
+            onClick={onOpen}
+            className="flex-1 relative overflow-hidden rounded-[20px] border-4 border-white shadow-[0_4px_24px_rgba(0,0,0,0.10)] transition hover:shadow-[0_8px_32px_rgba(0,0,0,0.16)] hover:-translate-y-1 bg-[#F0EDEB]"
+            style={{ height: "160px" }}
           >
-            <p className={`text-[11px] font-semibold text-[#6B625C] leading-tight ${HEADING}`}>
-              {project.label}
-            </p>
-          </div>
+            <img
+              src={proj.src}
+              alt={proj.label}
+              className="w-full h-full object-cover"
+              onError={(e) => { e.target.style.display = "none"; }}
+            />
+            {/* Label overlay */}
+            <div className="absolute bottom-0 left-0 right-0 px-3 py-2 bg-gradient-to-t from-black/40 to-transparent">
+              <p className={`text-[11px] font-semibold text-white leading-tight ${HEADING}`}>
+                {proj.label}
+              </p>
+            </div>
+          </button>
         ))}
       </div>
 
-      <p className={`mt-4 text-[13px] font-medium text-[#A5522A] underline underline-offset-4 ${HEADING}`}>
-        view all work →
-      </p>
-    </button>
+      {/* View all — bottom right */}
+      <div className="flex justify-end mt-4">
+        <button
+          onClick={onOpen}
+          className={`text-[13px] font-semibold text-[#A5522A] underline underline-offset-4 hover:opacity-70 transition ${HEADING}`}
+        >
+          view all work →
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -859,7 +906,7 @@ export default function PortfolioHome() {
         <div
           className="hidden lg:grid"
           style={{
-            gridTemplateColumns: "380px 1fr 1fr",
+            gridTemplateColumns: "480px 1fr 1fr",
             gridTemplateRows: "auto auto auto",
             gap: "14px",
           }}
@@ -869,7 +916,7 @@ export default function PortfolioHome() {
           <div
             ref={chatCardRef}
             className="rounded-[32px] border border-[#E4E2E1] bg-white overflow-hidden flex flex-col"
-            style={{ gridColumn: "1", gridRow: "1 / 3", height: "580px" }}
+            style={{ gridColumn: "1", gridRow: "1 / 3", height: "600px" }}
           >
             <div className="px-6 pt-6 pb-3 shrink-0">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
@@ -888,21 +935,25 @@ export default function PortfolioHome() {
               />
             </div>
             {showPills && (
-              <div className="shrink-0 border-t border-[#F0EDEB] px-6 py-4 animate-[fadeUp_0.45s_ease_forwards]">
-                <div className="flex flex-wrap gap-2">
-                  {PILLS.map((pill) => (
-                    <button
-                      key={pill}
-                      onClick={() => handlePillSelect(pill)}
-                      className={`rounded-full border px-4 py-2 text-[11px] transition hover:scale-[1.04] ${
-                        active === pill
-                          ? "border-[#A5522A] bg-white text-[#A5522A]"
-                          : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#D8C5BB]"
-                      } ${HEADING}`}
-                    >
-                      {pill}
-                    </button>
-                  ))}
+              <div className="shrink-0 px-6 pt-3 pb-5 animate-[fadeUp_0.45s_ease_forwards]">
+                {/* Pills: 2 per row, horizontally scrollable, no background box */}
+                <div className="no-scrollbar overflow-x-auto">
+                  <div className="grid gap-2" style={{ gridTemplateColumns: "1fr 1fr", width: "max-content", minWidth: "100%" }}>
+                    {PILLS.map((pill) => (
+                      <button
+                        key={pill}
+                        onClick={() => handlePillSelect(pill)}
+                        className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] ${
+                          active === pill
+                            ? "border-[#A5522A] text-[#A5522A]"
+                            : "border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
+                        } ${HEADING}`}
+                        style={{ background: "none" }}
+                      >
+                        {pill}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
