@@ -373,7 +373,7 @@ function HeroTile() {
       overflow-hidden — no displacement, no gap waste.
     */
     <div
-      className="relative overflow-hidden rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-8 flex flex-col justify-between"
+      className="relative overflow-visible rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-8 flex flex-col justify-between"
       style={{ minHeight: "200px", paddingRight: "180px" }}
     >
       {/* Name + tagline */}
@@ -386,8 +386,8 @@ function HeroTile() {
         </p>
       </div>
 
-      {/* Resume link — bottom right */}
-      <div className="absolute bottom-8 right-8">
+      {/* Resume link — bottom right, above pic */}
+      <div className="absolute bottom-8 right-8" style={{ zIndex: 31 }}>
         <a
           href="/SanjanaVenkat_ProductDesign_Resume.pdf"
           target="_blank"
@@ -398,10 +398,10 @@ function HeroTile() {
         </a>
       </div>
 
-      {/* Profile pic — right side, fills tile height, no overflow */}
+      {/* Profile pic — right side, fills tile height, z-30 so it floats above row-2 tiles */}
       <div
         className="absolute top-0 right-0 bottom-0 overflow-hidden rounded-r-[32px] rounded-l-[22px] border-l-4 border-white shadow-xl"
-        style={{ width: "155px" }}
+        style={{ width: "155px", zIndex: 30 }}
       >
         <img
           src="/profile.jpg"
@@ -492,7 +492,7 @@ function MyWorkTile({ onOpen }) {
     /* Entire tile is one clickable button */
     <button
       onClick={onOpen}
-      className={`group relative w-full rounded-[32px] border border-[#E4E2E1] bg-white p-7 flex flex-col text-left transition-all duration-200 hover:border-[#D8C5BB] hover:shadow-md ${BODY}`}
+      className={`group relative w-full rounded-[32px] border border-[#E4E2E1] bg-white p-7 flex flex-col text-left ${BODY}`}
     >
       <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         my work
@@ -503,7 +503,7 @@ function MyWorkTile({ onOpen }) {
         {WORK_PREVIEWS.map((proj) => (
           <div
             key={proj.label}
-            className="flex-1 relative overflow-hidden rounded-[20px] border-4 border-white shadow-[0_4px_24px_rgba(0,0,0,0.10)] transition-all duration-200 group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.14)] group-hover:-translate-y-0.5 bg-[#F0EDEB]"
+            className="flex-1 relative overflow-hidden rounded-[20px] border-4 border-white shadow-[0_4px_24px_rgba(0,0,0,0.10)] bg-[#F0EDEB]"
             style={{ height: "160px" }}
           >
             <img
@@ -524,7 +524,7 @@ function MyWorkTile({ onOpen }) {
 
       {/* View all — bottom right, styled same as Resume link */}
       <div className="flex justify-end mt-4">
-        <span className={`text-[13px] font-semibold text-[#A5522A] underline underline-offset-4 group-hover:opacity-70 transition ${HEADING}`}>
+        <span className={`text-[13px] font-semibold text-[#A5522A] underline underline-offset-4 transition ${HEADING}`}>
           view all work →
         </span>
       </div>
@@ -673,7 +673,7 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
         <div className="pointer-events-auto max-w-[calc(100%-72px)] rounded-[999px] border border-[#E4E2E1] bg-white px-7 py-5 shadow-sm">
           <div className="flex items-center gap-2">
             <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
-              ask sanjana
+              ask me
             </p>
 
             <button
@@ -925,11 +925,11 @@ export default function PortfolioHome() {
           <div
             ref={chatCardRef}
             className="rounded-[32px] border border-[#E4E2E1] bg-white overflow-hidden flex flex-col"
-            style={{ gridColumn: "1", gridRow: "1 / 3", height: "600px" }}
+            style={{ gridColumn: "1", gridRow: "1 / 3", height: "520px" }}
           >
             <div className="px-6 pt-6 pb-3 shrink-0">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-                ask sanjana
+                ask me
               </p>
             </div>
             <div className="flex-1 overflow-y-auto px-6 pb-4 no-scrollbar">
@@ -945,19 +945,18 @@ export default function PortfolioHome() {
             </div>
             {showPills && (
               <div className="shrink-0 px-6 pt-3 pb-5 animate-[fadeUp_0.45s_ease_forwards]">
-                {/* Pills: single horizontal scrolling row, no background */}
+                {/* Pills: horizontal scroll, white filled, floating (no border outline) */}
                 <div className="no-scrollbar overflow-x-auto">
                   <div className="flex gap-2" style={{ width: "max-content" }}>
                     {PILLS.map((pill) => (
                       <button
                         key={pill}
                         onClick={() => handlePillSelect(pill)}
-                        className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] ${
+                        className={`rounded-full px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] shadow-sm ${
                           active === pill
-                            ? "border-[#A5522A] text-[#A5522A]"
-                            : "border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
+                            ? "bg-white border border-[#A5522A] text-[#A5522A]"
+                            : "bg-white border border-transparent text-[#6B625C] hover:shadow-md"
                         } ${HEADING}`}
-                        style={{ background: "none" }}
                       >
                         {pill}
                       </button>
@@ -1005,7 +1004,7 @@ export default function PortfolioHome() {
           <div className="rounded-[32px] border border-[#E4E2E1] bg-white overflow-hidden" style={{ height: "360px" }}>
             <div className="px-6 pt-6 pb-3">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-                ask sanjana
+                ask me
               </p>
             </div>
             <div className="px-6 pb-4 overflow-y-auto no-scrollbar" style={{ height: "290px" }}>
