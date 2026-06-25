@@ -865,7 +865,7 @@ export default function PortfolioHome() {
   return (
     <main
       onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })}
-      className={`relative min-h-screen w-full overflow-x-hidden bg-[#F0EDEA] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}
+      className={`relative min-h-screen w-full overflow-x-hidden bg-[#F7F4F2] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}
     >
       {/* Modals */}
       {projectOpen === "work-browser" && <WorkBrowserModal onClose={() => setProjectOpen(null)} />}
