@@ -368,45 +368,41 @@ function FigmaDeckModal({ onClose }) {
 function HeroTile() {
   return (
     /*
-      Pic is inside the tile, absolutely right-aligned (top to bottom of tile).
-      Right padding on text prevents overlap. Resume link bottom-right.
-      overflow-hidden — no displacement, no gap waste.
+      Wrapper is overflow-visible so the pic card can pop out to the right.
+      Pic card is absolutely positioned — right edge aligned with tile right,
+      vertically centered, extending BEYOND the tile boundary via negative margins.
+      The tile itself only contains the text on the left.
     */
-    <div
-      className="relative overflow-visible rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-8 flex flex-col justify-between"
-      style={{ minHeight: "200px", paddingRight: "180px" }}
-    >
-      {/* Name + tagline */}
-      <div>
+    <div className="relative overflow-visible" style={{ paddingRight: "170px" }}>
+      {/* The actual tile — text only */}
+      <div
+        className="rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-8"
+        style={{ minHeight: "200px" }}
+      >
         <h1 className={`text-[52px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#A5522A] whitespace-nowrap ${HEADING}`}>
           Sanjana Venkat
         </h1>
-        <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149]">
+        <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149] max-w-[360px]">
           I turn ambiguity into direction. Let me show you.
         </p>
       </div>
 
-      {/* Resume link — bottom right, above pic */}
-      <div className="absolute bottom-8 right-8" style={{ zIndex: 31 }}>
-        <a
-          href="/SanjanaVenkat_ProductDesign_Resume.pdf"
-          target="_blank"
-          rel="noreferrer"
-          className={`text-[13px] font-semibold text-[#A5522A] underline underline-offset-4 hover:opacity-70 transition ${HEADING}`}
-        >
-          Resume →
-        </a>
-      </div>
-
-      {/* Profile pic — right side, fills tile height, z-30 so it floats above row-2 tiles */}
+      {/* Profile pic card — floats to the right of the tile, overlapping it */}
       <div
-        className="absolute top-0 right-0 bottom-0 overflow-hidden rounded-r-[32px] rounded-l-[22px] border-l-4 border-white shadow-xl"
-        style={{ width: "155px", zIndex: 30 }}
+        className="absolute overflow-hidden rounded-[24px] border-4 border-white shadow-2xl"
+        style={{
+          width: "150px",
+          height: "195px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          right: "0px",
+          zIndex: 30,
+        }}
       >
         <img
           src="/profile.jpg"
           alt="Sanjana Venkat"
-          className="w-full h-full object-cover object-center grayscale transition-all duration-500 hover:grayscale-0"
+          className="w-full h-full object-cover object-top grayscale transition-all duration-500 hover:grayscale-0"
         />
       </div>
     </div>
@@ -952,10 +948,10 @@ export default function PortfolioHome() {
                       <button
                         key={pill}
                         onClick={() => handlePillSelect(pill)}
-                        className={`rounded-full px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] shadow-sm ${
+                        className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] ${
                           active === pill
-                            ? "bg-white border border-[#A5522A] text-[#A5522A]"
-                            : "bg-white border border-transparent text-[#6B625C] hover:shadow-md"
+                            ? "bg-transparent border-[#A5522A] text-[#A5522A]"
+                            : "bg-transparent border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
                         } ${HEADING}`}
                       >
                         {pill}
