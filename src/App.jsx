@@ -505,7 +505,7 @@ function MyWorkTile({ onOpen }) {
             <img
               src={proj.src}
               alt={proj.label}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover grayscale transition-all duration-500 hover:grayscale-0"
               onError={(e) => { e.target.style.display = "none"; }}
             />
             {/* Label overlay */}
@@ -928,7 +928,7 @@ export default function PortfolioHome() {
                 ask me
               </p>
             </div>
-            <div className="flex-1 overflow-y-auto px-6 pb-4 no-scrollbar">
+            <div className="flex-1 overflow-y-auto px-6 pb-4 no-scrollbar bg-transparent">
               <ChatConversation
                 active={active}
                 showThinking={showThinking}
@@ -940,9 +940,9 @@ export default function PortfolioHome() {
               />
             </div>
             {showPills && (
-              <div className="shrink-0 px-6 pt-3 pb-5 animate-[fadeUp_0.45s_ease_forwards]">
-                {/* Pills: horizontal scroll, white filled, floating (no border outline) */}
-                <div className="no-scrollbar overflow-x-auto">
+              <div className="shrink-0 px-6 pt-3 pb-5 overflow-hidden">
+                {/* Pills: horizontal scroll, transparent bg, outlined pills */}
+                <div className="no-scrollbar overflow-x-auto animate-[fadeUp_0.45s_ease_forwards]">
                   <div className="flex gap-2" style={{ width: "max-content" }}>
                     {PILLS.map((pill) => (
                       <button
