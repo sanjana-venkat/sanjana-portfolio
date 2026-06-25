@@ -367,25 +367,29 @@ function FigmaDeckModal({ onClose }) {
 /* ─── BENTO TILE: Hero (name + tagline + profile pic popping out) ─── */
 function HeroTile() {
   return (
-    /* Hero: name in one row, pic top-right, Resume link bottom-right */
+    /*
+      overflow-visible so the pic card can hang below into the row gap.
+      Pic is absolutely positioned bottom-right, z-20, pops out below the tile.
+      Resume link sits top-right inside the tile.
+    */
     <div
-      className="relative overflow-hidden rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-8 flex flex-col justify-between"
+      className="relative overflow-visible rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-8 flex flex-col justify-between"
       style={{ minHeight: "200px" }}
     >
-      {/* Profile pic — top right corner */}
-      <div
-        className="absolute top-0 right-0 overflow-hidden rounded-bl-[28px] rounded-tr-[32px] border-b-4 border-l-4 border-white shadow-xl"
-        style={{ width: "120px", height: "150px" }}
-      >
-        <img
-          src="/profile.jpg"
-          alt="Sanjana Venkat"
-          className="w-full h-full object-cover grayscale transition-all duration-500 hover:grayscale-0"
-        />
+      {/* Resume link — top right, inside tile */}
+      <div className="flex justify-end">
+        <a
+          href="/SanjanaVenkat_ProductDesign_Resume.pdf"
+          target="_blank"
+          rel="noreferrer"
+          className={`inline-flex items-center gap-2 text-[13px] font-semibold text-[#A5522A] underline underline-offset-4 hover:opacity-70 transition ${HEADING}`}
+        >
+          Resume →
+        </a>
       </div>
 
-      {/* Name — single row, large */}
-      <div>
+      {/* Name — single row */}
+      <div className="mt-4">
         <h1 className={`text-[52px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#A5522A] whitespace-nowrap ${HEADING}`}>
           Sanjana Venkat
         </h1>
@@ -394,17 +398,16 @@ function HeroTile() {
         </p>
       </div>
 
-      {/* Resume link — bottom right */}
-      <div className="flex justify-end mt-4">
-        <a
-          href="/SanjanaVenkat_ProductDesign_Resume.pdf"
-          target="_blank"
-          rel="noreferrer"
-          className={`inline-flex items-center gap-2 text-[13px] font-semibold text-[#A5522A] hover:opacity-70 transition ${HEADING}`}
-        >
-          Resume
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#A5522A] text-[#A5522A]">→</span>
-        </a>
+      {/* Profile pic card — bottom right, overflows below tile via z-20 */}
+      <div
+        className="absolute z-20 overflow-hidden rounded-[22px] border-4 border-white shadow-2xl"
+        style={{ width: "130px", height: "165px", bottom: "-80px", right: "32px" }}
+      >
+        <img
+          src="/profile.jpg"
+          alt="Sanjana Venkat"
+          className="w-full h-full object-cover grayscale transition-all duration-500 hover:grayscale-0"
+        />
       </div>
     </div>
   );
@@ -413,7 +416,7 @@ function HeroTile() {
 /* ─── BENTO TILE: What I Believe In (fixed height matching NavTile) ─── */
 function WhatIBelieveTile() {
   return (
-    <article className={`rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[14px] h-full flex flex-col justify-between ${BODY}`} style={{ minHeight: "280px" }}>
+    <article className={`rounded-[32px] border border-[#E4E2E1] bg-white p-6 text-[14px] h-full flex flex-col justify-between ${BODY}`} style={{ minHeight: "220px" }}>
       <div>
         <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
           what i believe in
@@ -445,7 +448,7 @@ function WhatIBelieveTile() {
 function NavTile({ onNav }) {
   const items = ["what are you building now", "resume", "github", "contact"];
   return (
-    <div className={`rounded-[32px] border border-[#E4E2E1] bg-white p-7 flex flex-col gap-3 h-full ${BODY}`} style={{ minHeight: "280px" }}>
+    <div className={`rounded-[32px] border border-[#E4E2E1] bg-white p-6 flex flex-col gap-2 h-full ${BODY}`} style={{ minHeight: "220px" }}>
       <p className={`mb-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
         explore
       </p>
@@ -486,8 +489,10 @@ const WORK_PREVIEWS = [
 
 function MyWorkTile({ onOpen }) {
   return (
-    <div
-      className={`group relative w-full rounded-[32px] border border-[#E4E2E1] bg-white p-7 flex flex-col ${BODY}`}
+    /* Entire tile is one clickable button */
+    <button
+      onClick={onOpen}
+      className={`group relative w-full rounded-[32px] border border-[#E4E2E1] bg-white p-7 flex flex-col text-left transition-all duration-200 hover:border-[#D8C5BB] hover:shadow-md ${BODY}`}
     >
       <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         my work
@@ -496,10 +501,9 @@ function MyWorkTile({ onOpen }) {
       {/* Three thumbnails in one row */}
       <div className="flex gap-4 flex-1">
         {WORK_PREVIEWS.map((proj) => (
-          <button
+          <div
             key={proj.label}
-            onClick={onOpen}
-            className="flex-1 relative overflow-hidden rounded-[20px] border-4 border-white shadow-[0_4px_24px_rgba(0,0,0,0.10)] transition hover:shadow-[0_8px_32px_rgba(0,0,0,0.16)] hover:-translate-y-1 bg-[#F0EDEB]"
+            className="flex-1 relative overflow-hidden rounded-[20px] border-4 border-white shadow-[0_4px_24px_rgba(0,0,0,0.10)] transition-all duration-200 group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.14)] group-hover:-translate-y-0.5 bg-[#F0EDEB]"
             style={{ height: "160px" }}
           >
             <img
@@ -514,20 +518,17 @@ function MyWorkTile({ onOpen }) {
                 {proj.label}
               </p>
             </div>
-          </button>
+          </div>
         ))}
       </div>
 
-      {/* View all — bottom right */}
+      {/* View all — bottom right, styled same as Resume link */}
       <div className="flex justify-end mt-4">
-        <button
-          onClick={onOpen}
-          className={`text-[13px] font-semibold text-[#A5522A] underline underline-offset-4 hover:opacity-70 transition ${HEADING}`}
-        >
+        <span className={`text-[13px] font-semibold text-[#A5522A] underline underline-offset-4 group-hover:opacity-70 transition ${HEADING}`}>
           view all work →
-        </button>
+        </span>
       </div>
-    </div>
+    </button>
   );
 }
 
@@ -908,7 +909,8 @@ export default function PortfolioHome() {
           style={{
             gridTemplateColumns: "480px 1fr 1fr",
             gridTemplateRows: "auto auto auto",
-            gap: "14px",
+            columnGap: "14px",
+            rowGap: "90px",
           }}
         >
 
@@ -936,9 +938,9 @@ export default function PortfolioHome() {
             </div>
             {showPills && (
               <div className="shrink-0 px-6 pt-3 pb-5 animate-[fadeUp_0.45s_ease_forwards]">
-                {/* Pills: 2 per row, horizontally scrollable, no background box */}
+                {/* Pills: single horizontal scrolling row, no background */}
                 <div className="no-scrollbar overflow-x-auto">
-                  <div className="grid gap-2" style={{ gridTemplateColumns: "1fr 1fr", width: "max-content", minWidth: "100%" }}>
+                  <div className="flex gap-2" style={{ width: "max-content" }}>
                     {PILLS.map((pill) => (
                       <button
                         key={pill}
