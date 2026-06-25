@@ -227,7 +227,10 @@ function PlayIcon() {
   );
 }
 
-function Typewriter({ text, shouldStart, onDone, scrollRef }) {
+// Module-level scroll target — set by the chat scroll div, read by Typewriter directly
+let _chatScrollEl = null;
+
+function Typewriter({ text, shouldStart, onDone }) {
   const cleanText = (text || "").trim();
   const [displayed, setDisplayed] = useState("");
   const [typedText, setTypedText] = useState(null);
@@ -252,9 +255,9 @@ function Typewriter({ text, shouldStart, onDone, scrollRef }) {
         setDisplayed(cleanText.slice(0, index + 1));
         index += 1;
 
-        // Scroll to bottom on every character — read scrollRef.current live
-        if (scrollRef && scrollRef.current) {
-          scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        // Scroll to bottom on every character
+        if (_chatScrollEl) {
+          _chatScrollEl.scrollTop = _chatScrollEl.scrollHeight;
         }
 
         if (index >= cleanText.length) {
@@ -402,7 +405,7 @@ function HeroTile() {
           width: "200px",
           height: "240px",
           bottom: "-55px",
-          right: "8px",
+          right: "32px",
           borderRadius: "22px",
           border: "8px solid #FFFFFF",
           boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
@@ -475,23 +478,20 @@ function NavTile({ onNav }) {
 /* ─── BENTO TILE: My Work — 3 project thumbnails in one row ─── */
 const WORK_PREVIEWS = [
   {
-    src: "/marketing-preview.png",   /* Image 1: personalized marketing (JPMC phones) */
-    fallbackSrc: null,
+    src: "/marketing-preview.png",
     label: "AI Personalization",
-    url: MARKETING_TILES_URL,
+    url: MARKETING_TILES_URL,   // opens Framer case study in modal
   },
   {
-    src: "/ai-chat-preview.png",     /* Image 2: AI chat journeys (Chase Assist screens) */
-    fallbackSrc: null,
+    src: "/ai-chat-preview.png",
     label: "AI Chat Journeys",
-    url: AI_FRAMER_URL,
+    url: AI_FRAMER_URL,          // opens Framer case study in modal
   },
   {
-    src: "/outdone-preview.png",     /* Image 3: Outdone / Travel DNA */
-    fallbackSrc: null,
+    src: "/outdone-preview.png",
     label: "Outdone",
     isNew: true,
-    url: TRAVEL_DNA_URL,
+    url: TRAVEL_DNA_URL,         // opens live app
   },
 ];
 
@@ -512,18 +512,30 @@ function MyWorkTile({ onOpen }) {
         - cards taller than remaining space so bottom clips
         - gap between cards preserved
       */}
-      <div className="flex pb-0" style={{ gap: "12px", marginLeft: "-12px", marginRight: "-12px" }}>
+      {/* Cards bleed left/right/bottom — overflow-hidden on parent clips all edges */}
+      <div style={{ display: "flex", gap: "12px", marginLeft: "-12px", marginRight: "-12px", marginBottom: "-2px" }}>
         {WORK_PREVIEWS.map((proj) => (
           <div
             key={proj.label}
-            className="relative overflow-hidden flex-1"
+            className="relative flex-1 overflow-hidden"
             style={{
-              height: "210px",
-              borderRadius: "16px",
+              height: "200px",
+              borderRadius: "16px 16px 0 0",
               border: "5px solid rgba(221, 192, 182, 0.45)",
+              borderBottom: "none",
               boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
               background: "#EDEAE7",
               minWidth: 0,
+              cursor: "pointer",
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (proj.url && proj.url.startsWith("http")) {
+                window.open(proj.url, "_blank");
+              } else {
+                // open work browser for framer links
+                e.currentTarget.closest("button").click();
+              }
             }}
           >
             <img
@@ -532,15 +544,15 @@ function MyWorkTile({ onOpen }) {
               className="w-full h-full object-cover object-top"
               onError={(e) => { e.target.style.opacity = "0"; }}
             />
-
-            {/* Hover overlay: black tint + all-caps label */}
-            <div className="absolute inset-0 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-              style={{ background: "rgba(0,0,0,0.45)" }}>
+            {/* Hover overlay: per-card tint + all-caps label */}
+            <div
+              className="absolute inset-0 flex items-end transition-opacity duration-200 opacity-0 hover:opacity-100"
+              style={{ background: "rgba(0,0,0,0.5)" }}
+            >
               <p className={`px-4 py-3 text-[11px] font-bold tracking-[0.14em] uppercase text-white ${HEADING}`}>
                 {proj.label}
               </p>
             </div>
-
             {/* NEW badge */}
             {proj.isNew && (
               <div className={`absolute top-3 right-3 px-2.5 py-1 bg-white rounded-full text-[8px] font-bold tracking-[0.9px] uppercase text-black ${HEADING}`}>
@@ -643,7 +655,7 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   );
 }
 
-function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, scrollRef }) {
+function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill }) {
   return (
     <>
       <div className="mb-6 flex justify-end">
@@ -664,7 +676,7 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
       {showResponse && (
         <>
           <div className="rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-            <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} scrollRef={scrollRef} />
+            <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} />
 
             {active === "how i uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
 
@@ -958,7 +970,7 @@ export default function PortfolioHome() {
               </p>
             </div>
             {/* Scroll area — padding-bottom makes room for floating pills */}
-            <div ref={chatScrollRef} data-chat-scroll className="flex-1 overflow-y-auto px-6 no-scrollbar" style={{ paddingBottom: showPills ? "64px" : "16px" }}>
+            <div ref={(el) => { chatScrollRef.current = el; _chatScrollEl = el; }} data-chat-scroll className="flex-1 overflow-y-auto px-6 no-scrollbar" style={{ paddingBottom: showPills ? "64px" : "16px" }}>
               <ChatConversation
                 active={active}
                 showThinking={showThinking}
