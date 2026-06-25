@@ -232,10 +232,7 @@ function Typewriter({ text, shouldStart, onDone, scrollRef }) {
   const [displayed, setDisplayed] = useState("");
   const [typedText, setTypedText] = useState(null);
   const onDoneRef = useRef(onDone);
-  const scrollRefInternal = useRef(scrollRef);
-
   useEffect(() => { onDoneRef.current = onDone; }, [onDone]);
-  useEffect(() => { scrollRefInternal.current = scrollRef; }, [scrollRef]);
 
   useEffect(() => {
     if (!shouldStart) return;
@@ -255,9 +252,9 @@ function Typewriter({ text, shouldStart, onDone, scrollRef }) {
         setDisplayed(cleanText.slice(0, index + 1));
         index += 1;
 
-        // Scroll to bottom on every character via direct ref
-        if (scrollRefInternal.current) {
-          scrollRefInternal.current.scrollTop = scrollRefInternal.current.scrollHeight;
+        // Scroll to bottom on every character — read scrollRef.current live
+        if (scrollRef && scrollRef.current) {
+          scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
 
         if (index >= cleanText.length) {
@@ -404,7 +401,7 @@ function HeroTile() {
         style={{
           width: "200px",
           height: "240px",
-          bottom: "-30px",
+          bottom: "-55px",
           right: "8px",
           borderRadius: "22px",
           border: "8px solid #FFFFFF",
@@ -500,51 +497,56 @@ const WORK_PREVIEWS = [
 
 function MyWorkTile({ onOpen }) {
   return (
-    /* Entire tile is one clickable button */
     <button
       onClick={onOpen}
       className={`group relative w-full rounded-[32px] bg-white flex flex-col text-left overflow-hidden ${BODY}`}
     >
-      {/* MY WORK label — inside padded area */}
-      <p className={`pt-7 px-7 pb-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
+      {/* MY WORK label */}
+      <p className={`pt-7 px-7 pb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
         my work
       </p>
 
-      {/* Images bleed out left, right, and bottom — px-4 so left/right edges clip */}
-      <div className="flex gap-4 px-4 pb-0" style={{ alignItems: "flex-end", marginBottom: "-2px" }}>
-        {WORK_PREVIEWS.map((proj, i) => (
-          <div key={proj.label} className="flex-1 flex flex-col gap-2" style={{ minWidth: 0 }}>
-            {/* Label above card */}
-            <p className={`text-[11px] font-semibold text-[#6B625C] leading-tight px-1 ${HEADING}`}>
-              {proj.label}
-            </p>
-            {/* Image card — clips at tile bottom */}
-            <div
-              className="relative overflow-hidden w-full"
-              style={{
-                height: "220px",
-                borderRadius: "18px 18px 0 0",
-                border: "6px solid rgba(221, 192, 182, 0.5)",
-                borderBottom: "none",
-                boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
-                background: "#EDEAE7",
-              }}
-            >
-              <img
-                src={proj.src}
-                alt={proj.label}
-                className="w-full h-full object-cover object-top"
-                onError={(e) => { e.target.style.opacity = "0"; }}
-              />
-              {/* NEW badge */}
-              {proj.isNew && (
-                <div
-                  className={`absolute top-3 right-3 px-2.5 py-1 bg-white rounded-full text-[8px] font-bold tracking-[0.9px] uppercase text-black ${HEADING}`}
-                >
-                  New
-                </div>
-              )}
+      {/*
+        Images bleed out all 4 sides:
+        - negative mx so left/right cards clip against tile edges
+        - cards taller than remaining space so bottom clips
+        - gap between cards preserved
+      */}
+      <div className="flex pb-0" style={{ gap: "12px", marginLeft: "-12px", marginRight: "-12px" }}>
+        {WORK_PREVIEWS.map((proj) => (
+          <div
+            key={proj.label}
+            className="relative overflow-hidden flex-1"
+            style={{
+              height: "210px",
+              borderRadius: "16px",
+              border: "5px solid rgba(221, 192, 182, 0.45)",
+              boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
+              background: "#EDEAE7",
+              minWidth: 0,
+            }}
+          >
+            <img
+              src={proj.src}
+              alt={proj.label}
+              className="w-full h-full object-cover object-top"
+              onError={(e) => { e.target.style.opacity = "0"; }}
+            />
+
+            {/* Hover overlay: black tint + all-caps label */}
+            <div className="absolute inset-0 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              style={{ background: "rgba(0,0,0,0.45)" }}>
+              <p className={`px-4 py-3 text-[11px] font-bold tracking-[0.14em] uppercase text-white ${HEADING}`}>
+                {proj.label}
+              </p>
             </div>
+
+            {/* NEW badge */}
+            {proj.isNew && (
+              <div className={`absolute top-3 right-3 px-2.5 py-1 bg-white rounded-full text-[8px] font-bold tracking-[0.9px] uppercase text-black ${HEADING}`}>
+                New
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -1088,7 +1090,7 @@ export default function PortfolioHome() {
         html,
         body {
           font-family: 'Open Sans', sans-serif;
-          background: #F8F7F6;
+          background: #F7F4F2;
         }
 
         h1,
