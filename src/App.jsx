@@ -78,7 +78,7 @@ I also use AI as a thinking partner in my workflow to rapidly explore, prototype
 
 At JPMC, I shaped the personalization framework by combining research, behavioral signals, and need-based segmentation. Instead of treating users as static personas, we looked at what they needed in the moment.
 
-That thinking helped the team move from “personalized content” to personalized recommendations:
+That thinking helped the team move from "personalized content" to personalized recommendations:
 • what does this customer need right now?
 • what signal tells us that?
 • how should the experience respond?
@@ -93,7 +93,7 @@ That's why I am so excited to unlock more possibilities with AI as we bring in r
 
 That pushed me to learn the backend and map the full Apply & Fulfillment ecosystem. I created a service design blueprint that became a living document for all stakeholders.
 
-It helped designers think beyond “change the content” or “add bigger tiles” and start designing around:
+It helped designers think beyond "change the content" or "add bigger tiles" and start designing around:
 • user confidence
 • operational handoffs
 • self-service moments
@@ -114,7 +114,7 @@ I also prototype with tools like Codex, Google AI Studio, Claude, and Google Sti
 
 This portfolio itself was concepted, designed, and built in 2 days as an interactive pre-interview experience. Before AI tools, I was already building product ideas and prototypes in 24-hour hackathons, often as the only designer on the team.`,
 
-  "tell me your story": `Here’s how it happened.
+  "tell me your story": `Here's how it happened.
 
 I joined Paycom as an Associate Product Designer and threw myself into the work completely.
 
@@ -144,7 +144,7 @@ When I present, I focus on:
 Because I learned that good design doesn't work unless people understand it.`
 };
 
-const USER_NEEDS_REST = `The first outcome wasn’t perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
+const USER_NEEDS_REST = `The first outcome wasn't perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
 
 38% increase in lead initiation with clearer Apply messaging.
 
@@ -364,7 +364,34 @@ function FigmaDeckModal({ onClose }) {
   return <FramerModal title="Chase HL Public" url={FIGMA_DECK_URL} onClose={onClose} />;
 }
 
-function WhatIBelieveCard() {
+/* ─── BENTO TILE: Hero (name + tagline + profile pic popping out) ─── */
+function HeroTile() {
+  return (
+    <div className="relative overflow-visible rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-7 flex flex-col justify-between min-h-[220px]">
+      <div>
+        <h1 className={`text-[38px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#A5522A] ${HEADING}`}>
+          Sanjana<br />Venkat
+        </h1>
+        <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149] max-w-[200px]">
+          I turn ambiguity into direction. Let me show you.
+        </p>
+      </div>
+
+      {/* Profile pic card popping out of the tile */}
+      <div className="absolute bottom-[-28px] right-5 z-10 w-[120px] overflow-hidden rounded-[24px] border-4 border-white shadow-xl">
+        <img
+          src="/profile.jpg"
+          alt="Sanjana Venkat"
+          className="w-full object-cover grayscale transition-all duration-500 hover:grayscale-0"
+          style={{ height: "150px" }}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ─── BENTO TILE: What I Believe In ─── */
+function WhatIBelieveTile() {
   return (
     <article className={`rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[14px] transition-all duration-300 hover:-translate-y-1 ${BODY}`}>
       <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
@@ -372,14 +399,14 @@ function WhatIBelieveCard() {
       </p>
 
       <p className="leading-[1.65] text-[#5F5149]">
-        i believe good products don’t just solve problems. they reveal ones people didn’t know they had.
+        i believe good products don't just solve problems. they reveal ones people didn't know they had.
       </p>
 
-      <p className="mt-6 leading-[1.65] text-[#5F5149]">
+      <p className="mt-4 leading-[1.65] text-[#5F5149]">
         with AI and personalization, that gap gets smaller. But the real work is still human: listening, framing, building things that help people move forward.
       </p>
 
-      <div className="mt-7 flex items-center gap-4">
+      <div className="mt-6 flex items-center gap-4">
         <a href="mailto:sanjanavnkt20@gmail.com" aria-label="Email Sanjana" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
           <span className="flex h-full w-full items-center justify-center leading-none"><MailIcon /></span>
         </a>
@@ -392,76 +419,97 @@ function WhatIBelieveCard() {
   );
 }
 
-function HorizontalTimeline() {
-  const items = [
-    ["2023", "B.S. Psychology, Design concentration", "UT Dallas • Understanding human behavior and design principles to build better experiences.", false],
-    ["2023", "Associate Product Designer", "Paycom • Founding member of a new subteam. Focused on B2B enterprise solutions and design system.", false],
-    ["2024 — PRESENT", "Senior Product Designer", "JP Morgan Chase • Leading Marketing and AI initiatives. Building 0-to-1 product and driving impact across the ecosystem.", true]
-  ];
-
+/* ─── BENTO TILE: Nav Pills ─── */
+function NavTile({ onNav }) {
+  const items = ["what are you building now", "resume", "github", "contact"];
   return (
-    <section className={`h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 transition-all duration-300 hover:-translate-y-1 ${BODY}`}>
-      <p className={`mb-8 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-        timeline
+    <div className={`rounded-[32px] border border-[#E4E2E1] bg-white p-7 flex flex-col gap-3 ${BODY}`}>
+      <p className={`mb-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
+        explore
       </p>
-
-      <div className="relative grid grid-cols-1 gap-8 md:grid-cols-3">
-        <div className="absolute left-0 top-[18px] hidden h-px w-full bg-[#E8D8D0] md:block" />
-
-        {items.map(([year, title, body, isActive]) => (
-          <div key={title} className="relative pt-10">
-            <span className={`absolute left-0 top-[12px] h-3 w-3 rounded-full md:left-1/2 md:-translate-x-1/2 ${isActive ? "bg-[#D96F45] animate-glow" : "bg-[#E4E2E1]"}`} />
-
-            <p className={`text-[12px] font-semibold uppercase tracking-[0.14em] ${HEADING} ${isActive ? "text-[#D96F45]" : "text-[#9CA3AF]"}`}>
-              {year}
-            </p>
-
-            <p className={`mt-2 text-[16px] font-semibold leading-tight text-[#221B16] ${HEADING}`}>
-              {title}
-            </p>
-
-            <p className="mt-2 text-[12px] leading-[1.45] text-[#7A706A]">{body}</p>
-          </div>
-        ))}
-      </div>
-    </section>
+      {items.map((item) => (
+        <button
+          key={item}
+          onClick={() => onNav(item)}
+          className={`w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB] ${HEADING}`}
+        >
+          {item}
+        </button>
+      ))}
+    </div>
   );
 }
 
-function TestimonialCarousel() {
+/* ─── BENTO TILE: My Work preview ─── */
+function MyWorkTile({ onOpen }) {
+  const previews = PROJECTS.slice(0, 4);
+  return (
+    <button
+      onClick={onOpen}
+      className={`group relative w-full rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-left transition-all duration-300 hover:-translate-y-1 ${BODY}`}
+    >
+      <p className={`mb-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+        my work
+      </p>
+
+      <div className="grid grid-cols-2 gap-3">
+        {previews.map((project) => (
+          <div
+            key={project.label}
+            className="flex h-[80px] items-end overflow-hidden rounded-[16px] bg-[#F8F7F6] border border-[#E4E2E1] p-3 transition group-hover:border-[#D8C5BB]"
+          >
+            <p className={`text-[11px] font-semibold text-[#6B625C] leading-tight ${HEADING}`}>
+              {project.label}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <p className={`mt-4 text-[13px] font-medium text-[#A5522A] underline underline-offset-4 ${HEADING}`}>
+        view all work →
+      </p>
+    </button>
+  );
+}
+
+/* ─── BENTO TILE: Testimonials ─── */
+function TestimonialTile() {
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [quote, name, title] = TESTIMONIALS[index] || [];
 
   useEffect(() => {
     if (!TESTIMONIALS.length || isPaused) return;
-
     const timer = setInterval(() => {
       setIndex((current) => (current + 1) % TESTIMONIALS.length);
     }, 5200);
-
     return () => clearInterval(timer);
   }, [isPaused]);
 
   return (
-    <article className={`relative h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 text-[13px] transition-all duration-300 hover:-translate-y-1 ${BODY}`}>
+    <article className={`relative h-full rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[13px] transition-all duration-300 hover:-translate-y-1 ${BODY}`}>
       <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         what people say about me
       </p>
 
-      <div key={index} className="min-h-[235px] animate-[slideIn_0.35s_ease_forwards]">
-        <p className="italic leading-[1.55] text-[#4F4741]">“{quote}”</p>
-        <p className={`mt-5 text-[14px] font-semibold text-[#111827] ${HEADING}`}>{name}</p>
+      <div key={index} className="min-h-[160px] animate-[slideIn_0.35s_ease_forwards]">
+        <p className="italic leading-[1.55] text-[#4F4741]">"{quote}"</p>
+        <p className={`mt-4 text-[14px] font-semibold text-[#111827] ${HEADING}`}>{name}</p>
         <p className="mt-1 text-[11px] uppercase tracking-[0.12em] text-[#9CA3AF]">{title}</p>
       </div>
 
-      <div className="mt-5 flex gap-3 pr-14">
+      <div className="mt-4 flex gap-3 pr-14">
         {TESTIMONIALS.map((_, dotIndex) => (
           <span key={dotIndex} className={`h-3 rounded-full transition-all duration-300 ${index === dotIndex ? "w-10 bg-[#D96F45]" : "w-3 bg-[#EEF0F3]"}`} />
         ))}
       </div>
 
-      <button type="button" onClick={() => setIsPaused((current) => !current)} aria-label={isPaused ? "Play testimonials" : "Pause testimonials"} className="absolute bottom-7 right-7 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
+      <button
+        type="button"
+        onClick={() => setIsPaused((current) => !current)}
+        aria-label={isPaused ? "Play testimonials" : "Pause testimonials"}
+        className="absolute bottom-7 right-7 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]"
+      >
         <span className="flex h-full w-full items-center justify-center leading-none">
           {isPaused ? <PlayIcon /> : <PauseIcon />}
         </span>
@@ -479,7 +527,7 @@ function ResponseLinks({ active, openProjectForActivePill }) {
         </button>
 
         <button onClick={() => openProjectForActivePill("casey-ai")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
-          what’s casey AI? →
+          what's casey AI? →
         </button>
       </div>
     );
@@ -633,41 +681,32 @@ export default function PortfolioHome() {
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
 
-useEffect(() => {
-  const faviconPath = "/logo.jpg";
+  useEffect(() => {
+    const faviconPath = "/logo.jpg";
 
-  const removeExistingFavicons = () => {
-    const links = document.querySelectorAll(
-      "link[rel*='icon'], link[rel='apple-touch-icon']"
-    );
+    const removeExistingFavicons = () => {
+      const links = document.querySelectorAll(
+        "link[rel*='icon'], link[rel='apple-touch-icon']"
+      );
+      links.forEach((link) => {
+        if (link.parentNode) link.parentNode.removeChild(link);
+      });
+    };
 
-    links.forEach((link) => {
-      if (link.parentNode) {
-        link.parentNode.removeChild(link);
-      }
-    });
-  };
+    const addFavicon = (rel, href, type = "image/jpeg") => {
+      const link = document.createElement("link");
+      link.rel = rel;
+      link.type = type;
+      link.href = `${href}?v=${Date.now()}`;
+      document.head.appendChild(link);
+    };
 
-  const addFavicon = (rel, href, type = "image/jpeg") => {
-    const link = document.createElement("link");
-
-    link.rel = rel;
-    link.type = type;
-
-    // force browser refresh
-    link.href = `${href}?v=${Date.now()}`;
-
-    document.head.appendChild(link);
-  };
-
-  removeExistingFavicons();
-
-  addFavicon("icon", faviconPath);
-  addFavicon("shortcut icon", faviconPath);
-  addFavicon("apple-touch-icon", faviconPath);
-
-  document.title = "Sanjana Venkat";
-}, []);
+    removeExistingFavicons();
+    addFavicon("icon", faviconPath);
+    addFavicon("shortcut icon", faviconPath);
+    addFavicon("apple-touch-icon", faviconPath);
+    document.title = "Sanjana Venkat";
+  }, []);
 
   useEffect(() => {
     setShowPills(false);
@@ -688,7 +727,6 @@ useEffect(() => {
     if (active === "how i uncover user needs") {
       setShowUserNeedsRest(true);
     }
-
     setShowPills(true);
   };
 
@@ -703,22 +741,18 @@ useEffect(() => {
       setProjectOpen("work-browser");
       return;
     }
-
     if (item === "what are you building now") {
       window.open(TRAVEL_DNA_URL, "_blank");
       return;
     }
-
     if (item === "resume") {
       window.open(RESUME_URL, "_blank");
       return;
     }
-
     if (item === "github") {
       window.open(GITHUB_URL, "_blank");
       return;
     }
-
     if (item === "contact") {
       window.open("https://www.linkedin.com/in/sanjana-venkat/", "_blank");
     }
@@ -727,60 +761,28 @@ useEffect(() => {
   const openProjectForActivePill = (override) => {
     setMobileChatOpen(false);
 
-    if (override === "ai-framer") {
-      setProjectOpen("ai-framer");
-      return;
-    }
-
-    if (override === "casey-ai") {
-      setProjectOpen("casey-ai");
-      return;
-    }
-
-    if (active === "how i uncover user needs") {
-      setProjectOpen("user-needs");
-      return;
-    }
-
-    if (active === "let's talk AI") {
-      setProjectOpen("ai-framer");
-      return;
-    }
-
-    if (active === "product strategy thinking") {
-      setProjectOpen("marketing-tiles");
-      return;
-    }
-
-    if (active === "designing systems at scale") {
-      setProjectOpen("apply-systems");
-      return;
-    }
-
-    if (active === "how i ship fast") {
-      window.open(TRAVEL_DNA_URL, "_blank");
-      return;
-    }
-
-    if (active === "how i get exec-buy in") {
-      setProjectOpen("figma-deck");
-    }
+    if (override === "ai-framer") { setProjectOpen("ai-framer"); return; }
+    if (override === "casey-ai") { setProjectOpen("casey-ai"); return; }
+    if (active === "how i uncover user needs") { setProjectOpen("user-needs"); return; }
+    if (active === "let's talk AI") { setProjectOpen("ai-framer"); return; }
+    if (active === "product strategy thinking") { setProjectOpen("marketing-tiles"); return; }
+    if (active === "designing systems at scale") { setProjectOpen("apply-systems"); return; }
+    if (active === "how i ship fast") { window.open(TRAVEL_DNA_URL, "_blank"); return; }
+    if (active === "how i get exec-buy in") { setProjectOpen("figma-deck"); }
   };
 
   return (
-    <main onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })} className={`relative min-h-screen w-full overflow-x-hidden bg-[#F8F7F6] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}>
+    <main
+      onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })}
+      className={`relative min-h-screen w-full overflow-x-hidden bg-[#F8F7F6] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}
+    >
+      {/* Modals */}
       {projectOpen === "work-browser" && <WorkBrowserModal onClose={() => setProjectOpen(null)} />}
-
       {projectOpen === "user-needs" && <FramerModal title="How I Uncover User Needs" url={USER_NEEDS_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
-
       {projectOpen === "figma-deck" && <FigmaDeckModal onClose={() => setProjectOpen(null)} />}
-
       {projectOpen === "ai-framer" && <FramerModal title="AI Chat Journeys" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
-
       {projectOpen === "casey-ai" && <FramerModal title="Casey AI" url={CASEY_AI_URL} onClose={() => setProjectOpen(null)} />}
-
       {projectOpen === "marketing-tiles" && <FramerModal title="Product Strategy Thinking" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />}
-
       {projectOpen === "apply-systems" && <FramerModal title="Designing Systems at Scale" url={APPLY_SYSTEMS_URL} onClose={() => setProjectOpen(null)} />}
 
       {mobileChatOpen && (
@@ -797,78 +799,116 @@ useEffect(() => {
         />
       )}
 
-      <button type="button" onClick={() => setMobileChatOpen(true)} aria-label="Open chat" className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#A5522A] p-0 leading-none text-white shadow-lg transition hover:scale-105 md:hidden">
+      {/* Mobile chat FAB */}
+      <button
+        type="button"
+        onClick={() => setMobileChatOpen(true)}
+        aria-label="Open chat"
+        className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#A5522A] p-0 leading-none text-white shadow-lg transition hover:scale-105 md:hidden"
+      >
         <span className="flex h-full w-full items-center justify-center leading-none"><ChatIcon /></span>
       </button>
 
-      <div className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl transition-transform duration-150" style={{ left: cursor.x - 150, top: cursor.y - 150 }} />
+      {/* Cursor glow */}
+      <div
+        className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl transition-transform duration-150"
+        style={{ left: cursor.x - 150, top: cursor.y - 150 }}
+      />
 
-      <section className="relative z-10 mx-auto grid w-full max-w-[1180px] grid-cols-1 gap-x-10 gap-y-8 lg:grid-cols-[280px_1fr]">
-        <aside className="flex flex-col gap-8">
-          <div>
-            <h1 className={`text-[32px] font-semibold leading-[1.03] tracking-[-0.04em] text-[#A5522A] ${HEADING}`}>
-              Sanjana
-              <br />
-              Venkat
-            </h1>
+      {/* ─── BENTO GRID ─── */}
+      <div className="relative z-10 mx-auto w-full max-w-[1180px]">
 
-            <p className="mt-3 max-w-[240px] text-[16px] leading-[1.45] text-[#5F5149]">
-              I turn ambiguity into direction. Let me show you.
-            </p>
+        {/*
+          Desktop layout:
+          3 columns — chat takes col 1 spanning both rows on the left,
+          right side is a 2-col subgrid with 3 rows of tiles.
+
+          Row 1 right: [Hero (tall, profile pic pops out)] [Nav pills]
+          Row 2 right: [What I Believe] [Testimonials]
+          Row 3 right: [My Work (wide, spans 2 cols)]
+        */}
+
+        <div className="hidden lg:grid lg:grid-cols-[1.1fr_0.55fr_0.55fr] lg:grid-rows-[auto_auto_auto] lg:gap-5">
+
+          {/* ── Chat — spans all 3 rows on left ── */}
+          <div
+            ref={chatCardRef}
+            className="row-span-3 flex flex-col rounded-[32px] border border-[#E4E2E1] bg-white overflow-hidden"
+            style={{ minHeight: "820px" }}
+          >
+            {/* Ask Sanjana label */}
+            <div className="px-6 pt-6 pb-3">
+              <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+                ask sanjana
+              </p>
+            </div>
+
+            {/* Scrollable chat area */}
+            <div className="flex-1 overflow-y-auto px-6 pb-4">
+              <ChatConversation
+                active={active}
+                showThinking={showThinking}
+                showResponse={showResponse}
+                showPills={showPills}
+                showUserNeedsRest={showUserNeedsRest}
+                onTypeDone={handleTypeDone}
+                openProjectForActivePill={openProjectForActivePill}
+              />
+            </div>
+
+            {/* Pills pinned to bottom */}
+            {showPills && (
+              <div className="border-t border-[#F0EDEB] px-6 py-4 animate-[fadeUp_0.45s_ease_forwards]">
+                <div className="flex flex-wrap gap-2">
+                  {PILLS.map((pill) => (
+                    <button
+                      key={pill}
+                      onClick={() => handlePillSelect(pill)}
+                      className={`rounded-full border px-4 py-2 text-[11px] transition hover:scale-[1.04] ${
+                        active === pill
+                          ? "border-[#A5522A] bg-white text-[#A5522A]"
+                          : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#D8C5BB]"
+                      } ${HEADING}`}
+                    >
+                      {pill}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          <nav>
-            <p className={`mb-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7B6258] ${HEADING}`}>
-              or start here:
-            </p>
-
-            <div className="flex flex-col gap-3">
-              {["my work", "what are you building now", "resume", "github", "contact"].map((item) => (
-                <button key={item} onClick={() => handleNav(item)} className={`w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB] ${HEADING}`}>
-                  {item}
-                </button>
-              ))}
-            </div>
-          </nav>
-
-          <div className="overflow-hidden rounded-[32px] border border-[#E4E2E1] bg-white">
-            <img src="/profile.jpg" alt="Sanjana Venkat" className="h-[290px] w-full object-cover grayscale transition-all duration-500 hover:scale-[1.035] hover:grayscale-0" />
+          {/* ── Row 1 col 2: Hero tile ── */}
+          <div className="relative overflow-visible">
+            <HeroTile />
           </div>
 
-          <WhatIBelieveCard />
-        </aside>
+          {/* ── Row 1 col 3: Nav pills ── */}
+          <NavTile onNav={handleNav} />
 
-        <section ref={chatCardRef} className="hidden rounded-[32px] border border-[#E4E2E1] bg-white p-4 transition-all duration-300 sm:p-6 md:block">
-          <ChatConversation
-            active={active}
-            showThinking={showThinking}
-            showResponse={showResponse}
-            showPills={showPills}
-            showUserNeedsRest={showUserNeedsRest}
-            onTypeDone={handleTypeDone}
-            openProjectForActivePill={openProjectForActivePill}
-          />
+          {/* ── Row 2 col 2: What I Believe ── */}
+          <WhatIBelieveTile />
 
-          {showPills && (
-            <div className="mt-6 flex flex-wrap gap-3 animate-[fadeUp_0.45s_ease_forwards]">
-              {PILLS.map((pill) => (
-                <button key={pill} onClick={() => handlePillSelect(pill)} className={`rounded-full border px-5 py-2 text-[12px] transition hover:scale-[1.04] ${
-                    active === pill
-                      ? "border-[#A5522A] bg-white text-[#A5522A]"
-                      : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#D8C5BB]"
-                  } ${HEADING}`}>
-                  {pill}
-                </button>
-              ))}
-            </div>
-          )}
-        </section>
+          {/* ── Row 2 col 3: Testimonials ── */}
+          <TestimonialTile />
 
-        <section className="grid grid-cols-1 gap-8 lg:col-span-2 lg:grid-cols-[1.15fr_0.85fr]">
-          <HorizontalTimeline />
-          <TestimonialCarousel />
-        </section>
-      </section>
+          {/* ── Row 3 col 2+3: My Work (spans 2 cols) ── */}
+          <div className="col-span-2">
+            <MyWorkTile onOpen={() => setProjectOpen("work-browser")} />
+          </div>
+
+        </div>
+
+        {/* ─── MOBILE / TABLET layout: single column stack ─── */}
+        <div className="flex flex-col gap-5 lg:hidden">
+          <HeroTile />
+          <NavTile onNav={handleNav} />
+          <WhatIBelieveTile />
+          <TestimonialTile />
+          <MyWorkTile onOpen={() => setProjectOpen("work-browser")} />
+        </div>
+
+      </div>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
