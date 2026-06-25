@@ -368,25 +368,33 @@ function FigmaDeckModal({ onClose }) {
 function HeroTile() {
   return (
     /*
-      Sketch: Sanjana Venkat text fills left side, small rounded portrait
-      card sits in the bottom-right corner of the tile.
+      overflow-visible so pic card pops out below the tile bottom.
+      Pic: tall portrait card anchored to bottom-right, extends below tile edge.
+      Drop shadow lifts it off the background.
     */
     <div
-      className="relative overflow-hidden rounded-[32px] bg-[#FFF8F5] p-8"
-      style={{ minHeight: "180px" }}
+      className="relative overflow-visible rounded-[32px] bg-[#FFF8F5] p-8"
+      style={{ minHeight: "180px", paddingRight: "210px" }}
     >
-      {/* Name + tagline — left side, padded away from the pic */}
+      {/* Name + tagline */}
       <h1 className={`text-[52px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#7B3310] whitespace-nowrap ${HEADING}`}>
         Sanjana Venkat
       </h1>
-      <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149] max-w-[500px]">
+      <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149]">
         I turn ambiguity into direction. Let me show you.
       </p>
 
-      {/* Small portrait card — bottom-right corner, compact */}
+      {/* Portrait card — pops from the bottom-right, hangs below the tile */}
       <div
-        className="absolute overflow-hidden rounded-[18px] border-[3px] border-white"
-        style={{ width: "110px", height: "130px", bottom: "20px", right: "28px" }}
+        className="absolute overflow-hidden rounded-[20px] border-[3px] border-white"
+        style={{
+          width: "175px",
+          height: "210px",
+          bottom: "-32px",
+          right: "20px",
+          zIndex: 30,
+          boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+        }}
       >
         <img
           src="/profile.jpg"
@@ -483,18 +491,21 @@ function MyWorkTile({ onOpen }) {
         my work
       </p>
 
-      {/* Three cards — label above, image fills full card */}
-      <div className="flex gap-4 flex-1" style={{ alignItems: "flex-end" }}>
-        {WORK_PREVIEWS.map((proj) => (
+      {/* Three cards — label above, image fills full card, each slightly offset to suggest depth */}
+      <div className="flex gap-5 flex-1" style={{ alignItems: "flex-end" }}>
+        {WORK_PREVIEWS.map((proj, i) => (
           <div key={proj.label} className="flex-1 flex flex-col gap-2">
-            {/* Label sits above the card */}
+            {/* Label above card */}
             <p className={`text-[11px] font-semibold text-[#6B625C] leading-tight px-1 ${HEADING}`}>
               {proj.label}
             </p>
-            {/* Full image card */}
+            {/* Image card — taller cards feel like they come from bottom */}
             <div
               className="relative overflow-hidden rounded-[20px] bg-[#EDEAE7] w-full"
-              style={{ height: "160px" }}
+              style={{
+                height: "170px",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.10)",
+              }}
             >
               <img
                 src={proj.src}
@@ -505,13 +516,6 @@ function MyWorkTile({ onOpen }) {
             </div>
           </div>
         ))}
-      </div>
-
-      {/* View all — bottom right, styled same as Resume link */}
-      <div className="flex justify-end mt-4">
-        <span className={`text-[13px] font-semibold text-[#A5522A] underline underline-offset-4 transition ${HEADING}`}>
-          view all work →
-        </span>
       </div>
     </button>
   );
@@ -724,6 +728,7 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
 
 export default function PortfolioHome() {
   const chatCardRef = useRef(null);
+  const chatScrollRef = useRef(null);
   const [active, setActive] = useState(PILLS[0]);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [projectOpen, setProjectOpen] = useState(null);
@@ -775,6 +780,13 @@ export default function PortfolioHome() {
 
     return () => clearTimeout(timer);
   }, [active, hasLoaded]);
+
+  // Scroll chat to bottom when pills appear (response fully typed)
+  useEffect(() => {
+    if (showPills && chatScrollRef.current) {
+      chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
+    }
+  }, [showPills]);
 
   const handleTypeDone = () => {
     if (active === "how i uncover user needs") {
@@ -918,7 +930,7 @@ export default function PortfolioHome() {
               </p>
             </div>
             {/* Scroll area — padding-bottom makes room for floating pills */}
-            <div className="flex-1 overflow-y-auto px-6 no-scrollbar" style={{ paddingBottom: showPills ? "64px" : "16px" }}>
+            <div ref={chatScrollRef} className="flex-1 overflow-y-auto px-6 no-scrollbar" style={{ paddingBottom: showPills ? "64px" : "16px" }}>
               <ChatConversation
                 active={active}
                 showThinking={showThinking}
