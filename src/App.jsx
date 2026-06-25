@@ -367,23 +367,35 @@ function FigmaDeckModal({ onClose }) {
 /* ─── BENTO TILE: Hero (name + tagline + profile pic popping out) ─── */
 function HeroTile() {
   return (
-    <div className="relative overflow-visible rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-7 flex flex-col justify-between min-h-[220px]">
-      <div>
-        <h1 className={`text-[38px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#A5522A] ${HEADING}`}>
+    /*
+      Hero tile: full width across cols 2-3.
+      Profile pic card is absolutely positioned — anchored to bottom-right of the tile,
+      hanging ~110px below so it visually bridges into the Explore/Believe row below.
+      overflow-visible on this tile + z-20 on the pic card makes it layer on top.
+    */
+    <div
+      className="relative overflow-visible rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-8 flex items-center"
+      style={{ minHeight: "190px" }}
+    >
+      {/* Text — left side */}
+      <div className="flex-1 pr-4">
+        <h1 className={`text-[56px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#A5522A] ${HEADING}`}>
           Sanjana<br />Venkat
         </h1>
-        <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149] max-w-[200px]">
+        <p className="mt-4 text-[15px] leading-[1.5] text-[#5F5149] max-w-[320px]">
           I turn ambiguity into direction. Let me show you.
         </p>
       </div>
 
-      {/* Profile pic card popping out of the tile */}
-      <div className="absolute bottom-[-28px] right-5 z-10 w-[120px] overflow-hidden rounded-[24px] border-4 border-white shadow-xl">
+      {/* Profile pic card — right side, hangs below the tile bottom */}
+      <div
+        className="absolute z-20 overflow-hidden rounded-[24px] border-4 border-white shadow-2xl"
+        style={{ width: "140px", height: "185px", bottom: "-95px", right: "32px" }}
+      >
         <img
           src="/profile.jpg"
           alt="Sanjana Venkat"
-          className="w-full object-cover grayscale transition-all duration-500 hover:grayscale-0"
-          style={{ height: "150px" }}
+          className="w-full h-full object-cover grayscale transition-all duration-500 hover:grayscale-0"
         />
       </div>
     </div>
@@ -816,35 +828,55 @@ export default function PortfolioHome() {
       />
 
       {/* ─── BENTO GRID ─── */}
-      <div className="relative z-10 mx-auto w-full max-w-[1180px]">
+      {/*
+        Desktop layout maps to the reference image:
 
-        {/*
-          Desktop layout:
-          3 columns — chat takes col 1 spanning both rows on the left,
-          right side is a 2-col subgrid with 3 rows of tiles.
+        Col A (left, fixed ~420px)     Col B (center)        Col C (right)
+        ┌─────────────────────┐        ┌──────────────────────────────────┐
+        │                     │        │   HERO (pink) — spans B+C row 1  │
+        │   CHAT (purple)     │        ├─────────────────┬────────────────┤
+        │   fixed height,     │        │  EXPLORE (green)│ WHAT I BELIEVE │
+        │   inner scroll      │        │  nav links      │ (yellow)       │
+        │                     │        ├─────────────────┴────────────────┤
+        ├─────────────────────┤        │   MY WORK (orange) spans B+C     │
+        │  TESTIMONIALS(blue) │        │                                  │
+        └─────────────────────┘        └──────────────────────────────────┘
 
-          Row 1 right: [Hero (tall, profile pic pops out)] [Nav pills]
-          Row 2 right: [What I Believe] [Testimonials]
-          Row 3 right: [My Work (wide, spans 2 cols)]
-        */}
+        Grid: 3 cols [420px 1fr 1fr], 4 rows [auto auto auto auto]
+        Chat:         col 1, rows 1-3
+        Hero:         col 2-3, row 1
+        Explore:      col 2, row 2
+        Believe:      col 3, row 2
+        Work:         col 2-3, row 3
+        Testimonials: col 1, row 4  →  actually: col 1 row 4, Work col 2-3 row 3
 
-        <div className="hidden lg:grid lg:grid-cols-[1.1fr_0.55fr_0.55fr] lg:grid-rows-[auto_auto_auto] lg:gap-5">
+        Simpler: use a 3-col CSS grid, chat spans rows 1–3, testimonials row 4 col1,
+        work spans col2-3 row3, hero col2-3 row1, explore col2 row2, believe col3 row2.
+      */}
+      <div className="relative z-10 mx-auto w-full max-w-[1280px]">
 
-          {/* ── Chat — spans all 3 rows on left ── */}
+        {/* ── DESKTOP ── */}
+        <div
+          className="hidden lg:grid"
+          style={{
+            gridTemplateColumns: "380px 1fr 1fr",
+            gridTemplateRows: "auto auto auto",
+            gap: "14px",
+          }}
+        >
+
+          {/* Chat: col 1, rows 1-2, fixed height with internal scroll */}
           <div
             ref={chatCardRef}
-            className="row-span-3 flex flex-col rounded-[32px] border border-[#E4E2E1] bg-white overflow-hidden"
-            style={{ minHeight: "820px" }}
+            className="rounded-[32px] border border-[#E4E2E1] bg-white overflow-hidden flex flex-col"
+            style={{ gridColumn: "1", gridRow: "1 / 3", height: "580px" }}
           >
-            {/* Ask Sanjana label */}
-            <div className="px-6 pt-6 pb-3">
+            <div className="px-6 pt-6 pb-3 shrink-0">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
                 ask sanjana
               </p>
             </div>
-
-            {/* Scrollable chat area */}
-            <div className="flex-1 overflow-y-auto px-6 pb-4">
+            <div className="flex-1 overflow-y-auto px-6 pb-4 no-scrollbar">
               <ChatConversation
                 active={active}
                 showThinking={showThinking}
@@ -855,10 +887,8 @@ export default function PortfolioHome() {
                 openProjectForActivePill={openProjectForActivePill}
               />
             </div>
-
-            {/* Pills pinned to bottom */}
             {showPills && (
-              <div className="border-t border-[#F0EDEB] px-6 py-4 animate-[fadeUp_0.45s_ease_forwards]">
+              <div className="shrink-0 border-t border-[#F0EDEB] px-6 py-4 animate-[fadeUp_0.45s_ease_forwards]">
                 <div className="flex flex-wrap gap-2">
                   {PILLS.map((pill) => (
                     <button
@@ -878,34 +908,61 @@ export default function PortfolioHome() {
             )}
           </div>
 
-          {/* ── Row 1 col 2: Hero tile ── */}
-          <div className="relative overflow-visible">
+          {/* Hero: col 2-3, row 1 — profile pic overflows down into gap */}
+          <div style={{ gridColumn: "2 / 4", gridRow: "1" }} className="relative overflow-visible">
             <HeroTile />
           </div>
 
-          {/* ── Row 1 col 3: Nav pills ── */}
-          <NavTile onNav={handleNav} />
+          {/* Explore / nav: col 2, row 2 (green) */}
+          <div style={{ gridColumn: "2", gridRow: "2" }}>
+            <NavTile onNav={handleNav} />
+          </div>
 
-          {/* ── Row 2 col 2: What I Believe ── */}
-          <WhatIBelieveTile />
+          {/* What I Believe: col 3, row 2 (yellow) */}
+          <div style={{ gridColumn: "3", gridRow: "2" }}>
+            <WhatIBelieveTile />
+          </div>
 
-          {/* ── Row 2 col 3: Testimonials ── */}
-          <TestimonialTile />
-
-          {/* ── Row 3 col 2+3: My Work (spans 2 cols) ── */}
-          <div className="col-span-2">
+          {/* My Work: col 1-2, row 3 (orange — below chat) */}
+          <div style={{ gridColumn: "1 / 3", gridRow: "3" }}>
             <MyWorkTile onOpen={() => setProjectOpen("work-browser")} />
+          </div>
+
+          {/* Testimonials: col 3, row 3 (blue — bottom right) */}
+          <div style={{ gridColumn: "3", gridRow: "3" }}>
+            <TestimonialTile />
           </div>
 
         </div>
 
-        {/* ─── MOBILE / TABLET layout: single column stack ─── */}
-        <div className="flex flex-col gap-5 lg:hidden">
+        {/* ── MOBILE stack ── */}
+        <div className="flex flex-col gap-4 lg:hidden">
           <HeroTile />
           <NavTile onNav={handleNav} />
           <WhatIBelieveTile />
-          <TestimonialTile />
+
+          {/* Chat on mobile uses the FAB — show condensed card here */}
+          <div className="rounded-[32px] border border-[#E4E2E1] bg-white overflow-hidden" style={{ height: "360px" }}>
+            <div className="px-6 pt-6 pb-3">
+              <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+                ask sanjana
+              </p>
+            </div>
+            <div className="px-6 pb-4 overflow-y-auto no-scrollbar" style={{ height: "290px" }}>
+              <ChatConversation
+                active={active}
+                showThinking={showThinking}
+                showResponse={showResponse}
+                showPills={showPills}
+                showUserNeedsRest={showUserNeedsRest}
+                onTypeDone={handleTypeDone}
+                openProjectForActivePill={openProjectForActivePill}
+              />
+            </div>
+          </div>
+
           <MyWorkTile onOpen={() => setProjectOpen("work-browser")} />
+          <TestimonialTile />
         </div>
 
       </div>
