@@ -368,45 +368,45 @@ function FigmaDeckModal({ onClose }) {
 function HeroTile() {
   return (
     /*
-      overflow-visible so the pic card can hang below into the row gap.
-      Pic is absolutely positioned bottom-right, z-20, pops out below the tile.
-      Resume link sits top-right inside the tile.
+      Pic is inside the tile, absolutely right-aligned (top to bottom of tile).
+      Right padding on text prevents overlap. Resume link bottom-right.
+      overflow-hidden — no displacement, no gap waste.
     */
     <div
-      className="relative overflow-visible rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-8 flex flex-col justify-between"
-      style={{ minHeight: "200px" }}
+      className="relative overflow-hidden rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-8 flex flex-col justify-between"
+      style={{ minHeight: "200px", paddingRight: "180px" }}
     >
-      {/* Resume link — top right, inside tile */}
-      <div className="flex justify-end">
+      {/* Name + tagline */}
+      <div>
+        <h1 className={`text-[52px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#A5522A] whitespace-nowrap ${HEADING}`}>
+          Sanjana Venkat
+        </h1>
+        <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149]">
+          I turn ambiguity into direction. Let me show you.
+        </p>
+      </div>
+
+      {/* Resume link — bottom right */}
+      <div className="absolute bottom-8 right-8">
         <a
           href="/SanjanaVenkat_ProductDesign_Resume.pdf"
           target="_blank"
           rel="noreferrer"
-          className={`inline-flex items-center gap-2 text-[13px] font-semibold text-[#A5522A] underline underline-offset-4 hover:opacity-70 transition ${HEADING}`}
+          className={`text-[13px] font-semibold text-[#A5522A] underline underline-offset-4 hover:opacity-70 transition ${HEADING}`}
         >
           Resume →
         </a>
       </div>
 
-      {/* Name — single row */}
-      <div className="mt-4">
-        <h1 className={`text-[52px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#A5522A] whitespace-nowrap ${HEADING}`}>
-          Sanjana Venkat
-        </h1>
-        <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149] max-w-[380px]">
-          I turn ambiguity into direction. Let me show you.
-        </p>
-      </div>
-
-      {/* Profile pic card — bottom right, overflows below tile via z-20 */}
+      {/* Profile pic — right side, fills tile height, no overflow */}
       <div
-        className="absolute z-20 overflow-hidden rounded-[22px] border-4 border-white shadow-2xl"
-        style={{ width: "130px", height: "165px", bottom: "-80px", right: "32px" }}
+        className="absolute top-0 right-0 bottom-0 overflow-hidden rounded-r-[32px] rounded-l-[22px] border-l-4 border-white shadow-xl"
+        style={{ width: "155px" }}
       >
         <img
           src="/profile.jpg"
           alt="Sanjana Venkat"
-          className="w-full h-full object-cover grayscale transition-all duration-500 hover:grayscale-0"
+          className="w-full h-full object-cover object-center grayscale transition-all duration-500 hover:grayscale-0"
         />
       </div>
     </div>
@@ -547,15 +547,23 @@ function TestimonialTile() {
   }, [isPaused]);
 
   return (
-    <article className={`relative h-full rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[13px] transition-all duration-300 hover:-translate-y-1 ${BODY}`}>
+    <article className={`relative rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[13px] ${BODY}`} style={{ height: "100%", overflow: "hidden" }}>
       <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         what people say about me
       </p>
 
-      <div key={index} className="min-h-[160px] animate-[slideIn_0.35s_ease_forwards]">
-        <p className="italic leading-[1.55] text-[#4F4741]">"{quote}"</p>
-        <p className={`mt-4 text-[14px] font-semibold text-[#111827] ${HEADING}`}>{name}</p>
-        <p className="mt-1 text-[11px] uppercase tracking-[0.12em] text-[#9CA3AF]">{title}</p>
+      <div key={index} className="animate-[slideIn_0.35s_ease_forwards]" style={{ height: "130px", overflow: "hidden" }}>
+        <p
+          className="italic leading-[1.55] text-[#4F4741]"
+          style={{
+            display: "-webkit-box",
+            WebkitLineClamp: 4,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >"{quote}"</p>
+        <p className={`mt-3 text-[14px] font-semibold text-[#111827] ${HEADING}`}>{name}</p>
+        <p className="mt-0.5 text-[11px] uppercase tracking-[0.12em] text-[#9CA3AF]">{title}</p>
       </div>
 
       <div className="mt-4 flex gap-3 pr-14">
@@ -909,8 +917,7 @@ export default function PortfolioHome() {
           style={{
             gridTemplateColumns: "480px 1fr 1fr",
             gridTemplateRows: "auto auto auto",
-            columnGap: "14px",
-            rowGap: "90px",
+            gap: "14px",
           }}
         >
 
