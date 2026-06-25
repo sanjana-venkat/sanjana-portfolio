@@ -367,25 +367,26 @@ function FigmaDeckModal({ onClose }) {
 /* ─── BENTO TILE: Hero (name + tagline + profile pic popping out) ─── */
 function HeroTile() {
   return (
-    /* Pic is inside the tile bottom-right, cropped from bottom, with white border */
+    /*
+      Sketch: Sanjana Venkat text fills left side, small rounded portrait
+      card sits in the bottom-right corner of the tile.
+    */
     <div
-      className="relative overflow-hidden rounded-[32px] bg-[#FFF8F5] p-8 flex flex-col justify-between"
-      style={{ minHeight: "200px", paddingRight: "200px" }}
+      className="relative overflow-hidden rounded-[32px] bg-[#FFF8F5] p-8"
+      style={{ minHeight: "180px" }}
     >
-      {/* Name + tagline */}
-      <div>
-        <h1 className={`text-[52px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#7B3310] whitespace-nowrap ${HEADING}`}>
-          Sanjana Venkat
-        </h1>
-        <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149]">
-          I turn ambiguity into direction. Let me show you.
-        </p>
-      </div>
+      {/* Name + tagline — left side, padded away from the pic */}
+      <h1 className={`text-[52px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#7B3310] whitespace-nowrap ${HEADING}`}>
+        Sanjana Venkat
+      </h1>
+      <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149] max-w-[500px]">
+        I turn ambiguity into direction. Let me show you.
+      </p>
 
-      {/* Profile pic — inside tile, anchored bottom-right, pops from bottom */}
+      {/* Small portrait card — bottom-right corner, compact */}
       <div
-        className="absolute overflow-hidden rounded-t-[20px] rounded-bl-[20px] border-4 border-white"
-        style={{ width: "170px", height: "210px", bottom: "0px", right: "24px" }}
+        className="absolute overflow-hidden rounded-[18px] border-[3px] border-white"
+        style={{ width: "110px", height: "130px", bottom: "20px", right: "28px" }}
       >
         <img
           src="/profile.jpg"
@@ -482,26 +483,24 @@ function MyWorkTile({ onOpen }) {
         my work
       </p>
 
-      {/* Three thumbnails in one row — label on top, image cropped from bottom */}
-      <div className="flex gap-4 flex-1">
+      {/* Three cards — label above, image fills full card */}
+      <div className="flex gap-4 flex-1" style={{ alignItems: "flex-end" }}>
         {WORK_PREVIEWS.map((proj) => (
-          <div
-            key={proj.label}
-            className="flex-1 relative overflow-hidden rounded-[20px] bg-[#EDEAE7] flex flex-col"
-            style={{ height: "180px" }}
-          >
-            {/* Label on top */}
-            <p className={`px-4 pt-4 pb-2 text-[11px] font-semibold text-[#6B625C] leading-tight shrink-0 ${HEADING}`}>
+          <div key={proj.label} className="flex-1 flex flex-col gap-2">
+            {/* Label sits above the card */}
+            <p className={`text-[11px] font-semibold text-[#6B625C] leading-tight px-1 ${HEADING}`}>
               {proj.label}
             </p>
-            {/* Image crops from bottom */}
-            <div className="flex-1 relative overflow-hidden rounded-b-[20px]">
+            {/* Full image card */}
+            <div
+              className="relative overflow-hidden rounded-[20px] bg-[#EDEAE7] w-full"
+              style={{ height: "160px" }}
+            >
               <img
                 src={proj.src}
                 alt={proj.label}
-                className="absolute bottom-0 left-0 w-full object-cover object-top grayscale transition-all duration-500 hover:grayscale-0"
-                style={{ height: "130px" }}
-                onError={(e) => { e.target.parentElement.style.background = "#E0DDD9"; }}
+                className="w-full h-full object-cover object-top grayscale transition-all duration-500 hover:grayscale-0"
+                onError={(e) => { e.target.style.opacity = "0"; }}
               />
             </div>
           </div>
