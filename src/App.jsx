@@ -325,7 +325,7 @@ function WorkBrowserModal({ onClose }) {
 
   return (
     <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
-      <div className="mx-auto max-w-[1180px]">
+      <div className="mx-auto w-full max-w-none px-2">
         <div className="mb-6 flex items-center gap-4">
           <CircleIconButton onClick={onClose} ariaLabel="Close work browser">
             <ChevronLeftIcon />
@@ -352,7 +352,7 @@ function WorkBrowserModal({ onClose }) {
           ))}
         </div>
 
-        <div className="overflow-hidden rounded-[32px] bg-white">
+        <div className="overflow-hidden rounded-[32px] bg-white w-full">
           <iframe key={activeProject.url} src={activeProject.url} title={activeProject.title} className="h-[80vh] w-full border-0 bg-white" allowFullScreen />
         </div>
       </div>
@@ -376,7 +376,7 @@ function HeroTile() {
     <div className="relative overflow-visible" style={{ paddingRight: "170px" }}>
       {/* The actual tile — text only */}
       <div
-        className="rounded-[32px] bg-[#FFF8F5] border border-[#E4E2E1] p-8"
+        className="rounded-[32px] bg-[#FFF8F5] p-8"
         style={{ minHeight: "200px" }}
       >
         <h1 className={`text-[52px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#A5522A] whitespace-nowrap ${HEADING}`}>
@@ -389,7 +389,7 @@ function HeroTile() {
 
       {/* Profile pic card — floats to the right of the tile, overlapping it */}
       <div
-        className="absolute overflow-hidden rounded-[24px] border-4 border-white shadow-2xl"
+        className="absolute overflow-hidden rounded-[24px] border-4 border-white"
         style={{
           width: "150px",
           height: "195px",
@@ -412,7 +412,7 @@ function HeroTile() {
 /* ─── BENTO TILE: What I Believe In (fixed height matching NavTile) ─── */
 function WhatIBelieveTile() {
   return (
-    <article className={`rounded-[32px] border border-[#E4E2E1] bg-white p-6 text-[14px] h-full flex flex-col justify-between ${BODY}`} style={{ minHeight: "220px" }}>
+    <article className={`rounded-[32px] bg-white p-6 text-[14px] h-full flex flex-col justify-between ${BODY}`} style={{ minHeight: "220px" }}>
       <div>
         <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
           what i believe in
@@ -444,7 +444,7 @@ function WhatIBelieveTile() {
 function NavTile({ onNav }) {
   const items = ["what are you building now", "resume", "github", "contact"];
   return (
-    <div className={`rounded-[32px] border border-[#E4E2E1] bg-white p-6 flex flex-col gap-2 h-full ${BODY}`} style={{ minHeight: "220px" }}>
+    <div className={`rounded-[32px] bg-white p-6 flex flex-col gap-2 h-full ${BODY}`} style={{ minHeight: "220px" }}>
       <p className={`mb-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
         explore
       </p>
@@ -488,7 +488,7 @@ function MyWorkTile({ onOpen }) {
     /* Entire tile is one clickable button */
     <button
       onClick={onOpen}
-      className={`group relative w-full rounded-[32px] border border-[#E4E2E1] bg-white p-7 flex flex-col text-left ${BODY}`}
+      className={`group relative w-full rounded-[32px] bg-white p-7 flex flex-col text-left ${BODY}`}
     >
       <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         my work
@@ -499,7 +499,7 @@ function MyWorkTile({ onOpen }) {
         {WORK_PREVIEWS.map((proj) => (
           <div
             key={proj.label}
-            className="flex-1 relative overflow-hidden rounded-[20px] border-4 border-white shadow-[0_4px_24px_rgba(0,0,0,0.10)] bg-[#F0EDEB]"
+            className="flex-1 relative overflow-hidden rounded-[20px] bg-[#F0EDEB]"
             style={{ height: "160px" }}
           >
             <img
@@ -543,7 +543,7 @@ function TestimonialTile() {
   }, [isPaused]);
 
   return (
-    <article className={`relative rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[13px] ${BODY}`} style={{ height: "100%", overflow: "hidden" }}>
+    <article className={`relative rounded-[32px] bg-white p-7 text-[13px] ${BODY}`} style={{ height: "100%", overflow: "hidden" }}>
       <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         what people say about me
       </p>
@@ -920,7 +920,7 @@ export default function PortfolioHome() {
           {/* Chat: col 1, rows 1-2, fixed height with internal scroll */}
           <div
             ref={chatCardRef}
-            className="rounded-[32px] border border-[#E4E2E1] bg-white overflow-hidden flex flex-col"
+            className="rounded-[32px] bg-white overflow-hidden flex flex-col"
             style={{ gridColumn: "1", gridRow: "1 / 3", height: "520px" }}
           >
             <div className="px-6 pt-6 pb-3 shrink-0">
@@ -940,7 +940,7 @@ export default function PortfolioHome() {
               />
             </div>
             {showPills && (
-              <div className="shrink-0 px-6 pt-3 pb-5 overflow-hidden">
+              <div className="shrink-0 px-6 pt-2 pb-4 overflow-hidden" style={{ background: "transparent" }}>
                 {/* Pills: horizontal scroll, transparent bg, outlined pills */}
                 <div className="no-scrollbar overflow-x-auto animate-[fadeUp_0.45s_ease_forwards]">
                   <div className="flex gap-2" style={{ width: "max-content" }}>
@@ -997,7 +997,7 @@ export default function PortfolioHome() {
           <WhatIBelieveTile />
 
           {/* Chat on mobile uses the FAB — show condensed card here */}
-          <div className="rounded-[32px] border border-[#E4E2E1] bg-white overflow-hidden" style={{ height: "360px" }}>
+          <div className="rounded-[32px] bg-white overflow-hidden" style={{ height: "360px" }}>
             <div className="px-6 pt-6 pb-3">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
                 ask me
