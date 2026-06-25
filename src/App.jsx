@@ -325,7 +325,7 @@ function WorkBrowserModal({ onClose }) {
 
   return (
     <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
-      <div className="mx-auto w-full max-w-none px-2">
+      <div className="mx-auto w-full max-w-[1280px]">
         <div className="mb-6 flex items-center gap-4">
           <CircleIconButton onClick={onClose} ariaLabel="Close work browser">
             <ChevronLeftIcon />
@@ -379,7 +379,7 @@ function HeroTile() {
         className="rounded-[32px] bg-[#FFF8F5] p-8"
         style={{ minHeight: "200px" }}
       >
-        <h1 className={`text-[52px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#A5522A] whitespace-nowrap ${HEADING}`}>
+        <h1 className={`text-[52px] font-semibold leading-[1.0] tracking-[-0.05em] text-[#7B3310] whitespace-nowrap ${HEADING}`}>
           Sanjana Venkat
         </h1>
         <p className="mt-3 text-[15px] leading-[1.5] text-[#5F5149] max-w-[360px]">
@@ -389,7 +389,7 @@ function HeroTile() {
 
       {/* Profile pic card — floats to the right of the tile, overlapping it */}
       <div
-        className="absolute overflow-hidden rounded-[24px] border-4 border-white"
+        className="absolute overflow-hidden rounded-[24px]"
         style={{
           width: "150px",
           height: "195px",
@@ -476,7 +476,8 @@ const WORK_PREVIEWS = [
     url: AI_FRAMER_URL,
   },
   {
-    src: "/outdone-preview.png",     /* Image 3: Outdone / Travel DNA */
+    src: "/outdone-preview.png",
+    alt: "Travel DNA",     /* Image 3: Outdone / Travel DNA */
     fallbackSrc: null,
     label: "Travel DNA",
     url: TRAVEL_DNA_URL,
@@ -838,7 +839,7 @@ export default function PortfolioHome() {
   return (
     <main
       onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })}
-      className={`relative min-h-screen w-full overflow-x-hidden bg-[#F8F7F6] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}
+      className={`relative min-h-screen w-full overflow-x-hidden bg-[#F0EDEA] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}
     >
       {/* Modals */}
       {projectOpen === "work-browser" && <WorkBrowserModal onClose={() => setProjectOpen(null)} />}
@@ -920,7 +921,7 @@ export default function PortfolioHome() {
           {/* Chat: col 1, rows 1-2, fixed height with internal scroll */}
           <div
             ref={chatCardRef}
-            className="rounded-[32px] bg-white overflow-hidden flex flex-col"
+            className="rounded-[32px] bg-white overflow-hidden flex flex-col relative"
             style={{ gridColumn: "1", gridRow: "1 / 3", height: "520px" }}
           >
             <div className="px-6 pt-6 pb-3 shrink-0">
@@ -928,7 +929,8 @@ export default function PortfolioHome() {
                 ask me
               </p>
             </div>
-            <div className="flex-1 overflow-y-auto px-6 pb-4 no-scrollbar bg-transparent">
+            {/* Scroll area — padding-bottom makes room for floating pills */}
+            <div className="flex-1 overflow-y-auto px-6 no-scrollbar" style={{ paddingBottom: showPills ? "64px" : "16px" }}>
               <ChatConversation
                 active={active}
                 showThinking={showThinking}
@@ -939,10 +941,11 @@ export default function PortfolioHome() {
                 openProjectForActivePill={openProjectForActivePill}
               />
             </div>
+            {/* Pills float as absolute overlay at bottom — chat content scrolls behind them */}
             {showPills && (
-              <div className="shrink-0 px-6 pt-2 pb-4 overflow-hidden" style={{ background: "transparent" }}>
-                {/* Pills: horizontal scroll, transparent bg, outlined pills */}
-                <div className="no-scrollbar overflow-x-auto animate-[fadeUp_0.45s_ease_forwards]">
+              <div className="absolute bottom-0 left-0 right-0 px-6 pb-4 pt-6 animate-[fadeUp_0.45s_ease_forwards]"
+                style={{ background: "linear-gradient(to bottom, transparent, white 35%)" }}>
+                <div className="no-scrollbar overflow-x-auto">
                   <div className="flex gap-2" style={{ width: "max-content" }}>
                     {PILLS.map((pill) => (
                       <button
@@ -950,8 +953,8 @@ export default function PortfolioHome() {
                         onClick={() => handlePillSelect(pill)}
                         className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] ${
                           active === pill
-                            ? "bg-transparent border-[#A5522A] text-[#A5522A]"
-                            : "bg-transparent border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
+                            ? "bg-white border-[#A5522A] text-[#A5522A]"
+                            : "bg-white border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
                         } ${HEADING}`}
                       >
                         {pill}
