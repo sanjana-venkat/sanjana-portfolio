@@ -467,133 +467,337 @@ function WhatIBelieveTile() {
   );
 }
 
-/* ─── BENTO TILE: Animated Timeline ─── */
+/* ─── BENTO TILE: Motion Timeline ─── */
 const TIMELINE_ITEMS = [
-  { year: "2021", org: "Dialexa",         role: null,                        desc: "Exploring AR experiences for a travel app, DTour" },
-  { year: "2021", org: "Chetna",          role: null,                        desc: "Social media campaigns, raised $10,000+ for South Asian mental health" },
-  { year: "2023", org: "Paycom",          role: "Associate Product Designer", desc: "Founding member of a new subteam. B2B enterprise solutions and design system." },
-  { year: "2024", org: "JPMC",            role: "Senior Product Designer",    desc: "Leading Marketing and AI initiatives. Building 0-to-1 product." },
-  { year: "2026", org: "Independent",     role: "Design Engineer",            desc: "Bringing product ideas to polished reality, finding gaps in personalization" },
+  {
+    year: "2019",
+    eyebrow: "Temple Architecture",
+    title: "Best Presenter Award",
+    desc: "First publication on Temple Architecture.",
+    imageLabel: "award / paper image"
+  },
+  {
+    year: "2021",
+    eyebrow: "Chetna",
+    title: "Mental Health Awareness",
+    desc: "Social media awareness campaigns and raised over $10,000 for South Asian mental health.",
+    imageLabel: "campaign image"
+  },
+  {
+    year: "2022",
+    eyebrow: "Dialexa",
+    title: "DTour",
+    desc: "Exploring AR experiences for a travel app.",
+    imageLabel: "AR / travel app image"
+  },
+  {
+    year: "2022",
+    eyebrow: "UX Club",
+    title: "Vice President",
+    desc: "Organized design challenge with Paycom & Bottle Rocket, and conference sponsored by Intuit.",
+    imageLabel: "event image"
+  },
+  {
+    year: "2023",
+    eyebrow: "Paycom",
+    title: "Associate Product Designer",
+    desc: "Founding member of a new subteam focused on B2B enterprise solutions and design system.",
+    imageLabel: "enterprise image"
+  },
+  {
+    year: "2024",
+    eyebrow: "JPMC",
+    title: "Senior Product Designer",
+    desc: "Building 0-to-1 product and driving impact across the Home Lending ecosystem.",
+    imageLabel: "JPMC work image"
+  },
+  {
+    year: "2025",
+    eyebrow: "JPMC",
+    title: "Leading Marketing and AI",
+    desc: "Led personalization, marketing systems, and AI initiatives across the experience.",
+    imageLabel: "marketing + AI image"
+  },
+  {
+    year: "2026",
+    eyebrow: "Personal",
+    title: "Got married, moved to the Bay Area!",
+    desc: "A new chapter in California.",
+    imageLabel: "Bay Area / wedding image"
+  },
+  {
+    year: "Now",
+    eyebrow: "Design Engineer",
+    title: "Product ideas to polished reality",
+    desc: "Finding gaps in personalization and bringing ideas to life with design, AI, and code.",
+    imageLabel: "current project image",
+    isFinal: true
+  },
 ];
 
-function NavTile() {
-  const [step, setStep] = useState(0);       // which timeline item is shown
-  const [phase, setPhase] = useState("idle"); // idle | scribble | line | dot | done
-  const timerRef = useRef(null);
+function TimelineScribble({ isFinal = false }) {
+  return (
+    <svg viewBox="0 0 120 70" className="h-full w-full overflow-visible" aria-hidden="true">
+      <path
+        d="M12 38 C28 8 45 62 62 26 C78 -2 88 60 104 25 C116 4 103 58 82 45 C55 28 35 18 20 48"
+        fill="none"
+        stroke={isFinal ? "#D96F45" : "#A5522A"}
+        strokeWidth={isFinal ? "2.1" : "1.8"}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={isFinal ? "timeline-orbit-path" : "timeline-scribble-path"}
+      />
+      <path
+        d="M22 18 C40 38 51 8 68 34 C82 55 96 21 108 38"
+        fill="none"
+        stroke="#D96F45"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        className="timeline-scribble-path timeline-scribble-path-delay"
+      />
+    </svg>
+  );
+}
 
-  const runStep = (s) => {
-    setStep(s);
+function NavTile() {
+  const [step, setStep] = useState(0);
+  const [phase, setPhase] = useState("scribble");
+  const timersRef = useRef([]);
+
+  const clearTimers = () => {
+    timersRef.current.forEach((timer) => clearTimeout(timer));
+    timersRef.current = [];
+  };
+
+  const playStep = (nextStep) => {
+    clearTimers();
+    setStep(nextStep);
     setPhase("scribble");
-    timerRef.current = setTimeout(() => setPhase("line"), 500);
-    timerRef.current = setTimeout(() => setPhase("dot"), 1050);
-    timerRef.current = setTimeout(() => setPhase("done"), 1800);
-    timerRef.current = setTimeout(() => {
-      const next = (s + 1) % TIMELINE_ITEMS.length;
-      runStep(next);
-    }, 3400);
+
+    timersRef.current = [
+      setTimeout(() => setPhase("line"), 520),
+      setTimeout(() => setPhase("dot"), 1050),
+      setTimeout(() => setPhase("text"), 1450),
+      setTimeout(() => {
+        playStep((nextStep + 1) % TIMELINE_ITEMS.length);
+      }, TIMELINE_ITEMS[nextStep]?.isFinal ? 4400 : 3600),
+    ];
   };
 
   useEffect(() => {
-    timerRef.current = setTimeout(() => runStep(0), 300);
-    return () => clearTimeout(timerRef.current);
+    playStep(0);
+    return clearTimers;
   }, []);
 
-  const handleHover = () => {
-    clearTimeout(timerRef.current);
-    runStep(0);
-  };
-
   const item = TIMELINE_ITEMS[step];
+  const progress = ((step + 1) / TIMELINE_ITEMS.length) * 100;
 
   return (
     <div
-      className={`rounded-[32px] bg-white p-6 h-full flex flex-col overflow-hidden ${BODY}`}
+      className={`group relative h-full overflow-hidden rounded-[32px] bg-white p-6 ${BODY}`}
       style={{ minHeight: "220px" }}
-      onMouseEnter={handleHover}
+      onMouseEnter={() => playStep(step)}
     >
-      <p className={`mb-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-        timeline
-      </p>
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(217,111,69,0.12),transparent_34%),linear-gradient(135deg,rgba(255,248,245,0.9),rgba(255,255,255,0.2))]" />
 
-      {/* Line + dot animation area */}
-      <div className="relative flex items-center" style={{ height: "28px" }}>
-        {/* The animated line */}
-        <svg
-          key={`${step}-${phase}`}
-          className="absolute left-0 top-1/2"
-          style={{ transform: "translateY(-50%)", overflow: "visible", width: "100%", height: "20px" }}
-          viewBox="0 0 300 20"
-          preserveAspectRatio="none"
-        >
-          {/* Phase 1: scribble (wobbly) */}
-          {(phase === "scribble") && (
-            <path
-              d="M0,10 C15,3 25,17 50,10 C75,3 85,17 110,10 C135,3 145,17 170,10 C195,3 205,17 230,10 C255,3 265,17 290,10 C298,6 300,10 300,10"
-              fill="none" stroke="#C8B8B0" strokeWidth="1.5" strokeLinecap="round"
-              style={{ strokeDasharray: 520, strokeDashoffset: 520, animation: "drawLine 0.45s ease forwards" }}
+      <div className="relative z-10 flex h-full flex-col">
+        <div className="mb-4 flex items-center justify-between">
+          <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+            timeline
+          </p>
+
+          <button
+            type="button"
+            onClick={() => playStep((step + 1) % TIMELINE_ITEMS.length)}
+            className={`rounded-full border border-[#E4E2E1] bg-white/70 px-3 py-1 text-[10px] font-semibold text-[#9A8176] transition hover:border-[#D96F45] hover:text-[#A5522A] ${HEADING}`}
+          >
+            next
+          </button>
+        </div>
+
+        <div className="grid flex-1 grid-cols-[88px_1fr] gap-4">
+          {/* Image space */}
+          <div className="relative overflow-hidden rounded-[22px] border border-[#E4E2E1] bg-[#F7F4F2]">
+            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(217,111,69,0.18),transparent_55%)]" />
+
+            <div
+              key={`image-${step}`}
+              className="absolute inset-3 rounded-[16px] border border-dashed border-[#D8C5BB] bg-white/50 animate-[timelineImageIn_0.55s_cubic-bezier(.2,.8,.2,1)_forwards]"
+            >
+              <div className="flex h-full items-center justify-center px-3 text-center">
+                <span className={`text-[9px] font-semibold uppercase leading-[1.35] tracking-[0.12em] text-[#B2998E] ${HEADING}`}>
+                  {item.imageLabel}
+                </span>
+              </div>
+            </div>
+
+            <div className="absolute bottom-3 left-3 right-3 h-[3px] overflow-hidden rounded-full bg-[#E9DED8]">
+              <div
+                className="h-full rounded-full bg-[#D96F45] transition-all duration-700 ease-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+
+          <div className="min-w-0">
+            {/* Line, scribble, dot */}
+            <div className="relative mb-3 h-9">
+              <svg
+                viewBox="0 0 240 32"
+                className="absolute left-0 top-1/2 h-8 w-full -translate-y-1/2 overflow-visible"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <line
+                  x1="0"
+                  y1="16"
+                  x2="240"
+                  y2="16"
+                  stroke="#E6D8D1"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                />
+
+                {(phase === "line" || phase === "dot" || phase === "text") && (
+                  <line
+                    key={`line-${step}`}
+                    x1="0"
+                    y1="16"
+                    x2="240"
+                    y2="16"
+                    stroke="#A5522A"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    className="timeline-line-draw"
+                  />
+                )}
+
+                {(phase === "dot" || phase === "text") && (
+                  <circle
+                    key={`dot-${step}`}
+                    cx={item.isFinal ? "214" : "126"}
+                    cy="16"
+                    r="4.5"
+                    fill="white"
+                    stroke="#D96F45"
+                    strokeWidth="2"
+                    className="timeline-dot-pop"
+                  />
+                )}
+              </svg>
+
+              {phase === "scribble" && (
+                <div
+                  key={`scribble-${step}`}
+                  className="absolute top-1/2 h-12 w-20 -translate-y-1/2 animate-[timelineScribbleFloat_0.55s_ease_forwards]"
+                  style={{ left: item.isFinal ? "58%" : "42%" }}
+                >
+                  <TimelineScribble isFinal={item.isFinal} />
+                </div>
+              )}
+
+              {item.isFinal && phase === "text" && (
+                <div className="absolute right-1 top-1/2 h-12 w-12 -translate-y-1/2 animate-[timelineFinalGlow_1.8s_ease-in-out_infinite] rounded-full border border-[#D96F45]/30" />
+              )}
+            </div>
+
+            <div key={`copy-${step}`} className="animate-[timelineTextIn_0.5s_cubic-bezier(.2,.8,.2,1)_forwards]">
+              <div className="mb-1 flex items-center gap-2">
+                <span className={`text-[20px] font-bold leading-none tracking-[-0.04em] text-[#A5522A] ${HEADING}`}>
+                  {item.year}
+                </span>
+                <span className={`truncate rounded-full bg-[#FFF1E9] px-2 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-[#D96F45] ${HEADING}`}>
+                  {item.eyebrow}
+                </span>
+              </div>
+
+              <h3 className={`text-[16px] font-semibold leading-[1.15] tracking-[-0.03em] text-[#221B16] ${HEADING}`}>
+                {item.title}
+              </h3>
+
+              <p className="mt-2 text-[12px] leading-[1.55] text-[#5F5149]">
+                {item.desc}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative mt-4 flex items-center gap-1.5">
+          {TIMELINE_ITEMS.map((timelineItem, index) => (
+            <button
+              type="button"
+              aria-label={`Show ${timelineItem.year}`}
+              key={`${timelineItem.year}-${timelineItem.eyebrow}`}
+              onClick={() => playStep(index)}
+              className="h-2 rounded-full transition-all duration-300"
+              style={{
+                width: index === step ? "26px" : "7px",
+                background: index === step ? "#D96F45" : "#E4DDD9",
+              }}
             />
-          )}
-          {/* Phase 2: resolves to straight orange line */}
-          {(phase === "line" || phase === "dot" || phase === "done") && (
-            <line
-              x1="0" y1="10" x2="300" y2="10"
-              stroke="#D96F45" strokeWidth="1.5" strokeLinecap="round"
-              style={{ strokeDasharray: 300, strokeDashoffset: phase === "line" ? 300 : 0, animation: phase === "line" ? "drawLine 0.5s ease forwards" : "none" }}
-            />
-          )}
-          {/* Phase 3: dot in center */}
-          {(phase === "dot" || phase === "done") && (
-            <circle
-              cx="150" cy="10" r={phase === "dot" ? "5" : "4"}
-              fill="white" stroke="#D96F45" strokeWidth="2"
-              style={{ animation: phase === "dot" ? "popDot 0.2s ease forwards" : "none" }}
-            />
-          )}
-        </svg>
-      </div>
-
-      {/* Year + org label — slides in */}
-      <div
-        key={`label-${step}`}
-        className="mt-3"
-        style={{ animation: "fadeUp 0.3s ease forwards", opacity: 0 }}
-      >
-        <span className={`text-[11px] font-bold tracking-[0.1em] text-[#D96F45] uppercase ${HEADING}`}>
-          {item.year}
-        </span>
-        <span className={`ml-2 text-[11px] font-semibold text-[#9A8176] ${HEADING}`}>
-          {item.org}{item.role ? ` · ${item.role}` : ""}
-        </span>
-      </div>
-
-      {/* Description */}
-      <p
-        key={`desc-${step}`}
-        className="mt-2 text-[13px] leading-[1.6] text-[#5F5149] flex-1"
-        style={{ animation: "fadeUp 0.4s ease 0.1s forwards", opacity: 0 }}
-      >
-        {item.desc}
-      </p>
-
-      {/* Step dots indicator */}
-      <div className="flex gap-1.5 mt-4">
-        {TIMELINE_ITEMS.map((_, i) => (
-          <div
-            key={i}
-            style={{
-              width: i === step ? "20px" : "6px",
-              height: "6px",
-              borderRadius: "9999px",
-              background: i === step ? "#D96F45" : "#E4DDD9",
-              transition: "all 0.3s ease",
-            }}
-          />
-        ))}
+          ))}
+        </div>
       </div>
 
       <style>{`
-        @keyframes drawLine { to { stroke-dashoffset: 0; } }
-        @keyframes popDot { from { r: 0; opacity: 0; } to { r: 5; opacity: 1; } }
+        @keyframes timelineDraw {
+          from { stroke-dashoffset: 240; }
+          to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes timelineDotPop {
+          0% { opacity: 0; transform: scale(0.2); }
+          70% { opacity: 1; transform: scale(1.28); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes timelineTextIn {
+          from { opacity: 0; transform: translateX(26px); filter: blur(3px); }
+          to { opacity: 1; transform: translateX(0); filter: blur(0); }
+        }
+
+        @keyframes timelineImageIn {
+          from { opacity: 0; transform: translateY(8px) scale(0.96); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes timelineScribbleFloat {
+          0% { opacity: 0; transform: translate(30px, -50%) rotate(-4deg) scale(0.85); }
+          100% { opacity: 1; transform: translate(0, -50%) rotate(0deg) scale(1); }
+        }
+
+        @keyframes timelineFinalGlow {
+          0%, 100% { transform: translateY(-50%) scale(1); opacity: 0.45; }
+          50% { transform: translateY(-50%) scale(1.3); opacity: 0.9; }
+        }
+
+        .timeline-line-draw {
+          stroke-dasharray: 240;
+          stroke-dashoffset: 240;
+          animation: timelineDraw 0.72s cubic-bezier(.2,.8,.2,1) forwards;
+        }
+
+        .timeline-dot-pop {
+          transform-box: fill-box;
+          transform-origin: center;
+          animation: timelineDotPop 0.32s cubic-bezier(.2,.8,.2,1) forwards;
+        }
+
+        .timeline-scribble-path {
+          stroke-dasharray: 240;
+          stroke-dashoffset: 240;
+          animation: timelineDraw 0.62s ease forwards;
+        }
+
+        .timeline-scribble-path-delay {
+          animation-delay: 0.1s;
+        }
+
+        .timeline-orbit-path {
+          stroke-dasharray: 340;
+          stroke-dashoffset: 340;
+          animation: timelineDraw 0.85s ease forwards;
+        }
       `}</style>
     </div>
   );
