@@ -467,336 +467,188 @@ function WhatIBelieveTile() {
   );
 }
 
-/* ─── BENTO TILE: Motion Timeline ─── */
+/* ─── BENTO TILE: Animated Timeline ─── */
 const TIMELINE_ITEMS = [
-  {
-    year: "2019",
-    eyebrow: "Temple Architecture",
-    title: "Best Presenter Award",
-    desc: "First publication on Temple Architecture.",
-    imageLabel: "award / paper image"
-  },
-  {
-    year: "2021",
-    eyebrow: "Chetna",
-    title: "Mental Health Awareness",
-    desc: "Social media awareness campaigns and raised over $10,000 for South Asian mental health.",
-    imageLabel: "campaign image"
-  },
-  {
-    year: "2022",
-    eyebrow: "Dialexa",
-    title: "DTour",
-    desc: "Exploring AR experiences for a travel app.",
-    imageLabel: "AR / travel app image"
-  },
-  {
-    year: "2022",
-    eyebrow: "UX Club",
-    title: "Vice President",
-    desc: "Organized design challenge with Paycom & Bottle Rocket, and conference sponsored by Intuit.",
-    imageLabel: "event image"
-  },
-  {
-    year: "2023",
-    eyebrow: "Paycom",
-    title: "Associate Product Designer",
-    desc: "Founding member of a new subteam focused on B2B enterprise solutions and design system.",
-    imageLabel: "enterprise image"
-  },
-  {
-    year: "2024",
-    eyebrow: "JPMC",
-    title: "Senior Product Designer",
-    desc: "Building 0-to-1 product and driving impact across the Home Lending ecosystem.",
-    imageLabel: "JPMC work image"
-  },
-  {
-    year: "2025",
-    eyebrow: "JPMC",
-    title: "Leading Marketing and AI",
-    desc: "Led personalization, marketing systems, and AI initiatives across the experience.",
-    imageLabel: "marketing + AI image"
-  },
-  {
-    year: "2026",
-    eyebrow: "Personal",
-    title: "Got married, moved to the Bay Area!",
-    desc: "A new chapter in California.",
-    imageLabel: "Bay Area / wedding image"
-  },
-  {
-    year: "Now",
-    eyebrow: "Design Engineer",
-    title: "Product ideas to polished reality",
-    desc: "Finding gaps in personalization and bringing ideas to life with design, AI, and code.",
-    imageLabel: "current project image",
-    isFinal: true
-  },
+  { year: "2019", label: "Best Presenter Award",          sub: "First publication on Temple Architecture",               heart: false, isNow: false },
+  { year: "2021", label: "Chetna",                        sub: "Social media campaigns, raised $10,000+ for South Asian mental health", heart: false, isNow: false },
+  { year: "2022", label: "Dialexa",                       sub: "Exploring AR experiences for a travel app, DTour",       heart: false, isNow: false },
+  { year: "2022", label: "VP, UX Club",                   sub: "Design challenge with Paycom & Bottle Rocket, conference by Intuit", heart: false, isNow: false },
+  { year: "2023", label: "Paycom · Associate PD",         sub: "Founding member of a new subteam. B2B enterprise & design system.", heart: false, isNow: false },
+  { year: "2024", label: "JPMC · Senior PD",              sub: "Funnel optimization, HELOC 0-to-1, AI initiatives.",     heart: false, isNow: false },
+  { year: "2025", label: "JP Morgan Chase",               sub: "Led Marketing + AI. Gemini & ChatGPT GEO for Jamie Dimon.", heart: false, isNow: false },
+  { year: "2026", label: "Married ♡ Bay Area",            sub: "Moved to the Bay Area. New chapter.",                   heart: true,  isNow: false },
+  { year: "NOW",  label: "Design Engineer",               sub: "Bringing product ideas to polished reality. Finding gaps in personalization.", heart: false, isNow: true },
 ];
 
-function TimelineScribble({ isFinal = false }) {
-  return (
-    <svg viewBox="0 0 120 70" className="h-full w-full overflow-visible" aria-hidden="true">
-      <path
-        d="M12 38 C28 8 45 62 62 26 C78 -2 88 60 104 25 C116 4 103 58 82 45 C55 28 35 18 20 48"
-        fill="none"
-        stroke={isFinal ? "#D96F45" : "#A5522A"}
-        strokeWidth={isFinal ? "2.1" : "1.8"}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={isFinal ? "timeline-orbit-path" : "timeline-scribble-path"}
-      />
-      <path
-        d="M22 18 C40 38 51 8 68 34 C82 55 96 21 108 38"
-        fill="none"
-        stroke="#D96F45"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        className="timeline-scribble-path timeline-scribble-path-delay"
-      />
-    </svg>
-  );
-}
-
 function NavTile() {
+  // Phases per step: scribble → line → text-slides-in → dot-appears → hold → advance
+  // We track a single integer `tick` that drives everything via CSS animation keys
   const [step, setStep] = useState(0);
-  const [phase, setPhase] = useState("scribble");
-  const timersRef = useRef([]);
+  const [phase, setPhase] = useState("scribble"); // scribble | line | content | dot | hold
+  const timers = useRef([]);
 
-  const clearTimers = () => {
-    timersRef.current.forEach((timer) => clearTimeout(timer));
-    timersRef.current = [];
-  };
+  const clearTimers = () => timers.current.forEach(clearTimeout);
 
-  const playStep = (nextStep) => {
+  const runStep = (s) => {
     clearTimers();
-    setStep(nextStep);
+    timers.current = [];
+    setStep(s);
     setPhase("scribble");
 
-    timersRef.current = [
-      setTimeout(() => setPhase("line"), 520),
-      setTimeout(() => setPhase("dot"), 1050),
-      setTimeout(() => setPhase("text"), 1450),
-      setTimeout(() => {
-        playStep((nextStep + 1) % TIMELINE_ITEMS.length);
-      }, TIMELINE_ITEMS[nextStep]?.isFinal ? 4400 : 3600),
-    ];
+    const item = TIMELINE_ITEMS[s];
+    const holdDuration = item.isNow ? 5000 : item.heart ? 3500 : 2800;
+
+    timers.current.push(setTimeout(() => setPhase("line"),    480));
+    timers.current.push(setTimeout(() => setPhase("content"), 960));
+    timers.current.push(setTimeout(() => setPhase("dot"),    1400));
+    timers.current.push(setTimeout(() => setPhase("hold"),   1700));
+    timers.current.push(setTimeout(() => runStep((s + 1) % TIMELINE_ITEMS.length), 1700 + holdDuration));
   };
 
   useEffect(() => {
-    playStep(0);
-    return clearTimers;
+    const t = setTimeout(() => runStep(0), 400);
+    return () => { clearTimeout(t); clearTimers(); };
   }, []);
 
+  const handleHover = () => { clearTimers(); runStep(0); };
+
   const item = TIMELINE_ITEMS[step];
-  const progress = ((step + 1) / TIMELINE_ITEMS.length) * 100;
+  const showContent = phase === "content" || phase === "dot" || phase === "hold";
+  const showDot     = phase === "dot"     || phase === "hold";
 
   return (
     <div
-      className={`group relative h-full overflow-hidden rounded-[32px] bg-white p-6 ${BODY}`}
+      className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative ${BODY}`}
       style={{ minHeight: "220px" }}
-      onMouseEnter={() => playStep(step)}
+      onMouseEnter={handleHover}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(217,111,69,0.12),transparent_34%),linear-gradient(135deg,rgba(255,248,245,0.9),rgba(255,255,255,0.2))]" />
+      {/* ── Header ── */}
+      <p className={`pt-6 px-6 pb-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+        timeline
+      </p>
 
-      <div className="relative z-10 flex h-full flex-col">
-        <div className="mb-4 flex items-center justify-between">
-          <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-            timeline
-          </p>
+      {/* ── Main stage ── */}
+      <div className="flex-1 flex flex-col justify-center px-6 relative" style={{ minHeight: 0 }}>
 
-          <button
-            type="button"
-            onClick={() => playStep((step + 1) % TIMELINE_ITEMS.length)}
-            className={`rounded-full border border-[#E4E2E1] bg-white/70 px-3 py-1 text-[10px] font-semibold text-[#9A8176] transition hover:border-[#D96F45] hover:text-[#A5522A] ${HEADING}`}
+        {/* ── Animated line ── */}
+        <div className="relative w-full" style={{ height: "24px" }}>
+          <svg
+            className="absolute inset-0 w-full h-full overflow-visible"
+            viewBox="0 0 300 24"
+            preserveAspectRatio="none"
           >
-            next
-          </button>
-        </div>
-
-        <div className="grid flex-1 grid-cols-[88px_1fr] gap-4">
-          {/* Image space */}
-          <div className="relative overflow-hidden rounded-[22px] border border-[#E4E2E1] bg-[#F7F4F2]">
-            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(217,111,69,0.18),transparent_55%)]" />
-
-            <div
-              key={`image-${step}`}
-              className="absolute inset-3 rounded-[16px] border border-dashed border-[#D8C5BB] bg-white/50 animate-[timelineImageIn_0.55s_cubic-bezier(.2,.8,.2,1)_forwards]"
-            >
-              <div className="flex h-full items-center justify-center px-3 text-center">
-                <span className={`text-[9px] font-semibold uppercase leading-[1.35] tracking-[0.12em] text-[#B2998E] ${HEADING}`}>
-                  {item.imageLabel}
-                </span>
-              </div>
-            </div>
-
-            <div className="absolute bottom-3 left-3 right-3 h-[3px] overflow-hidden rounded-full bg-[#E9DED8]">
-              <div
-                className="h-full rounded-full bg-[#D96F45] transition-all duration-700 ease-out"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          </div>
-
-          <div className="min-w-0">
-            {/* Line, scribble, dot */}
-            <div className="relative mb-3 h-9">
-              <svg
-                viewBox="0 0 240 32"
-                className="absolute left-0 top-1/2 h-8 w-full -translate-y-1/2 overflow-visible"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-              >
-                <line
-                  x1="0"
-                  y1="16"
-                  x2="240"
-                  y2="16"
-                  stroke="#E6D8D1"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                />
-
-                {(phase === "line" || phase === "dot" || phase === "text") && (
-                  <line
-                    key={`line-${step}`}
-                    x1="0"
-                    y1="16"
-                    x2="240"
-                    y2="16"
-                    stroke="#A5522A"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    className="timeline-line-draw"
-                  />
-                )}
-
-                {(phase === "dot" || phase === "text") && (
-                  <circle
-                    key={`dot-${step}`}
-                    cx={item.isFinal ? "214" : "126"}
-                    cy="16"
-                    r="4.5"
-                    fill="white"
-                    stroke="#D96F45"
-                    strokeWidth="2"
-                    className="timeline-dot-pop"
-                  />
-                )}
-              </svg>
-
-              {phase === "scribble" && (
-                <div
-                  key={`scribble-${step}`}
-                  className="absolute top-1/2 h-12 w-20 -translate-y-1/2 animate-[timelineScribbleFloat_0.55s_ease_forwards]"
-                  style={{ left: item.isFinal ? "58%" : "42%" }}
-                >
-                  <TimelineScribble isFinal={item.isFinal} />
-                </div>
-              )}
-
-              {item.isFinal && phase === "text" && (
-                <div className="absolute right-1 top-1/2 h-12 w-12 -translate-y-1/2 animate-[timelineFinalGlow_1.8s_ease-in-out_infinite] rounded-full border border-[#D96F45]/30" />
-              )}
-            </div>
-
-            <div key={`copy-${step}`} className="animate-[timelineTextIn_0.5s_cubic-bezier(.2,.8,.2,1)_forwards]">
-              <div className="mb-1 flex items-center gap-2">
-                <span className={`text-[20px] font-bold leading-none tracking-[-0.04em] text-[#A5522A] ${HEADING}`}>
-                  {item.year}
-                </span>
-                <span className={`truncate rounded-full bg-[#FFF1E9] px-2 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-[#D96F45] ${HEADING}`}>
-                  {item.eyebrow}
-                </span>
-              </div>
-
-              <h3 className={`text-[16px] font-semibold leading-[1.15] tracking-[-0.03em] text-[#221B16] ${HEADING}`}>
-                {item.title}
-              </h3>
-
-              <p className="mt-2 text-[12px] leading-[1.55] text-[#5F5149]">
-                {item.desc}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="relative mt-4 flex items-center gap-1.5">
-          {TIMELINE_ITEMS.map((timelineItem, index) => (
-            <button
-              type="button"
-              aria-label={`Show ${timelineItem.year}`}
-              key={`${timelineItem.year}-${timelineItem.eyebrow}`}
-              onClick={() => playStep(index)}
-              className="h-2 rounded-full transition-all duration-300"
+            {/* Scribble — draws in, then fades out */}
+            <path
+              key={`scribble-${step}`}
+              d="M10,12 C30,5 40,19 70,12 C100,5 110,19 140,12 C170,5 180,19 210,12 C240,5 250,19 280,12 C292,8 298,12 300,12"
+              fill="none"
+              stroke="#C8BDB8"
+              strokeWidth="1.2"
+              strokeLinecap="round"
               style={{
-                width: index === step ? "26px" : "7px",
-                background: index === step ? "#D96F45" : "#E4DDD9",
+                strokeDasharray: 520,
+                strokeDashoffset: phase === "scribble" ? 0 : 520,
+                opacity: phase === "scribble" ? 1 : 0,
+                transition: phase === "scribble"
+                  ? "stroke-dashoffset 0.45s ease, opacity 0s"
+                  : "opacity 0.25s ease",
+                animation: phase === "scribble" ? "drawScribble 0.45s ease forwards" : "none",
               }}
             />
-          ))}
+
+            {/* Clean line — slides in from left after scribble */}
+            <line
+              key={`line-${step}`}
+              x1="0" y1="12" x2="300" y2="12"
+              stroke="#2F2F2F"
+              strokeWidth="1"
+              strokeLinecap="round"
+              style={{
+                strokeDasharray: 300,
+                strokeDashoffset: (phase === "line" || phase === "scribble") ? 300 : 0,
+                transition: phase === "line" ? "stroke-dashoffset 0.45s ease" : "none",
+              }}
+            />
+
+            {/* Dot appears in center */}
+            {showDot && (
+              <circle
+                key={`dot-${step}`}
+                cx="150" cy="12"
+                r={item.isNow ? "6" : "4"}
+                fill={item.isNow ? "#D96F45" : "white"}
+                stroke={item.isNow ? "#D96F45" : "#2F2F2F"}
+                strokeWidth="1.5"
+                style={{
+                  animation: "popDot 0.25s cubic-bezier(0.34,1.56,0.64,1) forwards",
+                  filter: item.isNow ? "drop-shadow(0 0 6px rgba(217,111,69,0.5))" : "none",
+                }}
+              />
+            )}
+
+            {/* Heart scribble for marriage */}
+            {item.heart && showDot && (
+              <path
+                d="M147,10 C147,8 149,7 150,9 C151,7 153,8 153,10 C153,12 150,14 150,14 C150,14 147,12 147,10Z"
+                fill="#D96F45"
+                style={{ animation: "popDot 0.3s ease 0.1s forwards", opacity: 0 }}
+              />
+            )}
+          </svg>
+        </div>
+
+        {/* ── Content: slides in from right ── */}
+        <div
+          key={`content-${step}`}
+          style={{
+            transform: showContent ? "translateX(0)" : "translateX(60px)",
+            opacity: showContent ? 1 : 0,
+            transition: "transform 0.45s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease",
+            marginTop: "14px",
+          }}
+        >
+          <div className="flex items-baseline gap-2">
+            <span
+              className={`text-[13px] font-bold tracking-[-0.01em] ${item.isNow ? "text-[#D96F45]" : "text-[#221B16]"} ${HEADING}`}
+            >
+              {item.isNow ? "NOW" : item.year}
+            </span>
+            <span className={`text-[11px] font-semibold text-[#9A8176] ${HEADING}`}>
+              {item.label}
+            </span>
+          </div>
+          <p className={`mt-1 text-[12px] leading-[1.55] text-[#5F5149] ${BODY}`}
+            style={{ maxWidth: "220px" }}>
+            {item.sub}
+          </p>
         </div>
       </div>
 
+      {/* ── Step progress pills ── */}
+      <div className="flex gap-1 px-6 pb-5 mt-2">
+        {TIMELINE_ITEMS.map((_, i) => (
+          <div
+            key={i}
+            style={{
+              height: "3px",
+              borderRadius: "9999px",
+              flex: i === step ? "2" : "1",
+              background: i <= step ? "#D96F45" : "#EDE8E5",
+              transition: "flex 0.4s ease, background 0.3s ease",
+            }}
+          />
+        ))}
+      </div>
+
       <style>{`
-        @keyframes timelineDraw {
-          from { stroke-dashoffset: 240; }
-          to { stroke-dashoffset: 0; }
+        @keyframes drawScribble {
+          from { stroke-dashoffset: 520; }
+          to   { stroke-dashoffset: 0; }
         }
-
-        @keyframes timelineDotPop {
-          0% { opacity: 0; transform: scale(0.2); }
-          70% { opacity: 1; transform: scale(1.28); }
-          100% { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes timelineTextIn {
-          from { opacity: 0; transform: translateX(26px); filter: blur(3px); }
-          to { opacity: 1; transform: translateX(0); filter: blur(0); }
-        }
-
-        @keyframes timelineImageIn {
-          from { opacity: 0; transform: translateY(8px) scale(0.96); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        @keyframes timelineScribbleFloat {
-          0% { opacity: 0; transform: translate(30px, -50%) rotate(-4deg) scale(0.85); }
-          100% { opacity: 1; transform: translate(0, -50%) rotate(0deg) scale(1); }
-        }
-
-        @keyframes timelineFinalGlow {
-          0%, 100% { transform: translateY(-50%) scale(1); opacity: 0.45; }
-          50% { transform: translateY(-50%) scale(1.3); opacity: 0.9; }
-        }
-
-        .timeline-line-draw {
-          stroke-dasharray: 240;
-          stroke-dashoffset: 240;
-          animation: timelineDraw 0.72s cubic-bezier(.2,.8,.2,1) forwards;
-        }
-
-        .timeline-dot-pop {
-          transform-box: fill-box;
-          transform-origin: center;
-          animation: timelineDotPop 0.32s cubic-bezier(.2,.8,.2,1) forwards;
-        }
-
-        .timeline-scribble-path {
-          stroke-dasharray: 240;
-          stroke-dashoffset: 240;
-          animation: timelineDraw 0.62s ease forwards;
-        }
-
-        .timeline-scribble-path-delay {
-          animation-delay: 0.1s;
-        }
-
-        .timeline-orbit-path {
-          stroke-dasharray: 340;
-          stroke-dashoffset: 340;
-          animation: timelineDraw 0.85s ease forwards;
+        @keyframes popDot {
+          0%   { r: 0; opacity: 0; }
+          60%  { r: ${TIMELINE_ITEMS[step]?.isNow ? "7" : "5"}; }
+          100% { r: ${TIMELINE_ITEMS[step]?.isNow ? "6" : "4"}; opacity: 1; }
         }
       `}</style>
     </div>
