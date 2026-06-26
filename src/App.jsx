@@ -454,23 +454,177 @@ function WhatIBelieveTile() {
   );
 }
 
-/* ─── BENTO TILE: Nav Pills (fixed height) ─── */
-function NavTile({ onNav }) {
-  const items = ["what are you building now", "resume", "github", "contact"];
+/* ─── BENTO TILE: Animated Timeline (replaces NavTile) ─── */
+const TIMELINE_ITEMS = [
+  { year: "2021", org: "Dialexa", role: null,                         desc: "Exploring AR experiences for a travel app, DTour" },
+  { year: "2021", org: "Chetna",  role: null,                         desc: "Social media campaigns that raised $10,000+ for South Asian mental health" },
+  { year: "2023", org: "Paycom",  role: "Associate Product Designer",  desc: "Founding member of a new subteam. B2B enterprise solutions and design system." },
+  { year: "2024", org: "JPMC",    role: "Senior Product Designer",     desc: "Leading Marketing and AI initiatives. Building 0-to-1 product." },
+  { year: "2026", org: null,      role: "Design Engineer",             desc: "Bringing product ideas to polished reality, finding gaps in personalization" },
+];
+
+function NavTile() {
+  const [animKey, setAnimKey] = useState(0);
+  const [active, setActiveItem] = useState(-1);
+  const timerRef = useRef(null);
+  const lineRef = useRef(null);
+
+  const runAnimation = () => {
+    // Reset
+    setActiveItem(-1);
+    setAnimKey(k => k + 1);
+
+    // Reveal each dot sequentially
+    TIMELINE_ITEMS.forEach((_, i) => {
+      timerRef.current = setTimeout(() => {
+        setActiveItem(i);
+      }, 700 + i * 700);
+    });
+
+    // After last item, reset active so dots stay lit
+    timerRef.current = setTimeout(() => {
+      setActiveItem(TIMELINE_ITEMS.length); // all lit, no active highlight
+    }, 700 + TIMELINE_ITEMS.length * 700 + 400);
+  };
+
+  useEffect(() => {
+    runAnimation();
+    return () => clearTimeout(timerRef.current);
+  }, []);
+
   return (
-    <div className={`rounded-[32px] bg-white p-6 flex flex-col gap-2 h-full ${BODY}`} style={{ minHeight: "220px" }}>
-      <p className={`mb-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
-        explore
+    <div
+      className={`rounded-[32px] bg-white p-6 h-full flex flex-col ${BODY}`}
+      style={{ minHeight: "220px" }}
+      onMouseEnter={runAnimation}
+    >
+      <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+        timeline
       </p>
-      {items.map((item) => (
-        <button
-          key={item}
-          onClick={() => onNav(item)}
-          className={`w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB] ${HEADING}`}
-        >
-          {item}
-        </button>
-      ))}
+
+      {/* Horizontal line + dots */}
+      <div className="relative flex-1 flex flex-col justify-center" style={{ minHeight: "120px" }}>
+
+        {/* Scribble SVG line — draws on mount/hover via animKey */}
+        <div className="relative w-full" style={{ height: "40px" }}>
+          <svg
+            key={animKey}
+            className="absolute left-0 top-1/2 w-full"
+            style={{ transform: "translateY(-50%)", overflow: "visible", height: "20px" }}
+            preserveAspectRatio="none"
+            viewBox="0 0 400 20"
+          >
+            {/* Scribble path that resolves into a straight line */}
+            <path
+              d="M0,10 C20,4 30,16 60,10 C90,4 100,16 130,10 C160,4 170,16 200,10 C230,4 240,16 270,10 C300,4 310,16 340,10 C370,4 380,16 400,10"
+              fill="none"
+              stroke="#E4DDD9"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              style={{
+                strokeDasharray: 500,
+                strokeDashoffset: 500,
+                animation: `drawLine 0.6s ease forwards`,
+              }}
+            />
+            {/* Clean straight line that fades in after scribble */}
+            <line
+              x1="0" y1="10" x2="400" y2="10"
+              stroke="#D96F45"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              style={{
+                strokeDasharray: 400,
+                strokeDashoffset: 400,
+                animation: `drawLine 0.5s ease 0.5s forwards`,
+              }}
+            />
+          </svg>
+
+          {/* Dots positioned along the line */}
+          {TIMELINE_ITEMS.map((item, i) => {
+            const pct = i / (TIMELINE_ITEMS.length - 1);
+            const isLit = active >= i;
+            const isCurrent = active === i;
+            return (
+              <div
+                key={i}
+                className="absolute"
+                style={{
+                  left: `calc(${pct * 100}% - 6px)`,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  transition: "all 0.3s ease",
+                }}
+              >
+                {/* Dot */}
+                <div
+                  style={{
+                    width: isCurrent ? "14px" : "10px",
+                    height: isCurrent ? "14px" : "10px",
+                    borderRadius: "50%",
+                    background: isLit ? "#D96F45" : "#E4DDD9",
+                    border: isCurrent ? "2.5px solid white" : "none",
+                    boxShadow: isCurrent ? "0 0 0 2px #D96F45" : "none",
+                    marginLeft: isCurrent ? "-2px" : "0",
+                    marginTop: isCurrent ? "-2px" : "0",
+                    transition: "all 0.25s ease",
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Year labels below line */}
+        <div className="relative w-full flex mt-1">
+          {TIMELINE_ITEMS.map((item, i) => {
+            const pct = i / (TIMELINE_ITEMS.length - 1);
+            const isLit = active >= i;
+            return (
+              <div
+                key={i}
+                className="absolute"
+                style={{
+                  left: `${pct * 100}%`,
+                  transform: i === 0 ? "none" : i === TIMELINE_ITEMS.length - 1 ? "translateX(-100%)" : "translateX(-50%)",
+                }}
+              >
+                <span
+                  className={`text-[10px] font-semibold ${HEADING}`}
+                  style={{
+                    color: isLit ? "#D96F45" : "#B8AFA9",
+                    transition: "color 0.3s ease",
+                  }}
+                >
+                  {item.year}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Active item detail card */}
+        {active >= 0 && active < TIMELINE_ITEMS.length && (
+          <div
+            className="mt-4 animate-[fadeUp_0.25s_ease_forwards]"
+            key={active}
+          >
+            <p className={`text-[10px] font-bold uppercase tracking-[0.12em] text-[#D96F45] ${HEADING}`}>
+              {TIMELINE_ITEMS[active].org}{TIMELINE_ITEMS[active].role ? ` · ${TIMELINE_ITEMS[active].role}` : ""}
+            </p>
+            <p className="mt-1 text-[12px] leading-[1.5] text-[#5F5149]">
+              {TIMELINE_ITEMS[active].desc}
+            </p>
+          </div>
+        )}
+      </div>
+
+      <style>{`
+        @keyframes drawLine {
+          to { stroke-dashoffset: 0; }
+        }
+      `}</style>
     </div>
   );
 }
@@ -1013,7 +1167,7 @@ export default function PortfolioHome() {
 
           {/* Explore / nav: col 2, row 2 (green) */}
           <div style={{ gridColumn: "2", gridRow: "2" }}>
-            <NavTile onNav={handleNav} />
+            <NavTile />
           </div>
 
           {/* What I Believe: col 3, row 2 (yellow) */}
@@ -1036,7 +1190,7 @@ export default function PortfolioHome() {
         {/* ── MOBILE stack ── */}
         <div className="flex flex-col gap-4 lg:hidden">
           <HeroTile />
-          <NavTile onNav={handleNav} />
+          <NavTile />
           <WhatIBelieveTile />
 
           {/* Chat on mobile uses the FAB — show condensed card here */}
