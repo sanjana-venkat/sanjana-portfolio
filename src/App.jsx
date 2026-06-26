@@ -469,186 +469,267 @@ function WhatIBelieveTile() {
 
 /* ─── BENTO TILE: Animated Timeline ─── */
 const TIMELINE_ITEMS = [
-  { year: "2019", label: "Best Presenter Award",          sub: "First publication on Temple Architecture",               heart: false, isNow: false },
-  { year: "2021", label: "Chetna",                        sub: "Social media campaigns, raised $10,000+ for South Asian mental health", heart: false, isNow: false },
-  { year: "2022", label: "Dialexa",                       sub: "Exploring AR experiences for a travel app, DTour",       heart: false, isNow: false },
-  { year: "2022", label: "VP, UX Club",                   sub: "Design challenge with Paycom & Bottle Rocket, conference by Intuit", heart: false, isNow: false },
-  { year: "2023", label: "Paycom · Associate PD",         sub: "Founding member of a new subteam. B2B enterprise & design system.", heart: false, isNow: false },
-  { year: "2024", label: "JPMC · Senior PD",              sub: "Funnel optimization, HELOC 0-to-1, AI initiatives.",     heart: false, isNow: false },
-  { year: "2025", label: "JP Morgan Chase",               sub: "Led Marketing + AI. Gemini & ChatGPT GEO for Jamie Dimon.", heart: false, isNow: false },
-  { year: "2026", label: "Married ♡ Bay Area",            sub: "Moved to the Bay Area. New chapter.",                   heart: true,  isNow: false },
-  { year: "NOW",  label: "Design Engineer",               sub: "Bringing product ideas to polished reality. Finding gaps in personalization.", heart: false, isNow: true },
+  { year: "2019", label: "Best Presenter Award",   sub: "First publication on Temple Architecture",                            heart: false, isNow: false, img: null },
+  { year: "2021", label: "Chetna",                 sub: "Raised $10,000+ for South Asian mental health",                       heart: false, isNow: false, img: null },
+  { year: "2022", label: "Dialexa",                sub: "Exploring AR experiences for a travel app, DTour",                    heart: false, isNow: false, img: null },
+  { year: "2022", label: "VP, UX Club",            sub: "Design challenge with Paycom & Bottle Rocket. Conference by Intuit.", heart: false, isNow: false, img: null },
+  { year: "2023", label: "Paycom",                 sub: "Founding member of a new subteam. B2B enterprise & design system.",   heart: false, isNow: false, img: null },
+  { year: "2024", label: "JPMC · Senior PD",       sub: "Funnel optimization, HELOC 0-to-1, AI initiatives.",                 heart: false, isNow: false, img: null },
+  { year: "2025", label: "JP Morgan Chase",        sub: "Led Marketing + AI. Gemini & ChatGPT GEO search for Jamie Dimon.",   heart: false, isNow: false, img: null },
+  { year: "2026", label: "Married ♡  Bay Area",   sub: "Moved to the Bay Area. New chapter begins.",                          heart: true,  isNow: false, img: null },
+  { year: "NOW",  label: "Design Engineer",        sub: "Bringing product ideas to polished reality. Finding gaps in personalization.", heart: false, isNow: true,  img: null },
 ];
 
+/* Multiple overlapping scribble paths for the idle "my story" state */
+const IDLE_SCRIBBLES = [
+  `M 40,50 C 55,25 70,70 90,45 C 110,20 125,65 145,40 C 165,15 180,60 200,42 C 220,24 235,58 255,38`,
+  `M 50,55 C 62,32 78,72 95,48 C 112,24 130,68 150,44 C 170,20 188,62 208,46`,
+  `M 35,48 C 52,28 65,68 82,44 C 99,20 115,64 138,40 C 161,16 175,58 198,44 C 221,30 238,55 260,42`,
+];
+
+const SCRIBBLE_PATH = `
+  M 80,48
+  C 72,30 88,20 95,36
+  C 102,52 78,62 72,46
+  C 66,30 84,22 90,38
+  C 96,54 74,64 68,48
+  C 62,32 82,24 88,40
+  C 94,56 72,64 66,50
+  C 60,36 80,28 86,44
+  C 92,60 250,48 290,48
+`;
+const SCRIBBLE_LEN = 900;
+
 function NavTile() {
-  // Phases per step: scribble → line → text-slides-in → dot-appears → hold → advance
-  // We track a single integer `tick` that drives everything via CSS animation keys
-  const [step, setStep] = useState(0);
-  const [phase, setPhase] = useState("scribble"); // scribble | line | content | dot | hold
+  const [active, setActive] = useState(false); // false = idle scribble, true = playing
+  const [step, setStep]     = useState(0);
+  // phases when active: scribble → line → slide → hold
+  const [phase, setPhase]   = useState("idle");
   const timers = useRef([]);
 
-  const clearTimers = () => timers.current.forEach(clearTimeout);
+  const clearAll = () => { timers.current.forEach(clearTimeout); timers.current = []; };
 
   const runStep = (s) => {
-    clearTimers();
-    timers.current = [];
+    clearAll();
     setStep(s);
     setPhase("scribble");
 
-    const item = TIMELINE_ITEMS[s];
-    const holdDuration = item.isNow ? 5000 : item.heart ? 3500 : 2800;
+    const hold = TIMELINE_ITEMS[s].isNow ? 5000 : TIMELINE_ITEMS[s].heart ? 3800 : 2400;
+    const push = (fn, ms) => { const t = setTimeout(fn, ms); timers.current.push(t); };
 
-    timers.current.push(setTimeout(() => setPhase("line"),    480));
-    timers.current.push(setTimeout(() => setPhase("content"), 960));
-    timers.current.push(setTimeout(() => setPhase("dot"),    1400));
-    timers.current.push(setTimeout(() => setPhase("hold"),   1700));
-    timers.current.push(setTimeout(() => runStep((s + 1) % TIMELINE_ITEMS.length), 1700 + holdDuration));
+    // scribble draws (0–500ms) → line draws + dot+content slide in together (500–1100ms) → hold → next
+    push(() => setPhase("line"),    500);
+    push(() => setPhase("hold"),   1100);
+    push(() => runStep((s + 1) % TIMELINE_ITEMS.length), 1100 + hold);
   };
 
-  useEffect(() => {
-    const t = setTimeout(() => runStep(0), 400);
-    return () => { clearTimeout(t); clearTimers(); };
-  }, []);
+  const start = () => {
+    if (active) return;
+    setActive(true);
+    runStep(0);
+  };
 
-  const handleHover = () => { clearTimers(); runStep(0); };
+  const stop = () => {
+    clearAll();
+    setActive(false);
+    setStep(0);
+    setPhase("idle");
+  };
 
-  const item = TIMELINE_ITEMS[step];
-  const showContent = phase === "content" || phase === "dot" || phase === "hold";
-  const showDot     = phase === "dot"     || phase === "hold";
+  useEffect(() => () => clearAll(), []);
+
+  const item       = TIMELINE_ITEMS[step];
+  const showLine   = phase === "line" || phase === "hold";
+  // dot and content both slide in together from the right
+  const showSlide  = phase === "hold";
 
   return (
     <div
-      className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative ${BODY}`}
+      className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative select-none cursor-pointer ${BODY}`}
       style={{ minHeight: "220px" }}
-      onMouseEnter={handleHover}
+      onMouseEnter={start}
+      onMouseLeave={stop}
+      onClick={start}
     >
-      {/* ── Header ── */}
-      <p className={`pt-6 px-6 pb-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-        timeline
-      </p>
+      {/* ── Idle state: title + scribbles ── */}
+      {!active && (
+        <div className="absolute inset-0 flex flex-col px-6 pt-6 pb-5">
+          <p className={`text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] mb-3 ${HEADING}`}>
+            my story
+          </p>
+          <div className="flex-1 relative">
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 280 120" preserveAspectRatio="xMidYMid meet">
+              {IDLE_SCRIBBLES.map((d, i) => (
+                <path
+                  key={i}
+                  d={d}
+                  fill="none"
+                  stroke="#C8BDB8"
+                  strokeWidth={1 + i * 0.3}
+                  strokeLinecap="round"
+                  opacity={0.5 + i * 0.15}
+                />
+              ))}
+            </svg>
+            <p className={`absolute bottom-0 left-0 text-[11px] text-[#C0B8B4] ${HEADING}`}>
+              hover to explore
+            </p>
+          </div>
+        </div>
+      )}
 
-      {/* ── Main stage ── */}
-      <div className="flex-1 flex flex-col justify-center px-6 relative" style={{ minHeight: 0 }}>
+      {/* ── Active animation ── */}
+      {active && (
+        <>
+          <p className={`pt-6 px-6 pb-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
+            my story
+          </p>
 
-        {/* ── Animated line ── */}
-        <div className="relative w-full" style={{ height: "24px" }}>
-          <svg
-            className="absolute inset-0 w-full h-full overflow-visible"
-            viewBox="0 0 300 24"
-            preserveAspectRatio="none"
-          >
-            {/* Scribble — draws in, then fades out */}
-            <path
-              key={`scribble-${step}`}
-              d="M10,12 C30,5 40,19 70,12 C100,5 110,19 140,12 C170,5 180,19 210,12 C240,5 250,19 280,12 C292,8 298,12 300,12"
-              fill="none"
-              stroke="#C8BDB8"
-              strokeWidth="1.2"
-              strokeLinecap="round"
+          <div className="relative flex-1 flex flex-col" style={{ minHeight: 0 }}>
+
+            {/* SVG: scribble → line */}
+            <svg
+              className="absolute left-0 right-0"
+              style={{ top: "35%", width: "100%", height: "80px", overflow: "visible" }}
+              viewBox="0 0 320 80"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              {/* Scribble — visible during scribble phase */}
+              {phase === "scribble" && (
+                <path
+                  key={`scribble-${step}`}
+                  d={SCRIBBLE_PATH}
+                  fill="none"
+                  stroke="#2F2F2F"
+                  strokeWidth="1.3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{
+                    strokeDasharray: SCRIBBLE_LEN,
+                    strokeDashoffset: SCRIBBLE_LEN,
+                    animation: "tlDrawScribble 0.48s ease forwards",
+                  }}
+                />
+              )}
+
+              {/* Clean straight line */}
+              {showLine && (
+                <line
+                  key={`line-${step}`}
+                  x1="20" y1="40" x2="300" y2="40"
+                  stroke="#2F2F2F"
+                  strokeWidth="1.1"
+                  strokeLinecap="round"
+                  style={{
+                    strokeDasharray: 280,
+                    strokeDashoffset: phase === "line" ? 280 : 0,
+                    transition: "stroke-dashoffset 0.42s cubic-bezier(0.4,0,0.2,1)",
+                  }}
+                />
+              )}
+
+              {/*
+                Dot slides in FROM THE RIGHT along the line,
+                landing in the center. Uses translateX animation.
+              */}
+              {showSlide && (
+                <circle
+                  key={`dot-${step}`}
+                  cx="160" cy="40"
+                  r={item.isNow ? "5" : "4"}
+                  fill={item.isNow ? "#D96F45" : "white"}
+                  stroke={item.isNow ? "#D96F45" : "#2F2F2F"}
+                  strokeWidth="1.5"
+                  style={{
+                    animation: "tlDotSlide 0.45s cubic-bezier(0.22,1,0.36,1) forwards",
+                    filter: item.isNow ? "drop-shadow(0 0 5px rgba(217,111,69,0.5))" : "none",
+                  }}
+                />
+              )}
+
+              {/* Heart for marriage */}
+              {item.heart && showSlide && (
+                <g
+                  style={{ animation: "tlDotSlide 0.45s cubic-bezier(0.22,1,0.36,1) 0.05s forwards", opacity: 0 }}
+                >
+                  <path
+                    d="M156,37 C156,34 158,33 160,35 C162,33 164,34 164,37 C164,40 160,43 160,43 C160,43 156,40 156,37Z"
+                    fill="#D96F45"
+                  />
+                </g>
+              )}
+            </svg>
+
+            {/* Content + image: slide in from right together with the dot */}
+            <div
+              key={`content-${step}`}
+              className="absolute left-0 right-0 bottom-0 px-6 pb-3"
               style={{
-                strokeDasharray: 520,
-                strokeDashoffset: phase === "scribble" ? 0 : 520,
-                opacity: phase === "scribble" ? 1 : 0,
-                transition: phase === "scribble"
-                  ? "stroke-dashoffset 0.45s ease, opacity 0s"
-                  : "opacity 0.25s ease",
-                animation: phase === "scribble" ? "drawScribble 0.45s ease forwards" : "none",
+                animation: showSlide ? "tlContentSlide 0.48s cubic-bezier(0.22,1,0.36,1) forwards" : "none",
+                opacity: showSlide ? 1 : 0,
+                transform: showSlide ? undefined : "translateX(80px)",
               }}
-            />
+            >
+              {/* Tilted image — bottom left */}
+              {item.img && (
+                <div
+                  className="absolute overflow-hidden rounded-[12px] border-[3px] border-white"
+                  style={{
+                    width: "64px", height: "72px",
+                    bottom: "68px", left: "16px",
+                    transform: "rotate(-9deg)",
+                    boxShadow: "0 4px 14px rgba(0,0,0,0.14)",
+                    zIndex: 5,
+                  }}
+                >
+                  <img src={item.img} alt="" className="w-full h-full object-cover" />
+                </div>
+              )}
 
-            {/* Clean line — slides in from left after scribble */}
-            <line
-              key={`line-${step}`}
-              x1="0" y1="12" x2="300" y2="12"
-              stroke="#2F2F2F"
-              strokeWidth="1"
-              strokeLinecap="round"
-              style={{
-                strokeDasharray: 300,
-                strokeDashoffset: (phase === "line" || phase === "scribble") ? 300 : 0,
-                transition: phase === "line" ? "stroke-dashoffset 0.45s ease" : "none",
-              }}
-            />
+              <div className="flex items-baseline gap-2 flex-wrap">
+                <span className={`text-[14px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#221B16]"} ${HEADING}`}>
+                  {item.isNow ? "NOW" : item.year}
+                </span>
+                <span className={`text-[11px] font-semibold text-[#9A8176] ${HEADING}`}>
+                  {item.label}
+                </span>
+              </div>
+              <p className="mt-1 text-[12px] leading-[1.6] text-[#5F5149]" style={{ maxWidth: "230px" }}>
+                {item.sub}
+              </p>
+            </div>
+          </div>
 
-            {/* Dot appears in center */}
-            {showDot && (
-              <circle
-                key={`dot-${step}`}
-                cx="150" cy="12"
-                r={item.isNow ? "6" : "4"}
-                fill={item.isNow ? "#D96F45" : "white"}
-                stroke={item.isNow ? "#D96F45" : "#2F2F2F"}
-                strokeWidth="1.5"
+          {/* Progress pills */}
+          <div className="flex gap-1 px-6 pb-5 shrink-0">
+            {TIMELINE_ITEMS.map((_, i) => (
+              <div
+                key={i}
                 style={{
-                  animation: "popDot 0.25s cubic-bezier(0.34,1.56,0.64,1) forwards",
-                  filter: item.isNow ? "drop-shadow(0 0 6px rgba(217,111,69,0.5))" : "none",
+                  height: "3px",
+                  borderRadius: "9999px",
+                  flex: i === step ? 2.5 : 1,
+                  background: i <= step ? "#D96F45" : "#EDE8E5",
+                  transition: "flex 0.4s ease, background 0.3s ease",
                 }}
               />
-            )}
-
-            {/* Heart scribble for marriage */}
-            {item.heart && showDot && (
-              <path
-                d="M147,10 C147,8 149,7 150,9 C151,7 153,8 153,10 C153,12 150,14 150,14 C150,14 147,12 147,10Z"
-                fill="#D96F45"
-                style={{ animation: "popDot 0.3s ease 0.1s forwards", opacity: 0 }}
-              />
-            )}
-          </svg>
-        </div>
-
-        {/* ── Content: slides in from right ── */}
-        <div
-          key={`content-${step}`}
-          style={{
-            transform: showContent ? "translateX(0)" : "translateX(60px)",
-            opacity: showContent ? 1 : 0,
-            transition: "transform 0.45s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease",
-            marginTop: "14px",
-          }}
-        >
-          <div className="flex items-baseline gap-2">
-            <span
-              className={`text-[13px] font-bold tracking-[-0.01em] ${item.isNow ? "text-[#D96F45]" : "text-[#221B16]"} ${HEADING}`}
-            >
-              {item.isNow ? "NOW" : item.year}
-            </span>
-            <span className={`text-[11px] font-semibold text-[#9A8176] ${HEADING}`}>
-              {item.label}
-            </span>
+            ))}
           </div>
-          <p className={`mt-1 text-[12px] leading-[1.55] text-[#5F5149] ${BODY}`}
-            style={{ maxWidth: "220px" }}>
-            {item.sub}
-          </p>
-        </div>
-      </div>
-
-      {/* ── Step progress pills ── */}
-      <div className="flex gap-1 px-6 pb-5 mt-2">
-        {TIMELINE_ITEMS.map((_, i) => (
-          <div
-            key={i}
-            style={{
-              height: "3px",
-              borderRadius: "9999px",
-              flex: i === step ? "2" : "1",
-              background: i <= step ? "#D96F45" : "#EDE8E5",
-              transition: "flex 0.4s ease, background 0.3s ease",
-            }}
-          />
-        ))}
-      </div>
+        </>
+      )}
 
       <style>{`
-        @keyframes drawScribble {
-          from { stroke-dashoffset: 520; }
+        @keyframes tlDrawScribble {
+          from { stroke-dashoffset: ${SCRIBBLE_LEN}; }
           to   { stroke-dashoffset: 0; }
         }
-        @keyframes popDot {
-          0%   { r: 0; opacity: 0; }
-          60%  { r: ${TIMELINE_ITEMS[step]?.isNow ? "7" : "5"}; }
-          100% { r: ${TIMELINE_ITEMS[step]?.isNow ? "6" : "4"}; opacity: 1; }
+        @keyframes tlDotSlide {
+          from { transform: translateX(140px); opacity: 0; }
+          to   { transform: translateX(0);     opacity: 1; }
+        }
+        @keyframes tlContentSlide {
+          from { transform: translateX(80px); opacity: 0; }
+          to   { transform: translateX(0);    opacity: 1; }
         }
       `}</style>
     </div>
