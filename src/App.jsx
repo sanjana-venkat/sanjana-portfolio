@@ -588,73 +588,87 @@ function NavTile() {
           </p>
 
           <div className="relative flex-1 flex flex-col" style={{ minHeight: 0 }}>
-            {/* ── SVG stage ── */}
+            {/* ── SVG stage: elements always in DOM, driven by strokeDashoffset/opacity only ── */}
             <svg
               className="absolute left-0 right-0"
               style={{ top: "32%", width: "100%", height: "80px", overflow: "visible" }}
               viewBox="0 0 320 80"
               preserveAspectRatio="xMidYMid meet"
             >
-              {/* SCRIBBLE: draws in fully, then line replaces it (no fade — clean snap) */}
-              {phase === "scribble" && (
-                <path
-                  key={`knot-${step}`}
-                  d={KNOT_PATH}
-                  fill="none" stroke="#2F2F2F" strokeWidth="1.3"
-                  strokeLinecap="round" strokeLinejoin="round"
-                  style={{
-                    strokeDasharray: KNOT_LEN,
-                    strokeDashoffset: KNOT_LEN,
-                    animation: `tlKnot 0.75s ease forwards`,
-                  }}
-                />
-              )}
+              {/*
+                SCRIBBLE — always mounted when active.
+                - During "scribble": animates strokeDashoffset 950→0 (draws in)
+                - During "line" and beyond: opacity 0, no remount
+              */}
+              <path
+                d={KNOT_PATH}
+                fill="none"
+                stroke="#2F2F2F"
+                strokeWidth="1.3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{
+                  strokeDasharray: KNOT_LEN,
+                  strokeDashoffset: phase === "scribble" ? KNOT_LEN : 0,
+                  animation: phase === "scribble" ? "tlKnot 0.75s ease forwards" : "none",
+                  opacity: phase === "scribble" ? 1 : 0,
+                  transition: phase === "scribble" ? "none" : "opacity 0s",
+                }}
+              />
 
-              {/* LINE: draws in left-to-right after scribble is done */}
-              {showLine && (
-                <line
-                  key={`line-${step}`}
-                  x1="20" y1="40" x2="300" y2="40"
-                  stroke="#2F2F2F" strokeWidth="1.1" strokeLinecap="round"
-                  style={{
-                    strokeDasharray: 280,
-                    strokeDashoffset: phase === "line" ? 280 : 0,
-                    transition: phase === "line"
-                      ? "stroke-dashoffset 0.5s cubic-bezier(0.4,0,0.2,1)"
-                      : "none",
-                  }}
-                />
-              )}
+              {/*
+                LINE — always mounted when active.
+                - During "line": animates strokeDashoffset 280→0 (draws in left to right)
+                - During "slide"/"hold": offset stays 0, line fully visible
+                - During "scribble": offset 280, invisible
+              */}
+              <line
+                x1="20" y1="40" x2="300" y2="40"
+                stroke="#2F2F2F"
+                strokeWidth="1.1"
+                strokeLinecap="round"
+                style={{
+                  strokeDasharray: 280,
+                  strokeDashoffset: phase === "scribble" ? 280 : phase === "line" ? 280 : 0,
+                  animation: phase === "line" ? "tlLine 0.5s cubic-bezier(0.4,0,0.2,1) forwards" : "none",
+                }}
+              />
 
-              {/* DOT slides from right and lands on line — normal steps */}
-              {showSlide && !item.heart && (
+              {/*
+                DOT — always mounted, slides in from right when phase="slide" or "hold"
+                Hidden (opacity 0, off-canvas) before slide
+              */}
+              {!item.heart && (
                 <circle
-                  key={`dot-${step}`}
                   cx="160" cy="40"
                   r={item.isNow ? "5" : "3.5"}
                   fill={item.isNow ? "#D96F45" : "white"}
                   stroke={item.isNow ? "#D96F45" : "#2F2F2F"}
                   strokeWidth="1.5"
                   style={{
-                    animation: "tlDotSlide 0.5s cubic-bezier(0.22,1,0.36,1) forwards",
+                    opacity: showSlide ? 1 : 0,
+                    transform: showSlide ? "translateX(0)" : "translateX(130px)",
+                    transition: showSlide
+                      ? "transform 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease"
+                      : "none",
                     filter: item.isNow ? "drop-shadow(0 0 6px rgba(217,111,69,0.55))" : "none",
                   }}
                 />
               )}
 
-              {/* MARRIAGE: two hearts slide in from right and land on the line */}
-              {showSlide && item.heart && (
-                <g style={{ animation: "tlDotSlide 0.5s cubic-bezier(0.22,1,0.36,1) forwards" }}>
-                  {/* Heart 1 */}
-                  <path
-                    d="M 144,38 C 144,33 147,31 150,35 C 153,31 156,33 156,38 C 156,43 150,48 150,48 C 150,48 144,43 144,38Z"
-                    fill="#D96F45"
-                  />
-                  {/* Heart 2 — offset right */}
-                  <path
-                    d="M 158,38 C 158,33 161,31 164,35 C 167,31 170,33 170,38 C 170,43 164,48 164,48 C 164,48 158,43 158,38Z"
-                    fill="#D96F45"
-                  />
+              {/* HEARTS for marriage step */}
+              {item.heart && (
+                <g
+                  style={{
+                    opacity: showSlide ? 1 : 0,
+                    transform: showSlide ? "translateX(0)" : "translateX(130px)",
+                    transition: showSlide
+                      ? "transform 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease"
+                      : "none",
+                  }}
+                >
+                  <path d="M 144,38 C 144,33 147,31 150,35 C 153,31 156,33 156,38 C 156,43 150,48 150,48 C 150,48 144,43 144,38Z" fill="#D96F45" />
+                  <path d="M 158,38 C 158,33 161,31 164,35 C 167,31 170,33 170,38 C 170,43 164,48 164,48 C 164,48 158,43 158,38Z" fill="#D96F45" />
                 </g>
               )}
             </svg>
@@ -721,7 +735,7 @@ function NavTile() {
 
 /* ─── BENTO TILE: My Work — 3 project thumbnails in one row ─── */
 const WORK_PREVIEWS = [
-  { src: "/marketing-preview.png", label: "Personalized Marketing", projectKey: "marketing-tiles" },
+  { src: "/marketing-preview.png", label: "AI Personalization", projectKey: "marketing-tiles" },
   { src: "/ai-chat-preview.png",   label: "AI Chat Journeys",   projectKey: "ai-framer" },
   { src: "/outdone-preview.png",   label: "Outdone", isNew: true, projectKey: "travel-dna" },
 ];
