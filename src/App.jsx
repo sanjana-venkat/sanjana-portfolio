@@ -441,189 +441,159 @@ function WhatIBelieveTile() {
         </p>
       </div>
 
-      <div className="mt-6 flex items-center gap-4">
-        <a href="mailto:sanjanavnkt20@gmail.com" aria-label="Email Sanjana" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
-          <span className="flex h-full w-full items-center justify-center leading-none"><MailIcon /></span>
-        </a>
-
-        <a href="https://www.linkedin.com/in/sanjana-venkat/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 text-[13px] font-semibold leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A] ${HEADING}`}>
-          <span className="flex h-full w-full items-center justify-center leading-none">in</span>
+      <div className="mt-6 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <a href="mailto:sanjanavnkt20@gmail.com" aria-label="Email Sanjana" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
+            <span className="flex h-full w-full items-center justify-center leading-none"><MailIcon /></span>
+          </a>
+          <a href="https://www.linkedin.com/in/sanjana-venkat/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 text-[13px] font-semibold leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A] ${HEADING}`}>
+            <span className="flex h-full w-full items-center justify-center leading-none">in</span>
+          </a>
+        </div>
+        <a
+          href="/SanjanaVenkat_ProductDesign_Resume.pdf"
+          target="_blank"
+          rel="noreferrer"
+          className={`inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#6B625C] hover:text-[#A5522A] transition ${HEADING}`}
+        >
+          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          Resume
         </a>
       </div>
     </article>
   );
 }
 
-/* ─── BENTO TILE: Animated Timeline (replaces NavTile) ─── */
+/* ─── BENTO TILE: Animated Timeline ─── */
 const TIMELINE_ITEMS = [
-  { year: "2021", org: "Dialexa", role: null,                         desc: "Exploring AR experiences for a travel app, DTour" },
-  { year: "2021", org: "Chetna",  role: null,                         desc: "Social media campaigns that raised $10,000+ for South Asian mental health" },
-  { year: "2023", org: "Paycom",  role: "Associate Product Designer",  desc: "Founding member of a new subteam. B2B enterprise solutions and design system." },
-  { year: "2024", org: "JPMC",    role: "Senior Product Designer",     desc: "Leading Marketing and AI initiatives. Building 0-to-1 product." },
-  { year: "2026", org: null,      role: "Design Engineer",             desc: "Bringing product ideas to polished reality, finding gaps in personalization" },
+  { year: "2021", org: "Dialexa",         role: null,                        desc: "Exploring AR experiences for a travel app, DTour" },
+  { year: "2021", org: "Chetna",          role: null,                        desc: "Social media campaigns, raised $10,000+ for South Asian mental health" },
+  { year: "2023", org: "Paycom",          role: "Associate Product Designer", desc: "Founding member of a new subteam. B2B enterprise solutions and design system." },
+  { year: "2024", org: "JPMC",            role: "Senior Product Designer",    desc: "Leading Marketing and AI initiatives. Building 0-to-1 product." },
+  { year: "2026", org: "Independent",     role: "Design Engineer",            desc: "Bringing product ideas to polished reality, finding gaps in personalization" },
 ];
 
 function NavTile() {
-  const [animKey, setAnimKey] = useState(0);
-  const [active, setActiveItem] = useState(-1);
+  const [step, setStep] = useState(0);       // which timeline item is shown
+  const [phase, setPhase] = useState("idle"); // idle | scribble | line | dot | done
   const timerRef = useRef(null);
-  const lineRef = useRef(null);
 
-  const runAnimation = () => {
-    // Reset
-    setActiveItem(-1);
-    setAnimKey(k => k + 1);
-
-    // Reveal each dot sequentially
-    TIMELINE_ITEMS.forEach((_, i) => {
-      timerRef.current = setTimeout(() => {
-        setActiveItem(i);
-      }, 700 + i * 700);
-    });
-
-    // After last item, reset active so dots stay lit
+  const runStep = (s) => {
+    setStep(s);
+    setPhase("scribble");
+    timerRef.current = setTimeout(() => setPhase("line"), 500);
+    timerRef.current = setTimeout(() => setPhase("dot"), 1050);
+    timerRef.current = setTimeout(() => setPhase("done"), 1800);
     timerRef.current = setTimeout(() => {
-      setActiveItem(TIMELINE_ITEMS.length); // all lit, no active highlight
-    }, 700 + TIMELINE_ITEMS.length * 700 + 400);
+      const next = (s + 1) % TIMELINE_ITEMS.length;
+      runStep(next);
+    }, 3400);
   };
 
   useEffect(() => {
-    runAnimation();
+    timerRef.current = setTimeout(() => runStep(0), 300);
     return () => clearTimeout(timerRef.current);
   }, []);
 
+  const handleHover = () => {
+    clearTimeout(timerRef.current);
+    runStep(0);
+  };
+
+  const item = TIMELINE_ITEMS[step];
+
   return (
     <div
-      className={`rounded-[32px] bg-white p-6 h-full flex flex-col ${BODY}`}
+      className={`rounded-[32px] bg-white p-6 h-full flex flex-col overflow-hidden ${BODY}`}
       style={{ minHeight: "220px" }}
-      onMouseEnter={runAnimation}
+      onMouseEnter={handleHover}
     >
-      <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+      <p className={`mb-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         timeline
       </p>
 
-      {/* Horizontal line + dots */}
-      <div className="relative flex-1 flex flex-col justify-center" style={{ minHeight: "120px" }}>
-
-        {/* Scribble SVG line — draws on mount/hover via animKey */}
-        <div className="relative w-full" style={{ height: "40px" }}>
-          <svg
-            key={animKey}
-            className="absolute left-0 top-1/2 w-full"
-            style={{ transform: "translateY(-50%)", overflow: "visible", height: "20px" }}
-            preserveAspectRatio="none"
-            viewBox="0 0 400 20"
-          >
-            {/* Scribble path that resolves into a straight line */}
+      {/* Line + dot animation area */}
+      <div className="relative flex items-center" style={{ height: "28px" }}>
+        {/* The animated line */}
+        <svg
+          key={`${step}-${phase}`}
+          className="absolute left-0 top-1/2"
+          style={{ transform: "translateY(-50%)", overflow: "visible", width: "100%", height: "20px" }}
+          viewBox="0 0 300 20"
+          preserveAspectRatio="none"
+        >
+          {/* Phase 1: scribble (wobbly) */}
+          {(phase === "scribble") && (
             <path
-              d="M0,10 C20,4 30,16 60,10 C90,4 100,16 130,10 C160,4 170,16 200,10 C230,4 240,16 270,10 C300,4 310,16 340,10 C370,4 380,16 400,10"
-              fill="none"
-              stroke="#E4DDD9"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              style={{
-                strokeDasharray: 500,
-                strokeDashoffset: 500,
-                animation: `drawLine 0.6s ease forwards`,
-              }}
+              d="M0,10 C15,3 25,17 50,10 C75,3 85,17 110,10 C135,3 145,17 170,10 C195,3 205,17 230,10 C255,3 265,17 290,10 C298,6 300,10 300,10"
+              fill="none" stroke="#C8B8B0" strokeWidth="1.5" strokeLinecap="round"
+              style={{ strokeDasharray: 520, strokeDashoffset: 520, animation: "drawLine 0.45s ease forwards" }}
             />
-            {/* Clean straight line that fades in after scribble */}
+          )}
+          {/* Phase 2: resolves to straight orange line */}
+          {(phase === "line" || phase === "dot" || phase === "done") && (
             <line
-              x1="0" y1="10" x2="400" y2="10"
-              stroke="#D96F45"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              style={{
-                strokeDasharray: 400,
-                strokeDashoffset: 400,
-                animation: `drawLine 0.5s ease 0.5s forwards`,
-              }}
+              x1="0" y1="10" x2="300" y2="10"
+              stroke="#D96F45" strokeWidth="1.5" strokeLinecap="round"
+              style={{ strokeDasharray: 300, strokeDashoffset: phase === "line" ? 300 : 0, animation: phase === "line" ? "drawLine 0.5s ease forwards" : "none" }}
             />
-          </svg>
+          )}
+          {/* Phase 3: dot in center */}
+          {(phase === "dot" || phase === "done") && (
+            <circle
+              cx="150" cy="10" r={phase === "dot" ? "5" : "4"}
+              fill="white" stroke="#D96F45" strokeWidth="2"
+              style={{ animation: phase === "dot" ? "popDot 0.2s ease forwards" : "none" }}
+            />
+          )}
+        </svg>
+      </div>
 
-          {/* Dots positioned along the line */}
-          {TIMELINE_ITEMS.map((item, i) => {
-            const pct = i / (TIMELINE_ITEMS.length - 1);
-            const isLit = active >= i;
-            const isCurrent = active === i;
-            return (
-              <div
-                key={i}
-                className="absolute"
-                style={{
-                  left: `calc(${pct * 100}% - 6px)`,
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  transition: "all 0.3s ease",
-                }}
-              >
-                {/* Dot */}
-                <div
-                  style={{
-                    width: isCurrent ? "14px" : "10px",
-                    height: isCurrent ? "14px" : "10px",
-                    borderRadius: "50%",
-                    background: isLit ? "#D96F45" : "#E4DDD9",
-                    border: isCurrent ? "2.5px solid white" : "none",
-                    boxShadow: isCurrent ? "0 0 0 2px #D96F45" : "none",
-                    marginLeft: isCurrent ? "-2px" : "0",
-                    marginTop: isCurrent ? "-2px" : "0",
-                    transition: "all 0.25s ease",
-                  }}
-                />
-              </div>
-            );
-          })}
-        </div>
+      {/* Year + org label — slides in */}
+      <div
+        key={`label-${step}`}
+        className="mt-3"
+        style={{ animation: "fadeUp 0.3s ease forwards", opacity: 0 }}
+      >
+        <span className={`text-[11px] font-bold tracking-[0.1em] text-[#D96F45] uppercase ${HEADING}`}>
+          {item.year}
+        </span>
+        <span className={`ml-2 text-[11px] font-semibold text-[#9A8176] ${HEADING}`}>
+          {item.org}{item.role ? ` · ${item.role}` : ""}
+        </span>
+      </div>
 
-        {/* Year labels below line */}
-        <div className="relative w-full flex mt-1">
-          {TIMELINE_ITEMS.map((item, i) => {
-            const pct = i / (TIMELINE_ITEMS.length - 1);
-            const isLit = active >= i;
-            return (
-              <div
-                key={i}
-                className="absolute"
-                style={{
-                  left: `${pct * 100}%`,
-                  transform: i === 0 ? "none" : i === TIMELINE_ITEMS.length - 1 ? "translateX(-100%)" : "translateX(-50%)",
-                }}
-              >
-                <span
-                  className={`text-[10px] font-semibold ${HEADING}`}
-                  style={{
-                    color: isLit ? "#D96F45" : "#B8AFA9",
-                    transition: "color 0.3s ease",
-                  }}
-                >
-                  {item.year}
-                </span>
-              </div>
-            );
-          })}
-        </div>
+      {/* Description */}
+      <p
+        key={`desc-${step}`}
+        className="mt-2 text-[13px] leading-[1.6] text-[#5F5149] flex-1"
+        style={{ animation: "fadeUp 0.4s ease 0.1s forwards", opacity: 0 }}
+      >
+        {item.desc}
+      </p>
 
-        {/* Active item detail card */}
-        {active >= 0 && active < TIMELINE_ITEMS.length && (
+      {/* Step dots indicator */}
+      <div className="flex gap-1.5 mt-4">
+        {TIMELINE_ITEMS.map((_, i) => (
           <div
-            className="mt-4 animate-[fadeUp_0.25s_ease_forwards]"
-            key={active}
-          >
-            <p className={`text-[10px] font-bold uppercase tracking-[0.12em] text-[#D96F45] ${HEADING}`}>
-              {TIMELINE_ITEMS[active].org}{TIMELINE_ITEMS[active].role ? ` · ${TIMELINE_ITEMS[active].role}` : ""}
-            </p>
-            <p className="mt-1 text-[12px] leading-[1.5] text-[#5F5149]">
-              {TIMELINE_ITEMS[active].desc}
-            </p>
-          </div>
-        )}
+            key={i}
+            style={{
+              width: i === step ? "20px" : "6px",
+              height: "6px",
+              borderRadius: "9999px",
+              background: i === step ? "#D96F45" : "#E4DDD9",
+              transition: "all 0.3s ease",
+            }}
+          />
+        ))}
       </div>
 
       <style>{`
-        @keyframes drawLine {
-          to { stroke-dashoffset: 0; }
-        }
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
+        @keyframes popDot { from { r: 0; opacity: 0; } to { r: 5; opacity: 1; } }
       `}</style>
     </div>
   );
@@ -631,28 +601,14 @@ function NavTile() {
 
 /* ─── BENTO TILE: My Work — 3 project thumbnails in one row ─── */
 const WORK_PREVIEWS = [
-  {
-    src: "/marketing-preview.png",
-    label: "AI Personalization",
-    url: MARKETING_TILES_URL,   // opens Framer case study in modal
-  },
-  {
-    src: "/ai-chat-preview.png",
-    label: "AI Chat Journeys",
-    url: AI_FRAMER_URL,          // opens Framer case study in modal
-  },
-  {
-    src: "/outdone-preview.png",
-    label: "Outdone",
-    isNew: true,
-    url: TRAVEL_DNA_URL,         // opens live app
-  },
+  { src: "/marketing-preview.png", label: "AI Personalization", projectKey: "marketing-tiles" },
+  { src: "/ai-chat-preview.png",   label: "AI Chat Journeys",   projectKey: "ai-framer" },
+  { src: "/outdone-preview.png",   label: "Outdone", isNew: true, projectKey: "travel-dna" },
 ];
 
-function MyWorkTile({ onOpen }) {
+function MyWorkTile({ onOpenProject }) {
   return (
-    <button
-      onClick={onOpen}
+    <div
       className={`group relative w-full rounded-[32px] bg-white flex flex-col text-left overflow-hidden ${BODY}`}
     >
       {/* MY WORK label */}
@@ -682,15 +638,7 @@ function MyWorkTile({ onOpen }) {
               minWidth: 0,
               cursor: "pointer",
             }}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (proj.url && proj.url.startsWith("http")) {
-                window.open(proj.url, "_blank");
-              } else {
-                // open work browser for framer links
-                e.currentTarget.closest("button").click();
-              }
-            }}
+            onClick={() => onOpenProject(proj.projectKey)}
           >
             <img
               src={proj.src}
@@ -716,7 +664,7 @@ function MyWorkTile({ onOpen }) {
           </div>
         ))}
       </div>
-    </button>
+    </div>
   );
 }
 
@@ -1177,7 +1125,7 @@ export default function PortfolioHome() {
 
           {/* My Work: col 1-2, row 3 (orange — below chat) */}
           <div style={{ gridColumn: "1 / 3", gridRow: "3" }}>
-            <MyWorkTile onOpen={() => setProjectOpen("work-browser")} />
+            <MyWorkTile onOpenProject={(key) => { if (key === "travel-dna") { window.open(TRAVEL_DNA_URL, "_blank"); } else { setProjectOpen(key === "marketing-tiles" ? "marketing-tiles" : "ai-framer"); } }} />
           </div>
 
           {/* Testimonials: col 3, row 3 (blue — bottom right) */}
@@ -1213,7 +1161,7 @@ export default function PortfolioHome() {
             </div>
           </div>
 
-          <MyWorkTile onOpen={() => setProjectOpen("work-browser")} />
+          <MyWorkTile onOpenProject={(key) => { if (key === "travel-dna") { window.open(TRAVEL_DNA_URL, "_blank"); } else { setProjectOpen(key === "marketing-tiles" ? "marketing-tiles" : "ai-framer"); } }} />
           <TestimonialTile />
         </div>
 
