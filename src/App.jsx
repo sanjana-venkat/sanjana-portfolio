@@ -480,56 +480,71 @@ const TIMELINE_ITEMS = [
   { year: "NOW",  label: "Design Engineer",        sub: "Bringing product ideas to polished reality. Finding gaps in personalization.", heart: false, isNow: true,  img: null },
 ];
 
-/* Multiple overlapping scribble paths for the idle "my story" state */
+/* Idle background scribbles — three overlapping wavy paths */
 const IDLE_SCRIBBLES = [
-  `M 40,50 C 55,25 70,70 90,45 C 110,20 125,65 145,40 C 165,15 180,60 200,42 C 220,24 235,58 255,38`,
-  `M 50,55 C 62,32 78,72 95,48 C 112,24 130,68 150,44 C 170,20 188,62 208,46`,
-  `M 35,48 C 52,28 65,68 82,44 C 99,20 115,64 138,40 C 161,16 175,58 198,44 C 221,30 238,55 260,42`,
+  `M 20,55 C 40,30 60,75 85,50 C 110,25 130,70 155,48 C 180,26 200,68 225,46 C 250,24 265,58 285,42`,
+  `M 15,62 C 38,38 58,78 80,54 C 102,30 125,72 148,50 C 171,28 192,66 215,48 C 238,30 258,62 278,50`,
+  `M 25,48 C 48,26 68,70 92,46 C 116,22 138,66 162,44 C 186,22 206,64 230,44 C 254,24 270,56 290,40`,
 ];
 
-const SCRIBBLE_PATH = `
-  M 80,48
-  C 72,30 88,20 95,36
-  C 102,52 78,62 72,46
-  C 66,30 84,22 90,38
-  C 96,54 74,64 68,48
-  C 62,32 82,24 88,40
-  C 94,56 72,64 66,50
-  C 60,36 80,28 86,44
-  C 92,60 250,48 290,48
+/* Tangled knot that unravels rightward */
+const KNOT_PATH = `
+  M 72,40 C 65,22 82,12 90,28 C 98,44 76,52 70,36
+  C 64,20 82,14 88,30 C 94,46 74,54 68,38
+  C 62,22 80,16 86,32 C 92,48 72,56 66,40
+  C 60,24 78,18 84,34 C 90,50 70,58 64,42
+  C 58,26 76,20 82,36 C 88,52 240,40 290,40
 `;
-const SCRIBBLE_LEN = 900;
+const KNOT_LEN = 950;
+
+/* Two hearts SVG path centered at 160,40 on a 320-wide viewBox */
+const HEARTS_PATH = `
+  M 148,38 C 148,33 152,31 155,35 C 158,31 162,33 162,38 C 162,43 155,48 155,48 C 155,48 148,43 148,38Z
+  M 158,38 C 158,33 162,31 165,35 C 168,31 172,33 172,38 C 172,43 165,48 165,48 C 165,48 158,43 158,38Z
+`;
 
 function NavTile() {
-  const [active, setActive] = useState(false); // false = idle scribble, true = playing
-  const [step, setStep]     = useState(0);
-  // phases when active: scribble → line → slide → hold
-  const [phase, setPhase]   = useState("idle");
+  const [active,  setActive]  = useState(false);
+  const [step,    setStep]    = useState(0);
+  const [phase,   setPhase]   = useState("idle");
+  // scrubbed: whether we've already done the scribble once this session
+  const [doneScribble, setDoneScribble] = useState(false);
   const timers = useRef([]);
 
   const clearAll = () => { timers.current.forEach(clearTimeout); timers.current = []; };
+  const push = (fn, ms) => { const t = setTimeout(fn, ms); timers.current.push(t); return t; };
 
-  const runStep = (s) => {
+  const runStep = (s, skipScribble) => {
     clearAll();
     setStep(s);
-    setPhase("scribble");
+    const item = TIMELINE_ITEMS[s];
+    const hold = item.isNow ? 5000 : item.heart ? 3500 : 2200;
 
-    const hold = TIMELINE_ITEMS[s].isNow ? 5000 : TIMELINE_ITEMS[s].heart ? 3800 : 2400;
-    const push = (fn, ms) => { const t = setTimeout(fn, ms); timers.current.push(t); };
-
-    // scribble draws (0–500ms) → line draws + dot+content slide in together (500–1100ms) → hold → next
-    push(() => setPhase("line"),    500);
-    push(() => setPhase("hold"),   1100);
-    push(() => runStep((s + 1) % TIMELINE_ITEMS.length), 1100 + hold);
+    if (!skipScribble && s === 0) {
+      // Only on very first step: scribble → dissolve into line → slide
+      setPhase("scribble");
+      push(() => setPhase("dissolve"),  600);  // scribble done, start dissolve
+      push(() => setPhase("line"),      1100); // line draws in
+      push(() => setPhase("slide"),     1650); // dot + content slide in
+      push(() => setPhase("hold"),      2000);
+      push(() => { setDoneScribble(true); runStep(1, true); }, 2000 + hold);
+    } else {
+      // All subsequent steps: straight to line → slide
+      setPhase("line");
+      push(() => setPhase("slide"),  550);
+      push(() => setPhase("hold"),   900);
+      push(() => runStep((s + 1) % TIMELINE_ITEMS.length, true), 900 + hold);
+    }
   };
 
-  const start = () => {
+  const startAnimation = () => {
     if (active) return;
     setActive(true);
-    runStep(0);
+    setDoneScribble(false);
+    runStep(0, false);
   };
 
-  const stop = () => {
+  const stopAnimation = () => {
     clearAll();
     setActive(false);
     setStep(0);
@@ -538,47 +553,39 @@ function NavTile() {
 
   useEffect(() => () => clearAll(), []);
 
-  const item       = TIMELINE_ITEMS[step];
-  const showLine   = phase === "line" || phase === "hold";
-  // dot and content both slide in together from the right
-  const showSlide  = phase === "hold";
+  const item      = TIMELINE_ITEMS[step];
+  const showLine  = ["dissolve","line","slide","hold"].includes(phase);
+  const showSlide = ["slide","hold"].includes(phase);
 
   return (
     <div
       className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative select-none cursor-pointer ${BODY}`}
       style={{ minHeight: "220px" }}
-      onMouseEnter={start}
-      onMouseLeave={stop}
-      onClick={start}
+      onMouseEnter={startAnimation}
+      onMouseLeave={stopAnimation}
+      onClick={startAnimation}
     >
-      {/* ── Idle state: title + scribbles ── */}
+      {/* ══ IDLE STATE ══ */}
       {!active && (
         <div className="absolute inset-0 flex flex-col px-6 pt-6 pb-5">
-          <p className={`text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] mb-3 ${HEADING}`}>
+          <p className={`text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] mb-4 ${HEADING}`}>
             my story
           </p>
-          <div className="flex-1 relative">
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 280 120" preserveAspectRatio="xMidYMid meet">
+          <div className="flex-1 relative overflow-hidden">
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 100" preserveAspectRatio="xMidYMid meet">
               {IDLE_SCRIBBLES.map((d, i) => (
-                <path
-                  key={i}
-                  d={d}
-                  fill="none"
-                  stroke="#C8BDB8"
-                  strokeWidth={1 + i * 0.3}
-                  strokeLinecap="round"
-                  opacity={0.5 + i * 0.15}
-                />
+                <path key={i} d={d} fill="none" stroke="#D4CBC6"
+                  strokeWidth={0.9 + i * 0.25} strokeLinecap="round" opacity={0.6 + i * 0.12} />
               ))}
             </svg>
-            <p className={`absolute bottom-0 left-0 text-[11px] text-[#C0B8B4] ${HEADING}`}>
+            <p className={`absolute bottom-0 left-0 text-[10px] text-[#C0B8B4] ${HEADING}`}>
               hover to explore
             </p>
           </div>
         </div>
       )}
 
-      {/* ── Active animation ── */}
+      {/* ══ ACTIVE ANIMATION ══ */}
       {active && (
         <>
           <p className={`pt-6 px-6 pb-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
@@ -586,97 +593,96 @@ function NavTile() {
           </p>
 
           <div className="relative flex-1 flex flex-col" style={{ minHeight: 0 }}>
-
-            {/* SVG: scribble → line */}
+            {/* ── SVG stage ── */}
             <svg
               className="absolute left-0 right-0"
-              style={{ top: "35%", width: "100%", height: "80px", overflow: "visible" }}
+              style={{ top: "32%", width: "100%", height: "80px", overflow: "visible" }}
               viewBox="0 0 320 80"
               preserveAspectRatio="xMidYMid meet"
             >
-              {/* Scribble — visible during scribble phase */}
-              {phase === "scribble" && (
+              {/* SCRIBBLE: draws in, then fades as line appears */}
+              {(phase === "scribble" || phase === "dissolve") && (
                 <path
-                  key={`scribble-${step}`}
-                  d={SCRIBBLE_PATH}
-                  fill="none"
-                  stroke="#2F2F2F"
-                  strokeWidth="1.3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  key={`knot-${step}`}
+                  d={KNOT_PATH}
+                  fill="none" stroke="#2F2F2F" strokeWidth="1.3"
+                  strokeLinecap="round" strokeLinejoin="round"
                   style={{
-                    strokeDasharray: SCRIBBLE_LEN,
-                    strokeDashoffset: SCRIBBLE_LEN,
-                    animation: "tlDrawScribble 0.48s ease forwards",
+                    strokeDasharray: KNOT_LEN,
+                    strokeDashoffset: phase === "scribble" ? KNOT_LEN : 0,
+                    animation: phase === "scribble" ? `tlKnot 0.58s ease forwards` : "none",
+                    opacity: phase === "dissolve" ? 0 : 1,
+                    transition: phase === "dissolve" ? "opacity 0.45s ease" : "none",
                   }}
                 />
               )}
 
-              {/* Clean straight line */}
+              {/* LINE: draws in after scribble dissolves */}
               {showLine && (
                 <line
                   key={`line-${step}`}
                   x1="20" y1="40" x2="300" y2="40"
-                  stroke="#2F2F2F"
-                  strokeWidth="1.1"
-                  strokeLinecap="round"
+                  stroke="#2F2F2F" strokeWidth="1.1" strokeLinecap="round"
                   style={{
                     strokeDasharray: 280,
-                    strokeDashoffset: phase === "line" ? 280 : 0,
-                    transition: "stroke-dashoffset 0.42s cubic-bezier(0.4,0,0.2,1)",
+                    strokeDashoffset: phase === "line" || phase === "dissolve" ? 280 : 0,
+                    transition: (phase === "line" || phase === "dissolve")
+                      ? "stroke-dashoffset 0.48s cubic-bezier(0.4,0,0.2,1)"
+                      : "none",
                   }}
                 />
               )}
 
-              {/*
-                Dot slides in FROM THE RIGHT along the line,
-                landing in the center. Uses translateX animation.
-              */}
-              {showSlide && (
+              {/* DOT slides from right and lands on line — normal steps */}
+              {showSlide && !item.heart && (
                 <circle
                   key={`dot-${step}`}
                   cx="160" cy="40"
-                  r={item.isNow ? "5" : "4"}
+                  r={item.isNow ? "5" : "3.5"}
                   fill={item.isNow ? "#D96F45" : "white"}
                   stroke={item.isNow ? "#D96F45" : "#2F2F2F"}
                   strokeWidth="1.5"
                   style={{
-                    animation: "tlDotSlide 0.45s cubic-bezier(0.22,1,0.36,1) forwards",
-                    filter: item.isNow ? "drop-shadow(0 0 5px rgba(217,111,69,0.5))" : "none",
+                    animation: "tlDotSlide 0.5s cubic-bezier(0.22,1,0.36,1) forwards",
+                    filter: item.isNow ? "drop-shadow(0 0 6px rgba(217,111,69,0.55))" : "none",
                   }}
                 />
               )}
 
-              {/* Heart for marriage */}
-              {item.heart && showSlide && (
-                <g
-                  style={{ animation: "tlDotSlide 0.45s cubic-bezier(0.22,1,0.36,1) 0.05s forwards", opacity: 0 }}
-                >
+              {/* MARRIAGE: two hearts slide in from right and land on the line */}
+              {showSlide && item.heart && (
+                <g style={{ animation: "tlDotSlide 0.5s cubic-bezier(0.22,1,0.36,1) forwards" }}>
+                  {/* Heart 1 */}
                   <path
-                    d="M156,37 C156,34 158,33 160,35 C162,33 164,34 164,37 C164,40 160,43 160,43 C160,43 156,40 156,37Z"
+                    d="M 144,38 C 144,33 147,31 150,35 C 153,31 156,33 156,38 C 156,43 150,48 150,48 C 150,48 144,43 144,38Z"
+                    fill="#D96F45"
+                  />
+                  {/* Heart 2 — offset right */}
+                  <path
+                    d="M 158,38 C 158,33 161,31 164,35 C 167,31 170,33 170,38 C 170,43 164,48 164,48 C 164,48 158,43 158,38Z"
                     fill="#D96F45"
                   />
                 </g>
               )}
             </svg>
 
-            {/* Content + image: slide in from right together with the dot */}
+            {/* CONTENT slides in from right, same timing as dot */}
             <div
               key={`content-${step}`}
-              className="absolute left-0 right-0 bottom-0 px-6 pb-3"
+              className="absolute left-0 right-0 bottom-0 px-6 pb-4"
               style={{
-                animation: showSlide ? "tlContentSlide 0.48s cubic-bezier(0.22,1,0.36,1) forwards" : "none",
+                animation: showSlide ? "tlContentSlide 0.52s cubic-bezier(0.22,1,0.36,1) forwards" : "none",
                 opacity: showSlide ? 1 : 0,
-                transform: showSlide ? undefined : "translateX(80px)",
+                transform: "translateX(80px)",
               }}
             >
-              {/* Tilted image — bottom left */}
+              {/* Tilted image — bottom left corner */}
               {item.img && (
                 <div
                   className="absolute overflow-hidden rounded-[12px] border-[3px] border-white"
                   style={{
                     width: "64px", height: "72px",
-                    bottom: "68px", left: "16px",
+                    bottom: "72px", left: "12px",
                     transform: "rotate(-9deg)",
                     boxShadow: "0 4px 14px rgba(0,0,0,0.14)",
                     zIndex: 5,
@@ -687,44 +693,28 @@ function NavTile() {
               )}
 
               <div className="flex items-baseline gap-2 flex-wrap">
-                <span className={`text-[14px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#221B16]"} ${HEADING}`}>
+                <span className={`text-[14px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
                   {item.isNow ? "NOW" : item.year}
                 </span>
                 <span className={`text-[11px] font-semibold text-[#9A8176] ${HEADING}`}>
                   {item.label}
                 </span>
               </div>
-              <p className="mt-1 text-[12px] leading-[1.6] text-[#5F5149]" style={{ maxWidth: "230px" }}>
+              <p className="mt-1 text-[12px] leading-[1.65] text-[#5F5149]" style={{ maxWidth: "230px" }}>
                 {item.sub}
               </p>
             </div>
-          </div>
-
-          {/* Progress pills */}
-          <div className="flex gap-1 px-6 pb-5 shrink-0">
-            {TIMELINE_ITEMS.map((_, i) => (
-              <div
-                key={i}
-                style={{
-                  height: "3px",
-                  borderRadius: "9999px",
-                  flex: i === step ? 2.5 : 1,
-                  background: i <= step ? "#D96F45" : "#EDE8E5",
-                  transition: "flex 0.4s ease, background 0.3s ease",
-                }}
-              />
-            ))}
           </div>
         </>
       )}
 
       <style>{`
-        @keyframes tlDrawScribble {
-          from { stroke-dashoffset: ${SCRIBBLE_LEN}; }
+        @keyframes tlKnot {
+          from { stroke-dashoffset: ${KNOT_LEN}; }
           to   { stroke-dashoffset: 0; }
         }
         @keyframes tlDotSlide {
-          from { transform: translateX(140px); opacity: 0; }
+          from { transform: translateX(130px); opacity: 0; }
           to   { transform: translateX(0);     opacity: 1; }
         }
         @keyframes tlContentSlide {
