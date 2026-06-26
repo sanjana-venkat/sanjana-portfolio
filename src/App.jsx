@@ -78,7 +78,7 @@ I also use AI as a thinking partner in my workflow to rapidly explore, prototype
 
 At JPMC, I shaped the personalization framework by combining research, behavioral signals, and need-based segmentation. Instead of treating users as static personas, we looked at what they needed in the moment.
 
-That thinking helped the team move from “personalized content” to personalized recommendations:
+That thinking helped the team move from "personalized content" to personalized recommendations:
 • what does this customer need right now?
 • what signal tells us that?
 • how should the experience respond?
@@ -93,7 +93,7 @@ That's why I am so excited to unlock more possibilities with AI as we bring in r
 
 That pushed me to learn the backend and map the full Apply & Fulfillment ecosystem. I created a service design blueprint that became a living document for all stakeholders.
 
-It helped designers think beyond “change the content” or “add bigger tiles” and start designing around:
+It helped designers think beyond "change the content" or "add bigger tiles" and start designing around:
 • user confidence
 • operational handoffs
 • self-service moments
@@ -114,7 +114,7 @@ I also prototype with tools like Codex, Google AI Studio, Claude, and Google Sti
 
 This portfolio itself was concepted, designed, and built in 2 days as an interactive pre-interview experience. Before AI tools, I was already building product ideas and prototypes in 24-hour hackathons, often as the only designer on the team.`,
 
-  "tell me your story": `Here’s how it happened.
+  "tell me your story": `Here's how it happened.
 
 I joined Paycom as an Associate Product Designer and threw myself into the work completely.
 
@@ -144,7 +144,7 @@ When I present, I focus on:
 Because I learned that good design doesn't work unless people understand it.`
 };
 
-const USER_NEEDS_REST = `The first outcome wasn’t perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
+const USER_NEEDS_REST = `The first outcome wasn't perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
 
 38% increase in lead initiation with clearer Apply messaging.
 
@@ -227,15 +227,15 @@ function PlayIcon() {
   );
 }
 
+// Module-level scroll target — set by the chat scroll div, read by Typewriter directly
+let _chatScrollEl = null;
+
 function Typewriter({ text, shouldStart, onDone }) {
   const cleanText = (text || "").trim();
   const [displayed, setDisplayed] = useState("");
   const [typedText, setTypedText] = useState(null);
   const onDoneRef = useRef(onDone);
-
-  useEffect(() => {
-    onDoneRef.current = onDone;
-  }, [onDone]);
+  useEffect(() => { onDoneRef.current = onDone; }, [onDone]);
 
   useEffect(() => {
     if (!shouldStart) return;
@@ -254,6 +254,11 @@ function Typewriter({ text, shouldStart, onDone }) {
       interval = setInterval(() => {
         setDisplayed(cleanText.slice(0, index + 1));
         index += 1;
+
+        // Scroll to bottom on every character
+        if (_chatScrollEl) {
+          _chatScrollEl.scrollTop = _chatScrollEl.scrollHeight;
+        }
 
         if (index >= cleanText.length) {
           clearInterval(interval);
@@ -277,6 +282,7 @@ function Typewriter({ text, shouldStart, onDone }) {
     </p>
   );
 }
+
 
 function SegmentationDiagram() {
   return <img src="/segmentation.png" alt="Audience segmentation framework" className="mt-8 w-full object-contain" />;
@@ -325,7 +331,7 @@ function WorkBrowserModal({ onClose }) {
 
   return (
     <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
-      <div className="mx-auto max-w-[1180px]">
+      <div className="mx-auto w-full max-w-[1280px]">
         <div className="mb-6 flex items-center gap-4">
           <CircleIconButton onClick={onClose} ariaLabel="Close work browser">
             <ChevronLeftIcon />
@@ -352,7 +358,7 @@ function WorkBrowserModal({ onClose }) {
           ))}
         </div>
 
-        <div className="overflow-hidden rounded-[32px] bg-white">
+        <div className="overflow-hidden rounded-[32px] bg-white w-full">
           <iframe key={activeProject.url} src={activeProject.url} title={activeProject.title} className="h-[80vh] w-full border-0 bg-white" allowFullScreen />
         </div>
       </div>
@@ -364,22 +370,78 @@ function FigmaDeckModal({ onClose }) {
   return <FramerModal title="Chase HL Public" url={FIGMA_DECK_URL} onClose={onClose} />;
 }
 
-function WhatIBelieveCard() {
+/* ─── BENTO TILE: Hero (name + tagline + profile pic popping out) ─── */
+function HeroTile() {
   return (
-    <article className={`rounded-[32px] border border-[#E4E2E1] bg-white p-7 text-[14px] transition-all duration-300 hover:-translate-y-1 ${BODY}`}>
-      <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-        what i believe in
+    /*
+      Figma spec:
+      - bg: rgba(156,63,20,0.17) warm terracotta tint
+      - pic: 192x216, border 8.6px white, border-radius 22px, rotate(9.83deg)
+      - pic anchored top-right, overflows the tile boundary (overflow-visible)
+      - text: name 40px #9C3F14, tagline 16px #57423A
+    */
+    <div
+      className="relative overflow-hidden rounded-[32px] p-8 flex flex-col justify-center"
+      style={{
+        background: "rgba(156, 63, 20, 0.17)",
+        minHeight: "219px",
+        paddingRight: "220px",
+      }}
+    >
+      {/* Name */}
+      <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] whitespace-nowrap ${HEADING}`}
+        style={{ fontSize: "40px" }}>
+        Sanjana Venkat
+      </h1>
+      {/* Tagline */}
+      <p className="mt-2 text-[16px] leading-[1.5]" style={{ color: "#57423A" }}>
+        I turn ambiguity into direction. Let me show you.
       </p>
 
-      <p className="leading-[1.65] text-[#5F5149]">
-        i believe good products don’t just solve problems. they reveal ones people didn’t know they had.
-      </p>
+      {/* Profile pic — bottom-right, tilted 9.83deg, white border, bottom clips at tile edge */}
+      <div
+        className="absolute overflow-hidden"
+        style={{
+          width: "200px",
+          height: "240px",
+          bottom: "-55px",
+          right: "32px",
+          borderRadius: "22px",
+          border: "8px solid #FFFFFF",
+          boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
+          transform: "rotate(9.83deg)",
+          zIndex: 30,
+        }}
+      >
+        <img
+          src="/profile.jpg"
+          alt="Sanjana Venkat"
+          className="w-full h-full object-cover object-center"
+        />
+      </div>
+    </div>
+  );
+}
 
-      <p className="mt-6 leading-[1.65] text-[#5F5149]">
-        with AI and personalization, that gap gets smaller. But the real work is still human: listening, framing, building things that help people move forward.
-      </p>
+/* ─── BENTO TILE: What I Believe In (fixed height matching NavTile) ─── */
+function WhatIBelieveTile() {
+  return (
+    <article className={`rounded-[32px] bg-white p-6 text-[14px] h-full flex flex-col justify-between ${BODY}`} style={{ minHeight: "220px" }}>
+      <div>
+        <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+          what i believe in
+        </p>
 
-      <div className="mt-7 flex items-center gap-4">
+        <p className="leading-[1.65] text-[#5F5149]">
+          i believe good products don't just solve problems. they reveal ones people didn't know they had.
+        </p>
+
+        <p className="mt-4 leading-[1.65] text-[#5F5149]">
+          with AI and personalization, that gap gets smaller. But the real work is still human: listening, framing, building things that help people move forward.
+        </p>
+      </div>
+
+      <div className="mt-6 flex items-center gap-4">
         <a href="mailto:sanjanavnkt20@gmail.com" aria-label="Email Sanjana" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
           <span className="flex h-full w-full items-center justify-center leading-none"><MailIcon /></span>
         </a>
@@ -392,76 +454,164 @@ function WhatIBelieveCard() {
   );
 }
 
-function HorizontalTimeline() {
-  const items = [
-    ["2023", "B.S. Psychology, Design concentration", "UT Dallas • Understanding human behavior and design principles to build better experiences.", false],
-    ["2023", "Associate Product Designer", "Paycom • Founding member of a new subteam. Focused on B2B enterprise solutions and design system.", false],
-    ["2024 — PRESENT", "Senior Product Designer", "JP Morgan Chase • Leading Marketing and AI initiatives. Building 0-to-1 product and driving impact across the ecosystem.", true]
-  ];
-
+/* ─── BENTO TILE: Nav Pills (fixed height) ─── */
+function NavTile({ onNav }) {
+  const items = ["what are you building now", "resume", "github", "contact"];
   return (
-    <section className={`h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 transition-all duration-300 hover:-translate-y-1 ${BODY}`}>
-      <p className={`mb-8 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-        timeline
+    <div className={`rounded-[32px] bg-white p-6 flex flex-col gap-2 h-full ${BODY}`} style={{ minHeight: "220px" }}>
+      <p className={`mb-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
+        explore
       </p>
-
-      <div className="relative grid grid-cols-1 gap-8 md:grid-cols-3">
-        <div className="absolute left-0 top-[18px] hidden h-px w-full bg-[#E8D8D0] md:block" />
-
-        {items.map(([year, title, body, isActive]) => (
-          <div key={title} className="relative pt-10">
-            <span className={`absolute left-0 top-[12px] h-3 w-3 rounded-full md:left-1/2 md:-translate-x-1/2 ${isActive ? "bg-[#D96F45] animate-glow" : "bg-[#E4E2E1]"}`} />
-
-            <p className={`text-[12px] font-semibold uppercase tracking-[0.14em] ${HEADING} ${isActive ? "text-[#D96F45]" : "text-[#9CA3AF]"}`}>
-              {year}
-            </p>
-
-            <p className={`mt-2 text-[16px] font-semibold leading-tight text-[#221B16] ${HEADING}`}>
-              {title}
-            </p>
-
-            <p className="mt-2 text-[12px] leading-[1.45] text-[#7A706A]">{body}</p>
-          </div>
-        ))}
-      </div>
-    </section>
+      {items.map((item) => (
+        <button
+          key={item}
+          onClick={() => onNav(item)}
+          className={`w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB] ${HEADING}`}
+        >
+          {item}
+        </button>
+      ))}
+    </div>
   );
 }
 
-function TestimonialCarousel() {
+/* ─── BENTO TILE: My Work — 3 project thumbnails in one row ─── */
+const WORK_PREVIEWS = [
+  {
+    src: "/marketing-preview.png",
+    label: "AI Personalization",
+    url: MARKETING_TILES_URL,   // opens Framer case study in modal
+  },
+  {
+    src: "/ai-chat-preview.png",
+    label: "AI Chat Journeys",
+    url: AI_FRAMER_URL,          // opens Framer case study in modal
+  },
+  {
+    src: "/outdone-preview.png",
+    label: "Outdone",
+    isNew: true,
+    url: TRAVEL_DNA_URL,         // opens live app
+  },
+];
+
+function MyWorkTile({ onOpen }) {
+  return (
+    <button
+      onClick={onOpen}
+      className={`group relative w-full rounded-[32px] bg-white flex flex-col text-left overflow-hidden ${BODY}`}
+    >
+      {/* MY WORK label */}
+      <p className={`pt-7 px-7 pb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
+        my work
+      </p>
+
+      {/*
+        Images bleed out all 4 sides:
+        - negative mx so left/right cards clip against tile edges
+        - cards taller than remaining space so bottom clips
+        - gap between cards preserved
+      */}
+      {/* Cards bleed left/right/bottom — overflow-hidden on parent clips all edges */}
+      <div style={{ display: "flex", gap: "12px", marginLeft: "-12px", marginRight: "-12px", marginBottom: "-2px" }}>
+        {WORK_PREVIEWS.map((proj) => (
+          <div
+            key={proj.label}
+            className="relative flex-1 overflow-hidden"
+            style={{
+              height: "200px",
+              borderRadius: "16px 16px 0 0",
+              border: "5px solid rgba(221, 192, 182, 0.45)",
+              borderBottom: "none",
+              boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
+              background: "#EDEAE7",
+              minWidth: 0,
+              cursor: "pointer",
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (proj.url && proj.url.startsWith("http")) {
+                window.open(proj.url, "_blank");
+              } else {
+                // open work browser for framer links
+                e.currentTarget.closest("button").click();
+              }
+            }}
+          >
+            <img
+              src={proj.src}
+              alt={proj.label}
+              className="w-full h-full object-cover object-top"
+              onError={(e) => { e.target.style.opacity = "0"; }}
+            />
+            {/* Hover overlay: per-card tint + all-caps label */}
+            <div
+              className="absolute inset-0 flex items-end transition-opacity duration-200 opacity-0 hover:opacity-100"
+              style={{ background: "rgba(0,0,0,0.5)" }}
+            >
+              <p className={`px-4 py-3 text-[11px] font-bold tracking-[0.14em] uppercase text-white ${HEADING}`}>
+                {proj.label}
+              </p>
+            </div>
+            {/* NEW badge */}
+            {proj.isNew && (
+              <div className={`absolute top-3 right-3 px-2.5 py-1 bg-white rounded-full text-[8px] font-bold tracking-[0.9px] uppercase text-black ${HEADING}`}>
+                New
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </button>
+  );
+}
+
+/* ─── BENTO TILE: Testimonials ─── */
+function TestimonialTile() {
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [quote, name, title] = TESTIMONIALS[index] || [];
 
   useEffect(() => {
     if (!TESTIMONIALS.length || isPaused) return;
-
     const timer = setInterval(() => {
       setIndex((current) => (current + 1) % TESTIMONIALS.length);
     }, 5200);
-
     return () => clearInterval(timer);
   }, [isPaused]);
 
   return (
-    <article className={`relative h-full min-h-[360px] rounded-[32px] border border-[#E4E2E1] bg-white p-8 text-[13px] transition-all duration-300 hover:-translate-y-1 ${BODY}`}>
+    <article className={`relative rounded-[32px] bg-white p-7 text-[13px] ${BODY}`} style={{ height: "100%", overflow: "hidden" }}>
       <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         what people say about me
       </p>
 
-      <div key={index} className="min-h-[235px] animate-[slideIn_0.35s_ease_forwards]">
-        <p className="italic leading-[1.55] text-[#4F4741]">“{quote}”</p>
-        <p className={`mt-5 text-[14px] font-semibold text-[#111827] ${HEADING}`}>{name}</p>
-        <p className="mt-1 text-[11px] uppercase tracking-[0.12em] text-[#9CA3AF]">{title}</p>
+      <div key={index} className="animate-[slideIn_0.35s_ease_forwards]" style={{ height: "130px", overflow: "hidden" }}>
+        <p
+          className="italic leading-[1.55] text-[#4F4741]"
+          style={{
+            display: "-webkit-box",
+            WebkitLineClamp: 4,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >"{quote}"</p>
+        <p className={`mt-3 text-[14px] font-semibold text-[#111827] ${HEADING}`}>{name}</p>
+        <p className="mt-0.5 text-[11px] uppercase tracking-[0.12em] text-[#9CA3AF]">{title}</p>
       </div>
 
-      <div className="mt-5 flex gap-3 pr-14">
+      <div className="mt-4 flex gap-3 pr-14">
         {TESTIMONIALS.map((_, dotIndex) => (
           <span key={dotIndex} className={`h-3 rounded-full transition-all duration-300 ${index === dotIndex ? "w-10 bg-[#D96F45]" : "w-3 bg-[#EEF0F3]"}`} />
         ))}
       </div>
 
-      <button type="button" onClick={() => setIsPaused((current) => !current)} aria-label={isPaused ? "Play testimonials" : "Pause testimonials"} className="absolute bottom-7 right-7 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
+      <button
+        type="button"
+        onClick={() => setIsPaused((current) => !current)}
+        aria-label={isPaused ? "Play testimonials" : "Pause testimonials"}
+        className="absolute bottom-7 right-7 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]"
+      >
         <span className="flex h-full w-full items-center justify-center leading-none">
           {isPaused ? <PlayIcon /> : <PauseIcon />}
         </span>
@@ -479,7 +629,7 @@ function ResponseLinks({ active, openProjectForActivePill }) {
         </button>
 
         <button onClick={() => openProjectForActivePill("casey-ai")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
-          what’s casey AI? →
+          what's casey AI? →
         </button>
       </div>
     );
@@ -557,7 +707,7 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
         <div className="pointer-events-auto max-w-[calc(100%-72px)] rounded-[999px] border border-[#E4E2E1] bg-white px-7 py-5 shadow-sm">
           <div className="flex items-center gap-2">
             <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
-              ask sanjana
+              ask me
             </p>
 
             <button
@@ -623,6 +773,7 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
 
 export default function PortfolioHome() {
   const chatCardRef = useRef(null);
+  const chatScrollRef = useRef(null);
   const [active, setActive] = useState(PILLS[0]);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [projectOpen, setProjectOpen] = useState(null);
@@ -633,41 +784,32 @@ export default function PortfolioHome() {
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
 
-useEffect(() => {
-  const faviconPath = "/logo.jpg";
+  useEffect(() => {
+    const faviconPath = "/logo.jpg";
 
-  const removeExistingFavicons = () => {
-    const links = document.querySelectorAll(
-      "link[rel*='icon'], link[rel='apple-touch-icon']"
-    );
+    const removeExistingFavicons = () => {
+      const links = document.querySelectorAll(
+        "link[rel*='icon'], link[rel='apple-touch-icon']"
+      );
+      links.forEach((link) => {
+        if (link.parentNode) link.parentNode.removeChild(link);
+      });
+    };
 
-    links.forEach((link) => {
-      if (link.parentNode) {
-        link.parentNode.removeChild(link);
-      }
-    });
-  };
+    const addFavicon = (rel, href, type = "image/jpeg") => {
+      const link = document.createElement("link");
+      link.rel = rel;
+      link.type = type;
+      link.href = `${href}?v=${Date.now()}`;
+      document.head.appendChild(link);
+    };
 
-  const addFavicon = (rel, href, type = "image/jpeg") => {
-    const link = document.createElement("link");
-
-    link.rel = rel;
-    link.type = type;
-
-    // force browser refresh
-    link.href = `${href}?v=${Date.now()}`;
-
-    document.head.appendChild(link);
-  };
-
-  removeExistingFavicons();
-
-  addFavicon("icon", faviconPath);
-  addFavicon("shortcut icon", faviconPath);
-  addFavicon("apple-touch-icon", faviconPath);
-
-  document.title = "Sanjana Venkat";
-}, []);
+    removeExistingFavicons();
+    addFavicon("icon", faviconPath);
+    addFavicon("shortcut icon", faviconPath);
+    addFavicon("apple-touch-icon", faviconPath);
+    document.title = "Sanjana Venkat";
+  }, []);
 
   useEffect(() => {
     setShowPills(false);
@@ -684,11 +826,12 @@ useEffect(() => {
     return () => clearTimeout(timer);
   }, [active, hasLoaded]);
 
+
+
   const handleTypeDone = () => {
     if (active === "how i uncover user needs") {
       setShowUserNeedsRest(true);
     }
-
     setShowPills(true);
   };
 
@@ -703,22 +846,18 @@ useEffect(() => {
       setProjectOpen("work-browser");
       return;
     }
-
     if (item === "what are you building now") {
       window.open(TRAVEL_DNA_URL, "_blank");
       return;
     }
-
     if (item === "resume") {
       window.open(RESUME_URL, "_blank");
       return;
     }
-
     if (item === "github") {
       window.open(GITHUB_URL, "_blank");
       return;
     }
-
     if (item === "contact") {
       window.open("https://www.linkedin.com/in/sanjana-venkat/", "_blank");
     }
@@ -727,60 +866,28 @@ useEffect(() => {
   const openProjectForActivePill = (override) => {
     setMobileChatOpen(false);
 
-    if (override === "ai-framer") {
-      setProjectOpen("ai-framer");
-      return;
-    }
-
-    if (override === "casey-ai") {
-      setProjectOpen("casey-ai");
-      return;
-    }
-
-    if (active === "how i uncover user needs") {
-      setProjectOpen("user-needs");
-      return;
-    }
-
-    if (active === "let's talk AI") {
-      setProjectOpen("ai-framer");
-      return;
-    }
-
-    if (active === "product strategy thinking") {
-      setProjectOpen("marketing-tiles");
-      return;
-    }
-
-    if (active === "designing systems at scale") {
-      setProjectOpen("apply-systems");
-      return;
-    }
-
-    if (active === "how i ship fast") {
-      window.open(TRAVEL_DNA_URL, "_blank");
-      return;
-    }
-
-    if (active === "how i get exec-buy in") {
-      setProjectOpen("figma-deck");
-    }
+    if (override === "ai-framer") { setProjectOpen("ai-framer"); return; }
+    if (override === "casey-ai") { setProjectOpen("casey-ai"); return; }
+    if (active === "how i uncover user needs") { setProjectOpen("user-needs"); return; }
+    if (active === "let's talk AI") { setProjectOpen("ai-framer"); return; }
+    if (active === "product strategy thinking") { setProjectOpen("marketing-tiles"); return; }
+    if (active === "designing systems at scale") { setProjectOpen("apply-systems"); return; }
+    if (active === "how i ship fast") { window.open(TRAVEL_DNA_URL, "_blank"); return; }
+    if (active === "how i get exec-buy in") { setProjectOpen("figma-deck"); }
   };
 
   return (
-    <main onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })} className={`relative min-h-screen w-full overflow-x-hidden bg-[#F8F7F6] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}>
+    <main
+      onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })}
+      className={`relative min-h-screen w-full overflow-x-hidden bg-[#F7F4F2] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}
+    >
+      {/* Modals */}
       {projectOpen === "work-browser" && <WorkBrowserModal onClose={() => setProjectOpen(null)} />}
-
       {projectOpen === "user-needs" && <FramerModal title="How I Uncover User Needs" url={USER_NEEDS_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
-
       {projectOpen === "figma-deck" && <FigmaDeckModal onClose={() => setProjectOpen(null)} />}
-
       {projectOpen === "ai-framer" && <FramerModal title="AI Chat Journeys" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
-
       {projectOpen === "casey-ai" && <FramerModal title="Casey AI" url={CASEY_AI_URL} onClose={() => setProjectOpen(null)} />}
-
       {projectOpen === "marketing-tiles" && <FramerModal title="Product Strategy Thinking" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />}
-
       {projectOpen === "apply-systems" && <FramerModal title="Designing Systems at Scale" url={APPLY_SYSTEMS_URL} onClose={() => setProjectOpen(null)} />}
 
       {mobileChatOpen && (
@@ -797,78 +904,166 @@ useEffect(() => {
         />
       )}
 
-      <button type="button" onClick={() => setMobileChatOpen(true)} aria-label="Open chat" className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#A5522A] p-0 leading-none text-white shadow-lg transition hover:scale-105 md:hidden">
+      {/* Mobile chat FAB */}
+      <button
+        type="button"
+        onClick={() => setMobileChatOpen(true)}
+        aria-label="Open chat"
+        className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#A5522A] p-0 leading-none text-white shadow-lg transition hover:scale-105 md:hidden"
+      >
         <span className="flex h-full w-full items-center justify-center leading-none"><ChatIcon /></span>
       </button>
 
-      <div className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl transition-transform duration-150" style={{ left: cursor.x - 150, top: cursor.y - 150 }} />
+      {/* Cursor glow */}
+      <div
+        className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl transition-transform duration-150"
+        style={{ left: cursor.x - 150, top: cursor.y - 150 }}
+      />
 
-      <section className="relative z-10 mx-auto grid w-full max-w-[1180px] grid-cols-1 gap-x-10 gap-y-8 lg:grid-cols-[280px_1fr]">
-        <aside className="flex flex-col gap-8">
-          <div>
-            <h1 className={`text-[32px] font-semibold leading-[1.03] tracking-[-0.04em] text-[#A5522A] ${HEADING}`}>
-              Sanjana
-              <br />
-              Venkat
-            </h1>
+      {/* ─── BENTO GRID ─── */}
+      {/*
+        Desktop layout maps to the reference image:
 
-            <p className="mt-3 max-w-[240px] text-[16px] leading-[1.45] text-[#5F5149]">
-              I turn ambiguity into direction. Let me show you.
-            </p>
+        Col A (left, fixed ~420px)     Col B (center)        Col C (right)
+        ┌─────────────────────┐        ┌──────────────────────────────────┐
+        │                     │        │   HERO (pink) — spans B+C row 1  │
+        │   CHAT (purple)     │        ├─────────────────┬────────────────┤
+        │   fixed height,     │        │  EXPLORE (green)│ WHAT I BELIEVE │
+        │   inner scroll      │        │  nav links      │ (yellow)       │
+        │                     │        ├─────────────────┴────────────────┤
+        ├─────────────────────┤        │   MY WORK (orange) spans B+C     │
+        │  TESTIMONIALS(blue) │        │                                  │
+        └─────────────────────┘        └──────────────────────────────────┘
+
+        Grid: 3 cols [420px 1fr 1fr], 4 rows [auto auto auto auto]
+        Chat:         col 1, rows 1-3
+        Hero:         col 2-3, row 1
+        Explore:      col 2, row 2
+        Believe:      col 3, row 2
+        Work:         col 2-3, row 3
+        Testimonials: col 1, row 4  →  actually: col 1 row 4, Work col 2-3 row 3
+
+        Simpler: use a 3-col CSS grid, chat spans rows 1–3, testimonials row 4 col1,
+        work spans col2-3 row3, hero col2-3 row1, explore col2 row2, believe col3 row2.
+      */}
+      <div className="relative z-10 mx-auto w-full max-w-[1280px]">
+
+        {/* ── DESKTOP ── */}
+        <div
+          className="hidden lg:grid"
+          style={{
+            gridTemplateColumns: "480px 1fr 1fr",
+            gridTemplateRows: "auto auto auto",
+            gap: "14px",
+          }}
+        >
+
+          {/* Chat: col 1, rows 1-2, fixed height with internal scroll */}
+          <div
+            ref={chatCardRef}
+            className="rounded-[32px] bg-white overflow-hidden flex flex-col relative"
+            style={{ gridColumn: "1", gridRow: "1 / 3", height: "520px" }}
+          >
+            <div className="px-6 pt-6 pb-3 shrink-0">
+              <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+                ask me
+              </p>
+            </div>
+            {/* Scroll area — padding-bottom makes room for floating pills */}
+            <div ref={(el) => { chatScrollRef.current = el; _chatScrollEl = el; }} data-chat-scroll className="flex-1 overflow-y-auto px-6 no-scrollbar" style={{ paddingBottom: showPills ? "64px" : "16px" }}>
+              <ChatConversation
+                active={active}
+                showThinking={showThinking}
+                showResponse={showResponse}
+                showPills={showPills}
+                showUserNeedsRest={showUserNeedsRest}
+                onTypeDone={handleTypeDone}
+                openProjectForActivePill={openProjectForActivePill}
+              />
+            </div>
+            {/* Pills: absolute bottom, fully transparent bg so chat content shows through */}
+            {showPills && (
+              <div className="absolute bottom-0 left-0 right-0 px-6 pb-4 animate-[fadeUp_0.45s_ease_forwards]"
+                style={{ background: "none" }}>
+                <div className="no-scrollbar overflow-x-auto">
+                  <div className="flex gap-2" style={{ width: "max-content" }}>
+                    {PILLS.map((pill) => (
+                      <button
+                        key={pill}
+                        onClick={() => handlePillSelect(pill)}
+                        className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] backdrop-blur-sm ${
+                          active === pill
+                            ? "bg-white/90 border-[#A5522A] text-[#A5522A]"
+                            : "bg-white/90 border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
+                        } ${HEADING}`}
+                      >
+                        {pill}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
-          <nav>
-            <p className={`mb-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7B6258] ${HEADING}`}>
-              or start here:
-            </p>
-
-            <div className="flex flex-col gap-3">
-              {["my work", "what are you building now", "resume", "github", "contact"].map((item) => (
-                <button key={item} onClick={() => handleNav(item)} className={`w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB] ${HEADING}`}>
-                  {item}
-                </button>
-              ))}
-            </div>
-          </nav>
-
-          <div className="overflow-hidden rounded-[32px] border border-[#E4E2E1] bg-white">
-            <img src="/profile.jpg" alt="Sanjana Venkat" className="h-[290px] w-full object-cover grayscale transition-all duration-500 hover:scale-[1.035] hover:grayscale-0" />
+          {/* Hero: col 2-3, row 1 — profile pic overflows down into gap */}
+          <div style={{ gridColumn: "2 / 4", gridRow: "1" }} className="relative overflow-visible">
+            <HeroTile />
           </div>
 
-          <WhatIBelieveCard />
-        </aside>
+          {/* Explore / nav: col 2, row 2 (green) */}
+          <div style={{ gridColumn: "2", gridRow: "2" }}>
+            <NavTile onNav={handleNav} />
+          </div>
 
-        <section ref={chatCardRef} className="hidden rounded-[32px] border border-[#E4E2E1] bg-white p-4 transition-all duration-300 sm:p-6 md:block">
-          <ChatConversation
-            active={active}
-            showThinking={showThinking}
-            showResponse={showResponse}
-            showPills={showPills}
-            showUserNeedsRest={showUserNeedsRest}
-            onTypeDone={handleTypeDone}
-            openProjectForActivePill={openProjectForActivePill}
-          />
+          {/* What I Believe: col 3, row 2 (yellow) */}
+          <div style={{ gridColumn: "3", gridRow: "2" }}>
+            <WhatIBelieveTile />
+          </div>
 
-          {showPills && (
-            <div className="mt-6 flex flex-wrap gap-3 animate-[fadeUp_0.45s_ease_forwards]">
-              {PILLS.map((pill) => (
-                <button key={pill} onClick={() => handlePillSelect(pill)} className={`rounded-full border px-5 py-2 text-[12px] transition hover:scale-[1.04] ${
-                    active === pill
-                      ? "border-[#A5522A] bg-white text-[#A5522A]"
-                      : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#D8C5BB]"
-                  } ${HEADING}`}>
-                  {pill}
-                </button>
-              ))}
+          {/* My Work: col 1-2, row 3 (orange — below chat) */}
+          <div style={{ gridColumn: "1 / 3", gridRow: "3" }}>
+            <MyWorkTile onOpen={() => setProjectOpen("work-browser")} />
+          </div>
+
+          {/* Testimonials: col 3, row 3 (blue — bottom right) */}
+          <div style={{ gridColumn: "3", gridRow: "3" }}>
+            <TestimonialTile />
+          </div>
+
+        </div>
+
+        {/* ── MOBILE stack ── */}
+        <div className="flex flex-col gap-4 lg:hidden">
+          <HeroTile />
+          <NavTile onNav={handleNav} />
+          <WhatIBelieveTile />
+
+          {/* Chat on mobile uses the FAB — show condensed card here */}
+          <div className="rounded-[32px] bg-white overflow-hidden" style={{ height: "360px" }}>
+            <div className="px-6 pt-6 pb-3">
+              <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
+                ask me
+              </p>
             </div>
-          )}
-        </section>
+            <div className="px-6 pb-4 overflow-y-auto no-scrollbar" style={{ height: "290px" }}>
+              <ChatConversation
+                active={active}
+                showThinking={showThinking}
+                showResponse={showResponse}
+                showPills={showPills}
+                showUserNeedsRest={showUserNeedsRest}
+                onTypeDone={handleTypeDone}
+                openProjectForActivePill={openProjectForActivePill}
+              />
+            </div>
+          </div>
 
-        <section className="grid grid-cols-1 gap-8 lg:col-span-2 lg:grid-cols-[1.15fr_0.85fr]">
-          <HorizontalTimeline />
-          <TestimonialCarousel />
-        </section>
-      </section>
+          <MyWorkTile onOpen={() => setProjectOpen("work-browser")} />
+          <TestimonialTile />
+        </div>
+
+      </div>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
@@ -907,7 +1102,7 @@ useEffect(() => {
         html,
         body {
           font-family: 'Open Sans', sans-serif;
-          background: #F8F7F6;
+          background: #F7F4F2;
         }
 
         h1,
