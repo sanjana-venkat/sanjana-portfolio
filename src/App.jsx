@@ -465,78 +465,60 @@ function WhatIBelieveTile() {
 
 /* ─── BENTO TILE: Animated Timeline ─── */
 const TIMELINE_ITEMS = [
-  { year: "2019", label: "Best Presenter Award",   sub: "First publication on Temple Architecture",                            heart: false, isNow: false, img: null },
-  { year: "2021", label: "Chetna",                 sub: "Raised $10,000+ for South Asian mental health",                       heart: false, isNow: false, img: null },
-  { year: "2022", label: "Dialexa",                sub: "Exploring AR experiences for a travel app, DTour",                    heart: false, isNow: false, img: null },
-  { year: "2022", label: "VP, UX Club",            sub: "Design challenge with Paycom & Bottle Rocket. Conference by Intuit.", heart: false, isNow: false, img: null },
-  { year: "2023", label: "Paycom",                 sub: "Founding member of a new subteam. B2B enterprise & design system.",   heart: false, isNow: false, img: null },
-  { year: "2024", label: "JPMC · Senior PD",       sub: "Funnel optimization, HELOC 0-to-1, AI initiatives.",                 heart: false, isNow: false, img: null },
-  { year: "2025", label: "JP Morgan Chase",        sub: "Led Marketing + AI. Gemini & ChatGPT GEO search for Jamie Dimon.",   heart: false, isNow: false, img: null },
-  { year: "2026", label: "Married ♡  Bay Area",   sub: "Moved to the Bay Area. New chapter begins.",                          heart: true,  isNow: false, img: null },
-  { year: "NOW",  label: "Design Engineer",        sub: "Bringing product ideas to polished reality. Finding gaps in personalization.", heart: false, isNow: true,  img: null },
+  { year: "2019", label: "Best Presenter Award", sub: "First publication on Temple Architecture", heart: false, isNow: false, img: null },
+  { year: "2021", label: "Chetna", sub: "Social media awareness campaigns and raised $10,000+ for South Asian mental health", heart: false, isNow: false, img: null },
+  { year: "2022", label: "Dialexa", sub: "Exploring AR experiences for a travel app, DTour", heart: false, isNow: false, img: null },
+  { year: "2022", label: "VP, UX Club", sub: "Organized design challenge with Paycom & Bottle Rocket, and conference sponsored by Intuit", heart: false, isNow: false, img: null },
+  { year: "2023", label: "Paycom", sub: "Associate Product Designer. Founding member of a new subteam focused on B2B enterprise solutions and design system.", heart: false, isNow: false, img: null },
+  { year: "2024", label: "JPMC", sub: "Senior Product Designer. Building 0-to-1 product and driving impact across the ecosystem.", heart: false, isNow: false, img: null },
+  { year: "2025", label: "Leading Marketing and AI", sub: "Leading Marketing and AI initiatives across personalization, recommendations, and executive storytelling.", heart: false, isNow: false, img: null },
+  { year: "2026", label: "Married ♡ Bay Area", sub: "Got married and moved to the Bay Area. New chapter begins.", heart: true, isNow: false, img: null },
+  { year: "NOW", label: "Design Engineer", sub: "Bringing product ideas to polished reality. Finding gaps in personalization.", heart: false, isNow: true, img: null },
 ];
 
-/* Idle background scribbles — three overlapping wavy paths */
-const IDLE_SCRIBBLES = [
-  `M 20,55 C 40,30 60,75 85,50 C 110,25 130,70 155,48 C 180,26 200,68 225,46 C 250,24 265,58 285,42`,
-  `M 15,62 C 38,38 58,78 80,54 C 102,30 125,72 148,50 C 171,28 192,66 215,48 C 238,30 258,62 278,50`,
-  `M 25,48 C 48,26 68,70 92,46 C 116,22 138,66 162,44 C 186,22 206,64 230,44 C 254,24 270,56 290,40`,
-];
+const SCRIBBLE_TO_LINE =
+  "M 18 42 C 34 14, 58 70, 78 38 C 96 10, 112 68, 132 40 C 150 14, 170 66, 190 39 C 212 10, 232 67, 252 41 C 270 22, 286 38, 302 40";
 
-/* Tangled knot that unravels rightward */
-const KNOT_PATH = `
-  M 72,40 C 65,22 82,12 90,28 C 98,44 76,52 70,36
-  C 64,20 82,14 88,30 C 94,46 74,54 68,38
-  C 62,22 80,16 86,32 C 92,48 72,56 66,40
-  C 60,24 78,18 84,34 C 90,50 70,58 64,42
-  C 58,26 76,20 82,36 C 88,52 240,40 290,40
-`;
-const KNOT_LEN = 950;
-
-/* Two hearts SVG path centered at 160,40 on a 320-wide viewBox */
-const HEARTS_PATH = `
-  M 148,38 C 148,33 152,31 155,35 C 158,31 162,33 162,38 C 162,43 155,48 155,48 C 155,48 148,43 148,38Z
-  M 158,38 C 158,33 162,31 165,35 C 168,31 172,33 172,38 C 172,43 165,48 165,48 C 165,48 158,43 158,38Z
-`;
+const CLEAN_LINE = "M 18 40 L 302 40";
+const DRAW_LEN = 620;
 
 function NavTile() {
-  const [active,  setActive]  = useState(false);
-  const [step,    setStep]    = useState(0);
-  const [phase,   setPhase]   = useState("idle");
-  // scrubbed: whether we've already done the scribble once this session
-  const [doneScribble, setDoneScribble] = useState(false);
+  const [active, setActive] = useState(false);
+  const [step, setStep] = useState(0);
+  const [phase, setPhase] = useState("idle");
   const timers = useRef([]);
 
-  const clearAll = () => { timers.current.forEach(clearTimeout); timers.current = []; };
-  const push = (fn, ms) => { const t = setTimeout(fn, ms); timers.current.push(t); return t; };
+  const clearAll = () => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  };
 
-  const runStep = (s, skipScribble) => {
+  const push = (fn, ms) => {
+    const t = setTimeout(fn, ms);
+    timers.current.push(t);
+  };
+
+  const runStep = (nextStep) => {
     clearAll();
-    setStep(s);
-    const item = TIMELINE_ITEMS[s];
-    const hold = item.isNow ? 5000 : item.heart ? 3500 : 2200;
+    setStep(nextStep);
 
-    if (!skipScribble && s === 0) {
-      // First step only: scribble draws fully, then line draws replacing it, then dot+content slide
-      setPhase("scribble");
-      push(() => setPhase("line"),   800);  // scribble done → line starts drawing immediately
-      push(() => setPhase("slide"), 1350);  // line done → dot + content slide in from right
-      push(() => setPhase("hold"),  1700);
-      push(() => { setDoneScribble(true); runStep(1, true); }, 1700 + hold);
-    } else {
-      // All subsequent steps: straight to line → slide
-      setPhase("line");
-      push(() => setPhase("slide"),  520);
-      push(() => setPhase("hold"),   850);
-      push(() => runStep((s + 1) % TIMELINE_ITEMS.length, true), 850 + hold);
-    }
+    setPhase("drawScribble");
+    push(() => setPhase("morphLine"), 900);
+    push(() => setPhase("revealContent"), 1550);
+    push(() => setPhase("hold"), 2100);
+
+    const item = TIMELINE_ITEMS[nextStep];
+    const hold = item.isNow ? 4200 : item.heart ? 3200 : 2600;
+
+    push(() => {
+      runStep((nextStep + 1) % TIMELINE_ITEMS.length);
+    }, 2100 + hold);
   };
 
   const startAnimation = () => {
     if (active) return;
     setActive(true);
-    setDoneScribble(false);
-    runStep(0, false);
+    runStep(0);
   };
 
   const stopAnimation = () => {
@@ -548,9 +530,9 @@ function NavTile() {
 
   useEffect(() => () => clearAll(), []);
 
-  const item      = TIMELINE_ITEMS[step];
-  const showLine  = ["line","slide","hold"].includes(phase);
-  const showSlide = ["slide","hold"].includes(phase);
+  const item = TIMELINE_ITEMS[step];
+  const showContent = phase === "revealContent" || phase === "hold";
+  const isMorphingOrDone = phase === "morphLine" || phase === "revealContent" || phase === "hold";
 
   return (
     <div
@@ -560,19 +542,25 @@ function NavTile() {
       onMouseLeave={stopAnimation}
       onClick={startAnimation}
     >
-      {/* ══ IDLE STATE ══ */}
       {!active && (
         <div className="absolute inset-0 flex flex-col px-6 pt-6 pb-5">
           <p className={`text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] mb-4 ${HEADING}`}>
             my story
           </p>
+
           <div className="flex-1 relative overflow-hidden">
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 300 100" preserveAspectRatio="xMidYMid meet">
-              {IDLE_SCRIBBLES.map((d, i) => (
-                <path key={i} d={d} fill="none" stroke="#D4CBC6"
-                  strokeWidth={0.9 + i * 0.25} strokeLinecap="round" opacity={0.6 + i * 0.12} />
-              ))}
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 100" preserveAspectRatio="xMidYMid meet">
+              <path
+                d={SCRIBBLE_TO_LINE}
+                fill="none"
+                stroke="#D4CBC6"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                opacity="0.85"
+              />
             </svg>
+
             <p className={`absolute bottom-0 left-0 text-[10px] text-[#C0B8B4] ${HEADING}`}>
               hover to explore
             </p>
@@ -580,7 +568,6 @@ function NavTile() {
         </div>
       )}
 
-      {/* ══ ACTIVE ANIMATION ══ */}
       {active && (
         <>
           <p className={`pt-6 px-6 pb-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
@@ -588,116 +575,91 @@ function NavTile() {
           </p>
 
           <div className="relative flex-1 flex flex-col" style={{ minHeight: 0 }}>
-            {/* ── SVG stage: elements always in DOM, driven by strokeDashoffset/opacity only ── */}
             <svg
               className="absolute left-0 right-0"
-              style={{ top: "32%", width: "100%", height: "80px", overflow: "visible" }}
-              viewBox="0 0 320 80"
+              style={{ top: "30%", width: "100%", height: "86px", overflow: "visible" }}
+              viewBox="0 0 320 86"
               preserveAspectRatio="xMidYMid meet"
             >
-              {/*
-                SCRIBBLE — always mounted when active.
-                - During "scribble": animates strokeDashoffset 950→0 (draws in)
-                - During "line" and beyond: opacity 0, no remount
-              */}
               <path
-                d={KNOT_PATH}
+                key={`path-${step}`}
+                d={isMorphingOrDone ? CLEAN_LINE : SCRIBBLE_TO_LINE}
                 fill="none"
                 stroke="#2F2F2F"
-                strokeWidth="1.3"
+                strokeWidth="1.25"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 style={{
-                  strokeDasharray: KNOT_LEN,
-                  strokeDashoffset: phase === "scribble" ? KNOT_LEN : 0,
-                  animation: phase === "scribble" ? "tlKnot 0.75s ease forwards" : "none",
-                  opacity: phase === "scribble" ? 1 : 0,
-                  transition: phase === "scribble" ? "none" : "opacity 0s",
+                  strokeDasharray: DRAW_LEN,
+                  strokeDashoffset: phase === "drawScribble" ? DRAW_LEN : 0,
+                  animation:
+                    phase === "drawScribble"
+                      ? "tlDrawScribble 0.9s cubic-bezier(0.65,0,0.35,1) forwards"
+                      : "none",
+                  transition:
+                    phase === "morphLine"
+                      ? "d 0.65s cubic-bezier(0.76,0,0.24,1)"
+                      : "none",
                 }}
               />
 
-              {/*
-                LINE — always mounted when active.
-                - During "line": animates strokeDashoffset 280→0 (draws in left to right)
-                - During "slide"/"hold": offset stays 0, line fully visible
-                - During "scribble": offset 280, invisible
-              */}
-              <line
-                x1="20" y1="40" x2="300" y2="40"
-                stroke="#2F2F2F"
-                strokeWidth="1.1"
-                strokeLinecap="round"
-                style={{
-                  strokeDasharray: 280,
-                  strokeDashoffset: phase === "scribble" ? 280 : phase === "line" ? 280 : 0,
-                  animation: phase === "line" ? "tlLine 0.5s cubic-bezier(0.4,0,0.2,1) forwards" : "none",
-                }}
-              />
-
-              {/*
-                DOT — always mounted, slides in from right when phase="slide" or "hold"
-                Hidden (opacity 0, off-canvas) before slide
-              */}
               {!item.heart && (
                 <circle
-                  cx="160" cy="40"
-                  r={item.isNow ? "5" : "3.5"}
+                  cx="160"
+                  cy="40"
+                  r={item.isNow ? "5" : "3.7"}
                   fill={item.isNow ? "#D96F45" : "white"}
                   stroke={item.isNow ? "#D96F45" : "#2F2F2F"}
                   strokeWidth="1.5"
                   style={{
-                    opacity: showSlide ? 1 : 0,
-                    transform: showSlide ? "translateX(0)" : "translateX(130px)",
-                    transition: showSlide
-                      ? "transform 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease"
+                    opacity: showContent ? 1 : 0,
+                    transformOrigin: "160px 40px",
+                    transform: showContent ? "scale(1) translateX(0)" : "scale(0.2) translateX(80px)",
+                    transition: showContent
+                      ? "transform 0.52s cubic-bezier(0.22,1,0.36,1), opacity 0.25s ease"
                       : "none",
-                    filter: item.isNow ? "drop-shadow(0 0 6px rgba(217,111,69,0.55))" : "none",
+                    filter: item.isNow ? "drop-shadow(0 0 7px rgba(217,111,69,0.55))" : "none",
                   }}
                 />
               )}
 
-              {/* HEARTS for marriage step */}
               {item.heart && (
                 <g
                   style={{
-                    opacity: showSlide ? 1 : 0,
-                    transform: showSlide ? "translateX(0)" : "translateX(130px)",
-                    transition: showSlide
-                      ? "transform 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease"
+                    opacity: showContent ? 1 : 0,
+                    transform: showContent ? "translateX(0)" : "translateX(90px)",
+                    transformOrigin: "160px 40px",
+                    transition: showContent
+                      ? "transform 0.52s cubic-bezier(0.22,1,0.36,1), opacity 0.25s ease"
                       : "none",
                   }}
                 >
-                  <path d="M 144,38 C 144,33 147,31 150,35 C 153,31 156,33 156,38 C 156,43 150,48 150,48 C 150,48 144,43 144,38Z" fill="#D96F45" />
-                  <path d="M 158,38 C 158,33 161,31 164,35 C 167,31 170,33 170,38 C 170,43 164,48 164,48 C 164,48 158,43 158,38Z" fill="#D96F45" />
+                  <path d="M 145,38 C 145,33 149,31 152,35 C 155,31 159,33 159,38 C 159,44 152,49 152,49 C 152,49 145,44 145,38Z" fill="#D96F45" />
+                  <path d="M 160,38 C 160,33 164,31 167,35 C 170,31 174,33 174,38 C 174,44 167,49 167,49 C 167,49 160,44 160,38Z" fill="#D96F45" />
                 </g>
               )}
             </svg>
 
-            {/* CONTENT slides in from right, same timing as dot */}
             <div
               key={`content-${step}`}
               className="absolute left-0 right-0 bottom-0 px-6 pb-4"
               style={{
-                animation: showSlide ? "tlContentSlide 0.52s cubic-bezier(0.22,1,0.36,1) forwards" : "none",
-                opacity: showSlide ? 1 : 0,
-                transform: "translateX(80px)",
+                opacity: showContent ? 1 : 0,
+                transform: showContent ? "translateX(0)" : "translateX(86px)",
+                transition: showContent
+                  ? "transform 0.52s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease"
+                  : "none",
               }}
             >
-              {/* Tilted image — bottom left corner */}
-              {item.img && (
-                <div
-                  className="absolute overflow-hidden rounded-[12px] border-[3px] border-white"
-                  style={{
-                    width: "64px", height: "72px",
-                    bottom: "72px", left: "12px",
-                    transform: "rotate(-9deg)",
-                    boxShadow: "0 4px 14px rgba(0,0,0,0.14)",
-                    zIndex: 5,
-                  }}
-                >
-                  <img src={item.img} alt="" className="w-full h-full object-cover" />
-                </div>
-              )}
+              <div className="mb-3 h-[58px] w-[92px] rounded-[14px] border border-[#E4E2E1] bg-[#F7F4F2] overflow-hidden">
+                {item.img ? (
+                  <img src={item.img} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  <div className={`flex h-full w-full items-center justify-center text-[9px] uppercase tracking-[0.14em] text-[#C0B8B4] ${HEADING}`}>
+                    image
+                  </div>
+                )}
+              </div>
 
               <div className="flex items-baseline gap-2 flex-wrap">
                 <span className={`text-[14px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
@@ -707,7 +669,8 @@ function NavTile() {
                   {item.label}
                 </span>
               </div>
-              <p className="mt-1 text-[12px] leading-[1.65] text-[#5F5149]" style={{ maxWidth: "230px" }}>
+
+              <p className="mt-1 text-[12px] leading-[1.55] text-[#5F5149]" style={{ maxWidth: "285px" }}>
                 {item.sub}
               </p>
             </div>
@@ -716,17 +679,9 @@ function NavTile() {
       )}
 
       <style>{`
-        @keyframes tlKnot {
-          from { stroke-dashoffset: ${KNOT_LEN}; }
-          to   { stroke-dashoffset: 0; }
-        }
-        @keyframes tlDotSlide {
-          from { transform: translateX(130px); opacity: 0; }
-          to   { transform: translateX(0);     opacity: 1; }
-        }
-        @keyframes tlContentSlide {
-          from { transform: translateX(80px); opacity: 0; }
-          to   { transform: translateX(0);    opacity: 1; }
+        @keyframes tlDrawScribble {
+          from { stroke-dashoffset: ${DRAW_LEN}; }
+          to { stroke-dashoffset: 0; }
         }
       `}</style>
     </div>
