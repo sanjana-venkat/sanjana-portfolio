@@ -454,13 +454,9 @@ function WhatIBelieveTile() {
           href="/SanjanaVenkat_ProductDesign_Resume.pdf"
           target="_blank"
           rel="noreferrer"
-          className={`inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#6B625C] hover:text-[#A5522A] transition ${HEADING}`}
+          className={`inline-flex items-center gap-1 text-[13px] text-[#8A817B] underline underline-offset-4 hover:text-[#A5522A] transition ${HEADING}`}
         >
-          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-          </svg>
-          Resume
+          resume →
         </a>
       </div>
     </article>
@@ -521,19 +517,18 @@ function NavTile() {
     const hold = item.isNow ? 5000 : item.heart ? 3500 : 2200;
 
     if (!skipScribble && s === 0) {
-      // Only on very first step: scribble → dissolve into line → slide
+      // First step only: scribble draws fully, then line draws replacing it, then dot+content slide
       setPhase("scribble");
-      push(() => setPhase("dissolve"),  600);  // scribble done, start dissolve
-      push(() => setPhase("line"),      1100); // line draws in
-      push(() => setPhase("slide"),     1650); // dot + content slide in
-      push(() => setPhase("hold"),      2000);
-      push(() => { setDoneScribble(true); runStep(1, true); }, 2000 + hold);
+      push(() => setPhase("line"),   800);  // scribble done → line starts drawing immediately
+      push(() => setPhase("slide"), 1350);  // line done → dot + content slide in from right
+      push(() => setPhase("hold"),  1700);
+      push(() => { setDoneScribble(true); runStep(1, true); }, 1700 + hold);
     } else {
       // All subsequent steps: straight to line → slide
       setPhase("line");
-      push(() => setPhase("slide"),  550);
-      push(() => setPhase("hold"),   900);
-      push(() => runStep((s + 1) % TIMELINE_ITEMS.length, true), 900 + hold);
+      push(() => setPhase("slide"),  520);
+      push(() => setPhase("hold"),   850);
+      push(() => runStep((s + 1) % TIMELINE_ITEMS.length, true), 850 + hold);
     }
   };
 
@@ -554,7 +549,7 @@ function NavTile() {
   useEffect(() => () => clearAll(), []);
 
   const item      = TIMELINE_ITEMS[step];
-  const showLine  = ["dissolve","line","slide","hold"].includes(phase);
+  const showLine  = ["line","slide","hold"].includes(phase);
   const showSlide = ["slide","hold"].includes(phase);
 
   return (
@@ -600,8 +595,8 @@ function NavTile() {
               viewBox="0 0 320 80"
               preserveAspectRatio="xMidYMid meet"
             >
-              {/* SCRIBBLE: draws in, then fades as line appears */}
-              {(phase === "scribble" || phase === "dissolve") && (
+              {/* SCRIBBLE: draws in fully, then line replaces it (no fade — clean snap) */}
+              {phase === "scribble" && (
                 <path
                   key={`knot-${step}`}
                   d={KNOT_PATH}
@@ -609,15 +604,13 @@ function NavTile() {
                   strokeLinecap="round" strokeLinejoin="round"
                   style={{
                     strokeDasharray: KNOT_LEN,
-                    strokeDashoffset: phase === "scribble" ? KNOT_LEN : 0,
-                    animation: phase === "scribble" ? `tlKnot 0.58s ease forwards` : "none",
-                    opacity: phase === "dissolve" ? 0 : 1,
-                    transition: phase === "dissolve" ? "opacity 0.45s ease" : "none",
+                    strokeDashoffset: KNOT_LEN,
+                    animation: `tlKnot 0.75s ease forwards`,
                   }}
                 />
               )}
 
-              {/* LINE: draws in after scribble dissolves */}
+              {/* LINE: draws in left-to-right after scribble is done */}
               {showLine && (
                 <line
                   key={`line-${step}`}
@@ -625,9 +618,9 @@ function NavTile() {
                   stroke="#2F2F2F" strokeWidth="1.1" strokeLinecap="round"
                   style={{
                     strokeDasharray: 280,
-                    strokeDashoffset: phase === "line" || phase === "dissolve" ? 280 : 0,
-                    transition: (phase === "line" || phase === "dissolve")
-                      ? "stroke-dashoffset 0.48s cubic-bezier(0.4,0,0.2,1)"
+                    strokeDashoffset: phase === "line" ? 280 : 0,
+                    transition: phase === "line"
+                      ? "stroke-dashoffset 0.5s cubic-bezier(0.4,0,0.2,1)"
                       : "none",
                   }}
                 />
@@ -728,7 +721,7 @@ function NavTile() {
 
 /* ─── BENTO TILE: My Work — 3 project thumbnails in one row ─── */
 const WORK_PREVIEWS = [
-  { src: "/marketing-preview.png", label: "AI Personalization", projectKey: "marketing-tiles" },
+  { src: "/marketing-preview.png", label: "Personalized Marketing", projectKey: "marketing-tiles" },
   { src: "/ai-chat-preview.png",   label: "AI Chat Journeys",   projectKey: "ai-framer" },
   { src: "/outdone-preview.png",   label: "Outdone", isNew: true, projectKey: "travel-dna" },
 ];
@@ -1267,26 +1260,6 @@ export default function PortfolioHome() {
           <HeroTile />
           <NavTile />
           <WhatIBelieveTile />
-
-          {/* Chat on mobile uses the FAB — show condensed card here */}
-          <div className="rounded-[32px] bg-white overflow-hidden" style={{ height: "360px" }}>
-            <div className="px-6 pt-6 pb-3">
-              <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-                ask me
-              </p>
-            </div>
-            <div className="px-6 pb-4 overflow-y-auto no-scrollbar" style={{ height: "290px" }}>
-              <ChatConversation
-                active={active}
-                showThinking={showThinking}
-                showResponse={showResponse}
-                showPills={showPills}
-                showUserNeedsRest={showUserNeedsRest}
-                onTypeDone={handleTypeDone}
-                openProjectForActivePill={openProjectForActivePill}
-              />
-            </div>
-          </div>
 
           <MyWorkTile onOpenProject={(key) => { if (key === "travel-dna") { window.open(TRAVEL_DNA_URL, "_blank"); } else { setProjectOpen(key === "marketing-tiles" ? "marketing-tiles" : "ai-framer"); } }} />
           <TestimonialTile />
