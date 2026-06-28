@@ -604,7 +604,7 @@ function NavTile() {
           <div className="relative flex-1 overflow-hidden">
             {/* Image placeholder, cropped from the left like the profile card */}
             <div
-              className="absolute left-[-24px] top-[62px] h-[96px] w-[116px] rounded-[24px] border-[6px] border-white bg-[#F7F2EF] shadow-sm overflow-hidden z-10"
+              className="absolute left-[-38px] top-[44px] h-[88px] w-[110px] rounded-[24px] border-[6px] border-white bg-[#F7F2EF] shadow-sm overflow-hidden z-10"
               style={{
                 transform: showSlide ? "rotate(-5deg) translateX(0)" : "rotate(-5deg) translateX(-14px)",
                 opacity: showSlide || phase === "scribble" || phase === "line" ? 1 : 0,
@@ -684,9 +684,9 @@ function NavTile() {
 
             <div
               key={`content-${step}`}
-              className="absolute right-0 bottom-0 pb-5 pr-6"
+              className="absolute right-0 bottom-0 pb-5 pr-6 text-left"
               style={{
-                left: "116px",
+                left: "96px",
                 opacity: showSlide ? 1 : 0,
                 transform: showSlide ? "translateX(0)" : "translateX(120px)",
                 transition: showSlide
@@ -694,7 +694,7 @@ function NavTile() {
                   : "none",
               }}
             >
-              <div className="flex items-baseline gap-2 flex-wrap">
+              <div className="flex items-baseline gap-2 whitespace-nowrap">
                 <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
                   {item.year}
                 </span>
@@ -703,7 +703,7 @@ function NavTile() {
                 </span>
               </div>
 
-              <p className="mt-1 text-[13px] leading-[1.55] text-[#5F5149] max-w-[270px]">
+              <p className="mt-1 text-[13px] leading-[1.55] text-[#5F5149] whitespace-nowrap overflow-hidden text-ellipsis max-w-[360px]">
                 {item.sub}
               </p>
             </div>
