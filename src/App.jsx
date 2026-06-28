@@ -466,13 +466,14 @@ function WhatIBelieveTile() {
 /* ─── BENTO TILE: Animated Timeline ─── */
 const TIMELINE_ITEMS = [
   { year: "2019", label: "Best Presenter Award",   sub: "First publication on Temple Architecture",              heart: false, isNow: false, img: null },
+  { year: "2020", label: "UTD Psychology & Design", sub: "Studied human behavior through a design lens",          heart: false, isNow: false, img: null },
   { year: "2021", label: "Chetna",                 sub: "Raised $10K+ for South Asian mental health",             heart: false, isNow: false, img: null },
   { year: "2022", label: "Dialexa",                sub: "Explored AR travel experiences for DTour",               heart: false, isNow: false, img: null },
   { year: "2022", label: "VP, UX Club",            sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: null },
   { year: "2023", label: "Paycom",                 sub: "Joined a new B2B enterprise design subteam",             heart: false, isNow: false, img: null },
   { year: "2024", label: "JPMC · Senior PD",       sub: "Owned apply flow, HELOC 0-to-1 and AI initiatives",      heart: false, isNow: false, img: null },
   { year: "2025", label: "JP Morgan Chase",        sub: "Led Marketing + AI and exec-facing Gemini concepts",    heart: false, isNow: false, img: null },
-  { year: "2026", label: "Married ♡ Bay Area",     sub: "Moved to the Bay Area for a new chapter",                heart: true,  isNow: false, img: null },
+  { year: "2026", label: "Married · Bay Area",     sub: "Moved to the Bay Area for a new chapter",                heart: true,  isNow: false, img: null },
   { year: "NOW",  label: "Design Engineer",        sub: "Building polished AI product ideas fast",                heart: false, isNow: true,  img: null },
 ];
 
@@ -561,6 +562,8 @@ function NavTile() {
     "M 95 38 C 78 20, 58 26, 72 44 C 88 66, 122 24, 101 18 C 76 12, 58 56, 91 58 C 130 60, 145 28, 118 30 C 95 32, 98 51, 132 44 C 178 34, 231 38, 300 38";
 
   const linePath = "M 95 38 C 150 38, 220 38, 300 38";
+  const heartLinePath =
+    "M 95 38 C 125 38 132 38 140 38 C 140 29 149 25 156 33 C 163 25 172 29 172 38 C 172 50 156 58 156 58 C 156 58 140 50 140 38 C 178 38 235 38 300 38";
 
   return (
     <div
@@ -627,23 +630,31 @@ function NavTile() {
               style={{ overflow: "visible" }}
             >
               <path
-                d={phase === "scribble" ? scribblePath : linePath}
+                d={
+                  phase === "scribble"
+                    ? scribblePath
+                    : item.heart && showSlide
+                    ? heartLinePath
+                    : linePath
+                }
                 fill="none"
-                stroke="#2F2F2F"
-                strokeWidth="1.3"
+                stroke={item.heart && showSlide ? "#D96F45" : "#2F2F2F"}
+                strokeWidth={item.heart && showSlide ? "1.7" : "1.3"}
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 style={{
-                  strokeDasharray: 420,
+                  strokeDasharray: 520,
                   strokeDashoffset:
-                    phase === "scribble" || phase === "line" ? 420 : 0,
+                    phase === "scribble" || phase === "line" || item.heart ? 520 : 0,
                   animation:
                     phase === "scribble"
                       ? "tlDraw 0.38s ease forwards"
                       : phase === "line"
                       ? "tlDraw 0.32s cubic-bezier(0.22,1,0.36,1) forwards"
+                      : item.heart && showSlide
+                      ? "tlDraw 0.52s cubic-bezier(0.22,1,0.36,1) forwards"
                       : "none",
-                  transition: "d 0.32s cubic-bezier(0.22,1,0.36,1)",
+                  transition: "d 0.42s cubic-bezier(0.22,1,0.36,1), stroke 0.25s ease",
                 }}
               />
 
@@ -658,27 +669,14 @@ function NavTile() {
                   style={{
                     opacity: showSlide ? 1 : 0,
                     transform: showSlide ? "translateX(0)" : "translateX(120px)",
+                    transformBox: "fill-box",
+                    transformOrigin: "center",
                     transition: showSlide
                       ? "transform 0.38s cubic-bezier(0.22,1,0.36,1), opacity 0.2s ease"
                       : "none",
                     filter: item.isNow ? "drop-shadow(0 0 6px rgba(217,111,69,0.55))" : "none",
                   }}
                 />
-              )}
-
-              {item.heart && (
-                <g
-                  style={{
-                    opacity: showSlide ? 1 : 0,
-                    transform: showSlide ? "translateX(0)" : "translateX(120px)",
-                    transition: showSlide
-                      ? "transform 0.38s cubic-bezier(0.22,1,0.36,1), opacity 0.2s ease"
-                      : "none",
-                  }}
-                >
-                  <path d="M 144,38 C 144,33 147,31 150,35 C 153,31 156,33 156,38 C 156,43 150,48 150,48 C 150,48 144,43 144,38Z" fill="#D96F45" />
-                  <path d="M 158,38 C 158,33 161,31 164,35 C 167,31 170,33 170,38 C 170,43 164,48 164,48 C 164,48 158,43 158,38Z" fill="#D96F45" />
-                </g>
               )}
             </svg>
 
@@ -713,7 +711,7 @@ function NavTile() {
 
       <style>{`
         @keyframes tlDraw {
-          from { stroke-dashoffset: 420; }
+          from { stroke-dashoffset: 520; }
           to { stroke-dashoffset: 0; }
         }
       `}</style>
