@@ -657,7 +657,7 @@ function NavTile() {
                   strokeWidth="1.6"
                   style={{
                     opacity: showSlide ? 1 : 0,
-                    transform: showSlide ? "translateX(0)" : "translateX(90px)",
+                    transform: showSlide ? "translateX(0)" : "translateX(120px)",
                     transition: showSlide
                       ? "transform 0.38s cubic-bezier(0.22,1,0.36,1), opacity 0.2s ease"
                       : "none",
@@ -670,7 +670,7 @@ function NavTile() {
                 <g
                   style={{
                     opacity: showSlide ? 1 : 0,
-                    transform: showSlide ? "translateX(0)" : "translateX(90px)",
+                    transform: showSlide ? "translateX(0)" : "translateX(120px)",
                     transition: showSlide
                       ? "transform 0.38s cubic-bezier(0.22,1,0.36,1), opacity 0.2s ease"
                       : "none",
@@ -684,10 +684,11 @@ function NavTile() {
 
             <div
               key={`content-${step}`}
-              className="absolute left-0 right-0 bottom-0 px-6 pb-5"
+              className="absolute right-0 bottom-0 pb-5 pr-6"
               style={{
+                left: "116px",
                 opacity: showSlide ? 1 : 0,
-                transform: showSlide ? "translateX(0)" : "translateX(70px)",
+                transform: showSlide ? "translateX(0)" : "translateX(120px)",
                 transition: showSlide
                   ? "transform 0.42s cubic-bezier(0.22,1,0.36,1), opacity 0.22s ease"
                   : "none",
