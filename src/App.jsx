@@ -465,15 +465,15 @@ function WhatIBelieveTile() {
 
 /* ─── BENTO TILE: Animated Timeline ─── */
 const TIMELINE_ITEMS = [
-  { year: "2019", label: "Best Presenter Award",   sub: "First publication on Temple Architecture",                            heart: false, isNow: false, img: null },
-  { year: "2021", label: "Chetna",                 sub: "Raised $10,000+ for South Asian mental health",                       heart: false, isNow: false, img: null },
-  { year: "2022", label: "Dialexa",                sub: "Exploring AR experiences for a travel app, DTour",                    heart: false, isNow: false, img: null },
-  { year: "2022", label: "VP, UX Club",            sub: "Design challenge with Paycom & Bottle Rocket. Conference by Intuit.", heart: false, isNow: false, img: null },
-  { year: "2023", label: "Paycom",                 sub: "Founding member of a new subteam. B2B enterprise & design system.",   heart: false, isNow: false, img: null },
-  { year: "2024", label: "JPMC · Senior PD",       sub: "Funnel optimization, HELOC 0-to-1, AI initiatives.",                 heart: false, isNow: false, img: null },
-  { year: "2025", label: "JP Morgan Chase",        sub: "Led Marketing + AI. Gemini & ChatGPT GEO search for Jamie Dimon.",   heart: false, isNow: false, img: null },
-  { year: "2026", label: "Married ♡  Bay Area",   sub: "Moved to the Bay Area. New chapter begins.",                          heart: true,  isNow: false, img: null },
-  { year: "NOW",  label: "Design Engineer",        sub: "Bringing product ideas to polished reality. Finding gaps in personalization.", heart: false, isNow: true,  img: null },
+  { year: "2019", label: "Best Presenter Award",   sub: "First publication on Temple Architecture",              heart: false, isNow: false, img: null },
+  { year: "2021", label: "Chetna",                 sub: "Raised $10K+ for South Asian mental health",             heart: false, isNow: false, img: null },
+  { year: "2022", label: "Dialexa",                sub: "Explored AR travel experiences for DTour",               heart: false, isNow: false, img: null },
+  { year: "2022", label: "VP, UX Club",            sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: null },
+  { year: "2023", label: "Paycom",                 sub: "Joined a new B2B enterprise design subteam",             heart: false, isNow: false, img: null },
+  { year: "2024", label: "JPMC · Senior PD",       sub: "Owned apply flow, HELOC 0-to-1 and AI initiatives",      heart: false, isNow: false, img: null },
+  { year: "2025", label: "JP Morgan Chase",        sub: "Led Marketing + AI and exec-facing Gemini concepts",    heart: false, isNow: false, img: null },
+  { year: "2026", label: "Married ♡ Bay Area",     sub: "Moved to the Bay Area for a new chapter",                heart: true,  isNow: false, img: null },
+  { year: "NOW",  label: "Design Engineer",        sub: "Building polished AI product ideas fast",                heart: false, isNow: true,  img: null },
 ];
 
 /* Idle background scribbles — three overlapping wavy paths */
@@ -604,7 +604,7 @@ function NavTile() {
           <div className="relative flex-1 overflow-hidden">
             {/* Image placeholder, cropped from the left like the profile card */}
             <div
-              className="absolute left-[-38px] top-[44px] h-[88px] w-[110px] rounded-[24px] border-[6px] border-white bg-[#F7F2EF] shadow-sm overflow-hidden z-10"
+              className="absolute left-[-34px] top-[42px] h-[82px] w-[108px] rounded-[24px] border-[6px] border-white bg-[#F7F2EF] shadow-sm overflow-hidden z-10"
               style={{
                 transform: showSlide ? "rotate(-5deg) translateX(0)" : "rotate(-5deg) translateX(-14px)",
                 opacity: showSlide || phase === "scribble" || phase === "line" ? 1 : 0,
@@ -684,9 +684,9 @@ function NavTile() {
 
             <div
               key={`content-${step}`}
-              className="absolute right-0 bottom-0 pb-5 pr-6 text-left"
+              className="absolute bottom-0 left-0 right-0 px-6 pb-5 text-left"
               style={{
-                left: "96px",
+                left: "0px",
                 opacity: showSlide ? 1 : 0,
                 transform: showSlide ? "translateX(0)" : "translateX(120px)",
                 transition: showSlide
@@ -703,7 +703,7 @@ function NavTile() {
                 </span>
               </div>
 
-              <p className="mt-1 text-[13px] leading-[1.55] text-[#5F5149] whitespace-nowrap overflow-hidden text-ellipsis max-w-[360px]">
+              <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149] whitespace-nowrap">
                 {item.sub}
               </p>
             </div>
