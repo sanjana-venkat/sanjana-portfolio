@@ -1447,9 +1447,8 @@ export default function PortfolioHome() {
           className="hidden lg:grid"
           style={{
             gridTemplateColumns: "480px 1fr 1fr",
-            gridTemplateRows: "auto 1fr auto",
+            gridTemplateRows: "auto auto auto",
             gap: "14px",
-            minHeight: "calc(100vh - 80px)",
           }}
         >
 
@@ -1457,7 +1456,7 @@ export default function PortfolioHome() {
           <div
             ref={chatCardRef}
             className="rounded-[32px] bg-white overflow-hidden flex flex-col relative"
-            style={{ gridColumn: "1", gridRow: "1 / 3", height: "100%" }}
+            style={{ gridColumn: "1", gridRow: "1 / 3", height: "clamp(520px, 70vh, 800px)" }}
           >
             <div className="px-6 pt-6 pb-3 shrink-0">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
