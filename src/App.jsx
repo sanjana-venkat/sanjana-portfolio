@@ -461,16 +461,12 @@ function WhatIBelieveTile() {
           what i believe in
         </p>
 
-        <p className="leading-[1.65] text-[#5F5149]">
-          i believe good products don't just solve problems. they reveal ones people didn't know they had.
+        <p className="leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
+          I majored in psychology because I love thinking about how people think. And that curiosity never left, it just found a new home in product design.
         </p>
 
-        <p className="mt-4 leading-[1.65] text-[#5F5149]">
-          i majored in psychology because i love thinking about how people think. that curiosity never left — it just found a new home in product design.
-        </p>
-
-        <p className="mt-4 leading-[1.65] text-[#5F5149]">
-          with AI and personalization, that gap gets smaller. But the real work is still human: listening, framing, building things that help people move forward.
+        <p className="mt-3 leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
+          I always tried to get closer to user needs and intent with data analytics, user research, or recently model design to classify, filter and map responses. With good design, I want to meet users where they are and also take them where they want to be.
         </p>
       </div>
 
@@ -1206,7 +1202,7 @@ export default function PortfolioHome() {
     }
 
     if (active === "how i ship fast") {
-      openWorkProject("vibe-coding");
+      window.open("https://travel-dna-kohl.vercel.app/", "_blank");
       return;
     }
 
