@@ -230,9 +230,8 @@ function PlayIcon() {
 // Module-level scroll target — set by the chat scroll div, read by Typewriter directly
 let _chatScrollEl = null;
 
-function Typewriter({ text, shouldStart, onDone, instant = false }) {
+function Typewriter({ text, onDone }) {
   const cleanText = (text || "").trim();
-  const [displayed, setDisplayed] = useState(instant ? cleanText : "");
   const onDoneRef = useRef(onDone);
 
   useEffect(() => {
@@ -240,44 +239,13 @@ function Typewriter({ text, shouldStart, onDone, instant = false }) {
   }, [onDone]);
 
   useEffect(() => {
-    if (!shouldStart) return;
-
-    if (instant) {
-      setDisplayed(cleanText);
-      const doneTimer = setTimeout(() => onDoneRef.current?.(), 0);
-      return () => clearTimeout(doneTimer);
-    }
-
-    setDisplayed("");
-    let interval;
-    let index = 0;
-
-    const startDelay = setTimeout(() => {
-      interval = setInterval(() => {
-        index += 1;
-        setDisplayed(cleanText.slice(0, index));
-
-        if (_chatScrollEl) {
-          _chatScrollEl.scrollTop = _chatScrollEl.scrollHeight;
-        }
-
-        if (index >= cleanText.length) {
-          clearInterval(interval);
-          setTimeout(() => onDoneRef.current?.(), 250);
-        }
-      }, 15);
-    }, 350);
-
-    return () => {
-      clearTimeout(startDelay);
-      clearInterval(interval);
-    };
-  }, [cleanText, shouldStart, instant]);
+    const doneTimer = setTimeout(() => onDoneRef.current?.(), 0);
+    return () => clearTimeout(doneTimer);
+  }, [cleanText]);
 
   return (
     <p className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
-      {displayed}
-      {!instant && displayed.length < cleanText.length && <span className="animate-pulse text-[#A5522A]">|</span>}
+      {cleanText}
     </p>
   );
 }
@@ -608,7 +576,7 @@ function NavTile() {
           </p>
 
           <div className="relative flex-1 overflow-hidden">
-            <div key={`image-${step}`} className="absolute left-[-34px] top-[42px] h-[82px] w-[108px] rounded-[24px] border-[6px] border-white bg-[#F7F2EF] shadow-sm overflow-hidden z-10" style={{ animation: showSlide ? "timelineImageSlide 0.42s cubic-bezier(0.22,1,0.36,1) both" : "none", opacity: showSlide || phase === "scribble" || phase === "line" ? 1 : 0, transform: "rotate(-5deg)" }}>
+            <div key={`image-${step}`} className="absolute left-[-10px] top-[34px] h-[120px] w-[96px] rounded-[24px] border-[6px] border-white bg-[#F7F2EF] shadow-sm overflow-hidden z-10" style={{ animation: showSlide ? "timelineImageSlide 0.42s cubic-bezier(0.22,1,0.36,1) both" : "none", opacity: showSlide || phase === "scribble" || phase === "line" ? 1 : 0, transform: "rotate(-5deg)" }}>
               {item.img ? <img src={item.img} alt="" className="h-full w-full object-cover" /> : <div className={`flex h-full w-full items-center justify-center text-[12px] tracking-[0.18em] text-[#B8AAA4] ${HEADING}`}>IMAGE</div>}
             </div>
 
@@ -617,7 +585,7 @@ function NavTile() {
               {!item.heart && <circle key={`dot-${step}`} cx="160" cy="38" r={item.isNow ? "5" : "4"} fill={item.isNow ? "#D96F45" : "white"} stroke={item.isNow ? "#D96F45" : "#2F2F2F"} strokeWidth="1.6" style={{ opacity: showSlide ? 1 : 0, animation: showSlide ? "timelineDotSlide 0.42s cubic-bezier(0.22,1,0.36,1) both" : "none", filter: item.isNow ? "drop-shadow(0 0 6px rgba(217,111,69,0.55))" : "none" }} />}
             </svg>
 
-            <div key={`content-${step}`} className="absolute bottom-0 left-0 right-0 px-6 pb-5 text-left" style={{ opacity: showSlide ? 1 : 0, animation: showSlide ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both" : "none" }}>
+            <div key={`content-${step}`} className="absolute bottom-0 left-0 right-0 px-6 pb-4 text-left" style={{ opacity: showSlide ? 1 : 0, animation: showSlide ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both" : "none" }}>
               <div className="flex items-baseline gap-2 whitespace-nowrap">
                 <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>{item.year}</span>
                 <span className={`text-[14px] font-semibold text-[#9A8176] ${HEADING}`}>{item.label}</span>
@@ -796,7 +764,7 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   );
 }
 
-function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, instantType = false }) {
+function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill }) {
   return (
     <>
       <div className="mb-6 flex justify-end">
@@ -817,7 +785,7 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
       {showResponse && (
         <>
           <div className="rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-            <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} instant={instantType} />
+            <Typewriter text={CONTENT?.[active] || ""} onDone={onTypeDone} />
 
             {active === "how i uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
 
@@ -839,7 +807,7 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
   );
 }
 
-function MobileChatModal({ active, setActive, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, onClose, instantType = false }) {
+function MobileChatModal({ active, setActive, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, onClose }) {
   const [showHint, setShowHint] = useState(false);
 
   return (
@@ -888,7 +856,6 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
           showUserNeedsRest={showUserNeedsRest}
           onTypeDone={onTypeDone}
           openProjectForActivePill={openProjectForActivePill}
-          instantType={instantType}
         />
       </div>
 
@@ -926,7 +893,6 @@ export default function PortfolioHome() {
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
   const [workProjectSlug, setWorkProjectSlug] = useState("b2c");
-  const [instantType, setInstantType] = useState(true);
 
   useEffect(() => {
     const faviconPath = "/logo.jpg";
@@ -965,29 +931,12 @@ export default function PortfolioHome() {
   }, []);
 
   useEffect(() => {
-    if (!hasLoaded) {
-      setInstantType(true);
-      setShowThinking(false);
-      setShowResponse(true);
-      setShowPills(true);
-      setShowUserNeedsRest(active === "how i uncover user needs");
-      setHasLoaded(true);
-      return;
-    }
-
-    setInstantType(false);
-    setShowPills(false);
-    setShowResponse(false);
-    setShowUserNeedsRest(false);
-    setShowThinking(true);
-
-    const timer = setTimeout(() => {
-      setShowThinking(false);
-      setShowResponse(true);
-    }, 850);
-
-    return () => clearTimeout(timer);
-  }, [active, hasLoaded]);
+    setShowThinking(false);
+    setShowResponse(true);
+    setShowPills(true);
+    setShowUserNeedsRest(active === "how i uncover user needs");
+    setHasLoaded(true);
+  }, [active]);
 
 
 
@@ -1110,7 +1059,6 @@ export default function PortfolioHome() {
           onTypeDone={handleTypeDone}
           openProjectForActivePill={openProjectForActivePill}
           onClose={() => setMobileChatOpen(false)}
-          instantType={instantType}
         />
       )}
 
@@ -1189,8 +1137,7 @@ export default function PortfolioHome() {
                 showUserNeedsRest={showUserNeedsRest}
                 onTypeDone={handleTypeDone}
                 openProjectForActivePill={openProjectForActivePill}
-                instantType={instantType}
-              />
+                    />
             </div>
             {/* Pills: absolute bottom, fully transparent bg so chat content shows through */}
             {showPills && (
