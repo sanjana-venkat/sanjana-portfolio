@@ -39,7 +39,7 @@ const PILLS = [
   "designing systems at scale",
   "tell me your story",
   "how i get exec-buy in",
-  "pitch me as a motion designer",
+  "model design",
 ];
 
 const CONTENT = {
@@ -424,7 +424,7 @@ function HeroTile() {
       </h1>
       {/* Tagline */}
       <p className="mt-2 text-[16px] leading-[1.5]" style={{ color: "#57423A" }}>
-        Product designer. Motion thinker. I turn ambiguity into direction.
+        I turn ambiguity into direction. Deeply understanding how people think, both users and stakeholders. 
       </p>
 
       {/* Profile pic — bottom-right, tilted 9.83deg, white border, bottom clips at tile edge */}
@@ -461,17 +461,11 @@ function WhatIBelieveTile() {
           what i believe in
         </p>
 
-        <p className="leading-[1.65] text-[#5F5149]">
-          i believe good products don't just solve problems. they reveal ones people didn't know they had.
-        </p>
 
         <p className="mt-4 leading-[1.65] text-[#5F5149]">
-          i majored in psychology because i love thinking about how people think. that curiosity never left — it just found a new home in product design.
+          I majored in psychology because I love thinking about how people think. and that curiosity never left, it just found a new home in product design. Everything I did in product design was to get closer to user needs and intent whether its getting into data analytics, conducting user research, or recently model design to classify, filter and map responses. With good design, i want to meet users where they are and also take them where they want to be. 
         </p>
-
-        <p className="mt-4 leading-[1.65] text-[#5F5149]">
-          with AI and personalization, that gap gets smaller. But the real work is still human: listening, framing, building things that help people move forward.
-        </p>
+        
       </div>
 
       <div className="mt-6 flex items-center justify-between">
