@@ -32,14 +32,14 @@ const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
 const TYPEWRITE = "[font-family:'JetBrains_Mono',monospace]";
 
 const PILLS = [
-  "how i uncover user needs",
-  "how i ship fast",
+  "how do you uncover user needs",
+  "how do you ship fast",
   "model design",
   "let's talk AI",
   "product strategy thinking",
   "designing systems at scale",
   "tell me your story",
-  "how i get exec-buy in",
+  "how do you get exec-buy in",
 ];
 
 const CONTENT = {
