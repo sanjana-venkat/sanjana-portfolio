@@ -32,18 +32,18 @@ const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
 const TYPEWRITE = "[font-family:'JetBrains_Mono',monospace]";
 
 const PILLS = [
-  "how i uncover user needs",
-  "how i ship fast",
+  "how do you uncover user needs",
+  "how do you ship fast",
   "model design",
   "let's talk AI",
   "product strategy thinking",
   "designing systems at scale",
   "tell me your story",
-  "how i get exec-buy in",
+  "how do you get exec buy-in",
 ];
 
 const CONTENT = {
-  "how i uncover user needs": `I look beyond surface-level metrics to understand the intent behind user behavior. At JPMC, we were a small team trying to reduce drop-offs in an application flow.
+  "how do you uncover user needs": `I look beyond surface-level metrics to understand the intent behind user behavior. At JPMC, we were a small team trying to reduce drop-offs in an application flow.
 
 Tired of not seeing drastic impact, we went deep into the data and I made a funnel visualization that revealed something simple but important:
 
@@ -100,7 +100,7 @@ It helped designers think beyond "change the content" or "add bigger tiles" and 
 • self-service moments
 • backend dependencies`,
 
-  "how i ship fast": `I move quickly by combining systems thinking, rapid prototyping, and close engineering collaboration.
+  "how do you ship fast": `I move quickly by combining systems thinking, rapid prototyping, and close engineering collaboration.
 
 At JPMC, I analyzed edge cases for 20+ offers and built a plug-and-play offer template using atomic design principles.
 
@@ -129,7 +129,7 @@ I joined as a Senior Product Designer and moved quickly into AI initiatives, mar
 
 I learn by doing, and I do a lot :).`,
 
-  "how i get exec-buy in": `I learnt that empathy is not just used in design, but also with stakeholders. 
+  "how do you get exec buy-in": `I learnt that empathy is not just used in design, but also with stakeholders. 
 
 Instead of trying to convince stakeholders, I start from where they are and we walk together toward a new shared vision. 
 
@@ -487,7 +487,7 @@ function WhatIBelieveTile() {
         </p>
 
         <p className="leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
-          I majored in psychology because I love thinking about how people think. And that curiosity never left, it just found a new home in product design.
+          I study psychology because I love thinking about how people think. And that curiosity never left, it just found a new home in product design.
         </p>
 
         <p className="mt-3 leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
@@ -645,94 +645,120 @@ function NavTile() {
             my story
           </p>
 
-          <div className="relative flex-1 overflow-hidden">
-            <svg
-              className="absolute left-0 right-0 w-full h-[78px]"
-              viewBox="0 0 320 80"
-              preserveAspectRatio="none"
-              style={{ bottom: "80px", overflow: "visible" }}
-            >
-              {/* SCRIBBLE: only rendered in "scribble" phase, removed instantly when phase changes (no fade) */}
-              {phase === "scribble" && (
-                <path
-                  key="scribble"
-                  d={scribblePath}
-                  fill="none"
-                  stroke="#2F2F2F"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+          <div className="relative flex-1 flex flex-col justify-between overflow-hidden">
+            {/* CENTER BLOCK: image + line, vertically centered in available space */}
+            <div className="flex-1 relative">
+              {/* IMAGE */}
+              {item.img && (
+                <div
+                  key={`img-${step}`}
+                  className="absolute overflow-hidden"
                   style={{
-                    strokeDasharray: SCRIBBLE_LEN,
-                    strokeDashoffset: SCRIBBLE_LEN,
-                    animation: "tlScribbleDraw 0.6s cubic-bezier(0.4,0,0.6,1) forwards",
+                    top: "50%",
+                    left: "-8px",
+                    transform: imgVisible
+                      ? "translateY(-50%) rotate(-5deg)"
+                      : "translateY(-50%) rotate(-5deg) translateX(-10px)",
+                    width: "110px",
+                    height: "150px",
+                    borderRadius: "20px",
+                    border: "5px solid #FFFFFF",
+                    boxShadow: "0 4px 16px rgba(0,0,0,0.13)",
+                    opacity: imgVisible ? 1 : 0,
+                    transition: "opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)",
+                    zIndex: 10,
                   }}
-                />
+                >
+                  <img
+                    src={item.img}
+                    alt={item.label}
+                    className="w-full h-full object-cover"
+                    onError={(e) => { e.currentTarget.style.display = "none"; }}
+                  />
+                </div>
               )}
 
-              {/* LINE: appears the instant scribble exits, draws itself left→right */}
-              {showLine && (
-                <path
-                  key={`line-${step}-${phase}`}
-                  d={linePath}
-                  fill="none"
-                  stroke="#2F2F2F"
-                  strokeWidth="1.3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{
-                    strokeDasharray: 520,
-                    strokeDashoffset: phase === "line" ? 520 : 0,
-                    animation: phase === "line"
-                      ? "tlDraw 0.45s cubic-bezier(0.22,1,0.36,1) forwards"
-                      : "none",
-                  }}
-                />
-              )}
-
-              {/* HEART: draws itself on the marriage step, centered on the line */}
-              {item.heart && showContent && (
-                <g key={`heart-${step}`}>
-                  {/* Heart drawn via path, animates in with stroke-dashoffset */}
+              {/* SVG LINE + DOT + HEART — centered vertically */}
+              <svg
+                className="absolute left-0 right-0 w-full h-[78px]"
+                viewBox="0 0 320 80"
+                preserveAspectRatio="none"
+                style={{ top: "50%", transform: "translateY(-50%)", overflow: "visible" }}
+              >
+                {phase === "scribble" && (
                   <path
-                    d="M 160 44 C 160 44 145 36 145 27 C 145 21 150 17 155 19 C 157 20 159 22 160 25 C 161 22 163 20 165 19 C 170 17 175 21 175 27 C 175 36 160 44 160 44 Z"
-                    fill="#2F2F2F"
-                    stroke="none"
+                    key="scribble"
+                    d={scribblePath}
+                    fill="none"
+                    stroke="#2F2F2F"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     style={{
-                      animation: "tlHeartPop 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards",
-                      opacity: 0,
-                      transform: "scale(0)",
-                      transformOrigin: "160px 30px",
-                      transformBox: "fill-box",
+                      strokeDasharray: SCRIBBLE_LEN,
+                      strokeDashoffset: SCRIBBLE_LEN,
+                      animation: "tlScribbleDraw 0.6s cubic-bezier(0.4,0,0.6,1) forwards",
                     }}
                   />
-                </g>
-              )}
+                )}
+                {showLine && (
+                  <path
+                    key={`line-${step}-${phase}`}
+                    d={linePath}
+                    fill="none"
+                    stroke="#2F2F2F"
+                    strokeWidth="1.3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    style={{
+                      strokeDasharray: 520,
+                      strokeDashoffset: phase === "line" ? 520 : 0,
+                      animation: phase === "line"
+                        ? "tlDraw 0.45s cubic-bezier(0.22,1,0.36,1) forwards"
+                        : "none",
+                    }}
+                  />
+                )}
+                {item.heart && showContent && (
+                  <g key={`heart-${step}`}>
+                    <path
+                      d="M 160 44 C 160 44 145 36 145 27 C 145 21 150 17 155 19 C 157 20 159 22 160 25 C 161 22 163 20 165 19 C 170 17 175 21 175 27 C 175 36 160 44 160 44 Z"
+                      fill="#2F2F2F"
+                      stroke="none"
+                      style={{
+                        animation: "tlHeartPop 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards",
+                        opacity: 0,
+                        transform: "scale(0)",
+                        transformOrigin: "160px 30px",
+                        transformBox: "fill-box",
+                      }}
+                    />
+                  </g>
+                )}
+                {showContent && !item.heart && (
+                  <circle
+                    key={`dot-${step}`}
+                    cx="160"
+                    cy="38"
+                    r="5"
+                    fill={item.isNow ? "#D96F45" : "white"}
+                    stroke={item.isNow ? "#D96F45" : "#2F2F2F"}
+                    strokeWidth="1.6"
+                    style={{
+                      animation: item.isNow
+                        ? "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both, tlNowGlow 1.8s ease-in-out 0.5s infinite"
+                        : "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both",
+                      filter: item.isNow ? "drop-shadow(0 0 5px rgba(217,111,69,0.8))" : "none",
+                    }}
+                  />
+                )}
+              </svg>
+            </div>
 
-              {/* DOT: slides in from right with content — circle for regular, glowing perfect circle for NOW */}
-              {showContent && !item.heart && (
-                <circle
-                  key={`dot-${step}`}
-                  cx="160"
-                  cy="38"
-                  r="5"
-                  fill={item.isNow ? "#D96F45" : "white"}
-                  stroke={item.isNow ? "#D96F45" : "#2F2F2F"}
-                  strokeWidth="1.6"
-                  style={{
-                    animation: item.isNow
-                      ? "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both, tlNowGlow 1.8s ease-in-out 0.5s infinite"
-                      : "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both",
-                    filter: item.isNow ? "drop-shadow(0 0 5px rgba(217,111,69,0.8))" : "none",
-                  }}
-                />
-              )}
-            </svg>
-
-            {/* CONTENT: slides in from right simultaneously with dot */}
+            {/* TEXT pinned at bottom */}
             <div
               key={`content-${step}`}
-              className="absolute bottom-0 left-0 right-0 px-6 pb-4 text-left"
+              className="px-6 pb-4 text-left shrink-0"
               style={{
                 opacity: showContent ? 1 : 0,
                 animation: showContent ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both" : "none",
@@ -750,36 +776,6 @@ function NavTile() {
                 {item.sub}
               </p>
             </div>
-
-            {/* IMAGE: left-center, partially cropped off the left edge, fades in after content lands */}
-            {item.img && (
-              <div
-                key={`img-${step}`}
-                className="absolute overflow-hidden"
-                style={{
-                  bottom: "74px",
-                  left: "-8px",
-                  transform: imgVisible
-                    ? "rotate(-5deg)"
-                    : "rotate(-5deg) translateX(-10px)",
-                  width: "110px",
-                  height: "150px",
-                  borderRadius: "20px",
-                  border: "5px solid #FFFFFF",
-                  boxShadow: "0 4px 16px rgba(0,0,0,0.13)",
-                  opacity: imgVisible ? 1 : 0,
-                  transition: "opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)",
-                  zIndex: 10,
-                }}
-              >
-                <img
-                  src={item.img}
-                  alt={item.label}
-                  className="w-full h-full object-cover"
-                  onError={(e) => { e.currentTarget.style.display = "none"; }}
-                />
-              </div>
-            )}
           </div>
         </>
       )}
@@ -936,11 +932,11 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   }
 
   const ctaText = (() => {
-    if (active === "how i get exec-buy in") return "walk me through the project →";
+    if (active === "how do you get exec buy-in") return "walk me through the project →";
     if (active === "product strategy thinking") return "show me the strategy work →";
-    if (active === "how i uncover user needs") return "show me the work →";
+    if (active === "how do you uncover user needs") return "show me the work →";
     if (active === "designing systems at scale") return "show me the system →";
-    if (active === "how i ship fast") return "what have you been building? →";
+    if (active === "how do you ship fast") return "what have you been building? →";
     if (active === "model design") return "see the project →";
     return "";
   })();
@@ -979,12 +975,12 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
           <div className="rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
             <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} instant={instantType} />
 
-            {active === "how i uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
+            {active === "how do you uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
 
             {showPills && active === "designing systems at scale" && <JourneyMapPreview />}
           </div>
 
-          {active === "how i uncover user needs" && showUserNeedsRest && (
+          {active === "how do you uncover user needs" && showUserNeedsRest && (
             <div className="mt-5 rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
               <p className={`whitespace-pre-line break-words text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
                 {USER_NEEDS_REST}
@@ -1133,7 +1129,7 @@ export default function PortfolioHome() {
       setShowThinking(false);
       setShowResponse(true);
       setShowPills(true);
-      setShowUserNeedsRest(active === "how i uncover user needs");
+      setShowUserNeedsRest(active === "how do you uncover user needs");
       return;
     }
 
@@ -1152,7 +1148,7 @@ export default function PortfolioHome() {
   }, [active]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleTypeDone = () => {
-    if (active === "how i uncover user needs") {
+    if (active === "how do you uncover user needs") {
       setShowUserNeedsRest(true);
     }
     setShowPills(true);
@@ -1207,7 +1203,7 @@ export default function PortfolioHome() {
       return;
     }
 
-    if (active === "how i uncover user needs") {
+    if (active === "how do you uncover user needs") {
       openWorkProject("b2c");
       return;
     }
@@ -1227,12 +1223,12 @@ export default function PortfolioHome() {
       return;
     }
 
-    if (active === "how i ship fast") {
+    if (active === "how do you ship fast") {
       window.open("https://travel-dna-kohl.vercel.app/", "_blank");
       return;
     }
 
-    if (active === "how i get exec-buy in") {
+    if (active === "how do you get exec buy-in") {
       openWorkProject("exec-pitch");
       return;
     }
