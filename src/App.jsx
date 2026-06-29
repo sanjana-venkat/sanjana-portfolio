@@ -692,20 +692,22 @@ function NavTile() {
               </p>
             </div>
 
-            {/* IMAGE: fades + slides up ~400ms after content lands. Only shown when imgVisible=true */}
+            {/* IMAGE: left-center, partially cropped off the left edge, fades in after content lands */}
             {item.img && (
               <div
                 key={`img-${step}`}
                 className="absolute overflow-hidden"
                 style={{
-                  bottom: "12px",
-                  right: "16px",
-                  width: "88px",
-                  height: "114px",
-                  borderRadius: "16px",
+                  top: "50%",
+                  left: "-22px",
+                  transform: imgVisible
+                    ? "translateY(-50%) rotate(-5deg)"
+                    : "translateY(-50%) rotate(-5deg) translateX(-10px)",
+                  width: "100px",
+                  height: "124px",
+                  borderRadius: "20px",
                   border: "5px solid #FFFFFF",
                   boxShadow: "0 4px 16px rgba(0,0,0,0.13)",
-                  transform: imgVisible ? "rotate(-4deg) translateY(0)" : "rotate(-4deg) translateY(14px)",
                   opacity: imgVisible ? 1 : 0,
                   transition: "opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)",
                   zIndex: 10,
