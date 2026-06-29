@@ -461,15 +461,14 @@ function HeroTile() {
           <div
             className="overflow-hidden"
             style={{
-              width: "220px",
+              width: "100%",
               height: "280px",
-              borderRadius: "22px",
-              border: "8px solid #FFFFFF",
-              boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1)",
-              transform: "rotate(3deg)",
+              borderRadius: "22px 22px 0 0",
+              border: "none",
+              boxShadow: "none",
             }}
           >
-            <img src="/profile.jpg" alt="Sanjana Venkat" className="w-full h-full object-cover object-center" />
+            <img src="/profile.jpg" alt="Sanjana Venkat" className="w-full h-full object-cover object-top" />
           </div>
         </div>
       </div>
@@ -540,15 +539,15 @@ const TIMELINE_ITEMS = [
 
 // SURGICAL CHANGE 2: Three line paths replacing the single straight line + removing dampened wave
 // Very wavy: big organic undulations (psychology era)
-const LINE_VERY_WAVY   = "M 95 38 C 108 22, 122 54, 138 38 C 154 22, 168 54, 184 38 C 200 22, 214 54, 230 38 C 246 22, 260 52, 278 40 C 288 34, 295 38, 300 38";
+const LINE_VERY_WAVY   = "M 0 38 C 18 22, 36 54, 54 38 C 72 22, 90 54, 108 38 C 126 22, 144 54, 162 38 C 180 22, 198 54, 216 38 C 234 22, 252 52, 270 38 C 285 28, 300 38, 320 38";
 // Slightly wavy: gentler undulations (transition — psychology meets design)
-const LINE_SLIGHTLY_WAVY = "M 95 38 C 112 30, 130 46, 150 38 C 170 30, 188 46, 208 38 C 228 31, 248 44, 268 38 C 282 34, 293 40, 300 38";
+const LINE_SLIGHTLY_WAVY = "M 0 38 C 22 30, 44 46, 68 38 C 92 30, 114 46, 138 38 C 162 30, 186 46, 210 38 C 234 31, 258 44, 282 38 C 298 34, 310 40, 320 38";
 // Straight: full design era
-const LINE_STRAIGHT    = "M 95 38 C 150 38, 220 38, 300 38";
+const LINE_STRAIGHT    = "M 0 38 C 80 38, 200 38, 320 38";
 
 // SURGICAL CHANGE 3: Idle scribble matches the screenshot — loopy knot trailing into a line
 // Scribble ends at ~x=95,y=38 so it flows naturally into LINE_VERY_WAVY which starts there
-const SCRIBBLE_PATH = "M 155 55 C 140 30, 115 18, 108 36 C 100 56, 120 74, 142 62 C 164 50, 166 26, 150 24 C 132 22, 116 44, 132 60 C 148 76, 170 68, 155 48 C 142 32, 128 30, 112 36 C 100 40, 95 38, 95 38";
+const SCRIBBLE_PATH = "M 155 55 C 140 30, 115 18, 108 36 C 100 56, 120 74, 142 62 C 164 50, 166 26, 150 24 C 132 22, 116 44, 132 60 C 148 76, 170 68, 155 48 C 142 32, 128 30, 112 36 C 100 40, 0 38, 0 38";
 const SCRIBBLE_LEN = 520;
 
 function NavTile() {
@@ -616,8 +615,8 @@ function NavTile() {
 
   return (
     <div
-      className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative select-none cursor-pointer lg:[min-height:280px] ${BODY}`}
-      style={{ minHeight: "460px" }}
+      className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative select-none cursor-pointer ${BODY}`}
+      style={{ minHeight: "280px" }}
       onMouseEnter={startAnimation}
       onMouseLeave={stopAnimation}
       onClick={startAnimation}
@@ -781,21 +780,21 @@ function NavTile() {
                 <div
                   key={`img-mobile-${step}`}
                   style={{
-                    width: "140px",
-                    height: "180px",
+                    width: "100%",
+                    height: "160px",
                     borderRadius: "18px",
                     border: "5px solid #FFFFFF",
                     boxShadow: "0 4px 16px rgba(0,0,0,0.13)",
                     overflow: "hidden",
                     opacity: imgVisible ? 1 : 0,
-                    transform: imgVisible ? "rotate(-3deg) translateY(0px)" : "rotate(-3deg) translateY(8px)",
+                    transform: imgVisible ? "translateY(0px)" : "translateY(8px)",
                     transition: "opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)",
                   }}
                 >
                   <img
                     src={item.img}
                     alt={item.label}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-top"
                     onError={(e) => { e.currentTarget.style.display = "none"; }}
                   />
                 </div>
@@ -805,7 +804,7 @@ function NavTile() {
             {/* SURGICAL CHANGE 8: content only animates on phase==="content", not on "hold" (stops re-sliding) */}
             <div
               key={`content-${step}`}
-              className="px-6 pb-4 text-left shrink-0"
+              className="px-6 pb-4 text-left lg:text-left text-center shrink-0"
               style={{
                 opacity: showContent ? 1 : 0,
                 animation: phase === "content"
@@ -813,7 +812,7 @@ function NavTile() {
                   : "none",
               }}
             >
-              <div className="flex items-baseline gap-2 whitespace-nowrap">
+              <div className="flex items-baseline gap-2 whitespace-nowrap lg:justify-start justify-center">
                 <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
                   {item.year}
                 </span>
@@ -1446,7 +1445,9 @@ export default function PortfolioHome() {
         {/* ── MOBILE stack ── */}
         <div className="flex flex-col gap-4 lg:hidden">
           <HeroTile />
-          <NavTile />
+          <div style={{ minHeight: "460px" }}>
+            <NavTile />
+          </div>
           <WhatIBelieveTile />
 
           <MyWorkTile
