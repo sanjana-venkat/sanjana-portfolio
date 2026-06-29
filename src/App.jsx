@@ -1040,7 +1040,6 @@ export default function PortfolioHome() {
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
   const [instantType, setInstantType] = useState(true);
   const [workProjectSlug, setWorkProjectSlug] = useState("b2c");
-  const [instantType, setInstantType] = useState(true);
 
   useEffect(() => {
     const faviconPath = "/logo.jpg";
