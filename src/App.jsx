@@ -519,34 +519,35 @@ function WhatIBelieveTile() {
 
 /* ─── BENTO TILE: Animated Timeline ─── */
 
+// SURGICAL CHANGE 1: Added lineStyle per item — "very-wavy" | "slightly-wavy" | "straight"
+// and orange flag for post-Chetna items. Removed the two wave:true dampened oscillation items.
 const TIMELINE_ITEMS = [
-  { year: "2000s",     label: "Childhood in India",     sub: "Grew up close to my roots, culture, and community",   heart: false, isNow: false, img: "/Childhood.jpg" },
-  { year: "2014",      label: "Moved to the States",    sub: "A big leap — new country, new world",                 heart: false, isNow: false, img: "/2014.jpg"   },
-  { year: "2018",      label: "Future teacher",         sub: "Wanted to teach, then found counseling psychology",   heart: false, isNow: false, img: "/2018.png"   },
-  { year: "2020",      label: "Psychology major, UTD",  sub: "Studied how people think, feel, and make decisions",  heart: false, isNow: false, img: "/2020.jpg"   },
-  { year: "2021",      label: "Chetna · Graphic Design", sub: "Raised $10K+ for South Asian mental health",         heart: false, isNow: false, img: "/2021.jpg"   },
-  { year: "",          label: "",                       sub: "",                                                    heart: false, isNow: false, img: null,          wave: true },
-  { year: "2022",      label: "Dialexa",                sub: "Dabbled into design — built an AR concept for DTour", heart: false, isNow: false, img: "/2022.jpg"   },
-  { year: "2022",      label: "VP, UX Club",            sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: "/2022-1.jpg" },
-  { year: "2023",      label: "Paycom",                 sub: "Associate Product Designer, B2B enterprise subteam",  heart: false, isNow: false, img: "/2023.jpg"   },
-  { year: "2024",      label: "JPMC · Senior PD",       sub: "Owned apply flow, HELOC 0-to-1 and AI initiatives",  heart: false, isNow: false, img: "/2024.jpg"   },
-  { year: "2025",      label: "JP Morgan Chase",        sub: "Led Marketing + AI and exec-facing Gemini concepts", heart: false, isNow: false, img: "/2025.jpg"   },
-  { year: "2026",      label: "Married · Bay Area",     sub: "Moved to the Bay Area for a new chapter",            heart: true,  isNow: false, img: "/2026.png"   },
-  { year: "",          label: "",                       sub: "",                                                    heart: false, isNow: false, img: null,          wave: true },
-  { year: "NOW",       label: "Design Engineer",        sub: "Building polished AI product ideas fast",            heart: false, isNow: true,  img: null          },
+  { year: "2000s", label: "Childhood in India",      sub: "Grew up close to my roots, culture, and community",     heart: false, isNow: false, img: "/Childhood.jpg", lineStyle: "very-wavy",     orange: false },
+  { year: "2014",  label: "Moved to the States",     sub: "A big leap — new country, new world",                   heart: false, isNow: false, img: "/2014.jpg",      lineStyle: "very-wavy",     orange: false },
+  { year: "2018",  label: "Future teacher",          sub: "Wanted to teach, then found counseling psychology",     heart: false, isNow: false, img: "/2018.png",      lineStyle: "very-wavy",     orange: false },
+  { year: "2020",  label: "Psychology major, UTD",   sub: "Studied how people think, feel, and make decisions",    heart: false, isNow: false, img: "/2020.jpg",      lineStyle: "slightly-wavy", orange: false },
+  { year: "2021",  label: "Chetna · Graphic Design", sub: "Raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
+  // After Chetna: lines go straight and orange
+  { year: "2022",  label: "Dialexa",                 sub: "Dabbled into design — built an AR concept for DTour",   heart: false, isNow: false, img: "/2022.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2022",  label: "VP, UX Club",             sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true  },
+  { year: "2023",  label: "Paycom",                  sub: "Associate Product Designer, B2B enterprise subteam",    heart: false, isNow: false, img: "/2023.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2024",  label: "JPMC · Senior PD",        sub: "Owned apply flow, HELOC 0-to-1 and AI initiatives",    heart: false, isNow: false, img: "/2024.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2025",  label: "JP Morgan Chase",         sub: "Led Marketing + AI and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2026",  label: "Married · Bay Area",      sub: "Moved to the Bay Area for a new chapter",              heart: true,  isNow: false, img: "/2026.png",      lineStyle: "straight",      orange: true  },
+  { year: "NOW",   label: "Design Engineer",         sub: "Building polished AI product ideas fast",              heart: false, isNow: true,  img: null,             lineStyle: "straight",      orange: true  },
 ];
 
-/* Idle background scribbles — three overlapping wavy paths */
-const IDLE_SCRIBBLES = [
-  `M 20,55 C 40,30 60,75 85,50 C 110,25 130,70 155,48 C 180,26 200,68 225,46 C 250,24 265,58 285,42`,
-  `M 15,62 C 38,38 58,78 80,54 C 102,30 125,72 148,50 C 171,28 192,66 215,48 C 238,30 258,62 278,50`,
-  `M 25,48 C 48,26 68,70 92,46 C 116,22 138,66 162,44 C 186,22 206,64 230,44 C 254,24 270,56 290,40`,
-];
+// SURGICAL CHANGE 2: Three line paths replacing the single straight line + removing dampened wave
+// Very wavy: big organic undulations (psychology era)
+const LINE_VERY_WAVY   = "M 95 38 C 108 22, 122 54, 138 38 C 154 22, 168 54, 184 38 C 200 22, 214 54, 230 38 C 246 22, 260 52, 278 40 C 288 34, 295 38, 300 38";
+// Slightly wavy: gentler undulations (transition — psychology meets design)
+const LINE_SLIGHTLY_WAVY = "M 95 38 C 112 30, 130 46, 150 38 C 170 30, 188 46, 208 38 C 228 31, 248 44, 268 38 C 282 34, 293 40, 300 38";
+// Straight: full design era
+const LINE_STRAIGHT    = "M 95 38 C 150 38, 220 38, 300 38";
 
-// CHANGE 2: Full NavTile replacement — scribble draws in, hard-swaps to line, dot+text+image slide in
-const SCRIBBLE_PATH = "M 95 38 C 78 20, 58 26, 72 44 C 88 66, 122 24, 101 18 C 76 12, 58 56, 91 58 C 130 60, 145 28, 118 30 C 95 32, 98 51, 132 44 C 178 34, 231 38, 295 38";
+// SURGICAL CHANGE 3: Idle scribble matches the screenshot — loopy knot trailing into a line
+const SCRIBBLE_PATH = "M 160 55 C 145 30, 120 18, 112 36 C 104 56, 124 74, 146 62 C 168 50, 170 26, 154 24 C 136 22, 120 44, 136 60 C 152 76, 174 68, 180 50 C 188 30, 176 20, 165 28 C 188 40, 225 42, 275 40 C 288 40, 298 40, 308 40";
 const SCRIBBLE_LEN = 600;
-const LINE_LEN = 275;
 
 function NavTile() {
   const [active, setActive]         = useState(false);
@@ -567,7 +568,6 @@ function NavTile() {
     const hold = item.isNow ? 3600 : item.heart ? 2800 : 2200;
 
     if (isFirst) {
-      // Step 0 only: scribble draws (600ms) → hard-swap to line (450ms) → content+dot slide in → image fades in
       setPhase("scribble");
       push(() => setPhase("line"),    600);
       push(() => setPhase("content"), 1050);
@@ -575,7 +575,6 @@ function NavTile() {
       push(() => setPhase("hold"),    1350);
       push(() => runStep(1, false),   1350 + hold);
     } else {
-      // Steps 1+: line redraws, content+dot slide in, then image
       setPhase("line");
       push(() => setPhase("content"), 450);
       push(() => setImgVisible(true), 850);
@@ -601,13 +600,17 @@ function NavTile() {
   useEffect(() => () => clearAll(), []);
 
   const item        = TIMELINE_ITEMS[step];
-  const isWave      = !!item.wave;
-  const showLine    = !isWave && (phase === "line" || phase === "content" || phase === "hold");
-  const showContent = !isWave && (phase === "content" || phase === "hold");
 
-  const scribblePath = SCRIBBLE_PATH;
-  const linePath = "M 95 38 C 150 38, 220 38, 300 38";
-  const heartLinePath = "M 95 38 C 150 38, 220 38, 300 38";
+  // SURGICAL CHANGE 4: pick line path and stroke color per item
+  const linePath    = item.lineStyle === "very-wavy"
+    ? LINE_VERY_WAVY
+    : item.lineStyle === "slightly-wavy"
+    ? LINE_SLIGHTLY_WAVY
+    : LINE_STRAIGHT;
+  const strokeColor = item.orange ? "#A5522A" : "#2F2F2F";
+
+  const showLine    = phase === "line" || phase === "content" || phase === "hold";
+  const showContent = phase === "content" || phase === "hold";
 
   return (
     <div
@@ -624,9 +627,10 @@ function NavTile() {
             my story
           </p>
           <div className="flex-1 relative overflow-hidden">
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 120" preserveAspectRatio="none">
+            {/* SURGICAL CHANGE 5: idle scribble uses the new loopy path */}
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet">
               <path
-                d={scribblePath}
+                d={SCRIBBLE_PATH}
                 fill="none"
                 stroke="#D4CBC6"
                 strokeWidth="1.4"
@@ -652,7 +656,7 @@ function NavTile() {
             {/* CENTER BLOCK: image + line, vertically centered in available space */}
             <div className="flex-1 relative">
               {/* IMAGE */}
-              {item.img && !isWave && (
+              {item.img && (
                 <div
                   key={`img-${step}`}
                   className="absolute overflow-hidden"
@@ -681,7 +685,7 @@ function NavTile() {
                 </div>
               )}
 
-              {/* SVG LINE + DOT + HEART — centered vertically */}
+              {/* SVG LINE + OVAL + HEART — centered vertically */}
               <svg
                 className="absolute left-0 right-0 w-full h-[78px]"
                 viewBox="0 0 320 80"
@@ -691,7 +695,7 @@ function NavTile() {
                 {phase === "scribble" && (
                   <path
                     key="scribble"
-                    d={scribblePath}
+                    d={SCRIBBLE_PATH}
                     fill="none"
                     stroke="#2F2F2F"
                     strokeWidth="1.4"
@@ -704,12 +708,14 @@ function NavTile() {
                     }}
                   />
                 )}
-                {showLine && (
+
+                {/* SURGICAL CHANGE 6: use linePath (wavy or straight) and strokeColor (orange or dark) */}
+                {showLine && phase !== "scribble" && (
                   <path
                     key={`line-${step}-${phase}`}
                     d={linePath}
                     fill="none"
-                    stroke="#2F2F2F"
+                    stroke={strokeColor}
                     strokeWidth="1.3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -722,11 +728,12 @@ function NavTile() {
                     }}
                   />
                 )}
+
                 {item.heart && showContent && (
                   <g key={`heart-${step}`}>
                     <path
                       d="M 160 44 C 160 44 145 36 145 27 C 145 21 150 17 155 19 C 157 20 159 22 160 25 C 161 22 163 20 165 19 C 170 17 175 21 175 27 C 175 36 160 44 160 44 Z"
-                      fill="#2F2F2F"
+                      fill={strokeColor}
                       stroke="none"
                       style={{
                         animation: "tlHeartPop 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards",
@@ -738,59 +745,42 @@ function NavTile() {
                     />
                   </g>
                 )}
+
+                {/* SURGICAL CHANGE 7: oval instead of circle, animate only on phase==="content" not "hold" */}
                 {showContent && !item.heart && (
-                  <circle
+                  <ellipse
                     key={`dot-${step}`}
                     cx="160"
                     cy="38"
-                    r="5"
+                    rx="9"
+                    ry="5.5"
                     fill={item.isNow ? "#D96F45" : "white"}
-                    stroke={item.isNow ? "#D96F45" : "#2F2F2F"}
+                    stroke={item.isNow ? "#D96F45" : strokeColor}
                     strokeWidth="1.6"
                     style={{
-                      animation: item.isNow
-                        ? "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both, tlNowGlow 1.8s ease-in-out 0.5s infinite"
-                        : "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both",
+                      animation: phase === "content"
+                        ? item.isNow
+                          ? "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both, tlNowGlow 1.8s ease-in-out 0.5s infinite"
+                          : "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both"
+                        : item.isNow
+                          ? "tlNowGlow 1.8s ease-in-out 0.5s infinite"
+                          : "none",
                       filter: item.isNow ? "drop-shadow(0 0 5px rgba(217,111,69,0.8))" : "none",
                     }}
                   />
                 )}
               </svg>
-
-              {/* WAVE: dampened oscillation on transition steps (after Chetna, after Marriage) */}
-              {isWave && (
-                <svg
-                  className="absolute left-0 right-0 w-full"
-                  style={{ top: "50%", transform: "translateY(-50%)", height: "60px", overflow: "visible" }}
-                  viewBox="0 0 320 60"
-                  preserveAspectRatio="none"
-                >
-                  <path
-                    key={`wave-${step}-${phase}`}
-                    d="M 10 30 C 30 5, 55 55, 80 30 C 105 5, 125 45, 145 30 C 160 18, 170 40, 183 30 C 191 23, 196 36, 203 30 C 207 27, 210 33, 213 30 C 215 28, 217 31, 219 30 L 310 30"
-                    fill="none"
-                    stroke="#2F2F2F"
-                    strokeWidth="1.3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{
-                      strokeDasharray: 520,
-                      strokeDashoffset: phase === "line" ? 520 : 0,
-                      animation: phase === "line"
-                        ? "tlDraw 1s cubic-bezier(0.4,0,0.2,1) forwards"
-                        : "none",
-                    }}
-                  />
-                </svg>
-              )}
             </div>
-            {!isWave && (
+
+            {/* SURGICAL CHANGE 8: content only animates on phase==="content", not on "hold" (stops re-sliding) */}
             <div
               key={`content-${step}`}
               className="px-6 pb-4 text-left shrink-0"
               style={{
                 opacity: showContent ? 1 : 0,
-                animation: showContent ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both" : "none",
+                animation: phase === "content"
+                  ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both"
+                  : "none",
               }}
             >
               <div className="flex items-baseline gap-2 whitespace-nowrap">
@@ -805,7 +795,6 @@ function NavTile() {
                 {item.sub}
               </p>
             </div>
-            )}
           </div>
         </>
       )}
@@ -826,6 +815,14 @@ function NavTile() {
         @keyframes timelineDotSlide {
           from { opacity: 0; transform: translateX(120px); }
           to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes tlHeartPop {
+          from { opacity: 0; transform: scale(0); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes tlNowGlow {
+          0%,100% { filter: drop-shadow(0 0 3px rgba(217,111,69,0.5)); }
+          50%      { filter: drop-shadow(0 0 8px rgba(217,111,69,0.9)); }
         }
       `}</style>
     </div>
@@ -1112,7 +1109,6 @@ export default function PortfolioHome() {
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
   const [instantType, setInstantType] = useState(true);
   const [workProjectSlug, setWorkProjectSlug] = useState("b2c");
-  // CHANGE 3: track whether first load has happened
   const isFirstLoad = useRef(true);
 
   useEffect(() => {
@@ -1151,7 +1147,6 @@ export default function PortfolioHome() {
     }
   }, []);
 
-  // CHANGE 3: First load = instant text, no thinking animation. Subsequent pill clicks = full animation.
   useEffect(() => {
     if (isFirstLoad.current) {
       isFirstLoad.current = false;
