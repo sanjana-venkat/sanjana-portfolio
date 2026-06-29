@@ -51,7 +51,7 @@ We were missing a huge part of the market.
 
 That one artifact:
 • Secured $10K+ in investment
-• Got the 3rd highest Home Lending business case
+• Got the 3rd Home Lending business case
 • Aligned leadership around the redesign
 
 Then through exit surveys, heat maps, and extensive A/B testing, we defined a need-based segmentation strategy.`,
@@ -524,7 +524,7 @@ const TIMELINE_ITEMS = [
   { year: "2000s", label: "Childhood in India",      sub: "Grew up close to my roots, culture, and community",     heart: false, isNow: false, img: "/Childhood.jpg", lineStyle: "very-wavy",     orange: false },
   { year: "2014",  label: "Moved to the States",     sub: "A big leap, new country, new world",                   heart: false, isNow: false, img: "/2014.jpg",      lineStyle: "very-wavy",     orange: false },
   { year: "2018",  label: "Future teacher",          sub: "Wanted to teach, loved reading and learning",     heart: false, isNow: false, img: "/2018.png",      lineStyle: "very-wavy",     orange: false },
-  { year: "2019",  label: "Best Presenter Award",    sub: "Publication on temple architecture, college conference",  heart: false, isNow: false, img: "/2019.png",      lineStyle: "very-wavy",     orange: false },
+  { year: "2019",  label: "Best Presenter Award",    sub: "First publication on temple architecture",  heart: false, isNow: false, img: "/2019.png",      lineStyle: "very-wavy",     orange: false },
   { year: "2020",  label: "Psychology major, UTD",   sub: "Studied how people think, feel, and make decisions",    heart: false, isNow: false, img: "/2020.jpg",      lineStyle: "slightly-wavy", orange: false },
   { year: "2021",  label: "Chetna · Graphic Design", sub: "Dabbled into design, raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
   // After Chetna: lines go straight and orange
