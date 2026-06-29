@@ -39,7 +39,7 @@ const PILLS = [
   "designing systems at scale",
   "tell me your story",
   "how i get exec-buy in",
-  "model design",
+  "pitch me as a motion designer",
 ];
 
 const CONTENT = {
@@ -424,7 +424,7 @@ function HeroTile() {
       </h1>
       {/* Tagline */}
       <p className="mt-2 text-[16px] leading-[1.5]" style={{ color: "#57423A" }}>
-        I turn ambiguity into direction. Deeply understanding how people think, both users and stakeholders. 
+        Product designer. Motion thinker. I turn ambiguity into direction.
       </p>
 
       {/* Profile pic — bottom-right, tilted 9.83deg, white border, bottom clips at tile edge */}
@@ -461,11 +461,17 @@ function WhatIBelieveTile() {
           what i believe in
         </p>
 
+        <p className="leading-[1.65] text-[#5F5149]">
+          i believe good products don't just solve problems. they reveal ones people didn't know they had.
+        </p>
 
         <p className="mt-4 leading-[1.65] text-[#5F5149]">
-          I majored in psychology because I love thinking about how people think. and that curiosity never left, it just found a new home in product design. Everything I did in product design was to get closer to user needs and intent whether its getting into data analytics, conducting user research, or recently model design to classify, filter and map responses. With good design, i want to meet users where they are and also take them where they want to be. 
+          i majored in psychology because i love thinking about how people think. that curiosity never left — it just found a new home in product design.
         </p>
-        
+
+        <p className="mt-4 leading-[1.65] text-[#5F5149]">
+          with AI and personalization, that gap gets smaller. But the real work is still human: listening, framing, building things that help people move forward.
+        </p>
       </div>
 
       <div className="mt-6 flex items-center justify-between">
@@ -576,7 +582,7 @@ function NavTile() {
 
   const scribblePath = SCRIBBLE_PATH;
   const linePath = "M 95 38 C 150 38, 220 38, 300 38";
-  const heartLinePath = "M 95 38 C 125 38 132 38 140 38 C 140 29 149 25 156 33 C 163 25 172 29 172 38 C 172 50 156 58 156 58 C 156 58 140 50 140 38 C 178 38 235 38 300 38";
+  const heartLinePath = "M 95 38 C 150 38, 220 38, 300 38";
 
   return (
     <div
@@ -646,10 +652,10 @@ function NavTile() {
               {showLine && (
                 <path
                   key={`line-${step}-${phase}`}
-                  d={item.heart && showContent ? heartLinePath : linePath}
+                  d={linePath}
                   fill="none"
-                  stroke={item.heart && showContent ? "#D96F45" : "#2F2F2F"}
-                  strokeWidth={item.heart && showContent ? "1.7" : "1.3"}
+                  stroke="#2F2F2F"
+                  strokeWidth="1.3"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   style={{
@@ -657,27 +663,45 @@ function NavTile() {
                     strokeDashoffset: phase === "line" ? 520 : 0,
                     animation: phase === "line"
                       ? "tlDraw 0.45s cubic-bezier(0.22,1,0.36,1) forwards"
-                      : item.heart && showContent
-                      ? "tlDraw 0.52s cubic-bezier(0.22,1,0.36,1) forwards"
                       : "none",
-                    transition: "d 0.42s cubic-bezier(0.22,1,0.36,1), stroke 0.25s ease",
                   }}
                 />
               )}
 
-              {/* DOT: slides in from right with content */}
+              {/* HEART: draws itself on the marriage step, centered on the line */}
+              {item.heart && showContent && (
+                <g key={`heart-${step}`}>
+                  {/* Heart drawn via path, animates in with stroke-dashoffset */}
+                  <path
+                    d="M 160 44 C 160 44 145 36 145 27 C 145 21 150 17 155 19 C 157 20 159 22 160 25 C 161 22 163 20 165 19 C 170 17 175 21 175 27 C 175 36 160 44 160 44 Z"
+                    fill="#D96F45"
+                    stroke="none"
+                    style={{
+                      animation: "tlHeartPop 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards",
+                      opacity: 0,
+                      transform: "scale(0)",
+                      transformOrigin: "160px 30px",
+                      transformBox: "fill-box",
+                    }}
+                  />
+                </g>
+              )}
+
+              {/* DOT: slides in from right with content — circle for regular, glowing perfect circle for NOW */}
               {showContent && !item.heart && (
                 <circle
                   key={`dot-${step}`}
                   cx="160"
                   cy="38"
-                  r={item.isNow ? "5" : "4"}
+                  r="5"
                   fill={item.isNow ? "#D96F45" : "white"}
                   stroke={item.isNow ? "#D96F45" : "#2F2F2F"}
                   strokeWidth="1.6"
                   style={{
-                    animation: "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both",
-                    filter: item.isNow ? "drop-shadow(0 0 6px rgba(217,111,69,0.55))" : "none",
+                    animation: item.isNow
+                      ? "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both, tlNowGlow 1.8s ease-in-out 0.5s infinite"
+                      : "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both",
+                    filter: item.isNow ? "drop-shadow(0 0 5px rgba(217,111,69,0.8))" : "none",
                   }}
                 />
               )}
