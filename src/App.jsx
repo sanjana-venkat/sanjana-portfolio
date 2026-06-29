@@ -423,7 +423,7 @@ function HeroTile() {
         Sanjana Venkat
       </h1>
       {/* Tagline */}
-      <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "14px" }}>
+      <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
         I turn ambiguity into direction. Deeply understanding how people think.
       </p>
 
@@ -495,7 +495,7 @@ function WhatIBelieveTile() {
 /* ─── BENTO TILE: Animated Timeline ─── */
 
 const TIMELINE_ITEMS = [
-  { year: "childhood", label: "Born in India",          sub: "Grew up close to my roots, culture, and community",   heart: false, isNow: false, img: "/Childhood.jpg" },
+  { year: "2000s",     label: "Childhood in India",     sub: "Grew up close to my roots, culture, and community",   heart: false, isNow: false, img: "/Childhood.jpg" },
   { year: "2014",      label: "Moved to the States",    sub: "A big leap — new country, new world",                 heart: false, isNow: false, img: "/2014.jpg"   },
   { year: "2018",      label: "Future teacher",         sub: "Wanted to teach, then found counseling psychology",   heart: false, isNow: false, img: "/2018.png"   },
   { year: "2020",      label: "Psychology major, UTD",  sub: "Studied how people think, feel, and make decisions",  heart: false, isNow: false, img: "/2020.jpg"   },
@@ -622,7 +622,7 @@ function NavTile() {
 
           <div className="relative flex-1 overflow-hidden">
             <svg
-              className="absolute left-0 right-0 top-[42px] w-full h-[78px]"
+              className="absolute left-0 right-0 top-[18px] w-full h-[78px]"
               viewBox="0 0 320 80"
               preserveAspectRatio="none"
               style={{ overflow: "visible" }}
@@ -707,7 +707,7 @@ function NavTile() {
             {/* CONTENT: slides in from right simultaneously with dot */}
             <div
               key={`content-${step}`}
-              className="absolute bottom-0 left-0 right-0 px-6 pb-5 text-left"
+              className="absolute bottom-0 left-0 right-0 px-6 pb-4 text-left"
               style={{
                 opacity: showContent ? 1 : 0,
                 animation: showContent ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both" : "none",
@@ -732,13 +732,13 @@ function NavTile() {
                 key={`img-${step}`}
                 className="absolute overflow-hidden"
                 style={{
-                  top: "8px",
+                  top: "4px",
                   left: "-8px",
                   transform: imgVisible
                     ? "rotate(-5deg)"
                     : "rotate(-5deg) translateX(-10px)",
-                  width: "100px",
-                  height: "124px",
+                  width: "110px",
+                  height: "150px",
                   borderRadius: "20px",
                   border: "5px solid #FFFFFF",
                   boxShadow: "0 4px 16px rgba(0,0,0,0.13)",
@@ -1287,7 +1287,7 @@ export default function PortfolioHome() {
           <div
             ref={chatCardRef}
             className="rounded-[32px] bg-white overflow-hidden flex flex-col relative"
-            style={{ gridColumn: "1", gridRow: "1 / 3", height: "520px" }}
+            style={{ gridColumn: "1", gridRow: "1 / 3", height: "620px" }}
           >
             <div className="px-6 pt-6 pb-3 shrink-0">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
