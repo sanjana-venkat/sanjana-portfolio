@@ -51,7 +51,7 @@ We were missing a huge part of the market.
 
 That one artifact:
 • Secured $10K+ in investment
-• Got the 3rd highest Home Lending business case
+• Got the 3rd Home Lending business case
 • Aligned leadership around the redesign
 
 Then through exit surveys, heat maps, and extensive A/B testing, we defined a need-based segmentation strategy.`,
@@ -421,7 +421,7 @@ function HeroTile() {
           Sanjana Venkat
         </h1>
         <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          I turn ambiguity into direction. Deeply understanding how people think.
+          I turn ambiguity into direction. Let me show you.
         </p>
         <div
           className="absolute overflow-hidden"
@@ -486,7 +486,7 @@ function WhatIBelieveTile() {
         </p>
 
         <p className="leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
-          I majored in psychology because I love thinking about how people think. And that curiosity never left, it just found a new home in product design.
+          I study psychology because I love thinking about how people think. And that curiosity never left, it just found a new home in product design.
         </p>
 
         <p className="mt-3 leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
@@ -523,16 +523,16 @@ function WhatIBelieveTile() {
 const TIMELINE_ITEMS = [
   { year: "2000s", label: "Childhood in India",      sub: "Grew up close to my roots, culture, and community",     heart: false, isNow: false, img: "/Childhood.jpg", lineStyle: "very-wavy",     orange: false },
   { year: "2014",  label: "Moved to the States",     sub: "A big leap, new country, new world",                   heart: false, isNow: false, img: "/2014.jpg",      lineStyle: "very-wavy",     orange: false },
-  { year: "2018",  label: "Future teacher",          sub: "Wanted to teach, then found counseling psychology",     heart: false, isNow: false, img: "/2018.png",      lineStyle: "very-wavy",     orange: false },
-  { year: "2019",  label: "Best Presenter Award",    sub: "Publication on temple architecture, college conference",  heart: false, isNow: false, img: "/2019.png",      lineStyle: "very-wavy",     orange: false },
-  { year: "2020",  label: "Psychology major, UTD",   sub: "Studied how people think, feel, and make decisions",    heart: false, isNow: false, img: "/2020.jpg",      lineStyle: "slightly-wavy", orange: false },
-  { year: "2021",  label: "Chetna · Graphic Design", sub: "Raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
+  { year: "2018",  label: "Future teacher",          sub: "Wanted to teach, loved reading and learning",     heart: false, isNow: false, img: "/2018.png",      lineStyle: "very-wavy",     orange: false },
+  { year: "2019",  label: "Best Presenter Award",    sub: "First publication on temple architecture",  heart: false, isNow: false, img: "/2019.png",      lineStyle: "very-wavy",     orange: false },
+  { year: "2020",  label: "UTD, Psychology & Design",   sub: "Studied how people think, feel, and make decisions",    heart: false, isNow: false, img: "/2020.jpg",      lineStyle: "slightly-wavy", orange: false },
+  { year: "2021",  label: "Chetna · Graphic Design", sub: "Dabbled into design, raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
   // After Chetna: lines go straight and orange
-  { year: "2022",  label: "Dialexa",                 sub: "Dabbled into design, built an AR concept for DTour",   heart: false, isNow: false, img: "/2022.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2022",  label: "VP, UX Club",             sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true  },
-  { year: "2023",  label: "Paycom",                  sub: "Associate Product Designer, B2B enterprise subteam",    heart: false, isNow: false, img: "/2023.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2024",  label: "JPMC · Senior PD",        sub: "Owned apply flow, HELOC 0-to-1 and AI initiatives",    heart: false, isNow: false, img: "/2024.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2025",  label: "JPMC AI Lead",         sub: "Led Marketing + AI and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2022",  label: "Dialexa",                 sub: "Built an AR travel concept for with Dialexa, DTour",   heart: false, isNow: false, img: "/2022.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2022",  label: "UX Club · VP",             sub: "Organized design events with Paycom, Bottle Rocket & Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true  },
+  { year: "2023",  label: "Paycom · Associate Product Designer", sub: "B2B enterprise subteam, design system focus",    heart: false, isNow: false, img: "/2023.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2024",  label: "JPMC · Senior PD",        sub: "Owned apply flow and HELOC 0-to-1",    heart: false, isNow: false, img: "/2024.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2025",  label: "JPMC · Lead",         sub: "Led AI & Marketing and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true  },
   { year: "2026",  label: "Married · Bay Area",      sub: "Moved to the Bay Area for a new chapter",              heart: true,  isNow: false, img: "/2026.png",      lineStyle: "straight",      orange: true  },
   { year: "NOW",   label: "Design Engineer",         sub: "Building polished AI product ideas fast",              heart: false, isNow: true,  img: "/2026.jpg",      lineStyle: "straight",      orange: true  },
 ];
@@ -620,8 +620,8 @@ function NavTile() {
 
   return (
     <div
-      className={`rounded-[32px] bg-white flex flex-col overflow-hidden relative select-none cursor-pointer ${BODY}`}
-      style={{ height: "100%", minHeight: "280px" }}
+      className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative select-none cursor-pointer ${BODY}`}
+      style={{ minHeight: "280px" }}
       onMouseEnter={startAnimation}
       onMouseLeave={stopAnimation}
       onClick={startAnimation}
@@ -860,34 +860,34 @@ function NavTile() {
                   )}
                 </svg>
               </div>
-              {/* Mobile image — flush to bottom, cropped from bottom, rounded top corners */}
+              {/* Mobile image, below line, full width, no tilt */}
               {item.img && (
                 <div
                   key={`img-mobile-${step}`}
-                  className="mt-3 flex-1"
+                  className="mx-4 mt-3"
                   style={{
-                    borderRadius: "20px 20px 0 0",
+                    height: "200px",
+                    borderRadius: "16px",
                     overflow: "hidden",
                     opacity: imgVisible ? 1 : 0,
-                    transform: imgVisible ? "translateY(0px)" : "translateY(10px)",
+                    transform: imgVisible ? "translateY(0px)" : "translateY(8px)",
                     transition: "opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)",
-                    minHeight: "220px",
                   }}
                 >
                   <img
                     src={item.img}
                     alt={item.label}
-                    className="w-full h-full object-cover object-bottom"
+                    className="w-full h-full object-cover object-top"
                     onError={(e) => { e.currentTarget.style.display = "none"; }}
                   />
                 </div>
               )}
             </div>
 
-            {/* Content: year large, label on next line, sub below — desktop slides in, mobile centered */}
+            {/* SURGICAL CHANGE 8: content only animates on phase==="content", not on "hold" (stops re-sliding) */}
             <div
               key={`content-${step}`}
-              className="px-6 pb-5 shrink-0 lg:text-left text-center"
+              className="px-6 pb-4 text-left lg:text-left text-center shrink-0"
               style={{
                 opacity: showContent ? 1 : 0,
                 animation: phase === "content"
@@ -895,8 +895,7 @@ function NavTile() {
                   : "none",
               }}
             >
-              {/* Desktop: year + label inline */}
-              <div className="hidden lg:flex items-baseline gap-2 whitespace-nowrap">
+              <div className="flex items-baseline gap-2 whitespace-nowrap lg:justify-start justify-center">
                 <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
                   {item.year}
                 </span>
@@ -904,16 +903,7 @@ function NavTile() {
                   {item.label}
                 </span>
               </div>
-              {/* Mobile: year large, label on its own line below */}
-              <div className="lg:hidden text-center">
-                <div className={`text-[28px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
-                  {item.year}
-                </div>
-                <div className={`text-[14px] font-semibold text-[#9A8176] mt-0.5 ${HEADING}`}>
-                  {item.label}
-                </div>
-              </div>
-              <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149] lg:whitespace-nowrap lg:text-left text-center">
+              <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149] whitespace-nowrap lg:text-left text-center">
                 {item.sub}
               </p>
             </div>
@@ -1456,7 +1446,7 @@ export default function PortfolioHome() {
           <div
             ref={chatCardRef}
             className="rounded-[32px] bg-white overflow-hidden flex flex-col relative"
-            style={{ gridColumn: "1", gridRow: "1 / 3", height: "clamp(520px, 70vh, 800px)" }}
+            style={{ gridColumn: "1", gridRow: "1 / 3", height: "560px" }}
           >
             <div className="px-6 pt-6 pb-3 shrink-0">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
@@ -1538,9 +1528,7 @@ export default function PortfolioHome() {
         {/* ── MOBILE stack ── */}
         <div className="flex flex-col gap-4 lg:hidden">
           <HeroTile />
-          <div style={{ minHeight: "520px" }} className="flex flex-col">
-            <NavTile />
-          </div>
+          <NavTile />
           <WhatIBelieveTile />
 
           <MyWorkTile
