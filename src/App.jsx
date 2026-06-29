@@ -446,7 +446,7 @@ function HeroTile() {
         className="relative overflow-hidden rounded-[32px] p-8 pb-0 flex flex-col lg:hidden"
         style={{
           background: "rgba(156, 63, 20, 0.17)",
-          minHeight: "340px",
+          minHeight: "280px",
         }}
       >
         <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] ${HEADING}`}
@@ -647,7 +647,7 @@ function NavTile() {
 
           <div className="relative flex-1 overflow-hidden">
             <svg
-              className="absolute left-0 right-0 w-full h-[78px]" style={{ bottom: "112px" }}
+              className="absolute left-0 right-0 w-full h-[78px]" style={{ bottom: "80px" }}
               viewBox="0 0 320 80"
               preserveAspectRatio="none"
               style={{ overflow: "visible" }}
@@ -757,7 +757,7 @@ function NavTile() {
                 key={`img-${step}`}
                 className="absolute overflow-hidden"
                 style={{
-                  bottom: "106px",
+                  bottom: "74px",
                   left: "-8px",
                   transform: imgVisible
                     ? "rotate(-5deg)"
@@ -1313,7 +1313,7 @@ export default function PortfolioHome() {
           <div
             ref={chatCardRef}
             className="rounded-[32px] bg-white overflow-hidden flex flex-col relative"
-            style={{ gridColumn: "1", gridRow: "1 / 3", height: "620px" }}
+            style={{ gridColumn: "1", gridRow: "1 / 3", height: "560px" }}
           >
             <div className="px-6 pt-6 pb-3 shrink-0">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
