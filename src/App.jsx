@@ -423,8 +423,8 @@ function HeroTile() {
         Sanjana Venkat
       </h1>
       {/* Tagline */}
-      <p className="mt-2 text-[16px] leading-[1.5]" style={{ color: "#57423A" }}>
-        Product designer. Motion thinker. I turn ambiguity into direction.
+      <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "14px" }}>
+        I turn ambiguity into direction. Deeply understanding how people think.
       </p>
 
       {/* Profile pic — bottom-right, tilted 9.83deg, white border, bottom clips at tile edge */}
@@ -505,6 +505,7 @@ const TIMELINE_ITEMS = [
   { year: "2020",      label: "Psychology major, UTD",  sub: "Studied how people think, feel, and make decisions",  heart: false, isNow: false, img: "/2020.jpg"   },
   { year: "2021",      label: "Chetna",                 sub: "Raised $10K+ for South Asian mental health",          heart: false, isNow: false, img: "/2021.jpg"   },
   { year: "2022",      label: "Dialexa",                sub: "Dabbled into design — built an AR concept for DTour", heart: false, isNow: false, img: "/2022-1.jpg" },
+  { year: "2022",      label: "VP, UX Club",            sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: "/2022.jpg"   },
   { year: "2023",      label: "Paycom",                 sub: "Associate Product Designer, B2B enterprise subteam",  heart: false, isNow: false, img: "/2023.jpg"   },
   { year: "2024",      label: "JPMC · Senior PD",       sub: "Owned apply flow, HELOC 0-to-1 and AI initiatives",  heart: false, isNow: false, img: "/2024.jpg"   },
   { year: "2025",      label: "JP Morgan Chase",        sub: "Led Marketing + AI and exec-facing Gemini concepts", heart: false, isNow: false, img: "/2025.jpg"   },
@@ -674,7 +675,7 @@ function NavTile() {
                   {/* Heart drawn via path, animates in with stroke-dashoffset */}
                   <path
                     d="M 160 44 C 160 44 145 36 145 27 C 145 21 150 17 155 19 C 157 20 159 22 160 25 C 161 22 163 20 165 19 C 170 17 175 21 175 27 C 175 36 160 44 160 44 Z"
-                    fill="#D96F45"
+                    fill="#2F2F2F"
                     stroke="none"
                     style={{
                       animation: "tlHeartPop 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards",
@@ -736,7 +737,7 @@ function NavTile() {
                 className="absolute overflow-hidden"
                 style={{
                   top: "8px",
-                  left: "-22px",
+                  left: "-8px",
                   transform: imgVisible
                     ? "rotate(-5deg)"
                     : "rotate(-5deg) translateX(-10px)",
