@@ -51,7 +51,7 @@ We were missing a huge part of the market.
 
 That one artifact:
 • Secured $10K+ in investment
-• Got the 3rd Home Lending business case
+• Got the 3rd highest Home Lending business case
 • Aligned leadership around the redesign
 
 Then through exit surveys, heat maps, and extensive A/B testing, we defined a need-based segmentation strategy.`,
@@ -421,7 +421,7 @@ function HeroTile() {
           Sanjana Venkat
         </h1>
         <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          I turn ambiguity into direction. Let me show you.
+          I turn ambiguity into direction. Deeply understanding how people think.
         </p>
         <div
           className="absolute overflow-hidden"
@@ -476,7 +476,7 @@ function HeroTile() {
   );
 }
 
-/* ─── BENTO TILE: What I Believe In ─── */
+/* ─── BENTO TILE: What I Believe In (fixed height matching NavTile) ─── */
 function WhatIBelieveTile() {
   return (
     <article className={`rounded-[32px] bg-white p-6 text-[14px] h-full flex flex-col justify-between ${BODY}`} style={{ minHeight: "220px" }}>
@@ -485,9 +485,8 @@ function WhatIBelieveTile() {
           what i believe in
         </p>
 
-        {/* FIX 2: "I study psychology" instead of "I majored in psychology" */}
         <p className="leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
-          I study psychology because I love thinking about how people think. And that curiosity never left, it just found a new home in product design.
+          I majored in psychology because I love thinking about how people think. And that curiosity never left, it just found a new home in product design.
         </p>
 
         <p className="mt-3 leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
@@ -519,36 +518,42 @@ function WhatIBelieveTile() {
 
 /* ─── BENTO TILE: Animated Timeline ─── */
 
+// SURGICAL CHANGE 1: Added lineStyle per item, "very-wavy" | "slightly-wavy" | "straight"
+// and orange flag for post-Chetna items. Removed the two wave:true dampened oscillation items.
 const TIMELINE_ITEMS = [
   { year: "2000s", label: "Childhood in India",      sub: "Grew up close to my roots, culture, and community",     heart: false, isNow: false, img: "/Childhood.jpg", lineStyle: "very-wavy",     orange: false },
   { year: "2014",  label: "Moved to the States",     sub: "A big leap, new country, new world",                   heart: false, isNow: false, img: "/2014.jpg",      lineStyle: "very-wavy",     orange: false },
-  { year: "2018",  label: "Future teacher",          sub: "Wanted to teach, loved reading and learning",     heart: false, isNow: false, img: "/2018.png",      lineStyle: "very-wavy",     orange: false },
-  { year: "2019",  label: "Best Presenter Award",    sub: "First publication on temple architecture",  heart: false, isNow: false, img: "/2019.png",      lineStyle: "very-wavy",     orange: false },
-  { year: "2020",  label: "UTD, Psychology & Design",   sub: "Studied how people think, feel, and make decisions",    heart: false, isNow: false, img: "/2020.jpg",      lineStyle: "slightly-wavy", orange: false },
-  { year: "2021",  label: "Chetna · Graphic Design", sub: "Dabbled into design, raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
-  { year: "2022",  label: "Dialexa",                 sub: "Built an AR travel concept for with Dialexa, DTour",   heart: false, isNow: false, img: "/2022.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2022",  label: "UX Club · VP",             sub: "Organized design events with Paycom, Bottle Rocket & Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true  },
-  { year: "2023",  label: "Paycom · Associate Product Designer", sub: "B2B enterprise subteam, design system focus",    heart: false, isNow: false, img: "/2023.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2024",  label: "JPMC · Senior PD",        sub: "Owned apply flow and HELOC 0-to-1",    heart: false, isNow: false, img: "/2024.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2025",  label: "JPMC · Lead",         sub: "Led AI & Marketing and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2018",  label: "Future teacher",          sub: "Wanted to teach, then found counseling psychology",     heart: false, isNow: false, img: "/2018.png",      lineStyle: "very-wavy",     orange: false },
+  { year: "2019",  label: "Best Presenter Award",    sub: "Publication on temple architecture, college conference",  heart: false, isNow: false, img: "/2019.png",      lineStyle: "very-wavy",     orange: false },
+  { year: "2020",  label: "Psychology major, UTD",   sub: "Studied how people think, feel, and make decisions",    heart: false, isNow: false, img: "/2020.jpg",      lineStyle: "slightly-wavy", orange: false },
+  { year: "2021",  label: "Chetna · Graphic Design", sub: "Raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
+  // After Chetna: lines go straight and orange
+  { year: "2022",  label: "Dialexa",                 sub: "Dabbled into design, built an AR concept for DTour",   heart: false, isNow: false, img: "/2022.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2022",  label: "VP, UX Club",             sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true  },
+  { year: "2023",  label: "Paycom",                  sub: "Associate Product Designer, B2B enterprise subteam",    heart: false, isNow: false, img: "/2023.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2024",  label: "JPMC · Senior PD",        sub: "Owned apply flow, HELOC 0-to-1 and AI initiatives",    heart: false, isNow: false, img: "/2024.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2025",  label: "JPMC AI Lead",         sub: "Led Marketing + AI and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true  },
   { year: "2026",  label: "Married · Bay Area",      sub: "Moved to the Bay Area for a new chapter",              heart: true,  isNow: false, img: "/2026.png",      lineStyle: "straight",      orange: true  },
   { year: "NOW",   label: "Design Engineer",         sub: "Building polished AI product ideas fast",              heart: false, isNow: true,  img: "/2026.jpg",      lineStyle: "straight",      orange: true  },
 ];
 
+// SURGICAL CHANGE 2: Three line paths replacing the single straight line + removing dampened wave
+// Very wavy: big organic undulations (psychology era)
 const LINE_VERY_WAVY   = "M 95 38 C 108 22, 122 54, 138 38 C 154 22, 168 54, 184 38 C 200 22, 214 54, 230 38 C 246 22, 260 52, 278 40 C 288 34, 295 38, 300 38";
+// Slightly wavy: gentler undulations (transition, psychology meets design)
 const LINE_SLIGHTLY_WAVY = "M 95 38 C 112 30, 130 46, 150 38 C 170 30, 188 46, 208 38 C 228 31, 248 44, 268 38 C 282 34, 293 40, 300 38";
+// Straight: full design era
 const LINE_STRAIGHT    = "M 95 38 C 150 38, 220 38, 300 38";
 
+// Mobile versions, full width edge to edge, centered at y=30
 const MOBILE_VERY_WAVY    = "M 0 30 C 18 14, 36 46, 54 30 C 72 14, 90 46, 108 30 C 126 14, 144 46, 162 30 C 180 14, 198 46, 216 30 C 234 14, 252 44, 270 30 C 290 18, 310 30, 320 30";
 const MOBILE_SLIGHTLY_WAVY = "M 0 30 C 28 22, 56 38, 84 30 C 112 22, 140 38, 168 30 C 196 22, 224 38, 252 30 C 278 23, 302 36, 320 30";
 const MOBILE_STRAIGHT     = "M 0 30 C 80 30, 200 30, 320 30";
 
+// SURGICAL CHANGE 3: Idle scribble matches the screenshot, loopy knot trailing into a line
+// Scribble ends at ~x=95,y=38 so it flows naturally into LINE_VERY_WAVY which starts there
 const SCRIBBLE_PATH = "M 155 55 C 140 30, 115 18, 108 36 C 100 56, 120 74, 142 62 C 164 50, 166 26, 150 24 C 132 22, 116 44, 132 60 C 148 76, 170 68, 155 48 C 142 32, 128 30, 112 36 C 100 40, 95 38, 95 38";
 const SCRIBBLE_LEN = 520;
-
-// FIX 3: Mobile NavTile — fixed image height at bottom, content above, no layout jump
-// The tile is always at least MOBILE_TILE_MIN_HEIGHT tall on mobile, image is always IMG_HEIGHT.
-const MOBILE_IMG_HEIGHT = 220;
 
 function NavTile() {
   const [active, setActive]         = useState(false);
@@ -602,6 +607,7 @@ function NavTile() {
 
   const item        = TIMELINE_ITEMS[step];
 
+  // SURGICAL CHANGE 4: pick line path and stroke color per item
   const linePath    = item.lineStyle === "very-wavy"
     ? LINE_VERY_WAVY
     : item.lineStyle === "slightly-wavy"
@@ -614,8 +620,8 @@ function NavTile() {
 
   return (
     <div
-      className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative select-none cursor-pointer ${BODY}`}
-      style={{ minHeight: "280px" }}
+      className={`rounded-[32px] bg-white flex flex-col overflow-hidden relative select-none cursor-pointer ${BODY}`}
+      style={{ height: "100%", minHeight: "280px" }}
       onMouseEnter={startAnimation}
       onMouseLeave={stopAnimation}
       onClick={startAnimation}
@@ -627,6 +633,7 @@ function NavTile() {
             my story
           </p>
           <div className="flex-1 relative overflow-hidden">
+            {/* SURGICAL CHANGE 5: idle scribble uses the new loopy path */}
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet">
               <path
                 d={SCRIBBLE_PATH}
@@ -651,10 +658,10 @@ function NavTile() {
             my story
           </p>
 
-          <div className="relative flex-1 flex flex-col overflow-hidden">
-
-            {/* DESKTOP: image + line vertically centered, content at bottom */}
+          <div className="relative flex-1 flex flex-col justify-between overflow-hidden">
+            {/* CENTER BLOCK: image + line, vertically centered in available space */}
             <div className="flex-1 relative lg:block hidden">
+              {/* IMAGE, desktop only: absolute left */}
               {item.img && (
                 <div
                   key={`img-${step}`}
@@ -684,6 +691,7 @@ function NavTile() {
                 </div>
               )}
 
+              {/* SVG LINE, desktop only, absolute centered */}
               <svg
                 className="absolute left-0 right-0 w-full h-[78px]"
                 viewBox="0 0 320 80"
@@ -707,6 +715,7 @@ function NavTile() {
                   />
                 )}
 
+                {/* SURGICAL CHANGE 6: use linePath (wavy or straight) and strokeColor (orange or dark) */}
                 {showLine && phase !== "scribble" && (
                   <path
                     key={`line-${step}-${phase}`}
@@ -728,6 +737,7 @@ function NavTile() {
 
                 {item.heart && showContent && (
                   <g key={`heart-${step}`}>
+                    {/* Outline only, smaller, centered on the line (cy=38) */}
                     <path
                       d="M 160 43 C 153 38 149 33 149 30 C 149 26 152 24 155 25 C 157 26 159 28 160 30 C 161 28 163 26 165 25 C 168 24 171 26 171 30 C 171 33 167 38 160 43 Z"
                       fill="none"
@@ -744,6 +754,7 @@ function NavTile() {
                   </g>
                 )}
 
+                {/* SURGICAL CHANGE 7: oval instead of circle, animate only on phase==="content" not "hold" */}
                 {showContent && !item.heart && (
                   <circle
                     key={`dot-${step}`}
@@ -768,16 +779,9 @@ function NavTile() {
               </svg>
             </div>
 
-            {/* ── MOBILE LAYOUT ──
-                Structure (top → bottom):
-                1. SVG line (fixed 60px)
-                2. Content: year + label + sub (fixed, no jump)
-                3. Image: fixed height, flush to bottom, rounded top corners, no side margins
-                The tile grows to fit all three — no gap below because it's not min-height locked.
-            */}
-            <div className="lg:hidden flex flex-col">
-
-              {/* 1. SVG line */}
+            {/* MOBILE LAYOUT, SVG line then image, all normal flow */}
+            <div className="lg:hidden flex flex-col flex-1">
+              {/* Mobile SVG line, fixed height, normal flow */}
               <div style={{ height: "60px", position: "relative", flexShrink: 0 }}>
                 <svg
                   className="absolute left-0 right-0 w-full h-full"
@@ -856,56 +860,34 @@ function NavTile() {
                   )}
                 </svg>
               </div>
-
-              {/* 2. Content: always reserve space so image doesn't jump */}
-              <div
-                key={`mob-content-${step}`}
-                className="px-6 pb-4 text-center"
-                style={{
-                  opacity: showContent ? 1 : 0,
-                  minHeight: "68px", // reserve fixed space so image never shifts
-                  animation: phase === "content"
-                    ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both"
-                    : "none",
-                }}
-              >
-                <div className={`text-[26px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
-                  {item.year}
+              {/* Mobile image — flush to bottom, cropped from bottom, rounded top corners */}
+              {item.img && (
+                <div
+                  key={`img-mobile-${step}`}
+                  className="mt-3 flex-1"
+                  style={{
+                    borderRadius: "20px 20px 0 0",
+                    overflow: "hidden",
+                    opacity: imgVisible ? 1 : 0,
+                    transform: imgVisible ? "translateY(0px)" : "translateY(10px)",
+                    transition: "opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)",
+                    minHeight: "220px",
+                  }}
+                >
+                  <img
+                    src={item.img}
+                    alt={item.label}
+                    className="w-full h-full object-cover object-bottom"
+                    onError={(e) => { e.currentTarget.style.display = "none"; }}
+                  />
                 </div>
-                <div className={`text-[13px] font-semibold text-[#9A8176] mt-0.5 ${HEADING}`}>
-                  {item.label}
-                </div>
-                <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149]">
-                  {item.sub}
-                </p>
-              </div>
-
-              {/* 3. Image: fixed height, flush to bottom edges, rounded top corners only */}
-              <div
-                key={`img-mob-${step}`}
-                style={{
-                  height: `${MOBILE_IMG_HEIGHT}px`,
-                  flexShrink: 0,
-                  overflow: "hidden",
-                  borderRadius: "20px 20px 0 0",
-                  opacity: imgVisible ? 1 : 0,
-                  transform: imgVisible ? "translateY(0px)" : "translateY(12px)",
-                  transition: "opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)",
-                }}
-              >
-                <img
-                  src={item.img}
-                  alt={item.label}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
-                  onError={(e) => { e.currentTarget.style.display = "none"; }}
-                />
-              </div>
+              )}
             </div>
 
-            {/* Desktop content block (unchanged) */}
+            {/* Content: year large, label on next line, sub below — desktop slides in, mobile centered */}
             <div
               key={`content-${step}`}
-              className="px-6 pb-4 text-left shrink-0 hidden lg:block"
+              className="px-6 pb-5 shrink-0 lg:text-left text-center"
               style={{
                 opacity: showContent ? 1 : 0,
                 animation: phase === "content"
@@ -913,7 +895,8 @@ function NavTile() {
                   : "none",
               }}
             >
-              <div className="flex items-baseline gap-2 whitespace-nowrap">
+              {/* Desktop: year + label inline */}
+              <div className="hidden lg:flex items-baseline gap-2 whitespace-nowrap">
                 <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
                   {item.year}
                 </span>
@@ -921,11 +904,19 @@ function NavTile() {
                   {item.label}
                 </span>
               </div>
-              <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149] whitespace-nowrap">
+              {/* Mobile: year large, label on its own line below */}
+              <div className="lg:hidden text-center">
+                <div className={`text-[28px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
+                  {item.year}
+                </div>
+                <div className={`text-[14px] font-semibold text-[#9A8176] mt-0.5 ${HEADING}`}>
+                  {item.label}
+                </div>
+              </div>
+              <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149] lg:whitespace-nowrap lg:text-left text-center">
                 {item.sub}
               </p>
             </div>
-
           </div>
         </>
       )}
@@ -972,6 +963,7 @@ function MyWorkTile({ onOpenProject }) {
     <div
       className={`group relative w-full rounded-[32px] bg-white flex flex-col text-left overflow-hidden ${BODY}`}
     >
+      {/* MY WORK label */}
       <p className={`pt-7 px-7 pb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
         my work
       </p>
@@ -1450,7 +1442,7 @@ export default function PortfolioHome() {
 
       <div className="relative z-10 mx-auto w-full max-w-[1280px]">
 
-        {/* ── DESKTOP bento grid ── */}
+        {/* ── DESKTOP ── */}
         <div
           className="hidden lg:grid"
           style={{
@@ -1459,12 +1451,8 @@ export default function PortfolioHome() {
             gap: "14px",
           }}
         >
-          {/*
-            Chat tile: spans rows 1–2.
-            Row 1 = auto (hero), Row 2 = 300px (NavTile/WhatIBelieve).
-            alignSelf: "stretch" fills exactly that combined height.
-            minHeight: 520px ensures it never collapses smaller than needed.
-          */}
+
+          {/* Chat: col 1, rows 1-2, fixed height with internal scroll */}
           <div
             ref={chatCardRef}
             className="rounded-[32px] bg-white overflow-hidden flex flex-col relative"
@@ -1516,12 +1504,12 @@ export default function PortfolioHome() {
             <HeroTile />
           </div>
 
-          {/* NavTile: col 2, row 2 — fills the 300px row */}
+          {/* NavTile: col 2, row 2 */}
           <div style={{ gridColumn: "2", gridRow: "2", alignSelf: "stretch" }}>
             <NavTile />
           </div>
 
-          {/* What I Believe: col 3, row 2 — fills the 300px row */}
+          {/* What I Believe: col 3, row 2 */}
           <div style={{ gridColumn: "3", gridRow: "2", alignSelf: "stretch" }}>
             <WhatIBelieveTile />
           </div>
@@ -1550,19 +1538,19 @@ export default function PortfolioHome() {
         {/* ── MOBILE stack ── */}
         <div className="flex flex-col gap-4 lg:hidden">
           <HeroTile />
-          {/* FIX 3 (mobile): NavTile has no fixed height wrapper — it sizes to its own content */}
           <NavTile />
           <WhatIBelieveTile />
+
           <MyWorkTile
-            onOpenProject={(key) => {
-              const slugByKey = {
-                "marketing-tiles": "ai-personalization",
-                "ai-framer": "ai-chat-journeys",
-                "travel-dna": "model-design",
-              };
-              openWorkProject(slugByKey[key] || "b2c");
-            }}
-          />
+              onOpenProject={(key) => {
+                const slugByKey = {
+                  "marketing-tiles": "ai-personalization",
+                  "ai-framer": "ai-chat-journeys",
+                  "travel-dna": "model-design",
+                };
+                openWorkProject(slugByKey[key] || "b2c");
+              }}
+            />
           <TestimonialTile />
         </div>
 
