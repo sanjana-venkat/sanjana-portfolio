@@ -154,7 +154,7 @@ Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
   { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
-  { slug: "ai-personalization", label: "AI Personalization", title: "Product Strategy Thinking", url: MARKETING_TILES_URL },
+  { slug: "ai-personalization", label: "personalized marketing", title: "Product Strategy Thinking", url: MARKETING_TILES_URL },
   { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
   { slug: "ai-chat-journeys", label: "AI chat journeys", title: "AI Chat Journeys", url: AI_FRAMER_URL },
   { slug: "conversational-agentic-ai", label: "Agentic Conversational AI", title: "Casey AI", url: CASEY_AI_URL },
@@ -238,9 +238,14 @@ function Typewriter({ text, shouldStart, onDone, instant = false }) {
   useEffect(() => { onDoneRef.current = onDone; }, [onDone]);
 
   useEffect(() => {
+    setTypedText(null);
+  }, [cleanText]);
+
+  useEffect(() => {
     if (instant) {
       setDisplayed(cleanText);
       setTypedText(cleanText);
+      setTimeout(() => onDoneRef.current?.(), 0);
       return;
     }
 
@@ -686,11 +691,12 @@ function NavTile() {
                   strokeWidth="1.6"
                   style={{
                     opacity: showSlide ? 1 : 0,
-                    transform: showSlide ? "translateX(0)" : "translateX(120px)",
+                    transform: showSlide ? "translateX(0px)" : "translateX(120px)",
                     transformBox: "fill-box",
                     transformOrigin: "center",
+                    animation: showSlide ? "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both" : "none",
                     transition: showSlide
-                      ? "transform 0.38s cubic-bezier(0.22,1,0.36,1), opacity 0.2s ease"
+                      ? "opacity 0.2s ease"
                       : "none",
                     filter: item.isNow ? "drop-shadow(0 0 6px rgba(217,111,69,0.55))" : "none",
                   }}
@@ -705,9 +711,7 @@ function NavTile() {
                 left: "0px",
                 opacity: showSlide ? 1 : 0,
                 transform: showSlide ? "translateX(0)" : "translateX(120px)",
-                transition: showSlide
-                  ? "transform 0.42s cubic-bezier(0.22,1,0.36,1), opacity 0.22s ease"
-                  : "none",
+                animation: showSlide ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both" : "none",
               }}
             >
               <div className="flex items-baseline gap-2 whitespace-nowrap">
@@ -732,6 +736,16 @@ function NavTile() {
           from { stroke-dashoffset: 520; }
           to { stroke-dashoffset: 0; }
         }
+
+        @keyframes timelineContentSlide {
+          from { opacity: 0; transform: translateX(120px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes timelineDotSlide {
+          from { opacity: 0; transform: translateX(120px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
       `}</style>
     </div>
   );
@@ -739,7 +753,7 @@ function NavTile() {
 
 /* ─── BENTO TILE: My Work — 3 project thumbnails in one row ─── */
 const WORK_PREVIEWS = [
-  { src: "/marketing-preview.png", label: "AI Personalization", projectKey: "marketing-tiles" },
+  { src: "/marketing-preview.png", label: "personalized marketing", projectKey: "marketing-tiles" },
   { src: "/ai-chat-preview.png",   label: "AI Chat Journeys",   projectKey: "ai-framer" },
   { src: "/outdone-preview.png",   label: "Outdone", isNew: true, projectKey: "travel-dna" },
 ];
@@ -1024,6 +1038,7 @@ export default function PortfolioHome() {
   const [showThinking, setShowThinking] = useState(false);
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
+  const [instantType, setInstantType] = useState(true);
   const [workProjectSlug, setWorkProjectSlug] = useState("b2c");
   const [instantType, setInstantType] = useState(true);
 
