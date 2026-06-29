@@ -32,14 +32,14 @@ const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
 const TYPEWRITE = "[font-family:'JetBrains_Mono',monospace]";
 
 const PILLS = [
-  "how do you uncover user needs",
-  "how do you ship fast",
+  "how i uncover user needs",
+  "how i ship fast",
   "model design",
   "let's talk AI",
   "product strategy thinking",
   "designing systems at scale",
   "tell me your story",
-  "how do you get exec-buy in",
+  "how i get exec-buy in",
 ];
 
 const CONTENT = {
@@ -647,10 +647,10 @@ function NavTile() {
 
           <div className="relative flex-1 overflow-hidden">
             <svg
-              className="absolute left-0 right-0 w-full h-[78px]" style={{ bottom: "80px" }}
+              className="absolute left-0 right-0 w-full h-[78px]"
               viewBox="0 0 320 80"
               preserveAspectRatio="none"
-              style={{ overflow: "visible" }}
+              style={{ bottom: "80px", overflow: "visible" }}
             >
               {/* SCRIBBLE: only rendered in "scribble" phase, removed instantly when phase changes (no fade) */}
               {phase === "scribble" && (
