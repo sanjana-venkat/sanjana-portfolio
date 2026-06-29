@@ -32,15 +32,17 @@ const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
 const TYPEWRITE = "[font-family:'JetBrains_Mono',monospace]";
 
 const PILLS = [
+  "model design",
   "how do you uncover user needs",
   "how do you ship fast",
-  "model design",
   "let's talk AI",
   "product strategy thinking",
   "designing systems at scale",
   "tell me your story",
   "how do you get exec buy-in",
 ];
+
+const DEFAULT_PILL = "model design";
 
 const CONTENT = {
   "how do you uncover user needs": `I look beyond surface-level metrics to understand the intent behind user behavior. At JPMC, we were a small team trying to reduce drop-offs in an application flow.
@@ -420,10 +422,11 @@ function HeroTile() {
           style={{ fontSize: "40px" }}>
           Sanjana Venkat
         </h1>
-        <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          Model Designer with B2C, conversational AI in a fintench background. 
+        <div className="h-5" />
+        <p className="leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
+          Model Designer with B2C, conversational AI in a fintech background
         </p>
-        <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
+        <p className="mt-1 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
           I turn ambiguity into direction. Let me show you.
         </p>
         <div
@@ -456,8 +459,12 @@ function HeroTile() {
           style={{ fontSize: "36px" }}>
           Sanjana Venkat
         </h1>
-        <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          I turn ambiguity into direction. Deeply understanding how people think.
+        <div className="h-5" />
+        <p className="leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
+          Model Designer with B2C, conversational AI in a fintech background
+        </p>
+        <p className="mt-1 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
+          I turn ambiguity into direction. Let me show you.
         </p>
         {/* Image centered at bottom, taller */}
         <div className="flex justify-center mt-8 flex-1 items-end">
@@ -532,12 +539,12 @@ const TIMELINE_ITEMS = [
   { year: "2021",  label: "Chetna · Graphic Design", sub: "Dabbled into design, raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
   // After Chetna: lines go straight and orange
   { year: "2022",  label: "Dialexa",                 sub: "Built an AR travel concept for with Dialexa, DTour",   heart: false, isNow: false, img: "/2022.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2022",  label: "UX Club · VP",             sub: "Organized design events with Paycom, Bottle Rocket & Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true  },
-  { year: "2023",  label: "Paycom · Associate Product Designer", sub: "B2B enterprise subteam, design system focus",    heart: false, isNow: false, img: "/2023.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2024",  label: "JPMC · Senior PD",        sub: "Owned apply flow and HELOC 0-to-1",    heart: false, isNow: false, img: "/2024.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2025",  label: "JPMC · Lead",         sub: "Led AI & Marketing and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2022",  label: "UX Club · VP",             sub: "Organized design events with Paycom, Bottle Rocket & Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true,  mobileObjectPosition: "center 28%"  },
+  { year: "2023",  label: "Paycom · Associate Product Designer", sub: "B2B enterprise subteam, design system focus",    heart: false, isNow: false, img: "/2023.jpg",      lineStyle: "straight",      orange: true,  mobileObjectPosition: "center 34%"  },
+  { year: "2024",  label: "JPMC · Senior PD",        sub: "Owned apply flow and HELOC 0-to-1",    heart: false, isNow: false, img: "/2024.jpg",      lineStyle: "straight",      orange: true,  mobileObjectPosition: "center 30%"  },
+  { year: "2025",  label: "JPMC · Lead",         sub: "Led AI & Marketing and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true,  mobileObjectPosition: "center 24%"  },
   { year: "2026",  label: "Married · Bay Area",      sub: "Moved to the Bay Area for a new chapter",              heart: true,  isNow: false, img: "/2026.png",      lineStyle: "straight",      orange: true  },
-  { year: "NOW",   label: "Design Engineer",         sub: "Building polished AI product ideas fast",              heart: false, isNow: true,  img: "/2026.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "NOW",   label: "Design Engineer",         sub: "Building polished AI product ideas fast",              heart: false, isNow: true,  img: "/2026.jpg",      lineStyle: "straight",      orange: true,  mobileObjectPosition: "center 22%"  },
 ];
 
 // SURGICAL CHANGE 2: Three line paths replacing the single straight line + removing dampened wave
@@ -904,7 +911,8 @@ function NavTile() {
                   <img
                     src={item.img}
                     alt={item.label}
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: item.mobileObjectPosition || "center top" }}
                     onError={(e) => { e.currentTarget.style.display = "none"; }}
                   />
                 </div>
@@ -1238,7 +1246,7 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
 export default function PortfolioHome() {
   const chatCardRef = useRef(null);
   const chatScrollRef = useRef(null);
-  const [active, setActive] = useState(PILLS[0]);
+  const [active, setActive] = useState(DEFAULT_PILL);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [projectOpen, setProjectOpen] = useState(null);
   const [showPills, setShowPills] = useState(false);
