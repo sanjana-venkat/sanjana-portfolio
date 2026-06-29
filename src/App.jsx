@@ -532,9 +532,9 @@ const TIMELINE_ITEMS = [
   { year: "2022",  label: "VP, UX Club",             sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true  },
   { year: "2023",  label: "Paycom",                  sub: "Associate Product Designer, B2B enterprise subteam",    heart: false, isNow: false, img: "/2023.jpg",      lineStyle: "straight",      orange: true  },
   { year: "2024",  label: "JPMC · Senior PD",        sub: "Owned apply flow, HELOC 0-to-1 and AI initiatives",    heart: false, isNow: false, img: "/2024.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2025",  label: "JP Morgan Chase",         sub: "Led Marketing + AI and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2025",  label: "JPMC AI Lead",         sub: "Led Marketing + AI and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true  },
   { year: "2026",  label: "Married · Bay Area",      sub: "Moved to the Bay Area for a new chapter",              heart: true,  isNow: false, img: "/2026.png",      lineStyle: "straight",      orange: true  },
-  { year: "NOW",   label: "Design Engineer",         sub: "Building polished AI product ideas fast",              heart: false, isNow: true,  img: null,             lineStyle: "straight",      orange: true  },
+  { year: "NOW",   label: "Design Engineer",         sub: "Building polished AI product ideas fast",              heart: false, isNow: true,  img: "/2026.jpg",      lineStyle: "straight",      orange: true  },
 ];
 
 // SURGICAL CHANGE 2: Three line paths replacing the single straight line + removing dampened wave
@@ -731,16 +731,28 @@ function NavTile() {
 
                 {item.heart && showContent && (
                   <g key={`heart-${step}`}>
+                    {/* Outline traces itself out of the line first */}
                     <path
-                      d="M 160 44 C 160 44 145 36 145 27 C 145 21 150 17 155 19 C 157 20 159 22 160 25 C 161 22 163 20 165 19 C 170 17 175 21 175 27 C 175 36 160 44 160 44 Z"
+                      d="M 160 44 C 148 36 143 28 143 24 C 143 18 148 15 153 17 C 156 18 158 21 160 25 C 162 21 164 18 167 17 C 172 15 177 18 177 24 C 177 28 172 36 160 44 Z"
+                      fill="none"
+                      stroke={strokeColor}
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{
+                        strokeDasharray: 120,
+                        strokeDashoffset: 120,
+                        animation: "tlHeartDraw 0.55s cubic-bezier(0.4,0,0.2,1) forwards",
+                      }}
+                    />
+                    {/* Fill fades in after outline is drawn */}
+                    <path
+                      d="M 160 44 C 148 36 143 28 143 24 C 143 18 148 15 153 17 C 156 18 158 21 160 25 C 162 21 164 18 167 17 C 172 15 177 18 177 24 C 177 28 172 36 160 44 Z"
                       fill={strokeColor}
                       stroke="none"
                       style={{
-                        animation: "tlHeartPop 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards",
                         opacity: 0,
-                        transform: "scale(0)",
-                        transformOrigin: "160px 30px",
-                        transformBox: "fill-box",
+                        animation: "tlHeartFill 0.3s ease forwards 0.5s",
                       }}
                     />
                   </g>
@@ -816,9 +828,13 @@ function NavTile() {
           from { opacity: 0; transform: translateX(120px); }
           to   { opacity: 1; transform: translateX(0); }
         }
-        @keyframes tlHeartPop {
-          from { opacity: 0; transform: scale(0); }
-          to   { opacity: 1; transform: scale(1); }
+        @keyframes tlHeartDraw {
+          from { stroke-dashoffset: 120; }
+          to   { stroke-dashoffset: 0; }
+        }
+        @keyframes tlHeartFill {
+          from { opacity: 0; }
+          to   { opacity: 1; }
         }
         @keyframes tlNowGlow {
           0%,100% { filter: drop-shadow(0 0 3px rgba(217,111,69,0.5)); }
