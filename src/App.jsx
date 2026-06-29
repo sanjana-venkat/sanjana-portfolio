@@ -421,6 +421,9 @@ function HeroTile() {
           Sanjana Venkat
         </h1>
         <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
+          Model Designer with B2C, conversational AI in a fintench background. 
+        </p>
+        <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
           I turn ambiguity into direction. Let me show you.
         </p>
         <div
