@@ -230,8 +230,9 @@ function PlayIcon() {
 // Module-level scroll target — set by the chat scroll div, read by Typewriter directly
 let _chatScrollEl = null;
 
-function Typewriter({ text, onDone }) {
+function Typewriter({ text, shouldStart = true, onDone, instant = false }) {
   const cleanText = (text || "").trim();
+  const [displayed, setDisplayed] = useState(instant ? cleanText : "");
   const onDoneRef = useRef(onDone);
 
   useEffect(() => {
@@ -239,13 +240,44 @@ function Typewriter({ text, onDone }) {
   }, [onDone]);
 
   useEffect(() => {
-    const doneTimer = setTimeout(() => onDoneRef.current?.(), 0);
-    return () => clearTimeout(doneTimer);
-  }, [cleanText]);
+    if (!shouldStart) return;
+
+    if (instant) {
+      setDisplayed(cleanText);
+      const doneTimer = setTimeout(() => onDoneRef.current?.(), 0);
+      return () => clearTimeout(doneTimer);
+    }
+
+    setDisplayed("");
+    let index = 0;
+    let interval;
+
+    const startDelay = setTimeout(() => {
+      interval = setInterval(() => {
+        index += 1;
+        setDisplayed(cleanText.slice(0, index));
+
+        if (_chatScrollEl) {
+          _chatScrollEl.scrollTop = _chatScrollEl.scrollHeight;
+        }
+
+        if (index >= cleanText.length) {
+          clearInterval(interval);
+          setTimeout(() => onDoneRef.current?.(), 250);
+        }
+      }, 15);
+    }, 350);
+
+    return () => {
+      clearTimeout(startDelay);
+      clearInterval(interval);
+    };
+  }, [cleanText, shouldStart, instant]);
 
   return (
     <p className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
-      {cleanText}
+      {displayed}
+      {!instant && displayed.length < cleanText.length && <span className="animate-pulse text-[#A5522A]">|</span>}
     </p>
   );
 }
@@ -764,7 +796,7 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   );
 }
 
-function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill }) {
+function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, instantType = false }) {
   return (
     <>
       <div className="mb-6 flex justify-end">
@@ -785,7 +817,7 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
       {showResponse && (
         <>
           <div className="rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-            <Typewriter text={CONTENT?.[active] || ""} onDone={onTypeDone} />
+            <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} instant={instantType} />
 
             {active === "how i uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
 
@@ -807,7 +839,7 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
   );
 }
 
-function MobileChatModal({ active, setActive, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, onClose }) {
+function MobileChatModal({ active, setActive, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, onClose, instantType = false }) {
   const [showHint, setShowHint] = useState(false);
 
   return (
@@ -856,6 +888,7 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
           showUserNeedsRest={showUserNeedsRest}
           onTypeDone={onTypeDone}
           openProjectForActivePill={openProjectForActivePill}
+          instantType={instantType}
         />
       </div>
 
@@ -892,6 +925,7 @@ export default function PortfolioHome() {
   const [showThinking, setShowThinking] = useState(false);
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
+  const [instantType, setInstantType] = useState(true);
   const [workProjectSlug, setWorkProjectSlug] = useState("b2c");
 
   useEffect(() => {
@@ -931,12 +965,29 @@ export default function PortfolioHome() {
   }, []);
 
   useEffect(() => {
-    setShowThinking(false);
-    setShowResponse(true);
-    setShowPills(true);
-    setShowUserNeedsRest(active === "how i uncover user needs");
-    setHasLoaded(true);
-  }, [active]);
+    if (!hasLoaded) {
+      setInstantType(true);
+      setShowThinking(false);
+      setShowResponse(true);
+      setShowPills(true);
+      setShowUserNeedsRest(active === "how i uncover user needs");
+      setHasLoaded(true);
+      return;
+    }
+
+    setInstantType(false);
+    setShowPills(false);
+    setShowResponse(false);
+    setShowUserNeedsRest(false);
+    setShowThinking(true);
+
+    const timer = setTimeout(() => {
+      setShowThinking(false);
+      setShowResponse(true);
+    }, 850);
+
+    return () => clearTimeout(timer);
+  }, [active, hasLoaded]);
 
 
 
@@ -1059,6 +1110,7 @@ export default function PortfolioHome() {
           onTypeDone={handleTypeDone}
           openProjectForActivePill={openProjectForActivePill}
           onClose={() => setMobileChatOpen(false)}
+          instantType={instantType}
         />
       )}
 
