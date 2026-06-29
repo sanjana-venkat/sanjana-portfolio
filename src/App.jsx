@@ -421,7 +421,7 @@ function HeroTile() {
           Sanjana Venkat
         </h1>
         <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          I turn ambiguity into direction. Deeply understanding how people think.
+          I turn ambiguity into direction. Let me show you.
         </p>
         <div
           className="absolute overflow-hidden"
