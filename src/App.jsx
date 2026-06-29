@@ -486,7 +486,7 @@ function WhatIBelieveTile() {
         </p>
 
         <p className="leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
-          I majored in psychology because I love thinking about how people think. And that curiosity never left, it just found a new home in product design.
+          I study psychology because I love thinking about how people think. And that curiosity never left, it just found a new home in product design.
         </p>
 
         <p className="mt-3 leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
