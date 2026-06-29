@@ -154,7 +154,7 @@ Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
   { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
-  { slug: "ai-personalization", label: "personalized marketing", title: "Product Strategy Thinking", url: MARKETING_TILES_URL },
+  { slug: "personalized-marketing", label: "personalized marketing", title: "Product Strategy Thinking", url: MARKETING_TILES_URL },
   { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
   { slug: "ai-chat-journeys", label: "AI chat journeys", title: "AI Chat Journeys", url: AI_FRAMER_URL },
   { slug: "conversational-agentic-ai", label: "Agentic Conversational AI", title: "Casey AI", url: CASEY_AI_URL },
@@ -232,49 +232,37 @@ let _chatScrollEl = null;
 
 function Typewriter({ text, shouldStart, onDone, instant = false }) {
   const cleanText = (text || "").trim();
-  const [displayed, setDisplayed] = useState("");
-  const [typedText, setTypedText] = useState(null);
+  const [displayed, setDisplayed] = useState(instant ? cleanText : "");
   const onDoneRef = useRef(onDone);
-  useEffect(() => { onDoneRef.current = onDone; }, [onDone]);
 
   useEffect(() => {
-    setTypedText(null);
-  }, [cleanText]);
+    onDoneRef.current = onDone;
+  }, [onDone]);
 
   useEffect(() => {
-    if (instant) {
-      setDisplayed(cleanText);
-      setTypedText(cleanText);
-      setTimeout(() => onDoneRef.current?.(), 0);
-      return;
-    }
-
     if (!shouldStart) return;
 
-    if (typedText === cleanText) {
+    if (instant) {
       setDisplayed(cleanText);
-      return;
+      const doneTimer = setTimeout(() => onDoneRef.current?.(), 0);
+      return () => clearTimeout(doneTimer);
     }
 
     setDisplayed("");
     let interval;
+    let index = 0;
 
     const startDelay = setTimeout(() => {
-      let index = 0;
-
       interval = setInterval(() => {
-        setDisplayed(cleanText.slice(0, index + 1));
         index += 1;
+        setDisplayed(cleanText.slice(0, index));
 
-        // Scroll to bottom on every character
         if (_chatScrollEl) {
           _chatScrollEl.scrollTop = _chatScrollEl.scrollHeight;
         }
 
         if (index >= cleanText.length) {
           clearInterval(interval);
-          setTypedText(cleanText);
-          setDisplayed(cleanText);
           setTimeout(() => onDoneRef.current?.(), 250);
         }
       }, 15);
@@ -284,12 +272,12 @@ function Typewriter({ text, shouldStart, onDone, instant = false }) {
       clearTimeout(startDelay);
       clearInterval(interval);
     };
-  }, [cleanText, shouldStart, typedText, instant]);
+  }, [cleanText, shouldStart, instant]);
 
   return (
     <p className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
       {displayed}
-      {typedText !== cleanText && <span className="animate-pulse text-[#A5522A]">|</span>}
+      {!instant && displayed.length < cleanText.length && <span className="animate-pulse text-[#A5522A]">|</span>}
     </p>
   );
 }
@@ -345,6 +333,10 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
     getProjectBySlug(initialSlug)
   );
 
+  useEffect(() => {
+    setActiveProject(getProjectBySlug(initialSlug));
+  }, [initialSlug]);
+
   const selectProject = (project) => {
     setActiveProject(project);
     window.history.replaceState(null, "", `#work=${project.slug}`);
@@ -366,10 +358,10 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
         <div className="no-scrollbar mb-6 flex gap-3 overflow-x-auto pb-2">
           {PROJECTS.map((project) => (
             <button
-              key={project.label}
+              key={project.slug}
               onClick={() => selectProject(project)}
               className={`shrink-0 rounded-full border px-6 py-3 text-[14px] font-medium transition sm:px-7 sm:text-[15px] ${
-                activeProject.label === project.label
+                activeProject.slug === project.slug
                   ? "border-[#9C3F14] bg-white text-[#9C3F14]"
                   : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
               } ${HEADING}`}
@@ -486,16 +478,16 @@ function WhatIBelieveTile() {
 
 /* ─── BENTO TILE: Animated Timeline ─── */
 const TIMELINE_ITEMS = [
-  { year: "2019", label: "Best Presenter Award",   sub: "First publication on Temple Architecture",              heart: false, isNow: false, img: null },
-  { year: "2020", label: "UTD Psychology & Design", sub: "Studied human behavior through a design lens",          heart: false, isNow: false, img: null },
-  { year: "2021", label: "Chetna",                 sub: "Raised $10K+ for South Asian mental health",             heart: false, isNow: false, img: null },
-  { year: "2022", label: "Dialexa",                sub: "Explored AR travel experiences for DTour",               heart: false, isNow: false, img: null },
-  { year: "2022", label: "VP, UX Club",            sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: null },
-  { year: "2023", label: "Paycom",                 sub: "Joined a new B2B enterprise design subteam",             heart: false, isNow: false, img: null },
-  { year: "2024", label: "JPMC · Senior PD",       sub: "Owned apply flow, HELOC 0-to-1 and AI initiatives",      heart: false, isNow: false, img: null },
-  { year: "2025", label: "JP Morgan Chase",        sub: "Led Marketing + AI and exec-facing Gemini concepts",    heart: false, isNow: false, img: null },
-  { year: "2026", label: "Married · Bay Area",     sub: "Moved to the Bay Area for a new chapter",                heart: true,  isNow: false, img: null },
-  { year: "NOW",  label: "Design Engineer",        sub: "Building polished AI product ideas fast",                heart: false, isNow: true,  img: null },
+  { year: "2019", label: "Best Presenter Award",   sub: "First publication on Temple Architecture",              heart: false, isNow: false, img: "/2019.png" },
+  { year: "2020", label: "UTD Psychology & Design", sub: "Studied human behavior through a design lens",          heart: false, isNow: false, img: "/2020.jpg" },
+  { year: "2021", label: "Chetna",                 sub: "Raised $10K+ for South Asian mental health",             heart: false, isNow: false, img: "/2021.jpg" },
+  { year: "2022", label: "Dialexa",                sub: "Explored AR travel experiences for DTour",               heart: false, isNow: false, img: "/2022.jpg" },
+  { year: "2022", label: "VP, UX Club",            sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: "/2022-1.jpg" },
+  { year: "2023", label: "Paycom",                 sub: "Joined a new B2B enterprise design subteam",             heart: false, isNow: false, img: "/2023.jpg" },
+  { year: "2024", label: "JPMC · Senior PD",       sub: "Owned apply flow, HELOC 0-to-1 and AI initiatives",      heart: false, isNow: false, img: "/2024.jpg" },
+  { year: "2025", label: "JP Morgan Chase",        sub: "Led Marketing + AI and exec-facing Gemini concepts",    heart: false, isNow: false, img: "/2025.jpg" },
+  { year: "2026", label: "Married · Bay Area",     sub: "Moved to the Bay Area for a new chapter",                heart: true,  isNow: false, img: "/2026.jpg" },
+  { year: "NOW",  label: "Design Engineer",        sub: "Building polished AI product ideas fast",                heart: false, isNow: true,  img: "/2026.jpg" },
 ];
 
 /* Idle background scribbles — three overlapping wavy paths */
@@ -543,21 +535,18 @@ function NavTile() {
     setStep(s);
 
     const item = TIMELINE_ITEMS[s];
-    const hold = item.isNow ? 3600 : item.heart ? 2800 : 2200;
+    const hold = item.isNow ? 3600 : item.heart ? 3000 : 2300;
 
     if (s === 0) {
-      // First scene only: creative scribble draws, resolves into a clean line,
-      // then the first dot + content slide in.
       setPhase("scribble");
       push(() => setPhase("line"), 430);
       push(() => setPhase("slide"), 780);
-      push(() => setPhase("hold"), 1040);
-      push(() => runStep(1), 1040 + hold);
+      push(() => setPhase("hold"), 1080);
+      push(() => runStep(1), 1080 + hold);
     } else {
-      // Every other scene: line stays clean, only dot + content slide in from right.
       setPhase("slide");
-      push(() => setPhase("hold"), 300);
-      push(() => runStep((s + 1) % TIMELINE_ITEMS.length), 300 + hold);
+      push(() => setPhase("hold"), 420);
+      push(() => runStep((s + 1) % TIMELINE_ITEMS.length), 420 + hold);
     }
   };
 
@@ -602,14 +591,7 @@ function NavTile() {
 
           <div className="flex-1 relative overflow-hidden">
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 120" preserveAspectRatio="none">
-              <path
-                d={scribblePath}
-                fill="none"
-                stroke="#D4CBC6"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d={scribblePath} fill="none" stroke="#D4CBC6" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
 
             <p className={`absolute bottom-0 left-0 text-[10px] text-[#C0B8B4] ${HEADING}`}>
@@ -626,126 +608,31 @@ function NavTile() {
           </p>
 
           <div className="relative flex-1 overflow-hidden">
-            {/* Image placeholder, cropped from the left like the profile card */}
-            <div
-              className="absolute left-[-34px] top-[42px] h-[82px] w-[108px] rounded-[24px] border-[6px] border-white bg-[#F7F2EF] shadow-sm overflow-hidden z-10"
-              style={{
-                transform: showSlide ? "rotate(-5deg) translateX(0)" : "rotate(-5deg) translateX(-14px)",
-                opacity: showSlide || phase === "scribble" || phase === "line" ? 1 : 0,
-                transition: "transform 0.42s cubic-bezier(0.22,1,0.36,1), opacity 0.24s ease",
-              }}
-            >
-              {item.img ? (
-                <img src={item.img} alt="" className="h-full w-full object-cover" />
-              ) : (
-                <div className={`flex h-full w-full items-center justify-center text-[12px] tracking-[0.18em] text-[#B8AAA4] ${HEADING}`}>
-                  IMAGE
-                </div>
-              )}
+            <div key={`image-${step}`} className="absolute left-[-34px] top-[42px] h-[82px] w-[108px] rounded-[24px] border-[6px] border-white bg-[#F7F2EF] shadow-sm overflow-hidden z-10" style={{ animation: showSlide ? "timelineImageSlide 0.42s cubic-bezier(0.22,1,0.36,1) both" : "none", opacity: showSlide || phase === "scribble" || phase === "line" ? 1 : 0, transform: "rotate(-5deg)" }}>
+              {item.img ? <img src={item.img} alt="" className="h-full w-full object-cover" /> : <div className={`flex h-full w-full items-center justify-center text-[12px] tracking-[0.18em] text-[#B8AAA4] ${HEADING}`}>IMAGE</div>}
             </div>
 
-            <svg
-              className="absolute left-0 right-0 top-[42px] w-full h-[78px]"
-              viewBox="0 0 320 80"
-              preserveAspectRatio="none"
-              style={{ overflow: "visible" }}
-            >
-              <path
-                key={`line-${step}-${phase}`}
-                d={
-                  phase === "scribble"
-                    ? scribblePath
-                    : item.heart && showSlide
-                    ? heartLinePath
-                    : linePath
-                }
-                fill="none"
-                stroke={item.heart && showSlide ? "#D96F45" : "#2F2F2F"}
-                strokeWidth={item.heart && showSlide ? "1.7" : "1.3"}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{
-                  strokeDasharray: 520,
-                  strokeDashoffset:
-                    phase === "scribble" || phase === "line" || item.heart ? 520 : 0,
-                  animation:
-                    phase === "scribble"
-                      ? "tlDraw 0.38s ease forwards"
-                      : phase === "line"
-                      ? "tlDraw 0.32s cubic-bezier(0.22,1,0.36,1) forwards"
-                      : item.heart && showSlide
-                      ? "tlDraw 0.52s cubic-bezier(0.22,1,0.36,1) forwards"
-                      : "none",
-                  transition: "d 0.42s cubic-bezier(0.22,1,0.36,1), stroke 0.25s ease",
-                }}
-              />
-
-              {!item.heart && (
-                <circle
-                  key={`dot-${step}`}
-                  cx="160"
-                  cy="38"
-                  r={item.isNow ? "5" : "4"}
-                  fill={item.isNow ? "#D96F45" : "white"}
-                  stroke={item.isNow ? "#D96F45" : "#2F2F2F"}
-                  strokeWidth="1.6"
-                  style={{
-                    opacity: showSlide ? 1 : 0,
-                    transform: showSlide ? "translateX(0px)" : "translateX(120px)",
-                    transformBox: "fill-box",
-                    transformOrigin: "center",
-                    animation: showSlide ? "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both" : "none",
-                    transition: showSlide
-                      ? "opacity 0.2s ease"
-                      : "none",
-                    filter: item.isNow ? "drop-shadow(0 0 6px rgba(217,111,69,0.55))" : "none",
-                  }}
-                />
-              )}
+            <svg className="absolute left-0 right-0 top-[42px] w-full h-[78px]" viewBox="0 0 320 80" preserveAspectRatio="none" style={{ overflow: "visible" }}>
+              <path key={`line-${step}-${phase}`} d={phase === "scribble" ? scribblePath : item.heart && showSlide ? heartLinePath : linePath} fill="none" stroke={item.heart && showSlide ? "#D96F45" : "#2F2F2F"} strokeWidth={item.heart && showSlide ? "1.7" : "1.3"} strokeLinecap="round" strokeLinejoin="round" style={{ strokeDasharray: 520, strokeDashoffset: phase === "scribble" || phase === "line" || item.heart ? 520 : 0, animation: phase === "scribble" ? "tlDraw 0.38s ease forwards" : phase === "line" ? "tlDraw 0.32s cubic-bezier(0.22,1,0.36,1) forwards" : item.heart && showSlide ? "tlDraw 0.52s cubic-bezier(0.22,1,0.36,1) forwards" : "none", transition: "d 0.42s cubic-bezier(0.22,1,0.36,1), stroke 0.25s ease" }} />
+              {!item.heart && <circle key={`dot-${step}`} cx="160" cy="38" r={item.isNow ? "5" : "4"} fill={item.isNow ? "#D96F45" : "white"} stroke={item.isNow ? "#D96F45" : "#2F2F2F"} strokeWidth="1.6" style={{ opacity: showSlide ? 1 : 0, animation: showSlide ? "timelineDotSlide 0.42s cubic-bezier(0.22,1,0.36,1) both" : "none", filter: item.isNow ? "drop-shadow(0 0 6px rgba(217,111,69,0.55))" : "none" }} />}
             </svg>
 
-            <div
-              key={`content-${step}`}
-              className="absolute bottom-0 left-0 right-0 px-6 pb-5 text-left"
-              style={{
-                left: "0px",
-                opacity: showSlide ? 1 : 0,
-                transform: showSlide ? "translateX(0)" : "translateX(120px)",
-                animation: showSlide ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both" : "none",
-              }}
-            >
+            <div key={`content-${step}`} className="absolute bottom-0 left-0 right-0 px-6 pb-5 text-left" style={{ opacity: showSlide ? 1 : 0, animation: showSlide ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both" : "none" }}>
               <div className="flex items-baseline gap-2 whitespace-nowrap">
-                <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
-                  {item.year}
-                </span>
-                <span className={`text-[14px] font-semibold text-[#9A8176] ${HEADING}`}>
-                  {item.label}
-                </span>
+                <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>{item.year}</span>
+                <span className={`text-[14px] font-semibold text-[#9A8176] ${HEADING}`}>{item.label}</span>
               </div>
-
-              <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149] whitespace-nowrap">
-                {item.sub}
-              </p>
+              <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149] whitespace-nowrap">{item.sub}</p>
             </div>
           </div>
         </>
       )}
 
       <style>{`
-        @keyframes tlDraw {
-          from { stroke-dashoffset: 520; }
-          to { stroke-dashoffset: 0; }
-        }
-
-        @keyframes timelineContentSlide {
-          from { opacity: 0; transform: translateX(120px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes timelineDotSlide {
-          from { opacity: 0; transform: translateX(120px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
+        @keyframes tlDraw { from { stroke-dashoffset: 520; } to { stroke-dashoffset: 0; } }
+        @keyframes timelineContentSlide { from { opacity: 0; transform: translateX(120px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes timelineDotSlide { from { opacity: 0; transform: translateX(120px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes timelineImageSlide { from { opacity: 0; transform: rotate(-5deg) translateX(120px); } to { opacity: 1; transform: rotate(-5deg) translateX(0); } }
       `}</style>
     </div>
   );
@@ -1038,8 +925,8 @@ export default function PortfolioHome() {
   const [showThinking, setShowThinking] = useState(false);
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
-  const [instantType, setInstantType] = useState(true);
   const [workProjectSlug, setWorkProjectSlug] = useState("b2c");
+  const [instantType, setInstantType] = useState(true);
 
   useEffect(() => {
     const faviconPath = "/logo.jpg";
@@ -1125,9 +1012,7 @@ export default function PortfolioHome() {
 
   const handleNav = (item) => {
     if (item === "my work") {
-      setWorkProjectSlug("b2c");
-      window.history.replaceState(null, "", "#work=b2c");
-      setProjectOpen("work-browser");
+      openWorkProject("b2c");
       return;
     }
     if (item === "what are you building now") {
@@ -1171,7 +1056,7 @@ export default function PortfolioHome() {
     }
 
     if (active === "product strategy thinking") {
-      openWorkProject("ai-personalization");
+      openWorkProject("personalized-marketing");
       return;
     }
 
@@ -1287,7 +1172,7 @@ export default function PortfolioHome() {
           <div
             ref={chatCardRef}
             className="rounded-[32px] bg-white overflow-hidden flex flex-col relative"
-            style={{ gridColumn: "1", gridRow: "1 / 3", height: "520px" }}
+            style={{ gridColumn: "1", gridRow: "1 / 3", height: "520px", minHeight: 0 }}
           >
             <div className="px-6 pt-6 pb-3 shrink-0">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
@@ -1295,7 +1180,7 @@ export default function PortfolioHome() {
               </p>
             </div>
             {/* Scroll area — padding-bottom makes room for floating pills */}
-            <div ref={(el) => { chatScrollRef.current = el; _chatScrollEl = el; }} data-chat-scroll className="flex-1 overflow-y-auto px-6 no-scrollbar" style={{ paddingBottom: showPills ? "64px" : "16px" }}>
+            <div ref={(el) => { chatScrollRef.current = el; _chatScrollEl = el; }} data-chat-scroll className="flex-1 overflow-y-auto px-6 no-scrollbar" style={{ paddingBottom: "16px", minHeight: 0 }}>
               <ChatConversation
                 active={active}
                 showThinking={showThinking}
@@ -1309,18 +1194,17 @@ export default function PortfolioHome() {
             </div>
             {/* Pills: absolute bottom, fully transparent bg so chat content shows through */}
             {showPills && (
-              <div className="absolute bottom-0 left-0 right-0 px-6 pb-4 animate-[fadeUp_0.45s_ease_forwards]"
-                style={{ background: "none" }}>
+              <div className="shrink-0 px-6 pb-4 pt-3 animate-[fadeUp_0.45s_ease_forwards]">
                 <div className="no-scrollbar overflow-x-auto">
                   <div className="flex gap-2" style={{ width: "max-content" }}>
                     {PILLS.map((pill) => (
                       <button
                         key={pill}
                         onClick={() => handlePillSelect(pill)}
-                        className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] backdrop-blur-sm ${
+                        className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] ${
                           active === pill
-                            ? "bg-white/90 border-[#A5522A] text-[#A5522A]"
-                            : "bg-white/90 border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
+                            ? "bg-white border-[#A5522A] text-[#A5522A]"
+                            : "bg-white border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
                         } ${HEADING}`}
                       >
                         {pill}
@@ -1352,7 +1236,7 @@ export default function PortfolioHome() {
             <MyWorkTile
               onOpenProject={(key) => {
                 const slugByKey = {
-                  "marketing-tiles": "ai-personalization",
+                  "marketing-tiles": "personalized-marketing",
                   "ai-framer": "ai-chat-journeys",
                   "travel-dna": "vibe-coding",
                 };
@@ -1377,7 +1261,7 @@ export default function PortfolioHome() {
           <MyWorkTile
               onOpenProject={(key) => {
                 const slugByKey = {
-                  "marketing-tiles": "ai-personalization",
+                  "marketing-tiles": "personalized-marketing",
                   "ai-framer": "ai-chat-journeys",
                   "travel-dna": "vibe-coding",
                 };
