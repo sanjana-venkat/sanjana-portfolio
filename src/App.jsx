@@ -524,7 +524,7 @@ const TIMELINE_ITEMS = [
   { year: "2000s", label: "Childhood in India",      sub: "Grew up close to my roots, culture, and community",     heart: false, isNow: false, img: "/Childhood.jpg", lineStyle: "very-wavy",     orange: false },
   { year: "2014",  label: "Moved to the States",     sub: "A big leap — new country, new world",                   heart: false, isNow: false, img: "/2014.jpg",      lineStyle: "very-wavy",     orange: false },
   { year: "2018",  label: "Future teacher",          sub: "Wanted to teach, then found counseling psychology",     heart: false, isNow: false, img: "/2018.png",      lineStyle: "very-wavy",     orange: false },
-  { year: "2019",  label: "Best Presenter Award",    sub: "Publication on temple architecture, college conference",  heart: false, isNow: false, img: "/2019.jpg",      lineStyle: "very-wavy",     orange: false },
+  { year: "2019",  label: "Best Presenter Award",    sub: "Publication on temple architecture, college conference",  heart: false, isNow: false, img: "/2019.png",      lineStyle: "very-wavy",     orange: false },
   { year: "2020",  label: "Psychology major, UTD",   sub: "Studied how people think, feel, and make decisions",    heart: false, isNow: false, img: "/2020.jpg",      lineStyle: "slightly-wavy", orange: false },
   { year: "2021",  label: "Chetna · Graphic Design", sub: "Raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
   // After Chetna: lines go straight and orange
@@ -539,15 +539,15 @@ const TIMELINE_ITEMS = [
 
 // SURGICAL CHANGE 2: Three line paths replacing the single straight line + removing dampened wave
 // Very wavy: big organic undulations (psychology era)
-const LINE_VERY_WAVY   = "M 0 38 C 18 22, 36 54, 54 38 C 72 22, 90 54, 108 38 C 126 22, 144 54, 162 38 C 180 22, 198 54, 216 38 C 234 22, 252 52, 270 38 C 285 28, 300 38, 320 38";
+const LINE_VERY_WAVY   = "M 95 38 C 108 22, 122 54, 138 38 C 154 22, 168 54, 184 38 C 200 22, 214 54, 230 38 C 246 22, 260 52, 278 40 C 288 34, 295 38, 300 38";
 // Slightly wavy: gentler undulations (transition — psychology meets design)
-const LINE_SLIGHTLY_WAVY = "M 0 38 C 22 30, 44 46, 68 38 C 92 30, 114 46, 138 38 C 162 30, 186 46, 210 38 C 234 31, 258 44, 282 38 C 298 34, 310 40, 320 38";
+const LINE_SLIGHTLY_WAVY = "M 95 38 C 112 30, 130 46, 150 38 C 170 30, 188 46, 208 38 C 228 31, 248 44, 268 38 C 282 34, 293 40, 300 38";
 // Straight: full design era
-const LINE_STRAIGHT    = "M 0 38 C 80 38, 200 38, 320 38";
+const LINE_STRAIGHT    = "M 95 38 C 150 38, 220 38, 300 38";
 
 // SURGICAL CHANGE 3: Idle scribble matches the screenshot — loopy knot trailing into a line
 // Scribble ends at ~x=95,y=38 so it flows naturally into LINE_VERY_WAVY which starts there
-const SCRIBBLE_PATH = "M 155 55 C 140 30, 115 18, 108 36 C 100 56, 120 74, 142 62 C 164 50, 166 26, 150 24 C 132 22, 116 44, 132 60 C 148 76, 170 68, 155 48 C 142 32, 128 30, 112 36 C 100 40, 0 38, 0 38";
+const SCRIBBLE_PATH = "M 155 55 C 140 30, 115 18, 108 36 C 100 56, 120 74, 142 62 C 164 50, 166 26, 150 24 C 132 22, 116 44, 132 60 C 148 76, 170 68, 155 48 C 142 32, 128 30, 112 36 C 100 40, 95 38, 95 38";
 const SCRIBBLE_LEN = 520;
 
 function NavTile() {
@@ -655,12 +655,12 @@ function NavTile() {
 
           <div className="relative flex-1 flex flex-col justify-between overflow-hidden">
             {/* CENTER BLOCK: image + line, vertically centered in available space */}
-            <div className="flex-1 relative">
-              {/* IMAGE — desktop: absolute left; mobile: hidden here, shown below */}
+            <div className="flex-1 relative lg:block hidden">
+              {/* IMAGE — desktop only: absolute left */}
               {item.img && (
                 <div
                   key={`img-${step}`}
-                  className="absolute overflow-hidden hidden lg:block"
+                  className="absolute overflow-hidden"
                   style={{
                     top: "50%",
                     left: "-8px",
@@ -686,7 +686,7 @@ function NavTile() {
                 </div>
               )}
 
-              {/* SVG LINE + OVAL + HEART — centered vertically */}
+              {/* SVG LINE — desktop only, absolute centered */}
               <svg
                 className="absolute left-0 right-0 w-full h-[78px]"
                 viewBox="0 0 320 80"
@@ -774,17 +774,95 @@ function NavTile() {
               </svg>
             </div>
 
-            {/* MOBILE IMAGE — shown below SVG line, centered */}
-            {item.img && (
-              <div className="flex justify-center mt-4 mb-2 lg:hidden">
+            {/* MOBILE LAYOUT — SVG line then image, all normal flow */}
+            <div className="lg:hidden flex flex-col flex-1">
+              {/* Mobile SVG line — fixed height, normal flow */}
+              <div style={{ height: "60px", position: "relative", flexShrink: 0 }}>
+                <svg
+                  className="absolute left-0 right-0 w-full h-full"
+                  viewBox="0 0 320 60"
+                  preserveAspectRatio="none"
+                  style={{ overflow: "visible" }}
+                >
+                  {phase === "scribble" && (
+                    <path
+                      d={SCRIBBLE_PATH}
+                      fill="none"
+                      stroke="#2F2F2F"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{
+                        strokeDasharray: SCRIBBLE_LEN,
+                        strokeDashoffset: SCRIBBLE_LEN,
+                        animation: "tlScribbleDraw 0.6s cubic-bezier(0.4,0,0.6,1) forwards",
+                      }}
+                    />
+                  )}
+                  {showLine && phase !== "scribble" && (
+                    <path
+                      key={`line-m-${step}-${phase}`}
+                      d={linePath.replace(/38/g, "30")}
+                      fill="none"
+                      stroke={strokeColor}
+                      strokeWidth="1.3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{
+                        strokeDasharray: 520,
+                        strokeDashoffset: phase === "line" ? 520 : 0,
+                        animation: phase === "line"
+                          ? "tlDraw 0.45s cubic-bezier(0.22,1,0.36,1) forwards"
+                          : "none",
+                      }}
+                    />
+                  )}
+                  {item.heart && showContent && (
+                    <g key={`heart-m-${step}`}>
+                      <path
+                        d="M 160 36 C 153 31 149 26 149 23 C 149 19 152 17 155 18 C 157 19 159 21 160 23 C 161 21 163 19 165 18 C 168 17 171 19 171 23 C 171 26 167 31 160 36 Z"
+                        fill="none"
+                        stroke={strokeColor}
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        style={{
+                          strokeDasharray: 80,
+                          strokeDashoffset: 80,
+                          animation: "tlHeartDraw 0.55s cubic-bezier(0.4,0,0.2,1) forwards",
+                        }}
+                      />
+                    </g>
+                  )}
+                  {showContent && !item.heart && (
+                    <circle
+                      key={`dot-m-${step}`}
+                      cx="160"
+                      cy="30"
+                      r="5"
+                      fill={item.isNow ? "#D96F45" : "white"}
+                      stroke={item.isNow ? "#D96F45" : strokeColor}
+                      strokeWidth="1.6"
+                      style={{
+                        animation: phase === "content"
+                          ? item.isNow
+                            ? "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both, tlNowGlow 1.8s ease-in-out 0.5s infinite"
+                            : "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both"
+                          : item.isNow ? "tlNowGlow 1.8s ease-in-out 0.5s infinite" : "none",
+                        filter: item.isNow ? "drop-shadow(0 0 5px rgba(217,111,69,0.8))" : "none",
+                      }}
+                    />
+                  )}
+                </svg>
+              </div>
+              {/* Mobile image — below line, full width, no tilt */}
+              {item.img && (
                 <div
                   key={`img-mobile-${step}`}
+                  className="mx-4 mt-3"
                   style={{
-                    width: "100%",
-                    height: "160px",
-                    borderRadius: "18px",
-                    border: "5px solid #FFFFFF",
-                    boxShadow: "0 4px 16px rgba(0,0,0,0.13)",
+                    height: "200px",
+                    borderRadius: "16px",
                     overflow: "hidden",
                     opacity: imgVisible ? 1 : 0,
                     transform: imgVisible ? "translateY(0px)" : "translateY(8px)",
@@ -798,8 +876,8 @@ function NavTile() {
                     onError={(e) => { e.currentTarget.style.display = "none"; }}
                   />
                 </div>
-              </div>
-            )}
+              )}
+            </div>
 
             {/* SURGICAL CHANGE 8: content only animates on phase==="content", not on "hold" (stops re-sliding) */}
             <div
