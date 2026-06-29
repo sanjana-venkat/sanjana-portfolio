@@ -779,8 +779,8 @@ function NavTile() {
               </svg>
             </div>
 
-            {/* MOBILE LAYOUT, SVG line then image, all normal flow */}
-            <div className="lg:hidden flex flex-col flex-1">
+            {/* MOBILE LAYOUT: SVG line, text, then cropped bottom image */}
+            <div className="lg:hidden flex flex-col flex-1 min-h-[430px]">
               {/* Mobile SVG line, fixed height, normal flow */}
               <div style={{ height: "60px", position: "relative", flexShrink: 0 }}>
                 <svg
@@ -860,17 +860,41 @@ function NavTile() {
                   )}
                 </svg>
               </div>
-              {/* Mobile image, below line, full width, no tilt */}
+              {/* Mobile text above image */}
+              <div
+                key={`content-mobile-${step}`}
+                className="px-6 pt-4 pb-5 text-left shrink-0"
+                style={{
+                  opacity: showContent ? 1 : 0,
+                  animation: phase === "content"
+                    ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both"
+                    : "none",
+                }}
+              >
+                <div className="flex items-baseline gap-2 whitespace-nowrap">
+                  <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
+                    {item.year}
+                  </span>
+                  <span className={`text-[14px] font-semibold text-[#9A8176] ${HEADING}`}>
+                    {item.label}
+                  </span>
+                </div>
+                <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149] whitespace-nowrap">
+                  {item.sub}
+                </p>
+              </div>
+
+              {/* Mobile image pinned bottom, fixed height, cropped off like profile tile */}
               {item.img && (
                 <div
                   key={`img-mobile-${step}`}
-                  className="mx-4 mt-3"
+                  className="mx-5 mt-auto"
                   style={{
-                    height: "200px",
-                    borderRadius: "16px",
+                    height: "230px",
+                    borderRadius: "22px 22px 0 0",
                     overflow: "hidden",
                     opacity: imgVisible ? 1 : 0,
-                    transform: imgVisible ? "translateY(0px)" : "translateY(8px)",
+                    transform: imgVisible ? "translateY(0px)" : "translateY(10px)",
                     transition: "opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)",
                   }}
                 >
@@ -887,7 +911,7 @@ function NavTile() {
             {/* SURGICAL CHANGE 8: content only animates on phase==="content", not on "hold" (stops re-sliding) */}
             <div
               key={`content-${step}`}
-              className="px-6 pb-4 text-left lg:text-left text-center shrink-0"
+              className="hidden lg:block px-6 pb-4 text-left shrink-0"
               style={{
                 opacity: showContent ? 1 : 0,
                 animation: phase === "content"
@@ -895,7 +919,7 @@ function NavTile() {
                   : "none",
               }}
             >
-              <div className="flex items-baseline gap-2 whitespace-nowrap lg:justify-start justify-center">
+              <div className="flex items-baseline gap-2 whitespace-nowrap justify-start">
                 <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
                   {item.year}
                 </span>
@@ -903,7 +927,7 @@ function NavTile() {
                   {item.label}
                 </span>
               </div>
-              <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149] whitespace-nowrap lg:text-left text-center">
+              <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149] whitespace-nowrap text-left">
                 {item.sub}
               </p>
             </div>
