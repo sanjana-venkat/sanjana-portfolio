@@ -529,7 +529,7 @@ const TIMELINE_ITEMS = [
   { year: "2021",  label: "Chetna · Graphic Design", sub: "Dabbled into design, raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
   // After Chetna: lines go straight and orange
   { year: "2022",  label: "Dialexa",                 sub: "Built an AR travel concept for with Dialexa, DTour",   heart: false, isNow: false, img: "/2022.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2022",  label: "VP, UX Club",             sub: "Organized design competitions and conferences with Paycom, Bottle Rocket & Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true  },
+  { year: "2022",  label: "VP, UX Club",             sub: "Organized design events with Paycom, Bottle Rocket & Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true  },
   { year: "2023",  label: "Paycom",                  sub: "Associate Product Designer, B2B enterprise subteam, design system focus",    heart: false, isNow: false, img: "/2023.jpg",      lineStyle: "straight",      orange: true  },
   { year: "2024",  label: "JPMC · Senior PD",        sub: "Owned apply flow and HELOC 0-to-1",    heart: false, isNow: false, img: "/2024.jpg",      lineStyle: "straight",      orange: true  },
   { year: "2025",  label: "JPMC · Lead",         sub: "Led AI & Marketing and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true  },
