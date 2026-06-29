@@ -24,7 +24,7 @@ const TRAVEL_DNA_URL =
 
 const WAYFARER_URL = TRAVEL_DNA_URL;
 
-const RESUME_URL = "/SanjanaVenkat_ProductDesign_Resume.pdf";
+const RESUME_URL = "/SanjanaVenkat_Design-Engineer_Resume1.pdf";
 const GITHUB_URL = "https://github.com/sanjana-venkat";
 
 const BODY = "[font-family:'Open_Sans',sans-serif]";
@@ -32,17 +32,18 @@ const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
 const TYPEWRITE = "[font-family:'JetBrains_Mono',monospace]";
 
 const PILLS = [
-  "how i uncover user needs",
+  "how do you uncover user needs",
+  "how do you ship fast",
+  "model design",
   "let's talk AI",
   "product strategy thinking",
   "designing systems at scale",
-  "how i ship fast",
   "tell me your story",
-  "how i get exec-buy in"
+  "how do you get exec buy-in",
 ];
 
 const CONTENT = {
-  "how i uncover user needs": `I look beyond surface-level metrics to understand the intent behind user behavior. At JPMC, we were a small team trying to reduce drop-offs in an application flow.
+  "how do you uncover user needs": `I look beyond surface-level metrics to understand the intent behind user behavior. At JPMC, we were a small team trying to reduce drop-offs in an application flow.
 
 Tired of not seeing drastic impact, we went deep into the data and I made a funnel visualization that revealed something simple but important:
 
@@ -99,7 +100,7 @@ It helped designers think beyond "change the content" or "add bigger tiles" and 
 • self-service moments
 • backend dependencies`,
 
-  "how i ship fast": `I move quickly by combining systems thinking, rapid prototyping, and close engineering collaboration.
+  "how do you ship fast": `I move quickly by combining systems thinking, rapid prototyping, and close engineering collaboration.
 
 At JPMC, I analyzed edge cases for 20+ offers and built a plug-and-play offer template using atomic design principles.
 
@@ -128,7 +129,7 @@ I joined as a Senior Product Designer and moved quickly into AI initiatives, mar
 
 I learn by doing, and I do a lot :).`,
 
-  "how i get exec-buy in": `I learnt that empathy is not just used in design, but also with stakeholders. 
+  "how do you get exec buy-in": `I learnt that empathy is not just used in design, but also with stakeholders. 
 
 Instead of trying to convince stakeholders, I start from where they are and we walk together toward a new shared vision. 
 
@@ -141,7 +142,18 @@ When I present, I focus on:
 • Why it matters
 • What decision needs to be made
 
-Because I learned that good design doesn't work unless people understand it.`
+Because I learned that good design doesn't work unless people understand it.`,
+
+  "model design": `I drove work and teams towards launch and learn even in a traditionally slower environment. I was known as the "all-in-one" designer because of my deep collaboration with product, engineering, marketing, senior leadership — and yes, data science and ML teams too.
+
+That's why I was so excited to see Model Designer as a role. I'm genuinely more interested in this than visual design, and I want to shape the UX strategy behind model classification, filtering, and response mapping.
+
+At JPMC:
+• Need-based framework — I built a behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment
+• Casey AI — I shaped model responses and defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations
+
+Personal project:
+• I built Outdone because I felt personalization relies too much on historical data and forgets what someone might want today. I classified people into 9 archetypes so Gemini could sort all possible responses into these categories. I wired the APIs myself, and intentionally showed users how the AI was generating responses in the loading state — because I think AI should feel understandable, not magical.`
 };
 
 const USER_NEEDS_REST = `The first outcome wasn't perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
@@ -153,13 +165,13 @@ In a few sprints, we pushed toward redesigning the full journey and got design s
 Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
-  { label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
-  { label: "AI Personalization", title: "Product Strategy Thinking", url: MARKETING_TILES_URL },
-  { label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
-  { label: "AI chat journeys", title: "AI Chat Journeys", url: AI_FRAMER_URL },
-  { label: "Agentic Conversational AI", title: "Casey AI", url: CASEY_AI_URL },
-  { label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
-  { label: "Vibe Coding", title: "Travel DNA", url: TRAVEL_DNA_URL }
+  { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
+  { slug: "ai-personalization", label: "personalized marketing", title: "Product Strategy Thinking", url: MARKETING_TILES_URL },
+  { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
+  { slug: "ai-chat-journeys", label: "AI chat journeys", title: "AI Chat Journeys", url: AI_FRAMER_URL },
+  { slug: "conversational-agentic-ai", label: "Agentic Conversational AI", title: "Casey AI", url: CASEY_AI_URL },
+  { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
+  { slug: "model-design", label: "Model Design", title: "Model Design", url: TRAVEL_DNA_URL }
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
@@ -230,7 +242,7 @@ function PlayIcon() {
 // Module-level scroll target — set by the chat scroll div, read by Typewriter directly
 let _chatScrollEl = null;
 
-function Typewriter({ text, shouldStart, onDone }) {
+function Typewriter({ text, shouldStart, onDone, instant = false }) {
   const cleanText = (text || "").trim();
   const [displayed, setDisplayed] = useState("");
   const [typedText, setTypedText] = useState(null);
@@ -238,6 +250,17 @@ function Typewriter({ text, shouldStart, onDone }) {
   useEffect(() => { onDoneRef.current = onDone; }, [onDone]);
 
   useEffect(() => {
+    setTypedText(null);
+  }, [cleanText]);
+
+  useEffect(() => {
+    if (instant) {
+      setDisplayed(cleanText);
+      setTypedText(cleanText);
+      setTimeout(() => onDoneRef.current?.(), 0);
+      return;
+    }
+
     if (!shouldStart) return;
 
     if (typedText === cleanText) {
@@ -273,7 +296,7 @@ function Typewriter({ text, shouldStart, onDone }) {
       clearTimeout(startDelay);
       clearInterval(interval);
     };
-  }, [cleanText, shouldStart, typedText]);
+  }, [cleanText, shouldStart, typedText, instant]);
 
   return (
     <p className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
@@ -326,8 +349,18 @@ function FramerModal({ title, url, onClose }) {
   );
 }
 
-function WorkBrowserModal({ onClose }) {
-  const [activeProject, setActiveProject] = useState(PROJECTS[0]);
+function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
+  const getProjectBySlug = (slug) =>
+    PROJECTS.find((project) => project.slug === slug) || PROJECTS[0];
+
+  const [activeProject, setActiveProject] = useState(() =>
+    getProjectBySlug(initialSlug)
+  );
+
+  const selectProject = (project) => {
+    setActiveProject(project);
+    window.history.replaceState(null, "", `#work=${project.slug}`);
+  };
 
   return (
     <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
@@ -346,7 +379,7 @@ function WorkBrowserModal({ onClose }) {
           {PROJECTS.map((project) => (
             <button
               key={project.label}
-              onClick={() => setActiveProject(project)}
+              onClick={() => selectProject(project)}
               className={`shrink-0 rounded-full border px-6 py-3 text-[14px] font-medium transition sm:px-7 sm:text-[15px] ${
                 activeProject.label === project.label
                   ? "border-[#9C3F14] bg-white text-[#9C3F14]"
@@ -373,53 +406,74 @@ function FigmaDeckModal({ onClose }) {
 /* ─── BENTO TILE: Hero (name + tagline + profile pic popping out) ─── */
 function HeroTile() {
   return (
-    /*
-      Figma spec:
-      - bg: rgba(156,63,20,0.17) warm terracotta tint
-      - pic: 192x216, border 8.6px white, border-radius 22px, rotate(9.83deg)
-      - pic anchored top-right, overflows the tile boundary (overflow-visible)
-      - text: name 40px #9C3F14, tagline 16px #57423A
-    */
-    <div
-      className="relative overflow-hidden rounded-[32px] p-8 flex flex-col justify-center"
-      style={{
-        background: "rgba(156, 63, 20, 0.17)",
-        minHeight: "219px",
-        paddingRight: "220px",
-      }}
-    >
-      {/* Name */}
-      <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] whitespace-nowrap ${HEADING}`}
-        style={{ fontSize: "40px" }}>
-        Sanjana Venkat
-      </h1>
-      {/* Tagline */}
-      <p className="mt-2 text-[16px] leading-[1.5]" style={{ color: "#57423A" }}>
-        I turn ambiguity into direction. Let me show you.
-      </p>
-
-      {/* Profile pic — bottom-right, tilted 9.83deg, white border, bottom clips at tile edge */}
+    <>
+      {/* ── DESKTOP hero ── */}
       <div
-        className="absolute overflow-hidden"
+        className="relative overflow-hidden rounded-[32px] p-8 flex-col justify-center hidden lg:flex"
         style={{
-          width: "200px",
-          height: "240px",
-          bottom: "-55px",
-          right: "32px",
-          borderRadius: "22px",
-          border: "8px solid #FFFFFF",
-          boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
-          transform: "rotate(9.83deg)",
-          zIndex: 30,
+          background: "rgba(156, 63, 20, 0.17)",
+          minHeight: "219px",
+          paddingRight: "220px",
         }}
       >
-        <img
-          src="/profile.jpg"
-          alt="Sanjana Venkat"
-          className="w-full h-full object-cover object-center"
-        />
+        <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] whitespace-nowrap ${HEADING}`}
+          style={{ fontSize: "40px" }}>
+          Sanjana Venkat
+        </h1>
+        <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
+          I turn ambiguity into direction. Deeply understanding how people think.
+        </p>
+        <div
+          className="absolute overflow-hidden"
+          style={{
+            width: "200px",
+            height: "240px",
+            bottom: "-55px",
+            right: "32px",
+            borderRadius: "22px",
+            border: "8px solid #FFFFFF",
+            boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
+            transform: "rotate(9.83deg)",
+            zIndex: 30,
+          }}
+        >
+          <img src="/profile.jpg" alt="Sanjana Venkat" className="w-full h-full object-cover object-center" />
+        </div>
       </div>
-    </div>
+
+      {/* ── MOBILE hero — taller, image centered at bottom ── */}
+      <div
+        className="relative overflow-hidden rounded-[32px] p-8 pb-0 flex flex-col lg:hidden"
+        style={{
+          background: "rgba(156, 63, 20, 0.17)",
+          minHeight: "280px",
+        }}
+      >
+        <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] ${HEADING}`}
+          style={{ fontSize: "36px" }}>
+          Sanjana Venkat
+        </h1>
+        <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
+          I turn ambiguity into direction. Deeply understanding how people think.
+        </p>
+        {/* Image centered at bottom */}
+        <div className="flex justify-center mt-6">
+          <div
+            className="overflow-hidden"
+            style={{
+              width: "180px",
+              height: "210px",
+              borderRadius: "22px",
+              border: "8px solid #FFFFFF",
+              boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1)",
+              transform: "rotate(3deg)",
+            }}
+          >
+            <img src="/profile.jpg" alt="Sanjana Venkat" className="w-full h-full object-cover object-center" />
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -432,73 +486,360 @@ function WhatIBelieveTile() {
           what i believe in
         </p>
 
-        <p className="leading-[1.65] text-[#5F5149]">
-          i believe good products don't just solve problems. they reveal ones people didn't know they had.
+        <p className="leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
+          I majored in psychology because I love thinking about how people think. And that curiosity never left, it just found a new home in product design.
         </p>
 
-        <p className="mt-4 leading-[1.65] text-[#5F5149]">
-          with AI and personalization, that gap gets smaller. But the real work is still human: listening, framing, building things that help people move forward.
+        <p className="mt-3 leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
+          I always tried to get closer to user needs and intent with data analytics, user research, or recently model design to classify, filter and map responses. With good design, I want to meet users where they are and also take them where they want to be.
         </p>
       </div>
 
-      <div className="mt-6 flex items-center gap-4">
-        <a href="mailto:sanjanavnkt20@gmail.com" aria-label="Email Sanjana" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
-          <span className="flex h-full w-full items-center justify-center leading-none"><MailIcon /></span>
-        </a>
-
-        <a href="https://www.linkedin.com/in/sanjana-venkat/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 text-[13px] font-semibold leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A] ${HEADING}`}>
-          <span className="flex h-full w-full items-center justify-center leading-none">in</span>
+      <div className="mt-6 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <a href="mailto:sanjanavnkt20@gmail.com" aria-label="Email Sanjana" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
+            <span className="flex h-full w-full items-center justify-center leading-none"><MailIcon /></span>
+          </a>
+          <a href="https://www.linkedin.com/in/sanjana-venkat/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 text-[13px] font-semibold leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A] ${HEADING}`}>
+            <span className="flex h-full w-full items-center justify-center leading-none">in</span>
+          </a>
+        </div>
+        <a
+          href="/SanjanaVenkat_ProductDesign_Resume.pdf"
+          target="_blank"
+          rel="noreferrer"
+          className={`inline-flex items-center gap-1 text-[13px] text-[#8A817B] underline underline-offset-4 hover:text-[#A5522A] transition ${HEADING}`}
+        >
+          resume →
         </a>
       </div>
     </article>
   );
 }
 
-/* ─── BENTO TILE: Nav Pills (fixed height) ─── */
-function NavTile({ onNav }) {
-  const items = ["what are you building now", "resume", "github", "contact"];
+/* ─── BENTO TILE: Animated Timeline ─── */
+
+// SURGICAL CHANGE 1: Added lineStyle per item — "very-wavy" | "slightly-wavy" | "straight"
+// and orange flag for post-Chetna items. Removed the two wave:true dampened oscillation items.
+const TIMELINE_ITEMS = [
+  { year: "2000s", label: "Childhood in India",      sub: "Grew up close to my roots, culture, and community",     heart: false, isNow: false, img: "/Childhood.jpg", lineStyle: "very-wavy",     orange: false },
+  { year: "2014",  label: "Moved to the States",     sub: "A big leap — new country, new world",                   heart: false, isNow: false, img: "/2014.jpg",      lineStyle: "very-wavy",     orange: false },
+  { year: "2018",  label: "Future teacher",          sub: "Wanted to teach, then found counseling psychology",     heart: false, isNow: false, img: "/2018.png",      lineStyle: "very-wavy",     orange: false },
+  { year: "2020",  label: "Psychology major, UTD",   sub: "Studied how people think, feel, and make decisions",    heart: false, isNow: false, img: "/2020.jpg",      lineStyle: "slightly-wavy", orange: false },
+  { year: "2021",  label: "Chetna · Graphic Design", sub: "Raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
+  // After Chetna: lines go straight and orange
+  { year: "2022",  label: "Dialexa",                 sub: "Dabbled into design — built an AR concept for DTour",   heart: false, isNow: false, img: "/2022.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2022",  label: "VP, UX Club",             sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true  },
+  { year: "2023",  label: "Paycom",                  sub: "Associate Product Designer, B2B enterprise subteam",    heart: false, isNow: false, img: "/2023.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2024",  label: "JPMC · Senior PD",        sub: "Owned apply flow, HELOC 0-to-1 and AI initiatives",    heart: false, isNow: false, img: "/2024.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2025",  label: "JPMC AI Lead",         sub: "Led Marketing + AI and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2026",  label: "Married · Bay Area",      sub: "Moved to the Bay Area for a new chapter",              heart: true,  isNow: false, img: "/2026.png",      lineStyle: "straight",      orange: true  },
+  { year: "NOW",   label: "Design Engineer",         sub: "Building polished AI product ideas fast",              heart: false, isNow: true,  img: "/2026.jpg",      lineStyle: "straight",      orange: true  },
+];
+
+// SURGICAL CHANGE 2: Three line paths replacing the single straight line + removing dampened wave
+// Very wavy: big organic undulations (psychology era)
+const LINE_VERY_WAVY   = "M 95 38 C 108 22, 122 54, 138 38 C 154 22, 168 54, 184 38 C 200 22, 214 54, 230 38 C 246 22, 260 52, 278 40 C 288 34, 295 38, 300 38";
+// Slightly wavy: gentler undulations (transition — psychology meets design)
+const LINE_SLIGHTLY_WAVY = "M 95 38 C 112 30, 130 46, 150 38 C 170 30, 188 46, 208 38 C 228 31, 248 44, 268 38 C 282 34, 293 40, 300 38";
+// Straight: full design era
+const LINE_STRAIGHT    = "M 95 38 C 150 38, 220 38, 300 38";
+
+// SURGICAL CHANGE 3: Idle scribble matches the screenshot — loopy knot trailing into a line
+const SCRIBBLE_PATH = "M 160 55 C 145 30, 120 18, 112 36 C 104 56, 124 74, 146 62 C 168 50, 170 26, 154 24 C 136 22, 120 44, 136 60 C 152 76, 174 68, 180 50 C 188 30, 176 20, 165 28 C 188 40, 225 42, 275 40 C 288 40, 298 40, 308 40";
+const SCRIBBLE_LEN = 600;
+
+function NavTile() {
+  const [active, setActive]         = useState(false);
+  const [step, setStep]             = useState(0);
+  const [phase, setPhase]           = useState("idle");
+  const [imgVisible, setImgVisible] = useState(false);
+  const timers = useRef([]);
+
+  const clearAll = () => { timers.current.forEach(clearTimeout); timers.current = []; };
+  const push = (fn, ms) => { const t = setTimeout(fn, ms); timers.current.push(t); return t; };
+
+  const runStep = (s, isFirst) => {
+    clearAll();
+    setStep(s);
+    setImgVisible(false);
+
+    const item = TIMELINE_ITEMS[s];
+    const hold = item.isNow ? 3600 : item.heart ? 2800 : 2200;
+
+    if (isFirst) {
+      setPhase("scribble");
+      push(() => setPhase("line"),    600);
+      push(() => setPhase("content"), 1050);
+      push(() => setImgVisible(true), 1450);
+      push(() => setPhase("hold"),    1350);
+      push(() => runStep(1, false),   1350 + hold);
+    } else {
+      setPhase("line");
+      push(() => setPhase("content"), 450);
+      push(() => setImgVisible(true), 850);
+      push(() => setPhase("hold"),    600);
+      push(() => runStep((s + 1) % TIMELINE_ITEMS.length, false), 600 + hold);
+    }
+  };
+
+  const startAnimation = () => {
+    if (active) return;
+    setActive(true);
+    runStep(0, true);
+  };
+
+  const stopAnimation = () => {
+    clearAll();
+    setActive(false);
+    setStep(0);
+    setPhase("idle");
+    setImgVisible(false);
+  };
+
+  useEffect(() => () => clearAll(), []);
+
+  const item        = TIMELINE_ITEMS[step];
+
+  // SURGICAL CHANGE 4: pick line path and stroke color per item
+  const linePath    = item.lineStyle === "very-wavy"
+    ? LINE_VERY_WAVY
+    : item.lineStyle === "slightly-wavy"
+    ? LINE_SLIGHTLY_WAVY
+    : LINE_STRAIGHT;
+  const strokeColor = item.orange ? "#A5522A" : "#2F2F2F";
+
+  const showLine    = phase === "line" || phase === "content" || phase === "hold";
+  const showContent = phase === "content" || phase === "hold";
+
   return (
-    <div className={`rounded-[32px] bg-white p-6 flex flex-col gap-2 h-full ${BODY}`} style={{ minHeight: "220px" }}>
-      <p className={`mb-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
-        explore
-      </p>
-      {items.map((item) => (
-        <button
-          key={item}
-          onClick={() => onNav(item)}
-          className={`w-full rounded-full border border-[#E4E2E1] bg-white px-5 py-3 text-left text-[14px] font-medium text-[#221B16] transition hover:scale-[1.02] hover:border-[#D8C5BB] ${HEADING}`}
-        >
-          {item}
-        </button>
-      ))}
+    <div
+      className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative select-none cursor-pointer ${BODY}`}
+      style={{ minHeight: "280px" }}
+      onMouseEnter={startAnimation}
+      onMouseLeave={stopAnimation}
+      onClick={startAnimation}
+    >
+      {/* ── IDLE ── */}
+      {!active && (
+        <div className="absolute inset-0 flex flex-col px-6 pt-6 pb-5">
+          <p className={`text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] mb-4 ${HEADING}`}>
+            my story
+          </p>
+          <div className="flex-1 relative overflow-hidden">
+            {/* SURGICAL CHANGE 5: idle scribble uses the new loopy path */}
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet">
+              <path
+                d={SCRIBBLE_PATH}
+                fill="none"
+                stroke="#D4CBC6"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <p className={`absolute bottom-0 left-0 text-[10px] text-[#C0B8B4] ${HEADING}`}>
+              hover to explore
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* ── ACTIVE ── */}
+      {active && (
+        <>
+          <p className={`pt-6 px-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
+            my story
+          </p>
+
+          <div className="relative flex-1 flex flex-col justify-between overflow-hidden">
+            {/* CENTER BLOCK: image + line, vertically centered in available space */}
+            <div className="flex-1 relative">
+              {/* IMAGE */}
+              {item.img && (
+                <div
+                  key={`img-${step}`}
+                  className="absolute overflow-hidden"
+                  style={{
+                    top: "50%",
+                    left: "-8px",
+                    transform: imgVisible
+                      ? "translateY(-50%) rotate(-5deg)"
+                      : "translateY(-50%) rotate(-5deg) translateX(-10px)",
+                    width: "110px",
+                    height: "150px",
+                    borderRadius: "20px",
+                    border: "5px solid #FFFFFF",
+                    boxShadow: "0 4px 16px rgba(0,0,0,0.13)",
+                    opacity: imgVisible ? 1 : 0,
+                    transition: "opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)",
+                    zIndex: 10,
+                  }}
+                >
+                  <img
+                    src={item.img}
+                    alt={item.label}
+                    className="w-full h-full object-cover"
+                    onError={(e) => { e.currentTarget.style.display = "none"; }}
+                  />
+                </div>
+              )}
+
+              {/* SVG LINE + OVAL + HEART — centered vertically */}
+              <svg
+                className="absolute left-0 right-0 w-full h-[78px]"
+                viewBox="0 0 320 80"
+                preserveAspectRatio="none"
+                style={{ top: "50%", transform: "translateY(-50%)", overflow: "visible" }}
+              >
+                {phase === "scribble" && (
+                  <path
+                    key="scribble"
+                    d={SCRIBBLE_PATH}
+                    fill="none"
+                    stroke="#2F2F2F"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    style={{
+                      strokeDasharray: SCRIBBLE_LEN,
+                      strokeDashoffset: SCRIBBLE_LEN,
+                      animation: "tlScribbleDraw 0.6s cubic-bezier(0.4,0,0.6,1) forwards",
+                    }}
+                  />
+                )}
+
+                {/* SURGICAL CHANGE 6: use linePath (wavy or straight) and strokeColor (orange or dark) */}
+                {showLine && phase !== "scribble" && (
+                  <path
+                    key={`line-${step}-${phase}`}
+                    d={linePath}
+                    fill="none"
+                    stroke={strokeColor}
+                    strokeWidth="1.3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    style={{
+                      strokeDasharray: 520,
+                      strokeDashoffset: phase === "line" ? 520 : 0,
+                      animation: phase === "line"
+                        ? "tlDraw 0.45s cubic-bezier(0.22,1,0.36,1) forwards"
+                        : "none",
+                    }}
+                  />
+                )}
+
+                {item.heart && showContent && (
+                  <g key={`heart-${step}`}>
+                    {/* Outline only, smaller, centered on the line (cy=38) */}
+                    <path
+                      d="M 160 43 C 153 38 149 33 149 30 C 149 26 152 24 155 25 C 157 26 159 28 160 30 C 161 28 163 26 165 25 C 168 24 171 26 171 30 C 171 33 167 38 160 43 Z"
+                      fill="none"
+                      stroke={strokeColor}
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{
+                        strokeDasharray: 80,
+                        strokeDashoffset: 80,
+                        animation: "tlHeartDraw 0.55s cubic-bezier(0.4,0,0.2,1) forwards",
+                      }}
+                    />
+                  </g>
+                )}
+
+                {/* SURGICAL CHANGE 7: oval instead of circle, animate only on phase==="content" not "hold" */}
+                {showContent && !item.heart && (
+                  <circle
+                    key={`dot-${step}`}
+                    cx="160"
+                    cy="38"
+                    r="5"
+                    fill={item.isNow ? "#D96F45" : "white"}
+                    stroke={item.isNow ? "#D96F45" : strokeColor}
+                    strokeWidth="1.6"
+                    style={{
+                      animation: phase === "content"
+                        ? item.isNow
+                          ? "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both, tlNowGlow 1.8s ease-in-out 0.5s infinite"
+                          : "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both"
+                        : item.isNow
+                          ? "tlNowGlow 1.8s ease-in-out 0.5s infinite"
+                          : "none",
+                      filter: item.isNow ? "drop-shadow(0 0 5px rgba(217,111,69,0.8))" : "none",
+                    }}
+                  />
+                )}
+              </svg>
+            </div>
+
+            {/* SURGICAL CHANGE 8: content only animates on phase==="content", not on "hold" (stops re-sliding) */}
+            <div
+              key={`content-${step}`}
+              className="px-6 pb-4 text-left shrink-0"
+              style={{
+                opacity: showContent ? 1 : 0,
+                animation: phase === "content"
+                  ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both"
+                  : "none",
+              }}
+            >
+              <div className="flex items-baseline gap-2 whitespace-nowrap">
+                <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
+                  {item.year}
+                </span>
+                <span className={`text-[14px] font-semibold text-[#9A8176] ${HEADING}`}>
+                  {item.label}
+                </span>
+              </div>
+              <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149] whitespace-nowrap">
+                {item.sub}
+              </p>
+            </div>
+          </div>
+        </>
+      )}
+
+      <style>{`
+        @keyframes tlScribbleDraw {
+          from { stroke-dashoffset: ${SCRIBBLE_LEN}; }
+          to   { stroke-dashoffset: 0; }
+        }
+        @keyframes tlDraw {
+          from { stroke-dashoffset: 520; }
+          to   { stroke-dashoffset: 0; }
+        }
+        @keyframes timelineContentSlide {
+          from { opacity: 0; transform: translateX(120px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes timelineDotSlide {
+          from { opacity: 0; transform: translateX(120px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes tlHeartDraw {
+          from { stroke-dashoffset: 80; }
+          to   { stroke-dashoffset: 0; }
+        }
+        @keyframes tlNowGlow {
+          0%,100% { filter: drop-shadow(0 0 3px rgba(217,111,69,0.5)); }
+          50%      { filter: drop-shadow(0 0 8px rgba(217,111,69,0.9)); }
+        }
+      `}</style>
     </div>
   );
 }
 
 /* ─── BENTO TILE: My Work — 3 project thumbnails in one row ─── */
 const WORK_PREVIEWS = [
-  {
-    src: "/marketing-preview.png",
-    label: "AI Personalization",
-    url: MARKETING_TILES_URL,   // opens Framer case study in modal
-  },
-  {
-    src: "/ai-chat-preview.png",
-    label: "AI Chat Journeys",
-    url: AI_FRAMER_URL,          // opens Framer case study in modal
-  },
-  {
-    src: "/outdone-preview.png",
-    label: "Outdone",
-    isNew: true,
-    url: TRAVEL_DNA_URL,         // opens live app
-  },
+  { src: "/marketing-preview.png", label: "personalized marketing", projectKey: "marketing-tiles" },
+  { src: "/ai-chat-preview.png",   label: "AI Chat Journeys",   projectKey: "ai-framer" },
+  { src: "/outdone-preview.png",   label: "Model Design", isNew: true, projectKey: "travel-dna" },
 ];
 
-function MyWorkTile({ onOpen }) {
+function MyWorkTile({ onOpenProject }) {
   return (
-    <button
-      onClick={onOpen}
+    <div
       className={`group relative w-full rounded-[32px] bg-white flex flex-col text-left overflow-hidden ${BODY}`}
     >
       {/* MY WORK label */}
@@ -506,13 +847,6 @@ function MyWorkTile({ onOpen }) {
         my work
       </p>
 
-      {/*
-        Images bleed out all 4 sides:
-        - negative mx so left/right cards clip against tile edges
-        - cards taller than remaining space so bottom clips
-        - gap between cards preserved
-      */}
-      {/* Cards bleed left/right/bottom — overflow-hidden on parent clips all edges */}
       <div style={{ display: "flex", gap: "12px", marginLeft: "-12px", marginRight: "-12px", marginBottom: "-2px" }}>
         {WORK_PREVIEWS.map((proj) => (
           <div
@@ -528,15 +862,7 @@ function MyWorkTile({ onOpen }) {
               minWidth: 0,
               cursor: "pointer",
             }}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (proj.url && proj.url.startsWith("http")) {
-                window.open(proj.url, "_blank");
-              } else {
-                // open work browser for framer links
-                e.currentTarget.closest("button").click();
-              }
-            }}
+            onClick={() => onOpenProject(proj.projectKey)}
           >
             <img
               src={proj.src}
@@ -544,7 +870,6 @@ function MyWorkTile({ onOpen }) {
               className="w-full h-full object-cover object-top"
               onError={(e) => { e.target.style.opacity = "0"; }}
             />
-            {/* Hover overlay: per-card tint + all-caps label */}
             <div
               className="absolute inset-0 flex items-end transition-opacity duration-200 opacity-0 hover:opacity-100"
               style={{ background: "rgba(0,0,0,0.5)" }}
@@ -553,7 +878,6 @@ function MyWorkTile({ onOpen }) {
                 {proj.label}
               </p>
             </div>
-            {/* NEW badge */}
             {proj.isNew && (
               <div className={`absolute top-3 right-3 px-2.5 py-1 bg-white rounded-full text-[8px] font-bold tracking-[0.9px] uppercase text-black ${HEADING}`}>
                 New
@@ -562,7 +886,7 @@ function MyWorkTile({ onOpen }) {
           </div>
         ))}
       </div>
-    </button>
+    </div>
   );
 }
 
@@ -636,11 +960,12 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   }
 
   const ctaText = (() => {
-    if (active === "how i get exec-buy in") return "walk me through the project →";
+    if (active === "how do you get exec buy-in") return "walk me through the project →";
     if (active === "product strategy thinking") return "show me the strategy work →";
-    if (active === "how i uncover user needs") return "show me the work →";
+    if (active === "how do you uncover user needs") return "show me the work →";
     if (active === "designing systems at scale") return "show me the system →";
-    if (active === "how i ship fast") return "what have you been building? →";
+    if (active === "how do you ship fast") return "what have you been building? →";
+    if (active === "model design") return "see the project →";
     return "";
   })();
 
@@ -655,7 +980,7 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   );
 }
 
-function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill }) {
+function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, instantType = false }) {
   return (
     <>
       <div className="mb-6 flex justify-end">
@@ -676,14 +1001,14 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
       {showResponse && (
         <>
           <div className="rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-            <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} />
+            <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} instant={instantType} />
 
-            {active === "how i uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
+            {active === "how do you uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
 
             {showPills && active === "designing systems at scale" && <JourneyMapPreview />}
           </div>
 
-          {active === "how i uncover user needs" && showUserNeedsRest && (
+          {active === "how do you uncover user needs" && showUserNeedsRest && (
             <div className="mt-5 rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
               <p className={`whitespace-pre-line break-words text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
                 {USER_NEEDS_REST}
@@ -698,7 +1023,7 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
   );
 }
 
-function MobileChatModal({ active, setActive, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, onClose }) {
+function MobileChatModal({ active, setActive, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, onClose, instantType = false }) {
   const [showHint, setShowHint] = useState(false);
 
   return (
@@ -747,6 +1072,7 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
           showUserNeedsRest={showUserNeedsRest}
           onTypeDone={onTypeDone}
           openProjectForActivePill={openProjectForActivePill}
+          instantType={instantType}
         />
       </div>
 
@@ -777,12 +1103,14 @@ export default function PortfolioHome() {
   const [active, setActive] = useState(PILLS[0]);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [projectOpen, setProjectOpen] = useState(null);
-  const [hasLoaded, setHasLoaded] = useState(false);
   const [showPills, setShowPills] = useState(false);
   const [showResponse, setShowResponse] = useState(false);
   const [showThinking, setShowThinking] = useState(false);
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
+  const [instantType, setInstantType] = useState(true);
+  const [workProjectSlug, setWorkProjectSlug] = useState("b2c");
+  const isFirstLoad = useRef(true);
 
   useEffect(() => {
     const faviconPath = "/logo.jpg";
@@ -812,6 +1140,26 @@ export default function PortfolioHome() {
   }, []);
 
   useEffect(() => {
+    const hash = window.location.hash || "";
+    if (hash.startsWith("#work=")) {
+      const slug = hash.replace("#work=", "");
+      setWorkProjectSlug(slug || "b2c");
+      setProjectOpen("work-browser");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isFirstLoad.current) {
+      isFirstLoad.current = false;
+      setInstantType(true);
+      setShowThinking(false);
+      setShowResponse(true);
+      setShowPills(true);
+      setShowUserNeedsRest(active === "how do you uncover user needs");
+      return;
+    }
+
+    setInstantType(false);
     setShowPills(false);
     setShowResponse(false);
     setShowUserNeedsRest(false);
@@ -820,16 +1168,13 @@ export default function PortfolioHome() {
     const timer = setTimeout(() => {
       setShowThinking(false);
       setShowResponse(true);
-      setHasLoaded(true);
-    }, hasLoaded ? 850 : 1200);
+    }, 850);
 
     return () => clearTimeout(timer);
-  }, [active, hasLoaded]);
-
-
+  }, [active]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleTypeDone = () => {
-    if (active === "how i uncover user needs") {
+    if (active === "how do you uncover user needs") {
       setShowUserNeedsRest(true);
     }
     setShowPills(true);
@@ -841,8 +1186,16 @@ export default function PortfolioHome() {
     setActive(pill);
   };
 
+  const openWorkProject = (slug) => {
+    setWorkProjectSlug(slug);
+    window.history.replaceState(null, "", `#work=${slug}`);
+    setProjectOpen("work-browser");
+  };
+
   const handleNav = (item) => {
     if (item === "my work") {
+      setWorkProjectSlug("b2c");
+      window.history.replaceState(null, "", "#work=b2c");
       setProjectOpen("work-browser");
       return;
     }
@@ -866,14 +1219,49 @@ export default function PortfolioHome() {
   const openProjectForActivePill = (override) => {
     setMobileChatOpen(false);
 
-    if (override === "ai-framer") { setProjectOpen("ai-framer"); return; }
-    if (override === "casey-ai") { setProjectOpen("casey-ai"); return; }
-    if (active === "how i uncover user needs") { setProjectOpen("user-needs"); return; }
-    if (active === "let's talk AI") { setProjectOpen("ai-framer"); return; }
-    if (active === "product strategy thinking") { setProjectOpen("marketing-tiles"); return; }
-    if (active === "designing systems at scale") { setProjectOpen("apply-systems"); return; }
-    if (active === "how i ship fast") { window.open(TRAVEL_DNA_URL, "_blank"); return; }
-    if (active === "how i get exec-buy in") { setProjectOpen("figma-deck"); }
+    if (override === "ai-framer") {
+      openWorkProject("ai-chat-journeys");
+      return;
+    }
+
+    if (override === "casey-ai") {
+      openWorkProject("conversational-agentic-ai");
+      return;
+    }
+
+    if (active === "how do you uncover user needs") {
+      openWorkProject("b2c");
+      return;
+    }
+
+    if (active === "let's talk AI") {
+      openWorkProject("ai-chat-journeys");
+      return;
+    }
+
+    if (active === "product strategy thinking") {
+      openWorkProject("ai-personalization");
+      return;
+    }
+
+    if (active === "designing systems at scale") {
+      openWorkProject("service-design");
+      return;
+    }
+
+    if (active === "how do you ship fast") {
+      window.open("https://travel-dna-kohl.vercel.app/", "_blank");
+      return;
+    }
+
+    if (active === "how do you get exec buy-in") {
+      openWorkProject("exec-pitch");
+      return;
+    }
+
+    if (active === "model design") {
+      window.open("https://travel-dna-kohl.vercel.app/", "_blank");
+    }
   };
 
   return (
@@ -882,7 +1270,17 @@ export default function PortfolioHome() {
       className={`relative min-h-screen w-full overflow-x-hidden bg-[#F7F4F2] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}
     >
       {/* Modals */}
-      {projectOpen === "work-browser" && <WorkBrowserModal onClose={() => setProjectOpen(null)} />}
+      {projectOpen === "work-browser" && (
+        <WorkBrowserModal
+          initialSlug={workProjectSlug}
+          onClose={() => {
+            setProjectOpen(null);
+            if (window.location.hash.startsWith("#work=")) {
+              window.history.replaceState(null, "", window.location.pathname);
+            }
+          }}
+        />
+      )}
       {projectOpen === "user-needs" && <FramerModal title="How I Uncover User Needs" url={USER_NEEDS_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
       {projectOpen === "figma-deck" && <FigmaDeckModal onClose={() => setProjectOpen(null)} />}
       {projectOpen === "ai-framer" && <FramerModal title="AI Chat Journeys" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
@@ -901,6 +1299,7 @@ export default function PortfolioHome() {
           onTypeDone={handleTypeDone}
           openProjectForActivePill={openProjectForActivePill}
           onClose={() => setMobileChatOpen(false)}
+          instantType={instantType}
         />
       )}
 
@@ -920,32 +1319,6 @@ export default function PortfolioHome() {
         style={{ left: cursor.x - 150, top: cursor.y - 150 }}
       />
 
-      {/* ─── BENTO GRID ─── */}
-      {/*
-        Desktop layout maps to the reference image:
-
-        Col A (left, fixed ~420px)     Col B (center)        Col C (right)
-        ┌─────────────────────┐        ┌──────────────────────────────────┐
-        │                     │        │   HERO (pink) — spans B+C row 1  │
-        │   CHAT (purple)     │        ├─────────────────┬────────────────┤
-        │   fixed height,     │        │  EXPLORE (green)│ WHAT I BELIEVE │
-        │   inner scroll      │        │  nav links      │ (yellow)       │
-        │                     │        ├─────────────────┴────────────────┤
-        ├─────────────────────┤        │   MY WORK (orange) spans B+C     │
-        │  TESTIMONIALS(blue) │        │                                  │
-        └─────────────────────┘        └──────────────────────────────────┘
-
-        Grid: 3 cols [420px 1fr 1fr], 4 rows [auto auto auto auto]
-        Chat:         col 1, rows 1-3
-        Hero:         col 2-3, row 1
-        Explore:      col 2, row 2
-        Believe:      col 3, row 2
-        Work:         col 2-3, row 3
-        Testimonials: col 1, row 4  →  actually: col 1 row 4, Work col 2-3 row 3
-
-        Simpler: use a 3-col CSS grid, chat spans rows 1–3, testimonials row 4 col1,
-        work spans col2-3 row3, hero col2-3 row1, explore col2 row2, believe col3 row2.
-      */}
       <div className="relative z-10 mx-auto w-full max-w-[1280px]">
 
         {/* ── DESKTOP ── */}
@@ -962,14 +1335,13 @@ export default function PortfolioHome() {
           <div
             ref={chatCardRef}
             className="rounded-[32px] bg-white overflow-hidden flex flex-col relative"
-            style={{ gridColumn: "1", gridRow: "1 / 3", height: "520px" }}
+            style={{ gridColumn: "1", gridRow: "1 / 3", height: "560px" }}
           >
             <div className="px-6 pt-6 pb-3 shrink-0">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
                 ask me
               </p>
             </div>
-            {/* Scroll area — padding-bottom makes room for floating pills */}
             <div ref={(el) => { chatScrollRef.current = el; _chatScrollEl = el; }} data-chat-scroll className="flex-1 overflow-y-auto px-6 no-scrollbar" style={{ paddingBottom: showPills ? "64px" : "16px" }}>
               <ChatConversation
                 active={active}
@@ -979,9 +1351,9 @@ export default function PortfolioHome() {
                 showUserNeedsRest={showUserNeedsRest}
                 onTypeDone={handleTypeDone}
                 openProjectForActivePill={openProjectForActivePill}
+                instantType={instantType}
               />
             </div>
-            {/* Pills: absolute bottom, fully transparent bg so chat content shows through */}
             {showPills && (
               <div className="absolute bottom-0 left-0 right-0 px-6 pb-4 animate-[fadeUp_0.45s_ease_forwards]"
                 style={{ background: "none" }}>
@@ -993,8 +1365,8 @@ export default function PortfolioHome() {
                         onClick={() => handlePillSelect(pill)}
                         className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] backdrop-blur-sm ${
                           active === pill
-                            ? "bg-white/90 border-[#A5522A] text-[#A5522A]"
-                            : "bg-white/90 border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
+                            ? "bg-white border-[#A5522A] text-[#A5522A]"
+                            : "bg-white border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
                         } ${HEADING}`}
                       >
                         {pill}
@@ -1006,27 +1378,36 @@ export default function PortfolioHome() {
             )}
           </div>
 
-          {/* Hero: col 2-3, row 1 — profile pic overflows down into gap */}
+          {/* Hero: col 2-3, row 1 */}
           <div style={{ gridColumn: "2 / 4", gridRow: "1" }} className="relative overflow-visible">
             <HeroTile />
           </div>
 
-          {/* Explore / nav: col 2, row 2 (green) */}
+          {/* NavTile: col 2, row 2 */}
           <div style={{ gridColumn: "2", gridRow: "2" }}>
-            <NavTile onNav={handleNav} />
+            <NavTile />
           </div>
 
-          {/* What I Believe: col 3, row 2 (yellow) */}
+          {/* What I Believe: col 3, row 2 */}
           <div style={{ gridColumn: "3", gridRow: "2" }}>
             <WhatIBelieveTile />
           </div>
 
-          {/* My Work: col 1-2, row 3 (orange — below chat) */}
+          {/* My Work: col 1-2, row 3 */}
           <div style={{ gridColumn: "1 / 3", gridRow: "3" }}>
-            <MyWorkTile onOpen={() => setProjectOpen("work-browser")} />
+            <MyWorkTile
+              onOpenProject={(key) => {
+                const slugByKey = {
+                  "marketing-tiles": "ai-personalization",
+                  "ai-framer": "ai-chat-journeys",
+                  "travel-dna": "model-design",
+                };
+                openWorkProject(slugByKey[key] || "b2c");
+              }}
+            />
           </div>
 
-          {/* Testimonials: col 3, row 3 (blue — bottom right) */}
+          {/* Testimonials: col 3, row 3 */}
           <div style={{ gridColumn: "3", gridRow: "3" }}>
             <TestimonialTile />
           </div>
@@ -1036,30 +1417,19 @@ export default function PortfolioHome() {
         {/* ── MOBILE stack ── */}
         <div className="flex flex-col gap-4 lg:hidden">
           <HeroTile />
-          <NavTile onNav={handleNav} />
+          <NavTile />
           <WhatIBelieveTile />
 
-          {/* Chat on mobile uses the FAB — show condensed card here */}
-          <div className="rounded-[32px] bg-white overflow-hidden" style={{ height: "360px" }}>
-            <div className="px-6 pt-6 pb-3">
-              <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-                ask me
-              </p>
-            </div>
-            <div className="px-6 pb-4 overflow-y-auto no-scrollbar" style={{ height: "290px" }}>
-              <ChatConversation
-                active={active}
-                showThinking={showThinking}
-                showResponse={showResponse}
-                showPills={showPills}
-                showUserNeedsRest={showUserNeedsRest}
-                onTypeDone={handleTypeDone}
-                openProjectForActivePill={openProjectForActivePill}
-              />
-            </div>
-          </div>
-
-          <MyWorkTile onOpen={() => setProjectOpen("work-browser")} />
+          <MyWorkTile
+              onOpenProject={(key) => {
+                const slugByKey = {
+                  "marketing-tiles": "ai-personalization",
+                  "ai-framer": "ai-chat-journeys",
+                  "travel-dna": "model-design",
+                };
+                openWorkProject(slugByKey[key] || "b2c");
+              }}
+            />
           <TestimonialTile />
         </div>
 
