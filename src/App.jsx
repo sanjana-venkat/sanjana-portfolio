@@ -446,7 +446,7 @@ function HeroTile() {
         className="relative overflow-hidden rounded-[32px] p-8 pb-0 flex flex-col lg:hidden"
         style={{
           background: "rgba(156, 63, 20, 0.17)",
-          minHeight: "280px",
+          minHeight: "420px",
         }}
       >
         <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] ${HEADING}`}
@@ -456,13 +456,13 @@ function HeroTile() {
         <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
           I turn ambiguity into direction. Deeply understanding how people think.
         </p>
-        {/* Image centered at bottom */}
-        <div className="flex justify-center mt-6">
+        {/* Image centered at bottom, taller */}
+        <div className="flex justify-center mt-8 flex-1 items-end">
           <div
             className="overflow-hidden"
             style={{
-              width: "180px",
-              height: "210px",
+              width: "220px",
+              height: "280px",
               borderRadius: "22px",
               border: "8px solid #FFFFFF",
               boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1)",
@@ -525,6 +525,7 @@ const TIMELINE_ITEMS = [
   { year: "2000s", label: "Childhood in India",      sub: "Grew up close to my roots, culture, and community",     heart: false, isNow: false, img: "/Childhood.jpg", lineStyle: "very-wavy",     orange: false },
   { year: "2014",  label: "Moved to the States",     sub: "A big leap — new country, new world",                   heart: false, isNow: false, img: "/2014.jpg",      lineStyle: "very-wavy",     orange: false },
   { year: "2018",  label: "Future teacher",          sub: "Wanted to teach, then found counseling psychology",     heart: false, isNow: false, img: "/2018.png",      lineStyle: "very-wavy",     orange: false },
+  { year: "2019",  label: "Best Presenter Award",    sub: "Publication on temple architecture, college conference",  heart: false, isNow: false, img: "/2019.jpg",      lineStyle: "very-wavy",     orange: false },
   { year: "2020",  label: "Psychology major, UTD",   sub: "Studied how people think, feel, and make decisions",    heart: false, isNow: false, img: "/2020.jpg",      lineStyle: "slightly-wavy", orange: false },
   { year: "2021",  label: "Chetna · Graphic Design", sub: "Raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
   // After Chetna: lines go straight and orange
@@ -546,8 +547,9 @@ const LINE_SLIGHTLY_WAVY = "M 95 38 C 112 30, 130 46, 150 38 C 170 30, 188 46, 2
 const LINE_STRAIGHT    = "M 95 38 C 150 38, 220 38, 300 38";
 
 // SURGICAL CHANGE 3: Idle scribble matches the screenshot — loopy knot trailing into a line
-const SCRIBBLE_PATH = "M 160 55 C 145 30, 120 18, 112 36 C 104 56, 124 74, 146 62 C 168 50, 170 26, 154 24 C 136 22, 120 44, 136 60 C 152 76, 174 68, 180 50 C 188 30, 176 20, 165 28 C 188 40, 225 42, 275 40 C 288 40, 298 40, 308 40";
-const SCRIBBLE_LEN = 600;
+// Scribble ends at ~x=95,y=38 so it flows naturally into LINE_VERY_WAVY which starts there
+const SCRIBBLE_PATH = "M 155 55 C 140 30, 115 18, 108 36 C 100 56, 120 74, 142 62 C 164 50, 166 26, 150 24 C 132 22, 116 44, 132 60 C 148 76, 170 68, 155 48 C 142 32, 128 30, 112 36 C 100 40, 95 38, 95 38";
+const SCRIBBLE_LEN = 520;
 
 function NavTile() {
   const [active, setActive]         = useState(false);
@@ -614,8 +616,8 @@ function NavTile() {
 
   return (
     <div
-      className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative select-none cursor-pointer ${BODY}`}
-      style={{ minHeight: "280px" }}
+      className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative select-none cursor-pointer lg:[min-height:280px] ${BODY}`}
+      style={{ minHeight: "460px" }}
       onMouseEnter={startAnimation}
       onMouseLeave={stopAnimation}
       onClick={startAnimation}
@@ -655,11 +657,11 @@ function NavTile() {
           <div className="relative flex-1 flex flex-col justify-between overflow-hidden">
             {/* CENTER BLOCK: image + line, vertically centered in available space */}
             <div className="flex-1 relative">
-              {/* IMAGE */}
+              {/* IMAGE — desktop: absolute left; mobile: hidden here, shown below */}
               {item.img && (
                 <div
                   key={`img-${step}`}
-                  className="absolute overflow-hidden"
+                  className="absolute overflow-hidden hidden lg:block"
                   style={{
                     top: "50%",
                     left: "-8px",
@@ -772,6 +774,33 @@ function NavTile() {
                 )}
               </svg>
             </div>
+
+            {/* MOBILE IMAGE — shown below SVG line, centered */}
+            {item.img && (
+              <div className="flex justify-center mt-4 mb-2 lg:hidden">
+                <div
+                  key={`img-mobile-${step}`}
+                  style={{
+                    width: "140px",
+                    height: "180px",
+                    borderRadius: "18px",
+                    border: "5px solid #FFFFFF",
+                    boxShadow: "0 4px 16px rgba(0,0,0,0.13)",
+                    overflow: "hidden",
+                    opacity: imgVisible ? 1 : 0,
+                    transform: imgVisible ? "rotate(-3deg) translateY(0px)" : "rotate(-3deg) translateY(8px)",
+                    transition: "opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)",
+                  }}
+                >
+                  <img
+                    src={item.img}
+                    alt={item.label}
+                    className="w-full h-full object-cover"
+                    onError={(e) => { e.currentTarget.style.display = "none"; }}
+                  />
+                </div>
+              </div>
+            )}
 
             {/* SURGICAL CHANGE 8: content only animates on phase==="content", not on "hold" (stops re-sliding) */}
             <div
