@@ -1455,20 +1455,20 @@ export default function PortfolioHome() {
           className="hidden lg:grid"
           style={{
             gridTemplateColumns: "480px 1fr 1fr",
-            gridTemplateRows: "auto auto auto",
+            gridTemplateRows: "auto 300px auto",
             gap: "14px",
           }}
         >
           {/*
-            FIX 1 (desktop chat height):
-            - gridRow "1 / 3" spans hero row + tiles row
-            - alignSelf: "stretch" + height: "100%" makes it fill that span exactly
-            - No fixed 560px — it now grows/shrinks with the adjacent tiles
+            Chat tile: spans rows 1–2.
+            Row 1 = auto (hero), Row 2 = 300px (NavTile/WhatIBelieve).
+            alignSelf: "stretch" fills exactly that combined height.
+            minHeight: 520px ensures it never collapses smaller than needed.
           */}
           <div
             ref={chatCardRef}
             className="rounded-[32px] bg-white overflow-hidden flex flex-col relative"
-            style={{ gridColumn: "1", gridRow: "1 / 3", alignSelf: "stretch", height: "100%" }}
+            style={{ gridColumn: "1", gridRow: "1 / 3", alignSelf: "stretch", minHeight: "520px" }}
           >
             <div className="px-6 pt-6 pb-3 shrink-0">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
@@ -1516,13 +1516,13 @@ export default function PortfolioHome() {
             <HeroTile />
           </div>
 
-          {/* NavTile: col 2, row 2 */}
-          <div style={{ gridColumn: "2", gridRow: "2" }}>
+          {/* NavTile: col 2, row 2 — fills the 300px row */}
+          <div style={{ gridColumn: "2", gridRow: "2", alignSelf: "stretch" }}>
             <NavTile />
           </div>
 
-          {/* What I Believe: col 3, row 2 */}
-          <div style={{ gridColumn: "3", gridRow: "2" }}>
+          {/* What I Believe: col 3, row 2 — fills the 300px row */}
+          <div style={{ gridColumn: "3", gridRow: "2", alignSelf: "stretch" }}>
             <WhatIBelieveTile />
           </div>
 
