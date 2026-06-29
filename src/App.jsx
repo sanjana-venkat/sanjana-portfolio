@@ -34,12 +34,12 @@ const TYPEWRITE = "[font-family:'JetBrains_Mono',monospace]";
 const PILLS = [
   "how i uncover user needs",
   "how i ship fast",
+  "model design",
   "let's talk AI",
   "product strategy thinking",
   "designing systems at scale",
   "tell me your story",
   "how i get exec-buy in",
-  "pitch me as a motion designer",
 ];
 
 const CONTENT = {
@@ -144,19 +144,16 @@ When I present, I focus on:
 
 Because I learned that good design doesn't work unless people understand it.`,
 
-  "pitch me as a motion designer": `Sanjana doesn't just design screens. She designs moments in time.
+  "model design": `I drove work and teams towards launch and learn even in a traditionally slower environment. I was known as the "all-in-one" designer because of my deep collaboration with product, engineering, marketing, senior leadership — and yes, data science and ML teams too.
 
-Most designers hand off static files. Sanjana thinks in sequences: what happens when this appears, how does this transition feel, what does the user experience between states.
+That's why I was so excited to see Model Designer as a role. I'm genuinely more interested in this than visual design, and I want to shape the UX strategy behind model classification, filtering, and response mapping.
 
-Her portfolio is the proof. She built an animated timeline that draws itself — scribbles becoming lines, text floating in from the right, images peeking in from the edge — all choreographed in code, not just described in a prototype.
+At JPMC:
+• Need-based framework — I built a behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment
+• Casey AI — I shaped model responses and defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations
 
-At JPMC, she designed conversational AI flows where timing and feedback states were as important as layout. For Casey AI, every pause and loading state was intentional — because in chat, motion IS the interface.
-
-She codes her own animations. She knows the difference between ease-in-out and cubic-bezier(0.22,1,0.36,1). She thinks about when to move and when to stay still.
-
-That's rare.
-
-Sanjana is a product designer who thinks like a motion designer — because she understands that how something moves tells you everything about how much it was cared for.`
+Personal project:
+• I built Outdone because I felt personalization relies too much on historical data and forgets what someone might want today. I classified people into 9 archetypes so Gemini could sort all possible responses into these categories. I wired the APIs myself, and intentionally showed users how the AI was generating responses in the loading state — because I think AI should feel understandable, not magical.`
 };
 
 const USER_NEEDS_REST = `The first outcome wasn't perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
@@ -409,46 +406,74 @@ function FigmaDeckModal({ onClose }) {
 /* ─── BENTO TILE: Hero (name + tagline + profile pic popping out) ─── */
 function HeroTile() {
   return (
-    <div
-      className="relative overflow-hidden rounded-[32px] p-8 flex flex-col justify-center"
-      style={{
-        background: "rgba(156, 63, 20, 0.17)",
-        minHeight: "219px",
-        paddingRight: "220px",
-      }}
-    >
-      {/* Name */}
-      <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] whitespace-nowrap ${HEADING}`}
-        style={{ fontSize: "40px" }}>
-        Sanjana Venkat
-      </h1>
-      {/* Tagline */}
-      <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-        I turn ambiguity into direction. Deeply understanding how people think.
-      </p>
-
-      {/* Profile pic — bottom-right, tilted 9.83deg, white border, bottom clips at tile edge */}
+    <>
+      {/* ── DESKTOP hero ── */}
       <div
-        className="absolute overflow-hidden"
+        className="relative overflow-hidden rounded-[32px] p-8 flex-col justify-center hidden lg:flex"
         style={{
-          width: "200px",
-          height: "240px",
-          bottom: "-55px",
-          right: "32px",
-          borderRadius: "22px",
-          border: "8px solid #FFFFFF",
-          boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
-          transform: "rotate(9.83deg)",
-          zIndex: 30,
+          background: "rgba(156, 63, 20, 0.17)",
+          minHeight: "219px",
+          paddingRight: "220px",
         }}
       >
-        <img
-          src="/profile.jpg"
-          alt="Sanjana Venkat"
-          className="w-full h-full object-cover object-center"
-        />
+        <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] whitespace-nowrap ${HEADING}`}
+          style={{ fontSize: "40px" }}>
+          Sanjana Venkat
+        </h1>
+        <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
+          I turn ambiguity into direction. Deeply understanding how people think.
+        </p>
+        <div
+          className="absolute overflow-hidden"
+          style={{
+            width: "200px",
+            height: "240px",
+            bottom: "-55px",
+            right: "32px",
+            borderRadius: "22px",
+            border: "8px solid #FFFFFF",
+            boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
+            transform: "rotate(9.83deg)",
+            zIndex: 30,
+          }}
+        >
+          <img src="/profile.jpg" alt="Sanjana Venkat" className="w-full h-full object-cover object-center" />
+        </div>
       </div>
-    </div>
+
+      {/* ── MOBILE hero — taller, image centered at bottom ── */}
+      <div
+        className="relative overflow-hidden rounded-[32px] p-8 pb-0 flex flex-col lg:hidden"
+        style={{
+          background: "rgba(156, 63, 20, 0.17)",
+          minHeight: "340px",
+        }}
+      >
+        <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] ${HEADING}`}
+          style={{ fontSize: "36px" }}>
+          Sanjana Venkat
+        </h1>
+        <p className="mt-2 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
+          I turn ambiguity into direction. Deeply understanding how people think.
+        </p>
+        {/* Image centered at bottom */}
+        <div className="flex justify-center mt-6">
+          <div
+            className="overflow-hidden"
+            style={{
+              width: "180px",
+              height: "210px",
+              borderRadius: "22px",
+              border: "8px solid #FFFFFF",
+              boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1)",
+              transform: "rotate(3deg)",
+            }}
+          >
+            <img src="/profile.jpg" alt="Sanjana Venkat" className="w-full h-full object-cover object-center" />
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -584,7 +609,7 @@ function NavTile() {
   return (
     <div
       className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative select-none cursor-pointer ${BODY}`}
-      style={{ minHeight: "220px" }}
+      style={{ minHeight: "280px" }}
       onMouseEnter={startAnimation}
       onMouseLeave={stopAnimation}
       onClick={startAnimation}
@@ -622,7 +647,7 @@ function NavTile() {
 
           <div className="relative flex-1 overflow-hidden">
             <svg
-              className="absolute left-0 right-0 top-[18px] w-full h-[78px]"
+              className="absolute left-0 right-0 w-full h-[78px]" style={{ bottom: "112px" }}
               viewBox="0 0 320 80"
               preserveAspectRatio="none"
               style={{ overflow: "visible" }}
@@ -732,7 +757,7 @@ function NavTile() {
                 key={`img-${step}`}
                 className="absolute overflow-hidden"
                 style={{
-                  top: "4px",
+                  bottom: "106px",
                   left: "-8px",
                   transform: imgVisible
                     ? "rotate(-5deg)"
@@ -916,6 +941,7 @@ function ResponseLinks({ active, openProjectForActivePill }) {
     if (active === "how i uncover user needs") return "show me the work →";
     if (active === "designing systems at scale") return "show me the system →";
     if (active === "how i ship fast") return "what have you been building? →";
+    if (active === "model design") return "see the project →";
     return "";
   })();
 
@@ -1211,8 +1237,8 @@ export default function PortfolioHome() {
       return;
     }
 
-    if (active === "pitch me as a motion designer") {
-      openWorkProject("model-design");
+    if (active === "model design") {
+      window.open("https://travel-dna-kohl.vercel.app/", "_blank");
     }
   };
 
@@ -1317,8 +1343,8 @@ export default function PortfolioHome() {
                         onClick={() => handlePillSelect(pill)}
                         className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] backdrop-blur-sm ${
                           active === pill
-                            ? "bg-white/90 border-[#A5522A] text-[#A5522A]"
-                            : "bg-white/90 border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
+                            ? "bg-white border-[#A5522A] text-[#A5522A]"
+                            : "bg-white border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
                         } ${HEADING}`}
                       >
                         {pill}
