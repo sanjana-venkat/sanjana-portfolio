@@ -523,16 +523,16 @@ function WhatIBelieveTile() {
 const TIMELINE_ITEMS = [
   { year: "2000s", label: "Childhood in India",      sub: "Grew up close to my roots, culture, and community",     heart: false, isNow: false, img: "/Childhood.jpg", lineStyle: "very-wavy",     orange: false },
   { year: "2014",  label: "Moved to the States",     sub: "A big leap, new country, new world",                   heart: false, isNow: false, img: "/2014.jpg",      lineStyle: "very-wavy",     orange: false },
-  { year: "2018",  label: "Future teacher",          sub: "Wanted to teach, then found counseling psychology",     heart: false, isNow: false, img: "/2018.png",      lineStyle: "very-wavy",     orange: false },
+  { year: "2018",  label: "Future teacher",          sub: "Wanted to teach, loved reading and learning",     heart: false, isNow: false, img: "/2018.png",      lineStyle: "very-wavy",     orange: false },
   { year: "2019",  label: "Best Presenter Award",    sub: "Publication on temple architecture, college conference",  heart: false, isNow: false, img: "/2019.png",      lineStyle: "very-wavy",     orange: false },
   { year: "2020",  label: "Psychology major, UTD",   sub: "Studied how people think, feel, and make decisions",    heart: false, isNow: false, img: "/2020.jpg",      lineStyle: "slightly-wavy", orange: false },
-  { year: "2021",  label: "Chetna · Graphic Design", sub: "Raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
+  { year: "2021",  label: "Chetna · Graphic Design", sub: "Dabbled into design, raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
   // After Chetna: lines go straight and orange
-  { year: "2022",  label: "Dialexa",                 sub: "Dabbled into design, built an AR concept for DTour",   heart: false, isNow: false, img: "/2022.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2022",  label: "VP, UX Club",             sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true  },
-  { year: "2023",  label: "Paycom",                  sub: "Associate Product Designer, B2B enterprise subteam",    heart: false, isNow: false, img: "/2023.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2024",  label: "JPMC · Senior PD",        sub: "Owned apply flow, HELOC 0-to-1 and AI initiatives",    heart: false, isNow: false, img: "/2024.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2025",  label: "JPMC AI Lead",         sub: "Led Marketing + AI and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2022",  label: "Dialexa",                 sub: "Built an AR travel concept for with Dialexa, DTour",   heart: false, isNow: false, img: "/2022.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2022",  label: "VP, UX Club",             sub: "Organized design competitions and conferences with Paycom, Bottle Rocket & Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true  },
+  { year: "2023",  label: "Paycom",                  sub: "Associate Product Designer, B2B enterprise subteam, design system focus",    heart: false, isNow: false, img: "/2023.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2024",  label: "JPMC · Senior PD",        sub: "Owned apply flow and HELOC 0-to-1",    heart: false, isNow: false, img: "/2024.jpg",      lineStyle: "straight",      orange: true  },
+  { year: "2025",  label: "JPMC · Lead",         sub: "Led AI & Marketing and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true  },
   { year: "2026",  label: "Married · Bay Area",      sub: "Moved to the Bay Area for a new chapter",              heart: true,  isNow: false, img: "/2026.png",      lineStyle: "straight",      orange: true  },
   { year: "NOW",   label: "Design Engineer",         sub: "Building polished AI product ideas fast",              heart: false, isNow: true,  img: "/2026.jpg",      lineStyle: "straight",      orange: true  },
 ];
