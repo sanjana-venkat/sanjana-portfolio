@@ -731,28 +731,18 @@ function NavTile() {
 
                 {item.heart && showContent && (
                   <g key={`heart-${step}`}>
-                    {/* Outline traces itself out of the line first */}
+                    {/* Outline only, smaller, centered on the line (cy=38) */}
                     <path
-                      d="M 160 44 C 148 36 143 28 143 24 C 143 18 148 15 153 17 C 156 18 158 21 160 25 C 162 21 164 18 167 17 C 172 15 177 18 177 24 C 177 28 172 36 160 44 Z"
+                      d="M 160 43 C 153 38 149 33 149 30 C 149 26 152 24 155 25 C 157 26 159 28 160 30 C 161 28 163 26 165 25 C 168 24 171 26 171 30 C 171 33 167 38 160 43 Z"
                       fill="none"
                       stroke={strokeColor}
                       strokeWidth="1.4"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       style={{
-                        strokeDasharray: 120,
-                        strokeDashoffset: 120,
+                        strokeDasharray: 80,
+                        strokeDashoffset: 80,
                         animation: "tlHeartDraw 0.55s cubic-bezier(0.4,0,0.2,1) forwards",
-                      }}
-                    />
-                    {/* Fill fades in after outline is drawn */}
-                    <path
-                      d="M 160 44 C 148 36 143 28 143 24 C 143 18 148 15 153 17 C 156 18 158 21 160 25 C 162 21 164 18 167 17 C 172 15 177 18 177 24 C 177 28 172 36 160 44 Z"
-                      fill={strokeColor}
-                      stroke="none"
-                      style={{
-                        opacity: 0,
-                        animation: "tlHeartFill 0.3s ease forwards 0.5s",
                       }}
                     />
                   </g>
@@ -760,12 +750,11 @@ function NavTile() {
 
                 {/* SURGICAL CHANGE 7: oval instead of circle, animate only on phase==="content" not "hold" */}
                 {showContent && !item.heart && (
-                  <ellipse
+                  <circle
                     key={`dot-${step}`}
                     cx="160"
                     cy="38"
-                    rx="9"
-                    ry="5.5"
+                    r="5"
                     fill={item.isNow ? "#D96F45" : "white"}
                     stroke={item.isNow ? "#D96F45" : strokeColor}
                     strokeWidth="1.6"
@@ -829,12 +818,8 @@ function NavTile() {
           to   { opacity: 1; transform: translateX(0); }
         }
         @keyframes tlHeartDraw {
-          from { stroke-dashoffset: 120; }
+          from { stroke-dashoffset: 80; }
           to   { stroke-dashoffset: 0; }
-        }
-        @keyframes tlHeartFill {
-          from { opacity: 0; }
-          to   { opacity: 1; }
         }
         @keyframes tlNowGlow {
           0%,100% { filter: drop-shadow(0 0 3px rgba(217,111,69,0.5)); }
