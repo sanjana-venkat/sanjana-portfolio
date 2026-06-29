@@ -153,13 +153,13 @@ In a few sprints, we pushed toward redesigning the full journey and got design s
 Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
-  { label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
-  { label: "AI Personalization", title: "Product Strategy Thinking", url: MARKETING_TILES_URL },
-  { label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
-  { label: "AI chat journeys", title: "AI Chat Journeys", url: AI_FRAMER_URL },
-  { label: "Agentic Conversational AI", title: "Casey AI", url: CASEY_AI_URL },
-  { label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
-  { label: "Vibe Coding", title: "Travel DNA", url: TRAVEL_DNA_URL }
+  { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
+  { slug: "ai-personalization", label: "AI Personalization", title: "Product Strategy Thinking", url: MARKETING_TILES_URL },
+  { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
+  { slug: "ai-chat-journeys", label: "AI chat journeys", title: "AI Chat Journeys", url: AI_FRAMER_URL },
+  { slug: "conversational-agentic-ai", label: "Agentic Conversational AI", title: "Casey AI", url: CASEY_AI_URL },
+  { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
+  { slug: "vibe-coding", label: "Vibe Coding", title: "Travel DNA", url: TRAVEL_DNA_URL }
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
@@ -230,7 +230,7 @@ function PlayIcon() {
 // Module-level scroll target — set by the chat scroll div, read by Typewriter directly
 let _chatScrollEl = null;
 
-function Typewriter({ text, shouldStart, onDone }) {
+function Typewriter({ text, shouldStart, onDone, instant = false }) {
   const cleanText = (text || "").trim();
   const [displayed, setDisplayed] = useState("");
   const [typedText, setTypedText] = useState(null);
@@ -238,6 +238,12 @@ function Typewriter({ text, shouldStart, onDone }) {
   useEffect(() => { onDoneRef.current = onDone; }, [onDone]);
 
   useEffect(() => {
+    if (instant) {
+      setDisplayed(cleanText);
+      setTypedText(cleanText);
+      return;
+    }
+
     if (!shouldStart) return;
 
     if (typedText === cleanText) {
@@ -273,7 +279,7 @@ function Typewriter({ text, shouldStart, onDone }) {
       clearTimeout(startDelay);
       clearInterval(interval);
     };
-  }, [cleanText, shouldStart, typedText]);
+  }, [cleanText, shouldStart, typedText, instant]);
 
   return (
     <p className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
@@ -326,8 +332,18 @@ function FramerModal({ title, url, onClose }) {
   );
 }
 
-function WorkBrowserModal({ onClose }) {
-  const [activeProject, setActiveProject] = useState(PROJECTS[0]);
+function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
+  const getProjectBySlug = (slug) =>
+    PROJECTS.find((project) => project.slug === slug) || PROJECTS[0];
+
+  const [activeProject, setActiveProject] = useState(() =>
+    getProjectBySlug(initialSlug)
+  );
+
+  const selectProject = (project) => {
+    setActiveProject(project);
+    window.history.replaceState(null, "", `#work=${project.slug}`);
+  };
 
   return (
     <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
@@ -346,7 +362,7 @@ function WorkBrowserModal({ onClose }) {
           {PROJECTS.map((project) => (
             <button
               key={project.label}
-              onClick={() => setActiveProject(project)}
+              onClick={() => selectProject(project)}
               className={`shrink-0 rounded-full border px-6 py-3 text-[14px] font-medium transition sm:px-7 sm:text-[15px] ${
                 activeProject.label === project.label
                   ? "border-[#9C3F14] bg-white text-[#9C3F14]"
@@ -630,6 +646,7 @@ function NavTile() {
               style={{ overflow: "visible" }}
             >
               <path
+                key={`line-${step}-${phase}`}
                 d={
                   phase === "scribble"
                     ? scribblePath
@@ -660,6 +677,7 @@ function NavTile() {
 
               {!item.heart && (
                 <circle
+                  key={`dot-${step}`}
                   cx="160"
                   cy="38"
                   r={item.isNow ? "5" : "4"}
@@ -877,7 +895,7 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   );
 }
 
-function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill }) {
+function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, instantType = false }) {
   return (
     <>
       <div className="mb-6 flex justify-end">
@@ -898,7 +916,7 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
       {showResponse && (
         <>
           <div className="rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-            <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} />
+            <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} instant={instantType} />
 
             {active === "how i uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
 
@@ -920,7 +938,7 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
   );
 }
 
-function MobileChatModal({ active, setActive, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, onClose }) {
+function MobileChatModal({ active, setActive, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, onClose, instantType = false }) {
   const [showHint, setShowHint] = useState(false);
 
   return (
@@ -969,6 +987,7 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
           showUserNeedsRest={showUserNeedsRest}
           onTypeDone={onTypeDone}
           openProjectForActivePill={openProjectForActivePill}
+          instantType={instantType}
         />
       </div>
 
@@ -1005,6 +1024,8 @@ export default function PortfolioHome() {
   const [showThinking, setShowThinking] = useState(false);
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
+  const [workProjectSlug, setWorkProjectSlug] = useState("b2c");
+  const [instantType, setInstantType] = useState(true);
 
   useEffect(() => {
     const faviconPath = "/logo.jpg";
@@ -1034,6 +1055,26 @@ export default function PortfolioHome() {
   }, []);
 
   useEffect(() => {
+    const hash = window.location.hash || "";
+    if (hash.startsWith("#work=")) {
+      const slug = hash.replace("#work=", "");
+      setWorkProjectSlug(slug || "b2c");
+      setProjectOpen("work-browser");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hasLoaded) {
+      setInstantType(true);
+      setShowThinking(false);
+      setShowResponse(true);
+      setShowPills(true);
+      setShowUserNeedsRest(active === "how i uncover user needs");
+      setHasLoaded(true);
+      return;
+    }
+
+    setInstantType(false);
     setShowPills(false);
     setShowResponse(false);
     setShowUserNeedsRest(false);
@@ -1042,8 +1083,7 @@ export default function PortfolioHome() {
     const timer = setTimeout(() => {
       setShowThinking(false);
       setShowResponse(true);
-      setHasLoaded(true);
-    }, hasLoaded ? 850 : 1200);
+    }, 850);
 
     return () => clearTimeout(timer);
   }, [active, hasLoaded]);
@@ -1063,8 +1103,16 @@ export default function PortfolioHome() {
     setActive(pill);
   };
 
+  const openWorkProject = (slug) => {
+    setWorkProjectSlug(slug);
+    window.history.replaceState(null, "", `#work=${slug}`);
+    setProjectOpen("work-browser");
+  };
+
   const handleNav = (item) => {
     if (item === "my work") {
+      setWorkProjectSlug("b2c");
+      window.history.replaceState(null, "", "#work=b2c");
       setProjectOpen("work-browser");
       return;
     }
@@ -1088,14 +1136,44 @@ export default function PortfolioHome() {
   const openProjectForActivePill = (override) => {
     setMobileChatOpen(false);
 
-    if (override === "ai-framer") { setProjectOpen("ai-framer"); return; }
-    if (override === "casey-ai") { setProjectOpen("casey-ai"); return; }
-    if (active === "how i uncover user needs") { setProjectOpen("user-needs"); return; }
-    if (active === "let's talk AI") { setProjectOpen("ai-framer"); return; }
-    if (active === "product strategy thinking") { setProjectOpen("marketing-tiles"); return; }
-    if (active === "designing systems at scale") { setProjectOpen("apply-systems"); return; }
-    if (active === "how i ship fast") { window.open(TRAVEL_DNA_URL, "_blank"); return; }
-    if (active === "how i get exec-buy in") { setProjectOpen("figma-deck"); }
+    if (override === "ai-framer") {
+      openWorkProject("ai-chat-journeys");
+      return;
+    }
+
+    if (override === "casey-ai") {
+      openWorkProject("conversational-agentic-ai");
+      return;
+    }
+
+    if (active === "how i uncover user needs") {
+      openWorkProject("b2c");
+      return;
+    }
+
+    if (active === "let's talk AI") {
+      openWorkProject("ai-chat-journeys");
+      return;
+    }
+
+    if (active === "product strategy thinking") {
+      openWorkProject("ai-personalization");
+      return;
+    }
+
+    if (active === "designing systems at scale") {
+      openWorkProject("service-design");
+      return;
+    }
+
+    if (active === "how i ship fast") {
+      openWorkProject("vibe-coding");
+      return;
+    }
+
+    if (active === "how i get exec-buy in") {
+      openWorkProject("exec-pitch");
+    }
   };
 
   return (
@@ -1104,7 +1182,17 @@ export default function PortfolioHome() {
       className={`relative min-h-screen w-full overflow-x-hidden bg-[#F7F4F2] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}
     >
       {/* Modals */}
-      {projectOpen === "work-browser" && <WorkBrowserModal onClose={() => setProjectOpen(null)} />}
+      {projectOpen === "work-browser" && (
+        <WorkBrowserModal
+          initialSlug={workProjectSlug}
+          onClose={() => {
+            setProjectOpen(null);
+            if (window.location.hash.startsWith("#work=")) {
+              window.history.replaceState(null, "", window.location.pathname);
+            }
+          }}
+        />
+      )}
       {projectOpen === "user-needs" && <FramerModal title="How I Uncover User Needs" url={USER_NEEDS_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
       {projectOpen === "figma-deck" && <FigmaDeckModal onClose={() => setProjectOpen(null)} />}
       {projectOpen === "ai-framer" && <FramerModal title="AI Chat Journeys" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
@@ -1123,6 +1211,7 @@ export default function PortfolioHome() {
           onTypeDone={handleTypeDone}
           openProjectForActivePill={openProjectForActivePill}
           onClose={() => setMobileChatOpen(false)}
+          instantType={instantType}
         />
       )}
 
@@ -1201,6 +1290,7 @@ export default function PortfolioHome() {
                 showUserNeedsRest={showUserNeedsRest}
                 onTypeDone={handleTypeDone}
                 openProjectForActivePill={openProjectForActivePill}
+                instantType={instantType}
               />
             </div>
             {/* Pills: absolute bottom, fully transparent bg so chat content shows through */}
@@ -1245,7 +1335,16 @@ export default function PortfolioHome() {
 
           {/* My Work: col 1-2, row 3 (orange — below chat) */}
           <div style={{ gridColumn: "1 / 3", gridRow: "3" }}>
-            <MyWorkTile onOpenProject={(key) => { if (key === "travel-dna") { window.open(TRAVEL_DNA_URL, "_blank"); } else { setProjectOpen(key === "marketing-tiles" ? "marketing-tiles" : "ai-framer"); } }} />
+            <MyWorkTile
+              onOpenProject={(key) => {
+                const slugByKey = {
+                  "marketing-tiles": "ai-personalization",
+                  "ai-framer": "ai-chat-journeys",
+                  "travel-dna": "vibe-coding",
+                };
+                openWorkProject(slugByKey[key] || "b2c");
+              }}
+            />
           </div>
 
           {/* Testimonials: col 3, row 3 (blue — bottom right) */}
@@ -1261,7 +1360,16 @@ export default function PortfolioHome() {
           <NavTile />
           <WhatIBelieveTile />
 
-          <MyWorkTile onOpenProject={(key) => { if (key === "travel-dna") { window.open(TRAVEL_DNA_URL, "_blank"); } else { setProjectOpen(key === "marketing-tiles" ? "marketing-tiles" : "ai-framer"); } }} />
+          <MyWorkTile
+              onOpenProject={(key) => {
+                const slugByKey = {
+                  "marketing-tiles": "ai-personalization",
+                  "ai-framer": "ai-chat-journeys",
+                  "travel-dna": "vibe-coding",
+                };
+                openWorkProject(slugByKey[key] || "b2c");
+              }}
+            />
           <TestimonialTile />
         </div>
 
