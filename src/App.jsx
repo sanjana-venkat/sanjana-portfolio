@@ -142,9 +142,9 @@ When I present, I focus on:
 • Why it matters
 • What decision needs to be made
 
-Because I learned that good design doesn't work unless people understand it.\`,
+Because I learned that good design doesn't work unless people understand it.`,
 
-  "pitch me as a motion designer": \`Sanjana doesn't just design screens. She designs moments in time.
+  "pitch me as a motion designer": `Sanjana doesn't just design screens. She designs moments in time.
 
 Most designers hand off static files. Sanjana thinks in sequences: what happens when this appears, how does this transition feel, what does the user experience between states.
 
@@ -156,16 +156,16 @@ She codes her own animations. She knows the difference between ease-in-out and c
 
 That's rare.
 
-Sanjana is a product designer who thinks like a motion designer — because she understands that how something moves tells you everything about how much it was cared for.\`
+Sanjana is a product designer who thinks like a motion designer — because she understands that how something moves tells you everything about how much it was cared for.`
 };
 
 const USER_NEEDS_REST = `The first outcome wasn't perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
 
-38 % increase in lead initiation with clearer Apply messaging.
+38% increase in lead initiation with clearer Apply messaging.
 
 In a few sprints, we pushed toward redesigning the full journey and got design system modernization onto the roadmap.
 
-    Today, the experience is live and evolving with AI.`;
+Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
   { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
@@ -302,7 +302,7 @@ function Typewriter({ text, shouldStart, onDone, instant = false }) {
   }, [cleanText, shouldStart, typedText, instant]);
 
   return (
-    <p className={`whitespace- pre - line text-[14px] leading - [1.8] text - [#221B16] ${ TYPEWRITE } `}>
+    <p className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
       {displayed}
       {typedText !== cleanText && <span className="animate-pulse text-[#A5522A]">|</span>}
     </p>
@@ -324,7 +324,7 @@ function JourneyMapPreview() {
 
 function CircleIconButton({ children, onClick, ariaLabel, className = "" }) {
   return (
-    <button type="button" onClick={onClick} aria-label={ariaLabel} className={`inline - flex h - 10 w - 10 shrink - 0 items - center justify - center rounded - full border border - [#E4E2E1] bg - white p - 0 leading - none text - [#6B625C] transition hover: text - [#A5522A] ${ className } `}>
+    <button type="button" onClick={onClick} aria-label={ariaLabel} className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:text-[#A5522A] ${className}`}>
       <span className="flex h-full w-full items-center justify-center leading-none">{children}</span>
     </button>
   );
@@ -332,14 +332,14 @@ function CircleIconButton({ children, onClick, ariaLabel, className = "" }) {
 
 function FramerModal({ title, url, onClose }) {
   return (
-    <div className={`fixed inset - 0 z - 50 overflow - y - auto bg - [#FFF8F5] px - 4 py - 6 sm: px - 6 sm: py - 10 animate - [modalIn_0.35s_ease_forwards] ${ BODY } `}>
+    <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
       <div className="mx-auto max-w-[1180px]">
         <div className="mb-5 flex items-center gap-3 sm:mb-6">
           <CircleIconButton onClick={onClose} ariaLabel="Close project">
             <ChevronLeftIcon />
           </CircleIconButton>
 
-          <h2 className={`min - w - 0 text - [32px] font - semibold leading - [0.95] tracking - [-0.05em] text - [#9C3F14] sm: text - [40px] ${ HEADING } `}>
+          <h2 className={`min-w-0 text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#9C3F14] sm:text-[40px] ${HEADING}`}>
             {title}
           </h2>
         </div>
@@ -362,18 +362,18 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
 
   const selectProject = (project) => {
     setActiveProject(project);
-    window.history.replaceState(null, "", `#work = ${ project.slug } `);
+    window.history.replaceState(null, "", `#work=${project.slug}`);
   };
 
   return (
-    <div className={`fixed inset - 0 z - 50 overflow - y - auto bg - [#FFF8F5] px - 4 py - 6 sm: px - 6 sm: py - 10 animate - [modalIn_0.35s_ease_forwards] ${ BODY } `}>
+    <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
       <div className="mx-auto w-full max-w-[1280px]">
         <div className="mb-6 flex items-center gap-4">
           <CircleIconButton onClick={onClose} ariaLabel="Close work browser">
             <ChevronLeftIcon />
           </CircleIconButton>
 
-          <h2 className={`min - w - 0 text - [32px] font - semibold leading - [1.03] tracking - [-0.04em] text - [#9C3F14] ${ HEADING } `}>
+          <h2 className={`min-w-0 text-[32px] font-semibold leading-[1.03] tracking-[-0.04em] text-[#9C3F14] ${HEADING}`}>
             My Work
           </h2>
         </div>
@@ -383,11 +383,11 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
             <button
               key={project.label}
               onClick={() => selectProject(project)}
-              className={`shrink - 0 rounded - full border px - 6 py - 3 text - [14px] font - medium transition sm: px - 7 sm: text - [15px] ${
-  activeProject.label === project.label
-    ? "border-[#9C3F14] bg-white text-[#9C3F14]"
-    : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
-} ${ HEADING } `}
+              className={`shrink-0 rounded-full border px-6 py-3 text-[14px] font-medium transition sm:px-7 sm:text-[15px] ${
+                activeProject.label === project.label
+                  ? "border-[#9C3F14] bg-white text-[#9C3F14]"
+                  : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
+              } ${HEADING}`}
             >
               {project.label}
             </button>
@@ -418,7 +418,7 @@ function HeroTile() {
       }}
     >
       {/* Name */}
-      <h1 className={`font - semibold leading - [1.2] tracking - [-0.02em] text - [#9C3F14] whitespace - nowrap ${ HEADING } `}
+      <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] whitespace-nowrap ${HEADING}`}
         style={{ fontSize: "40px" }}>
         Sanjana Venkat
       </h1>
@@ -455,9 +455,9 @@ function HeroTile() {
 /* ─── BENTO TILE: What I Believe In (fixed height matching NavTile) ─── */
 function WhatIBelieveTile() {
   return (
-    <article className={`rounded - [32px] bg - white p - 6 text - [14px] h - full flex flex - col justify - between ${ BODY } `} style={{ minHeight: "220px" }}>
+    <article className={`rounded-[32px] bg-white p-6 text-[14px] h-full flex flex-col justify-between ${BODY}`} style={{ minHeight: "220px" }}>
       <div>
-        <p className={`mb - 5 text - [12px] font - semibold uppercase tracking - [0.18em] text - [#9A8176] ${ HEADING } `}>
+        <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
           what i believe in
         </p>
 
@@ -479,7 +479,7 @@ function WhatIBelieveTile() {
           <a href="mailto:sanjanavnkt20@gmail.com" aria-label="Email Sanjana" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
             <span className="flex h-full w-full items-center justify-center leading-none"><MailIcon /></span>
           </a>
-          <a href="https://www.linkedin.com/in/sanjana-venkat/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className={`inline - flex h - 10 w - 10 items - center justify - center rounded - full border border - [#E4E2E1] bg - white p - 0 text - [13px] font - semibold leading - none text - [#6B625C] transition hover: border - [#A5522A] hover: text - [#A5522A] ${ HEADING } `}>
+          <a href="https://www.linkedin.com/in/sanjana-venkat/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 text-[13px] font-semibold leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A] ${HEADING}`}>
             <span className="flex h-full w-full items-center justify-center leading-none">in</span>
           </a>
         </div>
@@ -487,7 +487,7 @@ function WhatIBelieveTile() {
           href="/SanjanaVenkat_ProductDesign_Resume.pdf"
           target="_blank"
           rel="noreferrer"
-          className={`inline - flex items - center gap - 1 text - [13px] text - [#8A817B] underline underline - offset - 4 hover: text - [#A5522A] transition ${ HEADING } `}
+          className={`inline-flex items-center gap-1 text-[13px] text-[#8A817B] underline underline-offset-4 hover:text-[#A5522A] transition ${HEADING}`}
         >
           resume →
         </a>
@@ -514,9 +514,9 @@ const TIMELINE_ITEMS = [
 
 /* Idle background scribbles — three overlapping wavy paths */
 const IDLE_SCRIBBLES = [
-  `M 20, 55 C 40, 30 60, 75 85, 50 C 110, 25 130, 70 155, 48 C 180, 26 200, 68 225, 46 C 250, 24 265, 58 285, 42`,
-  `M 15, 62 C 38, 38 58, 78 80, 54 C 102, 30 125, 72 148, 50 C 171, 28 192, 66 215, 48 C 238, 30 258, 62 278, 50`,
-  `M 25, 48 C 48, 26 68, 70 92, 46 C 116, 22 138, 66 162, 44 C 186, 22 206, 64 230, 44 C 254, 24 270, 56 290, 40`,
+  `M 20,55 C 40,30 60,75 85,50 C 110,25 130,70 155,48 C 180,26 200,68 225,46 C 250,24 265,58 285,42`,
+  `M 15,62 C 38,38 58,78 80,54 C 102,30 125,72 148,50 C 171,28 192,66 215,48 C 238,30 258,62 278,50`,
+  `M 25,48 C 48,26 68,70 92,46 C 116,22 138,66 162,44 C 186,22 206,64 230,44 C 254,24 270,56 290,40`,
 ];
 
 // CHANGE 2: Full NavTile replacement — scribble draws in, hard-swaps to line, dot+text+image slide in
@@ -586,7 +586,7 @@ function NavTile() {
 
   return (
     <div
-      className={`rounded - [32px] bg - white h - full flex flex - col overflow - hidden relative select - none cursor - pointer ${ BODY } `}
+      className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative select-none cursor-pointer ${BODY}`}
       style={{ minHeight: "220px" }}
       onMouseEnter={startAnimation}
       onMouseLeave={stopAnimation}
@@ -595,7 +595,7 @@ function NavTile() {
       {/* ── IDLE ── */}
       {!active && (
         <div className="absolute inset-0 flex flex-col px-6 pt-6 pb-5">
-          <p className={`text - [11px] font - semibold uppercase tracking - [0.18em] text - [#9A8176] mb - 4 ${ HEADING } `}>
+          <p className={`text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] mb-4 ${HEADING}`}>
             my story
           </p>
           <div className="flex-1 relative overflow-hidden">
@@ -609,7 +609,7 @@ function NavTile() {
                 strokeLinejoin="round"
               />
             </svg>
-            <p className={`absolute bottom - 0 left - 0 text - [10px] text - [#C0B8B4] ${ HEADING } `}>
+            <p className={`absolute bottom-0 left-0 text-[10px] text-[#C0B8B4] ${HEADING}`}>
               hover to explore
             </p>
           </div>
@@ -619,7 +619,7 @@ function NavTile() {
       {/* ── ACTIVE ── */}
       {active && (
         <>
-          <p className={`pt - 6 px - 6 text - [11px] font - semibold uppercase tracking - [0.18em] text - [#9A8176] shrink - 0 ${ HEADING } `}>
+          <p className={`pt-6 px-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
             my story
           </p>
 
@@ -651,7 +651,7 @@ function NavTile() {
               {/* LINE: appears the instant scribble exits, draws itself left→right */}
               {showLine && (
                 <path
-                  key={`line - ${ step } -${ phase } `}
+                  key={`line-${step}-${phase}`}
                   d={item.heart && showContent ? heartLinePath : linePath}
                   fill="none"
                   stroke={item.heart && showContent ? "#D96F45" : "#2F2F2F"}
@@ -674,7 +674,7 @@ function NavTile() {
               {/* DOT: slides in from right with content */}
               {showContent && !item.heart && (
                 <circle
-                  key={`dot - ${ step } `}
+                  key={`dot-${step}`}
                   cx="160"
                   cy="38"
                   r={item.isNow ? "5" : "4"}
@@ -691,7 +691,7 @@ function NavTile() {
 
             {/* CONTENT: slides in from right simultaneously with dot */}
             <div
-              key={`content - ${ step } `}
+              key={`content-${step}`}
               className="absolute bottom-0 left-0 right-0 px-6 pb-5 text-left"
               style={{
                 opacity: showContent ? 1 : 0,
@@ -699,10 +699,10 @@ function NavTile() {
               }}
             >
               <div className="flex items-baseline gap-2 whitespace-nowrap">
-                <span className={`text - [22px] font - bold ${ item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]" } ${ HEADING } `}>
+                <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
                   {item.year}
                 </span>
-                <span className={`text - [14px] font - semibold text - [#9A8176] ${ HEADING } `}>
+                <span className={`text-[14px] font-semibold text-[#9A8176] ${HEADING}`}>
                   {item.label}
                 </span>
               </div>
@@ -714,7 +714,7 @@ function NavTile() {
             {/* IMAGE: left-center, partially cropped off the left edge, fades in after content lands */}
             {item.img && (
               <div
-                key={`img - ${ step } `}
+                key={`img-${step}`}
                 className="absolute overflow-hidden"
                 style={{
                   top: "8px",
@@ -745,23 +745,23 @@ function NavTile() {
       )}
 
       <style>{`
-@keyframes tlScribbleDraw {
-          from { stroke - dashoffset: ${ SCRIBBLE_LEN }; }
-          to   { stroke - dashoffset: 0; }
-}
-@keyframes tlDraw {
-          from { stroke - dashoffset: 520; }
-          to   { stroke - dashoffset: 0; }
-}
-@keyframes timelineContentSlide {
+        @keyframes tlScribbleDraw {
+          from { stroke-dashoffset: ${SCRIBBLE_LEN}; }
+          to   { stroke-dashoffset: 0; }
+        }
+        @keyframes tlDraw {
+          from { stroke-dashoffset: 520; }
+          to   { stroke-dashoffset: 0; }
+        }
+        @keyframes timelineContentSlide {
           from { opacity: 0; transform: translateX(120px); }
           to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes timelineDotSlide {
+        }
+        @keyframes timelineDotSlide {
           from { opacity: 0; transform: translateX(120px); }
           to   { opacity: 1; transform: translateX(0); }
-}
-`}</style>
+        }
+      `}</style>
     </div>
   );
 }
@@ -776,10 +776,10 @@ const WORK_PREVIEWS = [
 function MyWorkTile({ onOpenProject }) {
   return (
     <div
-      className={`group relative w - full rounded - [32px] bg - white flex flex - col text - left overflow - hidden ${ BODY } `}
+      className={`group relative w-full rounded-[32px] bg-white flex flex-col text-left overflow-hidden ${BODY}`}
     >
       {/* MY WORK label */}
-      <p className={`pt - 7 px - 7 pb - 5 text - [12px] font - semibold uppercase tracking - [0.18em] text - [#9A8176] shrink - 0 ${ HEADING } `}>
+      <p className={`pt-7 px-7 pb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
         my work
       </p>
 
@@ -810,12 +810,12 @@ function MyWorkTile({ onOpenProject }) {
               className="absolute inset-0 flex items-end transition-opacity duration-200 opacity-0 hover:opacity-100"
               style={{ background: "rgba(0,0,0,0.5)" }}
             >
-              <p className={`px - 4 py - 3 text - [11px] font - bold tracking - [0.14em] uppercase text - white ${ HEADING } `}>
+              <p className={`px-4 py-3 text-[11px] font-bold tracking-[0.14em] uppercase text-white ${HEADING}`}>
                 {proj.label}
               </p>
             </div>
             {proj.isNew && (
-              <div className={`absolute top - 3 right - 3 px - 2.5 py - 1 bg - white rounded - full text - [8px] font - bold tracking - [0.9px] uppercase text - black ${ HEADING } `}>
+              <div className={`absolute top-3 right-3 px-2.5 py-1 bg-white rounded-full text-[8px] font-bold tracking-[0.9px] uppercase text-black ${HEADING}`}>
                 New
               </div>
             )}
@@ -841,8 +841,8 @@ function TestimonialTile() {
   }, [isPaused]);
 
   return (
-    <article className={`relative rounded - [32px] bg - white p - 7 text - [13px] ${ BODY } `} style={{ height: "100%", overflow: "hidden" }}>
-      <p className={`mb - 5 text - [12px] font - semibold uppercase tracking - [0.18em] text - [#9A8176] ${ HEADING } `}>
+    <article className={`relative rounded-[32px] bg-white p-7 text-[13px] ${BODY}`} style={{ height: "100%", overflow: "hidden" }}>
+      <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
         what people say about me
       </p>
 
@@ -856,13 +856,13 @@ function TestimonialTile() {
             overflow: "hidden",
           }}
         >"{quote}"</p>
-        <p className={`mt - 3 text - [14px] font - semibold text - [#111827] ${ HEADING } `}>{name}</p>
+        <p className={`mt-3 text-[14px] font-semibold text-[#111827] ${HEADING}`}>{name}</p>
         <p className="mt-0.5 text-[11px] uppercase tracking-[0.12em] text-[#9CA3AF]">{title}</p>
       </div>
 
       <div className="mt-4 flex gap-3 pr-14">
         {TESTIMONIALS.map((_, dotIndex) => (
-          <span key={dotIndex} className={`h - 3 rounded - full transition - all duration - 300 ${ index === dotIndex ? "w-10 bg-[#D96F45]" : "w-3 bg-[#EEF0F3]" } `} />
+          <span key={dotIndex} className={`h-3 rounded-full transition-all duration-300 ${index === dotIndex ? "w-10 bg-[#D96F45]" : "w-3 bg-[#EEF0F3]"}`} />
         ))}
       </div>
 
@@ -884,11 +884,11 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   if (active === "let's talk AI") {
     return (
       <div className="flex flex-wrap gap-x-6 gap-y-3 px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
-        <button onClick={() => openProjectForActivePill("ai-framer")} className={`inline - flex text - [14px] font - medium text - [#8A817B] underline underline - offset - 4 transition - colors hover: text - [#A5522A] ${ HEADING } `}>
+        <button onClick={() => openProjectForActivePill("ai-framer")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
           AI chat journeys →
         </button>
 
-        <button onClick={() => openProjectForActivePill("casey-ai")} className={`inline - flex text - [14px] font - medium text - [#8A817B] underline underline - offset - 4 transition - colors hover: text - [#A5522A] ${ HEADING } `}>
+        <button onClick={() => openProjectForActivePill("casey-ai")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
           what's casey AI? →
         </button>
       </div>
@@ -908,7 +908,7 @@ function ResponseLinks({ active, openProjectForActivePill }) {
 
   return (
     <div className="px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
-      <button onClick={() => openProjectForActivePill()} className={`inline - flex text - [14px] font - medium text - [#8A817B] underline underline - offset - 4 transition - colors hover: text - [#A5522A] ${ HEADING } `}>
+      <button onClick={() => openProjectForActivePill()} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
         {ctaText}
       </button>
     </div>
@@ -919,14 +919,14 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
   return (
     <>
       <div className="mb-6 flex justify-end">
-        <div className={`rounded - [48px_48px_0px_48px] bg - [#A5522A] px - 6 py - 3 text - [14px] leading - [1.8] text - white animate - [messageSend_0.35s_ease_forwards] ${ TYPEWRITE } `}>
+        <div className={`rounded-[48px_48px_0px_48px] bg-[#A5522A] px-6 py-3 text-[14px] leading-[1.8] text-white animate-[messageSend_0.35s_ease_forwards] ${TYPEWRITE}`}>
           {active}
         </div>
       </div>
 
       {showThinking && (
         <div className="rounded-[0px_36px_36px_36px] bg-white p-5 animate-[fadeUp_0.25s_ease_forwards] sm:p-6">
-          <div className={`flex items - center gap - 2 text - [12px] text - [#8A817B] ${ HEADING } `}>
+          <div className={`flex items-center gap-2 text-[12px] text-[#8A817B] ${HEADING}`}>
             <span className="h-2 w-2 rounded-full bg-[#A5522A] animate-pulse" />
             thinking
           </div>
@@ -945,7 +945,7 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
 
           {active === "how i uncover user needs" && showUserNeedsRest && (
             <div className="mt-5 rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-              <p className={`whitespace - pre - line break-words text - [14px] leading - [1.8] text - [#221B16] ${ TYPEWRITE } `}>
+              <p className={`whitespace-pre-line break-words text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
                 {USER_NEEDS_REST}
               </p>
             </div>
@@ -962,11 +962,11 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
   const [showHint, setShowHint] = useState(false);
 
   return (
-    <div className={`fixed inset - 0 z - [60] flex flex - col bg - [#FFF8F5] ${ BODY } `}>
+    <div className={`fixed inset-0 z-[60] flex flex-col bg-[#FFF8F5] ${BODY}`}>
       <div className="pointer-events-none fixed left-0 right-0 top-0 z-10 flex items-start justify-between gap-3 px-4 pt-4">
         <div className="pointer-events-auto max-w-[calc(100%-72px)] rounded-[999px] border border-[#E4E2E1] bg-white px-7 py-5 shadow-sm">
           <div className="flex items-center gap-2">
-            <p className={`text - [11px] font - semibold uppercase tracking - [0.16em] text - [#9A8176] ${ HEADING } `}>
+            <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
               ask me
             </p>
 
@@ -977,9 +977,9 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
               className="flex h-4 w-4 items-center justify-center p-0 leading-none text-[#8A817B] transition hover:text-[#A5522A]"
             >
               <ChevronRightIcon
-                className={`h - 4 w - 4 transition - transform duration - 300 ${
-  showHint ? "rotate-90" : ""
-} `}
+                className={`h-4 w-4 transition-transform duration-300 ${
+                  showHint ? "rotate-90" : ""
+                }`}
               />
             </button>
           </div>
@@ -1017,11 +1017,11 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
             <button
               key={pill}
               onClick={() => setActive(pill)}
-              className={`shrink - 0 rounded - full border bg - white px - 4 py - 2 text - [11px] transition ${
-  active === pill
-    ? "border-[#A5522A] text-[#A5522A]"
-    : "border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
-} ${ HEADING } `}
+              className={`shrink-0 rounded-full border bg-white px-4 py-2 text-[11px] transition ${
+                active === pill
+                  ? "border-[#A5522A] text-[#A5522A]"
+                  : "border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
+              } ${HEADING}`}
             >
               {pill}
             </button>
@@ -1064,7 +1064,7 @@ export default function PortfolioHome() {
       const link = document.createElement("link");
       link.rel = rel;
       link.type = type;
-      link.href = `${ href }?v = ${ Date.now() } `;
+      link.href = `${href}?v=${Date.now()}`;
       document.head.appendChild(link);
     };
 
@@ -1125,7 +1125,7 @@ export default function PortfolioHome() {
 
   const openWorkProject = (slug) => {
     setWorkProjectSlug(slug);
-    window.history.replaceState(null, "", `#work = ${ slug } `);
+    window.history.replaceState(null, "", `#work=${slug}`);
     setProjectOpen("work-browser");
   };
 
@@ -1204,7 +1204,7 @@ export default function PortfolioHome() {
   return (
     <main
       onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })}
-      className={`relative min - h - screen w - full overflow - x - hidden bg - [#F7F4F2] px - 4 py - 6 text - [#221B16] sm: px - 8 sm: py - 10 ${ BODY } `}
+      className={`relative min-h-screen w-full overflow-x-hidden bg-[#F7F4F2] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}
     >
       {/* Modals */}
       {projectOpen === "work-browser" && (
@@ -1275,7 +1275,7 @@ export default function PortfolioHome() {
             style={{ gridColumn: "1", gridRow: "1 / 3", height: "520px" }}
           >
             <div className="px-6 pt-6 pb-3 shrink-0">
-              <p className={`text - [12px] font - semibold uppercase tracking - [0.18em] text - [#9A8176] ${ HEADING } `}>
+              <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
                 ask me
               </p>
             </div>
@@ -1300,11 +1300,11 @@ export default function PortfolioHome() {
                       <button
                         key={pill}
                         onClick={() => handlePillSelect(pill)}
-                        className={`rounded - full border px - 4 py - 2 text - [11px] whitespace - nowrap transition hover: scale - [1.02] backdrop - blur - sm ${
-  active === pill
-    ? "bg-white/90 border-[#A5522A] text-[#A5522A]"
-    : "bg-white/90 border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
-} ${ HEADING } `}
+                        className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] backdrop-blur-sm ${
+                          active === pill
+                            ? "bg-white/90 border-[#A5522A] text-[#A5522A]"
+                            : "bg-white/90 border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
+                        } ${HEADING}`}
                       >
                         {pill}
                       </button>
@@ -1373,69 +1373,68 @@ export default function PortfolioHome() {
       </div>
 
       <style>{`
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-@keyframes modalIn {
+        @keyframes modalIn {
           from { opacity: 0; transform: translateY(18px) scale(0.98); }
           to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@keyframes fadeUp {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideIn {
-          from { opacity: 0; transform: translateX(18px); }
-          to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes messageSend {
-          from { opacity: 0; transform: translateY(10px) scale(0.96); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@keyframes answerBubbleIn {
-          from { opacity: 0; transform: translateY(14px) scale(0.98); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@keyframes glow {
-  0 % { box- shadow: 0 0 0 0 rgba(217, 111, 69, 0.6);
-}
-50 % { box- shadow: 0 0 0 12px rgba(217, 111, 69, 0); }
-100 % { box- shadow: 0 0 0 0 rgba(217, 111, 69, 0); }
         }
 
-html,
-  body {
-  font - family: 'Open Sans', sans - serif;
-  background: #F7F4F2;
-}
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
 
-h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  button {
-  font - family: 'Plus Jakarta Sans', sans - serif;
-}
+        @keyframes slideIn {
+          from { opacity: 0; transform: translateX(18px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
 
-        .animate - glow {
-  animation: glow 2s ease -in -out infinite;
-}
+        @keyframes messageSend {
+          from { opacity: 0; transform: translateY(10px) scale(0.96); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
-        .no - scrollbar {
-  scrollbar - width: none;
-  -ms - overflow - style: none;
-}
+        @keyframes answerBubbleIn {
+          from { opacity: 0; transform: translateY(14px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
-        .no - scrollbar:: -webkit - scrollbar {
-  display: none;
-}
-`}</style>
+        @keyframes glow {
+          0% { box-shadow: 0 0 0 0 rgba(217,111,69,0.6); }
+          50% { box-shadow: 0 0 0 12px rgba(217,111,69,0); }
+          100% { box-shadow: 0 0 0 0 rgba(217,111,69,0); }
+        }
+
+        html,
+        body {
+          font-family: 'Open Sans', sans-serif;
+          background: #F7F4F2;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        button {
+          font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .animate-glow {
+          animation: glow 2s ease-in-out infinite;
+        }
+
+        .no-scrollbar {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </main>
   );
 }
