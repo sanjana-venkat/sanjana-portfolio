@@ -24,7 +24,7 @@ const TRAVEL_DNA_URL =
 
 const WAYFARER_URL = TRAVEL_DNA_URL;
 
-const RESUME_URL = "/SanjanaVenkat_ProductDesign_Resume.pdf";
+const RESUME_URL = "/SanjanaVenkat_Design-Engineer_Resume1.pdf";
 const GITHUB_URL = "https://github.com/sanjana-venkat";
 
 const BODY = "[font-family:'Open_Sans',sans-serif]";
@@ -487,7 +487,7 @@ function WhatIBelieveTile() {
         </p>
 
         <p className="leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
-          I study psychology because I love thinking about how people think. And that curiosity never left, it just found a new home in product design.
+          I majored in psychology because I love thinking about how people think. And that curiosity never left, it just found a new home in product design.
         </p>
 
         <p className="mt-3 leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
@@ -524,13 +524,15 @@ const TIMELINE_ITEMS = [
   { year: "2014",      label: "Moved to the States",    sub: "A big leap — new country, new world",                 heart: false, isNow: false, img: "/2014.jpg"   },
   { year: "2018",      label: "Future teacher",         sub: "Wanted to teach, then found counseling psychology",   heart: false, isNow: false, img: "/2018.png"   },
   { year: "2020",      label: "Psychology major, UTD",  sub: "Studied how people think, feel, and make decisions",  heart: false, isNow: false, img: "/2020.jpg"   },
-  { year: "2021",      label: "Chetna",                 sub: "Raised $10K+ for South Asian mental health",          heart: false, isNow: false, img: "/2021.jpg"   },
-  { year: "2022",      label: "Dialexa",                sub: "Dabbled into design — built an AR concept for DTour", heart: false, isNow: false, img: "/2022-1.jpg" },
-  { year: "2022",      label: "VP, UX Club",            sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: "/2022.jpg"   },
+  { year: "2021",      label: "Chetna · Graphic Design", sub: "Raised $10K+ for South Asian mental health",         heart: false, isNow: false, img: "/2021.jpg"   },
+  { year: "",          label: "",                       sub: "",                                                    heart: false, isNow: false, img: null,          wave: true },
+  { year: "2022",      label: "Dialexa",                sub: "Dabbled into design — built an AR concept for DTour", heart: false, isNow: false, img: "/2022.jpg"   },
+  { year: "2022",      label: "VP, UX Club",            sub: "Ran design events with Paycom, Bottle Rocket + Intuit", heart: false, isNow: false, img: "/2022-1.jpg" },
   { year: "2023",      label: "Paycom",                 sub: "Associate Product Designer, B2B enterprise subteam",  heart: false, isNow: false, img: "/2023.jpg"   },
   { year: "2024",      label: "JPMC · Senior PD",       sub: "Owned apply flow, HELOC 0-to-1 and AI initiatives",  heart: false, isNow: false, img: "/2024.jpg"   },
   { year: "2025",      label: "JP Morgan Chase",        sub: "Led Marketing + AI and exec-facing Gemini concepts", heart: false, isNow: false, img: "/2025.jpg"   },
-  { year: "2026",      label: "Married · Bay Area",     sub: "Moved to the Bay Area for a new chapter",            heart: true,  isNow: false, img: "/2026.jpg"   },
+  { year: "2026",      label: "Married · Bay Area",     sub: "Moved to the Bay Area for a new chapter",            heart: true,  isNow: false, img: "/2026.png"   },
+  { year: "",          label: "",                       sub: "",                                                    heart: false, isNow: false, img: null,          wave: true },
   { year: "NOW",       label: "Design Engineer",        sub: "Building polished AI product ideas fast",            heart: false, isNow: true,  img: null          },
 ];
 
@@ -599,8 +601,9 @@ function NavTile() {
   useEffect(() => () => clearAll(), []);
 
   const item        = TIMELINE_ITEMS[step];
-  const showLine    = phase === "line" || phase === "content" || phase === "hold";
-  const showContent = phase === "content" || phase === "hold";
+  const isWave      = !!item.wave;
+  const showLine    = !isWave && (phase === "line" || phase === "content" || phase === "hold");
+  const showContent = !isWave && (phase === "content" || phase === "hold");
 
   const scribblePath = SCRIBBLE_PATH;
   const linePath = "M 95 38 C 150 38, 220 38, 300 38";
@@ -649,7 +652,7 @@ function NavTile() {
             {/* CENTER BLOCK: image + line, vertically centered in available space */}
             <div className="flex-1 relative">
               {/* IMAGE */}
-              {item.img && (
+              {item.img && !isWave && (
                 <div
                   key={`img-${step}`}
                   className="absolute overflow-hidden"
@@ -753,9 +756,35 @@ function NavTile() {
                   />
                 )}
               </svg>
-            </div>
 
-            {/* TEXT pinned at bottom */}
+              {/* WAVE: dampened oscillation on transition steps (after Chetna, after Marriage) */}
+              {isWave && (
+                <svg
+                  className="absolute left-0 right-0 w-full"
+                  style={{ top: "50%", transform: "translateY(-50%)", height: "60px", overflow: "visible" }}
+                  viewBox="0 0 320 60"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    key={`wave-${step}-${phase}`}
+                    d="M 10 30 C 30 5, 55 55, 80 30 C 105 5, 125 45, 145 30 C 160 18, 170 40, 183 30 C 191 23, 196 36, 203 30 C 207 27, 210 33, 213 30 C 215 28, 217 31, 219 30 L 310 30"
+                    fill="none"
+                    stroke="#2F2F2F"
+                    strokeWidth="1.3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    style={{
+                      strokeDasharray: 520,
+                      strokeDashoffset: phase === "line" ? 520 : 0,
+                      animation: phase === "line"
+                        ? "tlDraw 1s cubic-bezier(0.4,0,0.2,1) forwards"
+                        : "none",
+                    }}
+                  />
+                </svg>
+              )}
+            </div>
+            {!isWave && (
             <div
               key={`content-${step}`}
               className="px-6 pb-4 text-left shrink-0"
@@ -776,6 +805,7 @@ function NavTile() {
                 {item.sub}
               </p>
             </div>
+            )}
           </div>
         </>
       )}
