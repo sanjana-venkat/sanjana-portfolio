@@ -146,13 +146,15 @@ When I present, I focus on:
 
 Because I learned that good design doesn't work unless people understand it.`,
 
-  "model design": `I was actually so happy to see that Model Designer is a role because I think that's honestly where my interest has been going. I still care about design, but what excites me more is shaping how AI decides. Model classification, response filtering, recommendation logic, and making sure the right thing reaches the right person.
+  "model design": `I drove work and teams towards launch and learn even in a traditionally slower environment. I was known as the "all-in-one" designer because of my deep collaboration with product, engineering, marketing, senior leadership, and yes, data science and ML teams too.
 
-At Chase, I became known as the "all-in-one" designer because I naturally worked across product, engineering, marketing, data science, and ML teams to get ideas launched. One of the biggest things I worked on was a need-based framework that classified customer intent before deciding what message to generate. Instead of asking "what data do we have?", we started with "what is this customer actually trying to do today?"
+That's why I was actually so happy to see Model Designer as a role. I still like traditional design, but this excites me more because I love the thinking behind design, and I want to shape the strategy behind model classification, response filtering, and recommendation logic
 
-I ended up doing something similar in Casey AI too. A lot of the work became shaping model responses, conversation paths, and thinking through constraints and edge cases instead of just designing screens.
+One of my favorite things I worked on in JPMC was a intent-based framework that classified customer intent before deciding what message to generate. Instead of asking "what data do we have?", we started with "what is this customer actually trying to do today?" 
 
-That thinking carried into my personal project, Outdone. I felt personalization relies too much on historical data and forgets what someone might want today. I classified users into 9 mood archetypes so Gemini could filter responses differently based on context. I also wired the APIs myself and intentionally showed how the response was being generated in the loading state because I think AI should feel understandable, not magical.`
+I ended up doing something similar in Casey AI too. A lot of the work became shaping model responses, seeing all possible conversation paths, and especially thinking through constraints and edge cases instead of just creating another chatbot. 
+
+That thinking carried into my personal project, Outdone. I saw a gap in personalization that relies too much on historical data and forgets what someone might want today. In a travel setting, I classified all possible moods into 9 archetypes so Gemini could filter responses differently based on context. I also wired the APIs myself and intentionally showed how the response was being generated in the loading state so people can see the magic behind AI`
 };
 
 const USER_NEEDS_REST = `The first outcome wasn't perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
