@@ -1110,53 +1110,67 @@ function TestimonialTile() {
   );
 }
 
+
+const MODEL_DESIGN_INTRO = `I drove work and teams towards launch and learn even in a traditionally slower environment. I was known as the "all-in-one" designer because of my deep collaboration with product, engineering, marketing, senior leadership, and yes, data science and ML teams too.
+
+That's why I was so excited to see Model Designer as a role. I'm genuinely more interested in this than visual design, and I want to shape the UX strategy behind model classification, filtering, and response mapping.
+
+At JPMC, I worked across:`;
+
+const MODEL_DESIGN_LINKS = [
+  {
+    title: "Chase MyHome Intent-Based Recommendations",
+    question: "How should the system decide what to recommend?",
+    description: "I built a behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment.",
+    target: "ai-personalization",
+  },
+  {
+    title: "Casey Conversational AI",
+    question: "How should the model respond?",
+    description: "I defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations.",
+    target: "casey-ai",
+  },
+  {
+    title: "AI Search Interfaces",
+    question: "How should AI become the interface?",
+    description: "I explored how ChatGPT and Gemini could turn search-time intent into action without breaking the conversational flow.",
+    target: "ai-framer",
+  },
+  {
+    title: "Outdone Mood-Based Personalization",
+    question: "What context should guide generation?",
+    description: "I built Outdone because I felt personalization relies too much on historical data and forgets what someone might want today.",
+    target: "travel-dna",
+  },
+];
+
+function ModelDesignInlineLinks({ openProjectForActivePill }) {
+  return (
+    <div className="mt-5 space-y-5 animate-[fadeUp_0.35s_ease_forwards]">
+      {MODEL_DESIGN_LINKS.map((link) => (
+        <button
+          key={link.title}
+          onClick={() => openProjectForActivePill(link.target)}
+          className="block w-full text-left group"
+        >
+          <p className={`text-[14px] font-semibold leading-[1.5] text-[#221B16] ${HEADING}`}>
+            {link.title}
+          </p>
+          <p className={`mt-1 inline text-[13px] leading-[1.6] text-[#8A817B] underline underline-offset-4 decoration-[#8A817B] group-hover:text-[#A5522A] group-hover:decoration-[#A5522A] transition ${HEADING}`}>
+            {link.question} →
+          </p>
+          <p className={`mt-2 text-[13px] leading-[1.65] text-[#5F5149] ${TYPEWRITE}`}>
+            {link.description}
+          </p>
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function ResponseLinks({ active, openProjectForActivePill }) {
-  if (active === "show model design thinking") {
-    const modelDesignLinks = [
-      {
-        title: "Chase MyHome Intent-Based Recommendations",
-        question: "How should the system decide what to recommend?",
-        target: "ai-personalization",
-      },
-      {
-        title: "Casey Conversational AI",
-        question: "How should the model respond?",
-        target: "casey-ai",
-      },
-      {
-        title: "AI Search Interfaces",
-        question: "How should AI become the interface?",
-        target: "ai-framer",
-      },
-      {
-        title: "Outdone Mood-Based Personalization",
-        question: "What context should guide generation?",
-        target: "travel-dna",
-      },
-    ];
+  if (active === "show model design thinking") return null;
 
-    return (
-      <div className="flex flex-col gap-4 px-2 pt-5 animate-[fadeUp_0.35s_ease_forwards]">
-        {modelDesignLinks.map((link) => (
-          <button
-            key={link.title}
-            onClick={() => openProjectForActivePill(link.target)}
-            className="text-left group"
-          >
-            <p className={`text-[14px] font-semibold text-[#221B16] ${HEADING}`}>
-              {link.title}
-            </p>
-
-            <p
-              className={`mt-1 text-[13px] text-[#8A817B] underline underline-offset-4 group-hover:text-[#A5522A] transition ${HEADING}`}
-            >
-              {link.question} →
-            </p>
-          </button>
-        ))}
-      </div>
-    );
-  }
 
   if (active === "let's talk AI") {
     return (
@@ -1213,7 +1227,22 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
       {showResponse && (
         <>
           <div className="rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-            <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} instant={instantType} />
+            {active === "show model design thinking" ? (
+              <>
+                <Typewriter
+                  text={MODEL_DESIGN_INTRO}
+                  shouldStart={showResponse}
+                  onDone={onTypeDone}
+                  instant={instantType}
+                />
+
+                {showPills && (
+                  <ModelDesignInlineLinks openProjectForActivePill={openProjectForActivePill} />
+                )}
+              </>
+            ) : (
+              <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} instant={instantType} />
+            )}
 
             {active === "how do you uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
 
