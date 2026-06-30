@@ -148,13 +148,15 @@ Because I learned that good design doesn't work unless people understand it.`,
 
   "model design": `I drove work and teams towards launch and learn even in a traditionally slower environment. I was known as the "all-in-one" designer because of my deep collaboration with product, engineering, marketing, senior leadership, and yes, data science and ML teams too.
 
-That's why I was actually so happy to see Model Designer as a role. I'm genuinely more interested in this than visual design, and I want to shape the UX strategy behind model classification, response filtering, and recommendation logic
+That's why I was so excited to see Model Designer as a role. I'm genuinely more interested in this than visual design, and I want to shape the UX strategy behind model classification, filtering, and response mapping.
 
-One of my favorite things I worked on in JPMC was a intent-based framework that classified customer intent before deciding what message to generate. Instead of asking "what data do we have?", we started with "what is this customer actually trying to do today?" 
+At JPMC:
+• Intent Classification Framework, I built a behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment
+• Conversational AI, I shaped model responses and defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations
+• Agentic Search Experiences, I explored how ChatGPT and Gemini could turn search-time intent into action without breaking the conversational flow
 
-I ended up doing something similar in Casey AI too. A lot of the work became shaping model responses, seeing all possible conversation paths, and especially thinking through constraints and edge cases instead of just creating another chatbot. 
-
-That thinking carried into my personal project, Outdone. I saw a gap in personalization that relies too much on historical data and forgets what someone might want today. In a travel setting, I classified all possible moods into 9 archetypes so Gemini could filter responses differently based on context. I also wired the APIs myself and intentionally showed how the response was being generated in the loading state so people can see the magic behind AI`
+Personal project:
+• Context-Aware Personalization, I built Outdone because I felt personalization relies too much on historical data and forgets what someone might want today. I classified people into 9 archetypes so Gemini could sort all possible responses into these categories. I wired the APIs myself, and intentionally showed users how the AI was generating responses in the loading state, because I think AI should feel understandable, not magical.`
 };
 
 const USER_NEEDS_REST = `The first outcome wasn't perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
@@ -1093,23 +1095,19 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   if (active === "model design") {
     const modelDesignLinks = [
       {
-        label: "Intent Classification Framework",
-        question: "How should the system decide what to recommend?",
+        text: "How should the system decide what to recommend? →",
         target: "ai-personalization",
       },
       {
-        label: "Conversational AI",
-        question: "How should the model respond across different situations?",
+        text: "How should the model respond? →",
         target: "casey-ai",
       },
       {
-        label: "Agentic Search Experiences",
-        question: "When should AI answer, take action, or hand off?",
+        text: "How should AI become the interface? →",
         target: "ai-framer",
       },
       {
-        label: "Context-Aware Personalization",
-        question: "What context should guide generation?",
+        text: "What context should guide generation? →",
         target: "travel-dna",
       },
     ];
@@ -1118,16 +1116,11 @@ function ResponseLinks({ active, openProjectForActivePill }) {
       <div className="flex flex-col gap-3 px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
         {modelDesignLinks.map((link) => (
           <button
-            key={link.label}
+            key={link.text}
             onClick={() => openProjectForActivePill(link.target)}
-            className={`group text-left transition-colors hover:text-[#A5522A] ${HEADING}`}
+            className={`text-left text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}
           >
-            <span className="block text-[14px] font-semibold text-[#6B625C] underline underline-offset-4 group-hover:text-[#A5522A]">
-              {link.label} →
-            </span>
-            <span className="mt-1 block text-[12px] font-normal leading-[1.45] text-[#8A817B] group-hover:text-[#A5522A]">
-              {link.question}
-            </span>
+            {link.text}
           </button>
         ))}
       </div>
