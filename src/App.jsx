@@ -32,20 +32,20 @@ const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
 const TYPEWRITE = "[font-family:'JetBrains_Mono',monospace]";
 
 const PILLS = [
-  "model design",
-  "how do you uncover user needs",
+  "show model design thinking",
+  "uncovering user needs",
   "how do you ship fast",
   "let's talk AI",
   "product strategy thinking",
   "designing systems at scale",
   "tell me your story",
-  "how do you get exec buy-in",
+  "getting exec buy-in",
 ];
 
-const DEFAULT_PILL = "model design";
+const DEFAULT_PILL = "show model design thinking";
 
 const CONTENT = {
-  "how do you uncover user needs": `I look beyond surface-level metrics to understand the intent behind user behavior. At JPMC, we were a small team trying to reduce drop-offs in an application flow.
+  "uncovering user needs": `I look beyond surface-level metrics to understand the intent behind user behavior. At JPMC, we were a small team trying to reduce drop-offs in an application flow.
 
 Tired of not seeing drastic impact, we went deep into the data and I made a funnel visualization that revealed something simple but important:
 
@@ -131,7 +131,7 @@ I joined as a Senior Product Designer and moved quickly into AI initiatives, mar
 
 I learn by doing, and I do a lot :).`,
 
-  "how do you get exec buy-in": `I learnt that empathy is not just used in design, but also with stakeholders. 
+  "getting exec buy-in": `I learnt that empathy is not just used in design, but also with stakeholders. 
 
 Instead of trying to convince stakeholders, I start from where they are and we walk together toward a new shared vision. 
 
@@ -146,17 +146,17 @@ When I present, I focus on:
 
 Because I learned that good design doesn't work unless people understand it.`,
 
-  "model design": `I drove work and teams towards launch and learn even in a traditionally slower environment. I was known as the "all-in-one" designer because of my deep collaboration with product, engineering, marketing, senior leadership, and yes, data science and ML teams too.
+  "show model design thinking": `I drove work and teams towards launch and learn even in a traditionally slower environment. I was known as the "all-in-one" designer because of my deep collaboration with product, engineering, marketing, senior leadership, and yes, data science and ML teams too.
 
 That's why I was so excited to see Model Designer as a role. I'm genuinely more interested in this than visual design, and I want to shape the UX strategy behind model classification, filtering, and response mapping.
 
 At JPMC:
-• Intent Classification Framework, I built a behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment
-• Conversational AI, I shaped model responses and defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations
+• Intent Classification Framework, I built a behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment starting with needs rather than data
+• Conversational AI, I defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations
 • Agentic Search Experiences, I explored how ChatGPT and Gemini could turn search-time intent into action without breaking the conversational flow
 
 Personal project:
-• Context-Aware Personalization, I built Outdone because I felt personalization relies too much on historical data and forgets what someone might want today. I classified people into 9 archetypes so Gemini could sort all possible responses into these categories. I wired the APIs myself, and intentionally showed users how the AI was generating responses in the loading state, because I think AI should feel understandable, not magical.`
+• Context-Aware Personalization, I built Outdone because I felt personalization relies too much on historical data and forgets what someone might want today. I classified people into 9 archetypes so Gemini could sort all possible responses into these categories. I wired the APIs myself, and intentionally showed users how the AI was generating responses in the loading state, so people can see the magic behind AI.`
 };
 
 const USER_NEEDS_REST = `The first outcome wasn't perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
@@ -169,12 +169,12 @@ Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
   { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
-  { slug: "ai-personalization", label: "Intent Classification Framework", title: "Intent Classification Framework", url: MARKETING_TILES_URL },
+  { slug: "ai-personalization", label: "Intent-based Recommendations", title: "Intent-based Recommendations", url: MARKETING_TILES_URL },
   { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
-  { slug: "ai-chat-journeys", label: "Agentic Search Experiences", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
-  { slug: "conversational-agentic-ai", label: "Conversational AI", title: "Conversational AI", url: CASEY_AI_URL },
+  { slug: "ai-chat-journeys", label: "AI Search Interfacess", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
+  { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
-  { slug: "model-design", label: "Context-Aware Personalization", title: "Context-Aware Personalization", url: TRAVEL_DNA_URL }
+  { slug: "model-design", label: "Outdone, Context-Aware Personalization", title: "Outdone, Context-Aware Personalization", url: TRAVEL_DNA_URL }
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
@@ -425,10 +425,10 @@ function HeroTile() {
         </h1>
         <div className="h-5" />
         <p className="leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          Model Designer with B2C, conversational AI in a fintech background
+          I turn ambiguity into direction. Let me show you.
         </p>
         <p className="mt-1 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          I turn ambiguity into direction. Let me show you.
+          Designing AI interfaces, recommendation systems and model behavior
         </p>
         <div
           className="absolute overflow-hidden"
@@ -979,9 +979,9 @@ function NavTile() {
 
 /* ─── BENTO TILE: My Work, 3 project thumbnails in one row ─── */
 const WORK_PREVIEWS = [
-  { src: "/marketing-preview.png", label: "intent classification framework", projectKey: "marketing-tiles" },
-  { src: "/ai-chat-preview.png",   label: "agentic search experiences",   projectKey: "ai-framer" },
-  { src: "/outdone-preview.png",   label: "context-aware personalization", isNew: true, projectKey: "travel-dna" },
+  { src: "/marketing-preview.png", label: "JPMC, intent-based recommendations", projectKey: "marketing-tiles" },
+  { src: "/ai-chat-preview.png",   label: "JPMC, agentic search experiences",   projectKey: "ai-framer" },
+  { src: "/outdone-preview.png",   label: "Outdone, context-aware personalization", isNew: true, projectKey: "travel-dna" },
 ];
 
 function MyWorkTile({ onOpenProject }) {
@@ -1474,9 +1474,9 @@ export default function PortfolioHome() {
       )}
       {projectOpen === "user-needs" && <FramerModal title="How I Uncover User Needs" url={USER_NEEDS_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
       {projectOpen === "figma-deck" && <FigmaDeckModal onClose={() => setProjectOpen(null)} />}
-      {projectOpen === "ai-framer" && <FramerModal title="Agentic Search Experiences" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
+      {projectOpen === "ai-framer" && <FramerModal title="AI Search Interfaces" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
       {projectOpen === "casey-ai" && <FramerModal title="Conversational AI" url={CASEY_AI_URL} onClose={() => setProjectOpen(null)} />}
-      {projectOpen === "marketing-tiles" && <FramerModal title="Intent Classification Framework" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />}
+      {projectOpen === "marketing-tiles" && <FramerModal title="Intend-based Recommendations" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />}
       {projectOpen === "apply-systems" && <FramerModal title="Designing Systems at Scale" url={APPLY_SYSTEMS_URL} onClose={() => setProjectOpen(null)} />}
 
       {mobileChatOpen && (
