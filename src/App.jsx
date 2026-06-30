@@ -151,11 +151,12 @@ Because I learned that good design doesn't work unless people understand it.`,
 That's why I was so excited to see Model Designer as a role. I'm genuinely more interested in this than visual design, and I want to shape the UX strategy behind model classification, filtering, and response mapping.
 
 At JPMC:
-• Need-based framework, I built a behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment
-• Casey AI, I shaped model responses and defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations
+• Intent Classification Framework, I built a behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment
+• Conversational AI, I shaped model responses and defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations
+• Agentic Search Experiences, I explored how ChatGPT and Gemini could turn search-time intent into action without breaking the conversational flow
 
 Personal project:
-• I built Outdone because I felt personalization relies too much on historical data and forgets what someone might want today. I classified people into 9 archetypes so Gemini could sort all possible responses into these categories. I wired the APIs myself, and intentionally showed users how the AI was generating responses in the loading state, because I think AI should feel understandable, not magical.`
+• Context-Aware Personalization, I built Outdone because I felt personalization relies too much on historical data and forgets what someone might want today. I classified people into 9 archetypes so Gemini could sort all possible responses into these categories. I wired the APIs myself, and intentionally showed users how the AI was generating responses in the loading state, because I think AI should feel understandable, not magical.`
 };
 
 const USER_NEEDS_REST = `The first outcome wasn't perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
@@ -168,12 +169,12 @@ Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
   { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
-  { slug: "ai-personalization", label: "Personalized Marketing", title: "Product Strategy Thinking", url: MARKETING_TILES_URL },
+  { slug: "ai-personalization", label: "Intent Classification Framework", title: "Intent Classification Framework", url: MARKETING_TILES_URL },
   { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
-  { slug: "ai-chat-journeys", label: "AI chat journeys", title: "AI Chat Journeys", url: AI_FRAMER_URL },
-  { slug: "conversational-agentic-ai", label: "Agentic Conversational AI", title: "Casey AI", url: CASEY_AI_URL },
+  { slug: "ai-chat-journeys", label: "Agentic Search Experiences", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
+  { slug: "conversational-agentic-ai", label: "Conversational AI", title: "Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
-  { slug: "model-design", label: "Model Design", title: "Model Design", url: TRAVEL_DNA_URL }
+  { slug: "model-design", label: "Context-Aware Personalization", title: "Context-Aware Personalization", url: TRAVEL_DNA_URL }
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
@@ -978,9 +979,9 @@ function NavTile() {
 
 /* ─── BENTO TILE: My Work, 3 project thumbnails in one row ─── */
 const WORK_PREVIEWS = [
-  { src: "/marketing-preview.png", label: "personalized marketing", projectKey: "marketing-tiles" },
-  { src: "/ai-chat-preview.png",   label: "AI Chat Journeys",   projectKey: "ai-framer" },
-  { src: "/outdone-preview.png",   label: "Model Design", isNew: true, projectKey: "travel-dna" },
+  { src: "/marketing-preview.png", label: "intent classification framework", projectKey: "marketing-tiles" },
+  { src: "/ai-chat-preview.png",   label: "agentic search experiences",   projectKey: "ai-framer" },
+  { src: "/outdone-preview.png",   label: "context-aware personalization", isNew: true, projectKey: "travel-dna" },
 ];
 
 function MyWorkTile({ onOpenProject }) {
@@ -990,7 +991,7 @@ function MyWorkTile({ onOpenProject }) {
     >
       {/* MY WORK label */}
       <p className={`pt-7 px-7 pb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
-        my work
+        selected model design work
       </p>
 
       <div style={{ display: "flex", gap: "12px", marginLeft: "-12px", marginRight: "-12px", marginBottom: "-2px" }}>
@@ -1091,15 +1092,50 @@ function TestimonialTile() {
 }
 
 function ResponseLinks({ active, openProjectForActivePill }) {
+  if (active === "model design") {
+    const modelDesignLinks = [
+      {
+        text: "How should the system decide what to recommend? →",
+        target: "ai-personalization",
+      },
+      {
+        text: "How should the model respond? →",
+        target: "casey-ai",
+      },
+      {
+        text: "How should AI become the interface? →",
+        target: "ai-framer",
+      },
+      {
+        text: "What context should guide generation? →",
+        target: "travel-dna",
+      },
+    ];
+
+    return (
+      <div className="flex flex-col gap-3 px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
+        {modelDesignLinks.map((link) => (
+          <button
+            key={link.text}
+            onClick={() => openProjectForActivePill(link.target)}
+            className={`text-left text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}
+          >
+            {link.text}
+          </button>
+        ))}
+      </div>
+    );
+  }
+
   if (active === "let's talk AI") {
     return (
       <div className="flex flex-wrap gap-x-6 gap-y-3 px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
         <button onClick={() => openProjectForActivePill("ai-framer")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
-          AI chat journeys →
+          agentic search experiences →
         </button>
 
         <button onClick={() => openProjectForActivePill("casey-ai")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
-          what's casey AI? →
+          conversational AI →
         </button>
       </div>
     );
@@ -1107,11 +1143,10 @@ function ResponseLinks({ active, openProjectForActivePill }) {
 
   const ctaText = (() => {
     if (active === "how do you get exec buy-in") return "walk me through the project →";
-    if (active === "product strategy thinking") return "show me the strategy work →";
+    if (active === "product strategy thinking") return "show me the framework →";
     if (active === "how do you uncover user needs") return "show me the work →";
     if (active === "designing systems at scale") return "show me the system →";
     if (active === "how do you ship fast") return "what have you been building? →";
-    if (active === "model design") return "see the project →";
     return "";
   })();
 
@@ -1375,6 +1410,16 @@ export default function PortfolioHome() {
       return;
     }
 
+    if (override === "ai-personalization") {
+      openWorkProject("ai-personalization");
+      return;
+    }
+
+    if (override === "travel-dna") {
+      openWorkProject("model-design");
+      return;
+    }
+
     if (active === "how do you uncover user needs") {
       openWorkProject("b2c");
       return;
@@ -1429,9 +1474,9 @@ export default function PortfolioHome() {
       )}
       {projectOpen === "user-needs" && <FramerModal title="How I Uncover User Needs" url={USER_NEEDS_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
       {projectOpen === "figma-deck" && <FigmaDeckModal onClose={() => setProjectOpen(null)} />}
-      {projectOpen === "ai-framer" && <FramerModal title="AI Chat Journeys" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
-      {projectOpen === "casey-ai" && <FramerModal title="Casey AI" url={CASEY_AI_URL} onClose={() => setProjectOpen(null)} />}
-      {projectOpen === "marketing-tiles" && <FramerModal title="Product Strategy Thinking" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />}
+      {projectOpen === "ai-framer" && <FramerModal title="Agentic Search Experiences" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
+      {projectOpen === "casey-ai" && <FramerModal title="Conversational AI" url={CASEY_AI_URL} onClose={() => setProjectOpen(null)} />}
+      {projectOpen === "marketing-tiles" && <FramerModal title="Intent Classification Framework" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />}
       {projectOpen === "apply-systems" && <FramerModal title="Designing Systems at Scale" url={APPLY_SYSTEMS_URL} onClose={() => setProjectOpen(null)} />}
 
       {mobileChatOpen && (
