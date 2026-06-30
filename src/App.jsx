@@ -148,7 +148,7 @@ Because I learned that good design doesn't work unless people understand it.`,
 
   "model design": `I drove work and teams towards launch and learn even in a traditionally slower environment. I was known as the "all-in-one" designer because of my deep collaboration with product, engineering, marketing, senior leadership, and yes, data science and ML teams too.
 
-That's why I was actually so happy to see Model Designer as a role. I still like traditional design, but this excites me more because I love the thinking behind design, and I want to shape the strategy behind model classification, response filtering, and recommendation logic
+That's why I was actually so happy to see Model Designer as a role. I'm genuinely more interested in this than visual design, and I want to shape the UX strategy behind model classification, response filtering, and recommendation logic
 
 One of my favorite things I worked on in JPMC was a intent-based framework that classified customer intent before deciding what message to generate. Instead of asking "what data do we have?", we started with "what is this customer actually trying to do today?" 
 
