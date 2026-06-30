@@ -1092,35 +1092,47 @@ function TestimonialTile() {
 }
 
 function ResponseLinks({ active, openProjectForActivePill }) {
-  if (active === "model design") {
+  if (active === "show model design thinking") {
     const modelDesignLinks = [
       {
-        text: "How should the system decide what to recommend? →",
+        title: "Chase MyHome Intent-Based Recommendations",
+        question: "How should the system decide what to recommend?",
         target: "ai-personalization",
       },
       {
-        text: "How should the model respond? →",
+        title: "Casey Conversational AI",
+        question: "How should the model respond?",
         target: "casey-ai",
       },
       {
-        text: "How should AI become the interface? →",
+        title: "AI Search Interfaces",
+        question: "How should AI become the interface?",
         target: "ai-framer",
       },
       {
-        text: "What context should guide generation? →",
+        title: "Outdone Mood-Based Personalization",
+        question: "What context should guide generation?",
         target: "travel-dna",
       },
     ];
 
     return (
-      <div className="flex flex-col gap-3 px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
+      <div className="flex flex-col gap-4 px-2 pt-5 animate-[fadeUp_0.35s_ease_forwards]">
         {modelDesignLinks.map((link) => (
           <button
-            key={link.text}
+            key={link.title}
             onClick={() => openProjectForActivePill(link.target)}
-            className={`text-left text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}
+            className="text-left group"
           >
-            {link.text}
+            <p className={`text-[14px] font-semibold text-[#221B16] ${HEADING}`}>
+              {link.title}
+            </p>
+
+            <p
+              className={`mt-1 text-[13px] text-[#8A817B] underline underline-offset-4 group-hover:text-[#A5522A] transition ${HEADING}`}
+            >
+              {link.question} →
+            </p>
           </button>
         ))}
       </div>
