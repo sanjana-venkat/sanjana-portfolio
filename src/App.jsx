@@ -1006,7 +1006,7 @@ function MyWorkTile({ onOpenProject }) {
         selected work
       </p>
 
-      <div style={{ display: "flex", gap: "12px", marginLeft: "0px", marginRight: "-12px", marginBottom: "-2px" }}>
+      <div style={{ display: "flex", gap: "12px", marginLeft: "-12px", marginRight: "-12px", marginBottom: "-2px" }}>
         {WORK_PREVIEWS.map((proj) => (
           <div
             key={proj.label}
