@@ -425,10 +425,10 @@ function HeroTile() {
         </h1>
         <div className="h-5" />
         <p className="leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          Model Designer with B2C, conversational AI in a fintech background
+          I turn ambiguity into direction. Let me show you. 
         </p>
         <p className="mt-1 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          I turn ambiguity into direction. Let me show you.
+          AI Experiences • Recommendation Systems • Model Behavior
         </p>
         <div
           className="absolute overflow-hidden"
