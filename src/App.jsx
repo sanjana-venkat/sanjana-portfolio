@@ -353,6 +353,18 @@ function FramerModal({ title, url, onClose }) {
 }
 
 function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
+  useEffect(() => {
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, []);
+
   const getProjectBySlug = (slug) =>
     PROJECTS.find((project) => project.slug === slug) || PROJECTS[0];
 
@@ -366,7 +378,7 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
   };
 
   return (
-    <div className={`fixed inset-0 z-50 overflow-hidden flex flex-col bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-8 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
+    <div className={`fixed inset-0 z-50 h-[100dvh] overflow-hidden flex flex-col bg-[#FFF8F5] px-4 py-5 sm:px-6 sm:py-6 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
       <div className="mx-auto w-full max-w-[1280px] flex flex-col flex-1 min-h-0">
         <div className="mb-4 flex items-center gap-4 shrink-0">
           <CircleIconButton onClick={onClose} ariaLabel="Close work browser">
@@ -991,10 +1003,10 @@ function MyWorkTile({ onOpenProject }) {
     >
       {/* MY WORK label */}
       <p className={`pt-7 px-7 pb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
-        selected model design work
+        selected work
       </p>
 
-      <div style={{ display: "flex", gap: "12px", marginLeft: "-12px", marginRight: "-12px", marginBottom: "-2px" }}>
+      <div style={{ display: "flex", gap: "12px", marginLeft: "0px", marginRight: "-12px", marginBottom: "-2px" }}>
         {WORK_PREVIEWS.map((proj) => (
           <div
             key={proj.label}
@@ -1021,7 +1033,7 @@ function MyWorkTile({ onOpenProject }) {
               className="absolute inset-0 flex items-end transition-opacity duration-200 opacity-0 hover:opacity-100"
               style={{ background: "rgba(0,0,0,0.5)" }}
             >
-              <p className={`px-4 py-3 text-[11px] font-bold tracking-[0.14em] uppercase text-white ${HEADING}`}>
+              <p className={`px-5 py-3 text-[11px] font-bold tracking-[0.14em] uppercase text-white ${HEADING}`}>
                 {proj.label}
               </p>
             </div>
@@ -1073,7 +1085,14 @@ function TestimonialTile() {
 
       <div className="mt-4 flex gap-3 pr-14">
         {TESTIMONIALS.map((_, dotIndex) => (
-          <span key={dotIndex} className={`h-3 rounded-full transition-all duration-300 ${index === dotIndex ? "w-10 bg-[#D96F45]" : "w-3 bg-[#EEF0F3]"}`} />
+          <button
+            key={dotIndex}
+            type="button"
+            onClick={() => setIndex(dotIndex)}
+            aria-label={`Show testimonial ${dotIndex + 1}`}
+            aria-current={index === dotIndex ? "true" : "false"}
+            className={`h-3 rounded-full transition-all duration-300 ${index === dotIndex ? "w-10 bg-[#D96F45]" : "w-3 bg-[#EEF0F3] hover:bg-[#D8C5BB]"}`}
+          />
         ))}
       </div>
 
