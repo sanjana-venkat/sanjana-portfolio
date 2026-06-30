@@ -146,9 +146,9 @@ When I present, I focus on:
 
 Because I learned that good design doesn't work unless people understand it.`,
 
-  "show model design thinking": `I drove work and teams towards launch and learn even in a traditionally slower environment. I was known as the "all-in-one" designer because of my deep collaboration with product, engineering, marketing, senior leadership, and yes, data science and ML teams too.
+  "show model design thinking": `I drove work and teams towards launch and learn even in a traditionally slower environment and deeply collaborated with product, engineering, marketing, senior leadership, and yes, data science and ML teams too.
 
-That's why I was so excited to see Model Designer as a role. I'm genuinely more interested in this than visual design, and I want to shape the UX strategy behind model classification, filtering, and response mapping.
+That's why I was so excited to see Model Designer as a role, shaping the UX strategy behind model classification, filtering, and response mapping.
 
 At JPMC:
 • Intent Classification Framework, I built a behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment starting with needs rather than data
