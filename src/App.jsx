@@ -1118,19 +1118,19 @@ const MODEL_DESIGN_LINKS = [
   {
     title: "Chase MyHome Intent-Based Recommendations",
     question: "How should the system decide what to recommend?",
-    description: "I built a behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment.",
+    description: "Built behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment.",
     target: "ai-personalization",
   },
   {
     title: "Casey Conversational AI",
     question: "How should the model respond?",
-    description: "I defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations.",
+    description: "Defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations.",
     target: "casey-ai",
   },
   {
     title: "AI Search Interfaces",
     question: "How should AI become the interface?",
-    description: "I explored how ChatGPT and Gemini could turn search-time intent into action without breaking the conversational flow.",
+    description: "Explored how ChatGPT and Gemini could turn search-time intent into action without breaking the conversational flow.",
     target: "ai-framer",
   },
   {
