@@ -1111,9 +1111,9 @@ function TestimonialTile() {
 }
 
 
-const MODEL_DESIGN_INTRO = `I drove work and teams towards launch and learn even in a traditionally slower environment, deeply collaboration with product, engineering, marketing, and yes, data science and ML teams too.
+const MODEL_DESIGN_INTRO = `I drove work and teams towards launch and learn even in a traditionally slower environment, deeply collaborating with product, engineering, marketing, and yes, data science and ML teams too!
 
-That's why I was so excited to see Model Designer as a role, I thrive in thinking about the how and why more than "what should it look like?" 
+That's why I'm so excited see Model Designer, I thrive in thinking about the how and why more than "what should it look like?" 
 At JPMC, I worked across:`;
 
 const MODEL_DESIGN_LINKS = [
