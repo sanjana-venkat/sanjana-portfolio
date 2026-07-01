@@ -526,7 +526,7 @@ function WhatIBelieveTile() {
           </a>
         </div>
         <a
-          href="/SanjanaVenkat_ProductDesign_Resume.pdf"
+          href={RESUME_URL}
           target="_blank"
           rel="noreferrer"
           className={`inline-flex items-center gap-1 text-[13px] text-[#8A817B] underline underline-offset-4 hover:text-[#A5522A] transition ${HEADING}`}
