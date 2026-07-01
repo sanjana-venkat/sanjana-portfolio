@@ -150,7 +150,6 @@ Because I learned that good design doesn't work unless people understand it.`,
 
 That's why I was so excited to see Model Designer as a role, shaping the UX strategy behind model classification, filtering, and response mapping.
 
-At JPMC:
 • Intent Classification Framework, I built a behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment starting with needs rather than data
 • Conversational AI, I defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations
 • Agentic Search Experiences, I explored how ChatGPT and Gemini could turn search-time intent into action without breaking the conversational flow
@@ -1113,8 +1112,7 @@ function TestimonialTile() {
 
 const MODEL_DESIGN_INTRO = `I drove work and teams towards launch and learn even in a traditionally slower environment, deeply collaborating with product, engineering, marketing, and yes, data science and ML teams too!
 
-That's why I'm so excited see Model Designer, I thrive in thinking about the how and why more than "what should it look like?" 
-At JPMC, I worked across:`;
+That's why I'm so excited see Model Designer, I thrive in thinking about the how and why more than "what should it look like?"`;
 
 const MODEL_DESIGN_LINKS = [
   {
