@@ -237,7 +237,7 @@ export const TESTIMONIALS = [
     "Marketing/Public Executive Director"
   ],
   [
-    "Hi Sanjana, I just wanted to take a moment to recognize the incredible impact you’ve had on the Public Transformation Home landing experience. Your leadership, drive, and unwavering commitment have been nothing short of inspiring. You’ve been the champion behind so much of our progress rallying the team, pushing for excellence, and making sure we never lose sight of the bigger picture. Your work is making a real difference, and I’m deeply grateful for everything you bring to the table. Thank you for being such a force of positivity and progress. We’re lucky to have you!",
+    " She really knows how to rally the team, push for excellence, and make sure we never lose sight of the bigger picture. Thank you for being such a force of positivity and progress. We’re lucky to have you!",
     "Williams Cavalcante",
     "CMH Design Lead"
   ],
