@@ -1338,10 +1338,12 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
 // SURGICAL ADD: SpotlightTile — wraps each bento cell to give it:
 // 1) a staggered "tumble in" entrance on mount (opacity/translate/scale/rotate, animejs-style easing)
 // 2) a hover "pop" (slight scale + lift) and a spotlight glow that follows the cursor within the tile
-// The spotlight overlay is rendered BEFORE {children} in the DOM so that any internally z-indexed
-// content (e.g. HeroTile's popping-out photo) still paints above it without needing z-index juggling.
-function SpotlightTile({ children, index = 0, className = "", style = {} }) {
+// 3) an opaque white backer layer so the page-level cursor glow never bleeds through a tile's own
+//    (possibly translucent, e.g. Hero) background or through corner gaps
+// 4) dimming of sibling tiles while one tile is hovered, via lifted hoveredKey state
+function SpotlightTile({ children, index = 0, className = "", style = {}, tileKey, hoveredKey, onHover }) {
   const ref = useRef(null);
+  const dimmed = hoveredKey !== null && hoveredKey !== tileKey;
 
   const handleMouseMove = (e) => {
     const el = ref.current;
@@ -1355,9 +1357,19 @@ function SpotlightTile({ children, index = 0, className = "", style = {} }) {
     <div
       ref={ref}
       onMouseMove={handleMouseMove}
-      className={`bento-tile group/spot relative ${className}`}
-      style={{ ...style, animationDelay: `${index * 90}ms` }}
+      onMouseEnter={() => onHover?.(tileKey)}
+      onMouseLeave={() => onHover?.(null)}
+      className={`bento-tile group/spot relative rounded-[32px] ${className}`}
+      style={{
+        ...style,
+        animationDelay: `${index * 90}ms`,
+        opacity: dimmed ? 0.55 : 1,
+        transition: "opacity 0.35s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease",
+      }}
     >
+      {/* Opaque white backer, sits under everything so the page-level cursor glow never shows through */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[32px] bg-white" />
+
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 rounded-[32px] opacity-0 transition-opacity duration-300 group-hover/spot:opacity-100"
@@ -1366,7 +1378,7 @@ function SpotlightTile({ children, index = 0, className = "", style = {} }) {
             "radial-gradient(260px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(165,82,42,0.16), transparent 70%)",
         }}
       />
-      {children}
+      <div className="relative">{children}</div>
     </div>
   );
 }
@@ -1383,6 +1395,7 @@ export default function PortfolioHome() {
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
   const [instantType, setInstantType] = useState(true);
   const [workProjectSlug, setWorkProjectSlug] = useState("b2c");
+  const [hoveredTile, setHoveredTile] = useState(null);
   const isFirstLoad = useRef(true);
 
   // SURGICAL CHANGE — smooth cursor glow via requestAnimationFrame lerp instead of
@@ -1654,14 +1667,24 @@ export default function PortfolioHome() {
           {/* Chat: col 1, rows 1-2, fixed height with internal scroll */}
           <div
             ref={chatCardRef}
-            className="bento-tile group/spot relative rounded-[32px] bg-white overflow-hidden flex flex-col"
-            style={{ gridColumn: "1", gridRow: "1 / 3", height: "560px", animationDelay: "0ms" }}
+            className="bento-tile group/spot relative rounded-[32px] overflow-hidden flex flex-col"
+            style={{
+              gridColumn: "1",
+              gridRow: "1 / 3",
+              height: "560px",
+              animationDelay: "0ms",
+              opacity: hoveredTile !== null && hoveredTile !== "chat" ? 0.55 : 1,
+              transition: "opacity 0.35s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease",
+            }}
+            onMouseEnter={() => setHoveredTile("chat")}
+            onMouseLeave={() => setHoveredTile(null)}
             onMouseMove={(e) => {
               const rect = e.currentTarget.getBoundingClientRect();
               e.currentTarget.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
               e.currentTarget.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
             }}
           >
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[32px] bg-white" />
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 rounded-[32px] opacity-0 transition-opacity duration-300 group-hover/spot:opacity-100"
@@ -1711,22 +1734,22 @@ export default function PortfolioHome() {
           </div>
 
           {/* Hero: col 2-3, row 1 */}
-          <SpotlightTile index={1} style={{ gridColumn: "2 / 4", gridRow: "1" }} className="overflow-visible">
+          <SpotlightTile index={1} tileKey="hero" hoveredKey={hoveredTile} onHover={setHoveredTile} style={{ gridColumn: "2 / 4", gridRow: "1" }} className="overflow-visible">
             <HeroTile />
           </SpotlightTile>
 
           {/* NavTile: col 2, row 2 */}
-          <SpotlightTile index={2} style={{ gridColumn: "2", gridRow: "2" }}>
+          <SpotlightTile index={2} tileKey="nav" hoveredKey={hoveredTile} onHover={setHoveredTile} style={{ gridColumn: "2", gridRow: "2" }}>
             <NavTile />
           </SpotlightTile>
 
           {/* What I Believe: col 3, row 2 */}
-          <SpotlightTile index={3} style={{ gridColumn: "3", gridRow: "2" }}>
+          <SpotlightTile index={3} tileKey="believe" hoveredKey={hoveredTile} onHover={setHoveredTile} style={{ gridColumn: "3", gridRow: "2" }}>
             <WhatIBelieveTile />
           </SpotlightTile>
 
           {/* My Work: col 1-2, row 3 */}
-          <SpotlightTile index={4} style={{ gridColumn: "1 / 3", gridRow: "3" }}>
+          <SpotlightTile index={4} tileKey="work" hoveredKey={hoveredTile} onHover={setHoveredTile} style={{ gridColumn: "1 / 3", gridRow: "3" }}>
             <MyWorkTile
               onOpenProject={(key) => {
                 const slugByKey = {
@@ -1740,7 +1763,7 @@ export default function PortfolioHome() {
           </SpotlightTile>
 
           {/* Testimonials: col 3, row 3 */}
-          <SpotlightTile index={5} style={{ gridColumn: "3", gridRow: "3" }}>
+          <SpotlightTile index={5} tileKey="testimonials" hoveredKey={hoveredTile} onHover={setHoveredTile} style={{ gridColumn: "3", gridRow: "3" }}>
             <TestimonialTile />
           </SpotlightTile>
 
@@ -1748,17 +1771,17 @@ export default function PortfolioHome() {
 
         {/* ── MOBILE stack ── */}
         <div className="flex flex-col gap-4 lg:hidden">
-          <SpotlightTile index={0} className="overflow-visible">
+          <SpotlightTile index={0} tileKey="hero-m" hoveredKey={hoveredTile} onHover={setHoveredTile} className="overflow-visible">
             <HeroTile />
           </SpotlightTile>
-          <SpotlightTile index={1}>
+          <SpotlightTile index={1} tileKey="nav-m" hoveredKey={hoveredTile} onHover={setHoveredTile}>
             <NavTile />
           </SpotlightTile>
-          <SpotlightTile index={2}>
+          <SpotlightTile index={2} tileKey="believe-m" hoveredKey={hoveredTile} onHover={setHoveredTile}>
             <WhatIBelieveTile />
           </SpotlightTile>
 
-          <SpotlightTile index={3}>
+          <SpotlightTile index={3} tileKey="work-m" hoveredKey={hoveredTile} onHover={setHoveredTile}>
             <MyWorkTile
               onOpenProject={(key) => {
                 const slugByKey = {
@@ -1770,7 +1793,7 @@ export default function PortfolioHome() {
               }}
             />
           </SpotlightTile>
-          <SpotlightTile index={4}>
+          <SpotlightTile index={4} tileKey="testimonials-m" hoveredKey={hoveredTile} onHover={setHoveredTile}>
             <TestimonialTile />
           </SpotlightTile>
         </div>
