@@ -32,20 +32,20 @@ const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
 const TYPEWRITE = "[font-family:'JetBrains_Mono',monospace]";
 
 const PILLS = [
-  "model design",
-  "how do you uncover user needs",
+  "show model design thinking",
+  "uncovering user needs",
   "how do you ship fast",
   "let's talk AI",
   "product strategy thinking",
   "designing systems at scale",
   "tell me your story",
-  "how do you get exec buy-in",
+  "getting exec buy-in",
 ];
 
-const DEFAULT_PILL = "model design";
+const DEFAULT_PILL = "show model design thinking";
 
 const CONTENT = {
-  "how do you uncover user needs": `I look beyond surface-level metrics to understand the intent behind user behavior. At JPMC, we were a small team trying to reduce drop-offs in an application flow.
+  "uncovering user needs": `I look beyond surface-level metrics to understand the intent behind user behavior. At JPMC, we were a small team trying to reduce drop-offs in an application flow.
 
 Tired of not seeing drastic impact, we went deep into the data and I made a funnel visualization that revealed something simple but important:
 
@@ -131,7 +131,7 @@ I joined as a Senior Product Designer and moved quickly into AI initiatives, mar
 
 I learn by doing, and I do a lot :).`,
 
-  "how do you get exec buy-in": `I learnt that empathy is not just used in design, but also with stakeholders. 
+  "getting exec buy-in": `I learnt that empathy is not just used in design, but also with stakeholders. 
 
 Instead of trying to convince stakeholders, I start from where they are and we walk together toward a new shared vision. 
 
@@ -146,16 +146,16 @@ When I present, I focus on:
 
 Because I learned that good design doesn't work unless people understand it.`,
 
-  "model design": `I drove work and teams towards launch and learn even in a traditionally slower environment. I was known as the "all-in-one" designer because of my deep collaboration with product, engineering, marketing, senior leadership, and yes, data science and ML teams too.
+  "show model design thinking": `I drove work and teams towards launch and learn even in a traditionally slower environment and deeply collaborated with product, engineering, marketing, senior leadership, and yes, data science and ML teams too.
 
-That's why I was so excited to see Model Designer as a role. I'm genuinely more interested in this than visual design, and I want to shape the UX strategy behind model classification, filtering, and response mapping.
+That's why I was so excited to see Model Designer as a role, shaping the UX strategy behind model classification, filtering, and response mapping.
 
-At JPMC:
-• Need-based framework, I built a behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment
-• Casey AI, I shaped model responses and defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations
+• Intent Classification Framework, I built a behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment starting with needs rather than data
+• Conversational AI, I defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations
+• Agentic Search Experiences, I explored how ChatGPT and Gemini could turn search-time intent into action without breaking the conversational flow
 
 Personal project:
-• I built Outdone because I felt personalization relies too much on historical data and forgets what someone might want today. I classified people into 9 archetypes so Gemini could sort all possible responses into these categories. I wired the APIs myself, and intentionally showed users how the AI was generating responses in the loading state, because I think AI should feel understandable, not magical.`
+• Context-Aware Personalization, I built Outdone because I felt personalization relies too much on historical data and forgets what someone might want today. I classified people into 9 archetypes so Gemini could sort all possible responses into these categories. I wired the APIs myself, and intentionally showed users how the AI was generating responses in the loading state, so people can see the magic behind AI.`
 };
 
 const USER_NEEDS_REST = `The first outcome wasn't perfectly clean. Overall lead submit decreased. So I went deep into the data again and found the breakthrough:
@@ -168,12 +168,12 @@ Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
   { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
-  { slug: "ai-personalization", label: "personalized marketing", title: "Product Strategy Thinking", url: MARKETING_TILES_URL },
+  { slug: "ai-personalization", label: "Intent-based Recommendations", title: "Intent-based Recommendations", url: MARKETING_TILES_URL },
   { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
-  { slug: "ai-chat-journeys", label: "AI chat journeys", title: "AI Chat Journeys", url: AI_FRAMER_URL },
-  { slug: "conversational-agentic-ai", label: "Agentic Conversational AI", title: "Casey AI", url: CASEY_AI_URL },
+  { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
+  { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
-  { slug: "model-design", label: "Model Design", title: "Model Design", url: TRAVEL_DNA_URL }
+  { slug: "model-design", label: "Outdone, Context-Aware Personalization", title: "Outdone, Context-Aware Personalization", url: TRAVEL_DNA_URL }
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
@@ -352,6 +352,18 @@ function FramerModal({ title, url, onClose }) {
 }
 
 function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
+  useEffect(() => {
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, []);
+
   const getProjectBySlug = (slug) =>
     PROJECTS.find((project) => project.slug === slug) || PROJECTS[0];
 
@@ -365,7 +377,7 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
   };
 
   return (
-    <div className={`fixed inset-0 z-50 overflow-hidden flex flex-col bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-8 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
+    <div className={`fixed inset-0 z-50 h-[100dvh] overflow-hidden flex flex-col bg-[#FFF8F5] px-4 py-5 sm:px-6 sm:py-6 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
       <div className="mx-auto w-full max-w-[1280px] flex flex-col flex-1 min-h-0">
         <div className="mb-4 flex items-center gap-4 shrink-0">
           <CircleIconButton onClick={onClose} ariaLabel="Close work browser">
@@ -424,10 +436,10 @@ function HeroTile() {
         </h1>
         <div className="h-5" />
         <p className="leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          Model Designer with B2C, conversational AI in a fintech background
+          I turn ambiguity into direction. Let me show you.
         </p>
         <p className="mt-1 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          I turn ambiguity into direction. Let me show you.
+          Designing AI interfaces, recommendation systems and model behavior
         </p>
         <div
           className="absolute overflow-hidden"
@@ -461,10 +473,10 @@ function HeroTile() {
         </h1>
         <div className="h-5" />
         <p className="leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          Model Designer with B2C, conversational AI in a fintech background
+          I turn ambiguity into direction. Let me show you.
         </p>
         <p className="mt-1 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          I turn ambiguity into direction. Let me show you.
+          Designing AI interfaces, recommendation systems and model behavior
         </p>
         {/* Image centered at bottom, taller */}
         <div className="flex justify-center mt-8 flex-1 items-end">
@@ -514,7 +526,7 @@ function WhatIBelieveTile() {
           </a>
         </div>
         <a
-          href="/SanjanaVenkat_ProductDesign_Resume.pdf"
+          href={RESUME_URL}
           target="_blank"
           rel="noreferrer"
           className={`inline-flex items-center gap-1 text-[13px] text-[#8A817B] underline underline-offset-4 hover:text-[#A5522A] transition ${HEADING}`}
@@ -978,9 +990,9 @@ function NavTile() {
 
 /* ─── BENTO TILE: My Work, 3 project thumbnails in one row ─── */
 const WORK_PREVIEWS = [
-  { src: "/marketing-preview.png", label: "personalized marketing", projectKey: "marketing-tiles" },
-  { src: "/ai-chat-preview.png",   label: "AI Chat Journeys",   projectKey: "ai-framer" },
-  { src: "/outdone-preview.png",   label: "Model Design", isNew: true, projectKey: "travel-dna" },
+  { src: "/marketing-preview.png", label: "JPMC, intent-based recommendations", projectKey: "marketing-tiles" },
+  { src: "/ai-chat-preview.png",   label: "JPMC, agentic search experiences",   projectKey: "ai-framer" },
+  { src: "/outdone-preview.png",   label: "Outdone, context-aware personalization", isNew: true, projectKey: "travel-dna" },
 ];
 
 function MyWorkTile({ onOpenProject }) {
@@ -990,7 +1002,7 @@ function MyWorkTile({ onOpenProject }) {
     >
       {/* MY WORK label */}
       <p className={`pt-7 px-7 pb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
-        my work
+        selected work
       </p>
 
       <div style={{ display: "flex", gap: "12px", marginLeft: "-12px", marginRight: "-12px", marginBottom: "-2px" }}>
@@ -1020,7 +1032,7 @@ function MyWorkTile({ onOpenProject }) {
               className="absolute inset-0 flex items-end transition-opacity duration-200 opacity-0 hover:opacity-100"
               style={{ background: "rgba(0,0,0,0.5)" }}
             >
-              <p className={`px-4 py-3 text-[11px] font-bold tracking-[0.14em] uppercase text-white ${HEADING}`}>
+              <p className={`px-5 py-3 text-[11px] font-bold tracking-[0.14em] uppercase text-white ${HEADING}`}>
                 {proj.label}
               </p>
             </div>
@@ -1072,7 +1084,14 @@ function TestimonialTile() {
 
       <div className="mt-4 flex gap-3 pr-14">
         {TESTIMONIALS.map((_, dotIndex) => (
-          <span key={dotIndex} className={`h-3 rounded-full transition-all duration-300 ${index === dotIndex ? "w-10 bg-[#D96F45]" : "w-3 bg-[#EEF0F3]"}`} />
+          <button
+            key={dotIndex}
+            type="button"
+            onClick={() => setIndex(dotIndex)}
+            aria-label={`Show testimonial ${dotIndex + 1}`}
+            aria-current={index === dotIndex ? "true" : "false"}
+            className={`h-3 rounded-full transition-all duration-300 ${index === dotIndex ? "w-10 bg-[#D96F45]" : "w-3 bg-[#EEF0F3] hover:bg-[#D8C5BB]"}`}
+          />
         ))}
       </div>
 
@@ -1090,16 +1109,75 @@ function TestimonialTile() {
   );
 }
 
+
+const MODEL_DESIGN_INTRO = `I drove work and teams towards launch and learn even in a traditionally slower environment, deeply collaborating with product, engineering, marketing, and yes, data science and ML teams too!
+
+That's why I'm so excited see Model Designer, I thrive in thinking about the how and why more than "what should it look like?"`;
+
+const MODEL_DESIGN_LINKS = [
+  {
+    title: "Chase MyHome Intent-Based Recommendations",
+    question: "How should the system decide what to recommend?",
+    description: "Built behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment.",
+    target: "ai-personalization",
+  },
+  {
+    title: "Casey Conversational AI",
+    question: "How should the model respond?",
+    description: "Defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations.",
+    target: "casey-ai",
+  },
+  {
+    title: "AI Search Interfaces",
+    question: "How should AI become the interface?",
+    description: "Explored how ChatGPT and Gemini could turn search-time intent into action without breaking the conversational flow.",
+    target: "ai-framer",
+  },
+  {
+    title: "Outdone Mood-Based Personalization",
+    question: "What context should guide generation?",
+    description: "I built Outdone because I felt personalization relies too much on historical data and forgets what someone might want today.",
+    target: "travel-dna",
+  },
+];
+
+function ModelDesignInlineLinks({ openProjectForActivePill }) {
+  return (
+    <div className="mt-5 space-y-5 animate-[fadeUp_0.35s_ease_forwards]">
+      {MODEL_DESIGN_LINKS.map((link) => (
+        <button
+          key={link.title}
+          onClick={() => openProjectForActivePill(link.target)}
+          className="block w-full text-left group"
+        >
+          <p className={`text-[14px] font-semibold leading-[1.5] text-[#221B16] ${HEADING}`}>
+            {link.title}
+          </p>
+          <p className={`mt-1 inline text-[13px] leading-[1.6] text-[#8A817B] underline underline-offset-4 decoration-[#8A817B] group-hover:text-[#A5522A] group-hover:decoration-[#A5522A] transition ${HEADING}`}>
+            {link.question} →
+          </p>
+          <p className={`mt-2 text-[13px] leading-[1.65] text-[#5F5149] ${TYPEWRITE}`}>
+            {link.description}
+          </p>
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function ResponseLinks({ active, openProjectForActivePill }) {
+  if (active === "show model design thinking") return null;
+
+
   if (active === "let's talk AI") {
     return (
       <div className="flex flex-wrap gap-x-6 gap-y-3 px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
         <button onClick={() => openProjectForActivePill("ai-framer")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
-          AI chat journeys →
+          agentic search experiences →
         </button>
 
         <button onClick={() => openProjectForActivePill("casey-ai")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
-          what's casey AI? →
+          conversational AI →
         </button>
       </div>
     );
@@ -1107,11 +1185,10 @@ function ResponseLinks({ active, openProjectForActivePill }) {
 
   const ctaText = (() => {
     if (active === "how do you get exec buy-in") return "walk me through the project →";
-    if (active === "product strategy thinking") return "show me the strategy work →";
+    if (active === "product strategy thinking") return "show me the framework →";
     if (active === "how do you uncover user needs") return "show me the work →";
     if (active === "designing systems at scale") return "show me the system →";
     if (active === "how do you ship fast") return "what have you been building? →";
-    if (active === "model design") return "see the project →";
     return "";
   })();
 
@@ -1147,7 +1224,22 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
       {showResponse && (
         <>
           <div className="rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-            <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} instant={instantType} />
+            {active === "show model design thinking" ? (
+              <>
+                <Typewriter
+                  text={MODEL_DESIGN_INTRO}
+                  shouldStart={showResponse}
+                  onDone={onTypeDone}
+                  instant={instantType}
+                />
+
+                {showPills && (
+                  <ModelDesignInlineLinks openProjectForActivePill={openProjectForActivePill} />
+                )}
+              </>
+            ) : (
+              <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} instant={instantType} />
+            )}
 
             {active === "how do you uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
 
@@ -1247,7 +1339,6 @@ export default function PortfolioHome() {
   const chatCardRef = useRef(null);
   const chatScrollRef = useRef(null);
   const [active, setActive] = useState(DEFAULT_PILL);
-  const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [projectOpen, setProjectOpen] = useState(null);
   const [showPills, setShowPills] = useState(false);
   const [showResponse, setShowResponse] = useState(false);
@@ -1257,6 +1348,38 @@ export default function PortfolioHome() {
   const [instantType, setInstantType] = useState(true);
   const [workProjectSlug, setWorkProjectSlug] = useState("b2c");
   const isFirstLoad = useRef(true);
+
+  // SURGICAL CHANGE — smooth cursor glow via requestAnimationFrame lerp instead of
+  // React state + CSS transition-transform (which was never actually animating,
+  // since left/top were being set directly and transition-transform only watches
+  // the `transform` property).
+  const glowRef = useRef(null);
+  const mousePos = useRef({ x: 0, y: 0 });
+  const glowPos = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      mousePos.current = { x: e.clientX, y: e.clientY };
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+
+    let rafId;
+    const animate = () => {
+      glowPos.current.x += (mousePos.current.x - glowPos.current.x) * 0.08;
+      glowPos.current.y += (mousePos.current.y - glowPos.current.y) * 0.08;
+      if (glowRef.current) {
+        glowRef.current.style.transform =
+          `translate(${glowPos.current.x - 150}px, ${glowPos.current.y - 150}px)`;
+      }
+      rafId = requestAnimationFrame(animate);
+    };
+    rafId = requestAnimationFrame(animate);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
 
   useEffect(() => {
     const faviconPath = "/logo.jpg";
@@ -1375,6 +1498,16 @@ export default function PortfolioHome() {
       return;
     }
 
+    if (override === "ai-personalization") {
+      openWorkProject("ai-personalization");
+      return;
+    }
+
+    if (override === "travel-dna") {
+      openWorkProject("model-design");
+      return;
+    }
+
     if (active === "how do you uncover user needs") {
       openWorkProject("b2c");
       return;
@@ -1412,7 +1545,6 @@ export default function PortfolioHome() {
 
   return (
     <main
-      onMouseMove={(event) => setCursor({ x: event.clientX, y: event.clientY })}
       className={`relative min-h-screen w-full overflow-x-hidden bg-[#F7F4F2] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}
     >
       {/* Modals */}
@@ -1429,9 +1561,9 @@ export default function PortfolioHome() {
       )}
       {projectOpen === "user-needs" && <FramerModal title="How I Uncover User Needs" url={USER_NEEDS_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
       {projectOpen === "figma-deck" && <FigmaDeckModal onClose={() => setProjectOpen(null)} />}
-      {projectOpen === "ai-framer" && <FramerModal title="AI Chat Journeys" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
-      {projectOpen === "casey-ai" && <FramerModal title="Casey AI" url={CASEY_AI_URL} onClose={() => setProjectOpen(null)} />}
-      {projectOpen === "marketing-tiles" && <FramerModal title="Product Strategy Thinking" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />}
+      {projectOpen === "ai-framer" && <FramerModal title="AI Search Interfaces" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
+      {projectOpen === "casey-ai" && <FramerModal title="Conversational AI" url={CASEY_AI_URL} onClose={() => setProjectOpen(null)} />}
+      {projectOpen === "marketing-tiles" && <FramerModal title="Intend-based Recommendations" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />}
       {projectOpen === "apply-systems" && <FramerModal title="Designing Systems at Scale" url={APPLY_SYSTEMS_URL} onClose={() => setProjectOpen(null)} />}
 
       {mobileChatOpen && (
@@ -1459,10 +1591,11 @@ export default function PortfolioHome() {
         <span className="flex h-full w-full items-center justify-center leading-none"><ChatIcon /></span>
       </button>
 
-      {/* Cursor glow */}
+      {/* Cursor glow — position now driven by rAF lerp loop above, via ref + transform */}
       <div
-        className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl transition-transform duration-150"
-        style={{ left: cursor.x - 150, top: cursor.y - 150 }}
+        ref={glowRef}
+        className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl"
+        style={{ left: 0, top: 0, willChange: "transform" }}
       />
 
       <div className="relative z-10 mx-auto w-full max-w-[1280px]">
@@ -1501,8 +1634,7 @@ export default function PortfolioHome() {
               />
             </div>
             {showPills && (
-              <div className="absolute bottom-0 left-0 right-0 px-6 pb-4 animate-[fadeUp_0.45s_ease_forwards]"
-                style={{ background: "none" }}>
+              <div className="absolute bottom-0 left-0 right-0 px-6 pb-4 pt-8 bg-gradient-to-t from-white via-white/95 to-transparent animate-[fadeUp_0.45s_ease_forwards]">
                 <div className="no-scrollbar overflow-x-auto">
                   <div className="flex gap-2" style={{ width: "max-content" }}>
                     {PILLS.map((pill) => (
