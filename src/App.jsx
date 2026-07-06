@@ -1594,8 +1594,13 @@ export default function PortfolioHome() {
       {/* Cursor glow — position now driven by rAF lerp loop above, via ref + transform */}
       <div
         ref={glowRef}
-        className="pointer-events-none fixed z-0 h-[300px] w-[300px] rounded-full bg-orange-200/25 blur-3xl"
-        style={{ left: 0, top: 0, willChange: "transform" }}
+        className="pointer-events-none fixed z-0 h-[340px] w-[340px] rounded-full blur-2xl"
+        style={{
+          left: 0,
+          top: 0,
+          willChange: "transform",
+          background: "radial-gradient(circle, rgba(165,82,42,0.55) 0%, rgba(165,82,42,0.28) 45%, rgba(165,82,42,0) 72%)",
+        }}
       />
 
       <div className="relative z-10 mx-auto w-full max-w-[1280px]">
