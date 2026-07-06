@@ -1335,6 +1335,42 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
   );
 }
 
+// SURGICAL ADD: SpotlightTile — wraps each bento cell to give it:
+// 1) a staggered "tumble in" entrance on mount (opacity/translate/scale/rotate, animejs-style easing)
+// 2) a hover "pop" (slight scale + lift) and a spotlight glow that follows the cursor within the tile
+// The spotlight overlay is rendered BEFORE {children} in the DOM so that any internally z-indexed
+// content (e.g. HeroTile's popping-out photo) still paints above it without needing z-index juggling.
+function SpotlightTile({ children, index = 0, className = "", style = {} }) {
+  const ref = useRef(null);
+
+  const handleMouseMove = (e) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
+    el.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
+  };
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      className={`bento-tile group/spot relative ${className}`}
+      style={{ ...style, animationDelay: `${index * 90}ms` }}
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 rounded-[32px] opacity-0 transition-opacity duration-300 group-hover/spot:opacity-100"
+        style={{
+          background:
+            "radial-gradient(260px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(165,82,42,0.16), transparent 70%)",
+        }}
+      />
+      {children}
+    </div>
+  );
+}
+
 export default function PortfolioHome() {
   const chatCardRef = useRef(null);
   const chatScrollRef = useRef(null);
@@ -1594,12 +1630,12 @@ export default function PortfolioHome() {
       {/* Cursor glow — position now driven by rAF lerp loop above, via ref + transform */}
       <div
         ref={glowRef}
-        className="pointer-events-none fixed z-0 h-[340px] w-[340px] rounded-full blur-2xl"
+        className="pointer-events-none fixed z-0 h-[340px] w-[340px] rounded-full blur-3xl"
         style={{
           left: 0,
           top: 0,
           willChange: "transform",
-          background: "radial-gradient(circle, rgba(165,82,42,0.55) 0%, rgba(165,82,42,0.28) 45%, rgba(165,82,42,0) 72%)",
+          background: "radial-gradient(circle, rgba(165,82,42,0.22) 0%, rgba(165,82,42,0.1) 45%, rgba(165,82,42,0) 72%)",
         }}
       />
 
@@ -1618,9 +1654,22 @@ export default function PortfolioHome() {
           {/* Chat: col 1, rows 1-2, fixed height with internal scroll */}
           <div
             ref={chatCardRef}
-            className="rounded-[32px] bg-white overflow-hidden flex flex-col relative"
-            style={{ gridColumn: "1", gridRow: "1 / 3", height: "560px" }}
+            className="bento-tile group/spot relative rounded-[32px] bg-white overflow-hidden flex flex-col"
+            style={{ gridColumn: "1", gridRow: "1 / 3", height: "560px", animationDelay: "0ms" }}
+            onMouseMove={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              e.currentTarget.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
+              e.currentTarget.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
+            }}
           >
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 rounded-[32px] opacity-0 transition-opacity duration-300 group-hover/spot:opacity-100"
+              style={{
+                background:
+                  "radial-gradient(260px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(165,82,42,0.16), transparent 70%)",
+              }}
+            />
             <div className="px-6 pt-6 pb-3 shrink-0">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
                 ask me
@@ -1662,22 +1711,22 @@ export default function PortfolioHome() {
           </div>
 
           {/* Hero: col 2-3, row 1 */}
-          <div style={{ gridColumn: "2 / 4", gridRow: "1" }} className="relative overflow-visible">
+          <SpotlightTile index={1} style={{ gridColumn: "2 / 4", gridRow: "1" }} className="overflow-visible">
             <HeroTile />
-          </div>
+          </SpotlightTile>
 
           {/* NavTile: col 2, row 2 */}
-          <div style={{ gridColumn: "2", gridRow: "2" }}>
+          <SpotlightTile index={2} style={{ gridColumn: "2", gridRow: "2" }}>
             <NavTile />
-          </div>
+          </SpotlightTile>
 
           {/* What I Believe: col 3, row 2 */}
-          <div style={{ gridColumn: "3", gridRow: "2" }}>
+          <SpotlightTile index={3} style={{ gridColumn: "3", gridRow: "2" }}>
             <WhatIBelieveTile />
-          </div>
+          </SpotlightTile>
 
           {/* My Work: col 1-2, row 3 */}
-          <div style={{ gridColumn: "1 / 3", gridRow: "3" }}>
+          <SpotlightTile index={4} style={{ gridColumn: "1 / 3", gridRow: "3" }}>
             <MyWorkTile
               onOpenProject={(key) => {
                 const slugByKey = {
@@ -1688,22 +1737,29 @@ export default function PortfolioHome() {
                 openWorkProject(slugByKey[key] || "b2c");
               }}
             />
-          </div>
+          </SpotlightTile>
 
           {/* Testimonials: col 3, row 3 */}
-          <div style={{ gridColumn: "3", gridRow: "3" }}>
+          <SpotlightTile index={5} style={{ gridColumn: "3", gridRow: "3" }}>
             <TestimonialTile />
-          </div>
+          </SpotlightTile>
 
         </div>
 
         {/* ── MOBILE stack ── */}
         <div className="flex flex-col gap-4 lg:hidden">
-          <HeroTile />
-          <NavTile />
-          <WhatIBelieveTile />
+          <SpotlightTile index={0} className="overflow-visible">
+            <HeroTile />
+          </SpotlightTile>
+          <SpotlightTile index={1}>
+            <NavTile />
+          </SpotlightTile>
+          <SpotlightTile index={2}>
+            <WhatIBelieveTile />
+          </SpotlightTile>
 
-          <MyWorkTile
+          <SpotlightTile index={3}>
+            <MyWorkTile
               onOpenProject={(key) => {
                 const slugByKey = {
                   "marketing-tiles": "ai-personalization",
@@ -1713,13 +1769,33 @@ export default function PortfolioHome() {
                 openWorkProject(slugByKey[key] || "b2c");
               }}
             />
-          <TestimonialTile />
+          </SpotlightTile>
+          <SpotlightTile index={4}>
+            <TestimonialTile />
+          </SpotlightTile>
         </div>
 
       </div>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        @keyframes bentoTumbleIn {
+          0% { opacity: 0; transform: translateY(52px) scale(0.9) rotate(-2.5deg); }
+          65% { opacity: 1; }
+          100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+        }
+
+        .bento-tile {
+          animation: bentoTumbleIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+          will-change: transform;
+        }
+
+        .bento-tile:hover {
+          transform: translateY(-6px) scale(1.015);
+          box-shadow: 0 20px 44px -14px rgba(87, 66, 58, 0.28);
+        }
 
         @keyframes modalIn {
           from { opacity: 0; transform: translateY(18px) scale(0.98); }
