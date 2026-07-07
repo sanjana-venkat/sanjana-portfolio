@@ -1628,7 +1628,7 @@ export default function PortfolioHome() {
           left: 0,
           top: 0,
           willChange: "transform",
-          background: "radial-gradient(circle, rgba(165,82,42,0.22) 0%, rgba(165,82,42,0.1) 45%, rgba(165,82,42,0) 72%)",
+          background: "radial-gradient(circle, rgba(140,60,25,0.32) 0%, rgba(140,60,25,0.15) 45%, rgba(140,60,25,0) 72%)",
         }}
       />
 
