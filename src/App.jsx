@@ -643,7 +643,7 @@ function NavTile() {
   return (
     <div
       className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative select-none cursor-pointer ${BODY}`}
-      style={{ minHeight: "280px" }}
+      style={{ minHeight: "340px" }}
       onMouseEnter={startAnimation}
       onMouseLeave={stopAnimation}
       onClick={startAnimation}
@@ -1342,24 +1342,13 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
 //    (possibly translucent, e.g. Hero) background or through corner gaps
 // 4) dimming of sibling tiles while one tile is hovered, via lifted hoveredKey state
 function SpotlightTile({ children, index = 0, className = "", style = {}, tileKey, hoveredKey, onHover }) {
-  const ref = useRef(null);
   const dimmed = hoveredKey !== null && hoveredKey !== tileKey;
-
-  const handleMouseMove = (e) => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    el.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
-    el.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
-  };
 
   return (
     <div
-      ref={ref}
-      onMouseMove={handleMouseMove}
       onMouseEnter={() => onHover?.(tileKey)}
       onMouseLeave={() => onHover?.(null)}
-      className={`bento-tile group/spot relative rounded-[32px] ${className}`}
+      className={`bento-tile relative rounded-[32px] ${className}`}
       style={{
         ...style,
         animationDelay: `${index * 90}ms`,
@@ -1369,15 +1358,6 @@ function SpotlightTile({ children, index = 0, className = "", style = {}, tileKe
     >
       {/* Opaque white backer, sits under everything so the page-level cursor glow never shows through */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[32px] bg-white" />
-
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-[32px] opacity-0 transition-opacity duration-300 group-hover/spot:opacity-100"
-        style={{
-          background:
-            "radial-gradient(260px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(165,82,42,0.16), transparent 70%)",
-        }}
-      />
       <div className="relative">{children}</div>
     </div>
   );
@@ -1667,7 +1647,7 @@ export default function PortfolioHome() {
           {/* Chat: col 1, rows 1-2, fixed height with internal scroll */}
           <div
             ref={chatCardRef}
-            className="bento-tile group/spot relative rounded-[32px] overflow-hidden flex flex-col"
+            className="bento-tile relative rounded-[32px] overflow-hidden flex flex-col"
             style={{
               gridColumn: "1",
               gridRow: "1 / 3",
@@ -1678,21 +1658,8 @@ export default function PortfolioHome() {
             }}
             onMouseEnter={() => setHoveredTile("chat")}
             onMouseLeave={() => setHoveredTile(null)}
-            onMouseMove={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              e.currentTarget.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
-              e.currentTarget.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
-            }}
           >
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[32px] bg-white" />
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0 rounded-[32px] opacity-0 transition-opacity duration-300 group-hover/spot:opacity-100"
-              style={{
-                background:
-                  "radial-gradient(260px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(165,82,42,0.16), transparent 70%)",
-              }}
-            />
             <div className="px-6 pt-6 pb-3 shrink-0">
               <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
                 ask me
