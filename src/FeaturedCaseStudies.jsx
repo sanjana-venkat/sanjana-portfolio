@@ -2,6 +2,7 @@ const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
 const BODY = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
 
 export { MuesliStudy } from "./MuesliCaseStudy";
+export { OutdoneStudy } from "./OutdoneCaseStudy";
 
 function Link({ href, children, primary = false }) {
   return <a href={href} target="_blank" rel="noreferrer" className={`inline-flex rounded-full px-5 py-3 text-[13px] font-semibold transition hover:-translate-y-0.5 ${primary ? "bg-[#1D1D1B] text-white" : "bg-[#E8E3DF] text-[#1D1D1B]"} ${HEADING}`}>{children}<span className="ml-2">↗</span></a>;
@@ -58,7 +59,7 @@ export function LegacyMuesliStudy() {
   );
 }
 
-export function OutdoneStudy() {
+export function LegacyOutdoneStudy() {
   const pipeline = [["01", "Context", "Place, time, who is coming and one non-negotiable"], ["02", "Mood", "What kind of day this should actually feel like"], ["03", "Plan builder", "Turns the inputs into a day instead of another long list"], ["04", "Real places", "Grounds each stop in names, photos and locations"]];
   return (
     <Shell>
