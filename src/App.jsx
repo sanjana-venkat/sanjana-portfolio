@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TESTIMONIALS } from "./data/portfolioData";
 import { MuesliStudy, OutdoneStudy } from "./FeaturedCaseStudies";
+import KolamHome from "./KolamHome";
 
 const FIGMA_DECK_URL =
   "https://embed.figma.com/slides/rrAhQ5fBTULZu49L04zUZ8/jpmcpublic-slides?node-id=2-16488&embed-host=share";
@@ -28,11 +29,7 @@ const MUESLI_FIGMA_URL =
 
 const MUESLI_PR_URL = "https://github.com/Muesli-HQ/muesli/pull/329";
 
-const WAYFARER_URL = TRAVEL_DNA_URL;
-
 const RESUME_URL = "/SanjanaVenkat_Design-Engineer_Resume1.pdf";
-const GITHUB_URL = "https://github.com/sanjana-venkat";
-
 const BODY = "[font-family:'Open_Sans',sans-serif]";
 const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
 const TYPEWRITE = "[font-family:'JetBrains_Mono',monospace]";
@@ -310,7 +307,7 @@ function Typewriter({ text, shouldStart, onDone, instant = false }) {
   return (
     <p className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
       {displayed}
-      {typedText !== cleanText && <span className="animate-pulse text-[#A5522A]">|</span>}
+      {typedText !== cleanText && <span className="animate-pulse text-[#C73E2E]">|</span>}
     </p>
   );
 }
@@ -330,7 +327,7 @@ function JourneyMapPreview() {
 
 function CircleIconButton({ children, onClick, ariaLabel, className = "" }) {
   return (
-    <button type="button" onClick={onClick} aria-label={ariaLabel} className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:text-[#A5522A] ${className}`}>
+    <button type="button" onClick={onClick} aria-label={ariaLabel} className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:text-[#C73E2E] ${className}`}>
       <span className="flex h-full w-full items-center justify-center leading-none">{children}</span>
     </button>
   );
@@ -338,14 +335,14 @@ function CircleIconButton({ children, onClick, ariaLabel, className = "" }) {
 
 function FramerModal({ title, url, onClose }) {
   return (
-    <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#FFF8F5] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
+    <div className={`fixed inset-0 z-50 overflow-y-auto bg-[#F7F2EA] px-4 py-6 sm:px-6 sm:py-10 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
       <div className="mx-auto max-w-[1180px]">
         <div className="mb-5 flex items-center gap-3 sm:mb-6">
           <CircleIconButton onClick={onClose} ariaLabel="Close project">
             <ChevronLeftIcon />
           </CircleIconButton>
 
-          <h2 className={`min-w-0 text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#9C3F14] sm:text-[40px] ${HEADING}`}>
+          <h2 className={`min-w-0 text-[32px] font-semibold leading-[0.95] tracking-[-0.05em] text-[#C73E2E] sm:text-[40px] ${HEADING}`}>
             {title}
           </h2>
         </div>
@@ -652,14 +649,14 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
   };
 
   return (
-    <div className={`fixed inset-0 z-[70] h-[100dvh] overflow-hidden flex flex-col bg-[#FFF8F5] px-4 py-5 sm:px-6 sm:py-6 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
+    <div className={`fixed inset-0 z-[70] h-[100dvh] overflow-hidden flex flex-col bg-[#F7F2EA] px-4 py-5 sm:px-6 sm:py-6 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
       <div className="mx-auto w-full min-w-0 max-w-[1280px] overflow-hidden flex flex-col flex-1 min-h-0">
         <div className="mb-4 flex items-center gap-4 shrink-0">
           <CircleIconButton onClick={onClose} ariaLabel="Close work browser">
             <ChevronLeftIcon />
           </CircleIconButton>
 
-          <h2 className={`min-w-0 text-[32px] font-semibold leading-[1.03] tracking-[-0.04em] text-[#9C3F14] ${HEADING}`}>
+          <h2 className={`min-w-0 text-[32px] font-semibold leading-[1.03] tracking-[-0.04em] text-[#C73E2E] ${HEADING}`}>
             My Work
           </h2>
         </div>
@@ -671,8 +668,8 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
               onClick={() => selectProject(project)}
               className={`shrink-0 rounded-full border px-6 py-3 text-[14px] font-medium transition sm:px-7 sm:text-[15px] ${
                 activeProject.label === project.label
-                  ? "border-[#9C3F14] bg-white text-[#9C3F14]"
-                  : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
+                  ? "border-[#C73E2E] bg-white text-[#C73E2E]"
+                  : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#C73E2E] hover:text-[#C73E2E]"
               } ${HEADING}`}
             >
               {project.label}
@@ -709,7 +706,7 @@ function HeroTile() {
           paddingRight: "220px",
         }}
       >
-        <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] whitespace-nowrap ${HEADING}`}
+        <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#C73E2E] whitespace-nowrap ${HEADING}`}
           style={{ fontSize: "40px" }}>
           Sanjana Venkat
         </h1>
@@ -746,7 +743,7 @@ function HeroTile() {
           minHeight: "420px",
         }}
       >
-        <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] ${HEADING}`}
+        <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#C73E2E] ${HEADING}`}
           style={{ fontSize: "36px" }}>
           Sanjana Venkat
         </h1>
@@ -797,10 +794,10 @@ function WhatIBelieveTile() {
 
       <div className="mt-6 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <a href="mailto:sanjanavnkt20@gmail.com" aria-label="Email Sanjana" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
+          <a href="mailto:sanjanavnkt20@gmail.com" aria-label="Email Sanjana" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#C73E2E] hover:text-[#C73E2E]">
             <span className="flex h-full w-full items-center justify-center leading-none"><MailIcon /></span>
           </a>
-          <a href="https://www.linkedin.com/in/sanjana-venkat/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 text-[13px] font-semibold leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A] ${HEADING}`}>
+          <a href="https://www.linkedin.com/in/sanjana-venkat/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 text-[13px] font-semibold leading-none text-[#6B625C] transition hover:border-[#C73E2E] hover:text-[#C73E2E] ${HEADING}`}>
             <span className="flex h-full w-full items-center justify-center leading-none">in</span>
           </a>
         </div>
@@ -808,7 +805,7 @@ function WhatIBelieveTile() {
           href={RESUME_URL}
           target="_blank"
           rel="noreferrer"
-          className={`inline-flex items-center gap-1 text-[13px] text-[#8A817B] underline underline-offset-4 hover:text-[#A5522A] transition ${HEADING}`}
+          className={`inline-flex items-center gap-1 text-[13px] text-[#8A817B] underline underline-offset-4 hover:text-[#C73E2E] transition ${HEADING}`}
         >
           resume →
         </a>
@@ -914,7 +911,7 @@ function NavTile() {
     : item.lineStyle === "slightly-wavy"
     ? LINE_SLIGHTLY_WAVY
     : LINE_STRAIGHT;
-  const strokeColor = item.orange ? "#A5522A" : "#2F2F2F";
+  const strokeColor = item.orange ? "#C73E2E" : "#2F2F2F";
 
   const showLine    = phase === "line" || phase === "content" || phase === "hold";
   const showContent = phase === "content" || phase === "hold";
@@ -1062,8 +1059,8 @@ function NavTile() {
                     cx="160"
                     cy="38"
                     r="5"
-                    fill={item.isNow ? "#D96F45" : "white"}
-                    stroke={item.isNow ? "#D96F45" : strokeColor}
+                    fill={item.isNow ? "#C73E2E" : "white"}
+                    stroke={item.isNow ? "#C73E2E" : strokeColor}
                     strokeWidth="1.6"
                     style={{
                       animation: phase === "content"
@@ -1146,8 +1143,8 @@ function NavTile() {
                       cx="160"
                       cy="30"
                       r="5"
-                      fill={item.isNow ? "#D96F45" : "white"}
-                      stroke={item.isNow ? "#D96F45" : strokeColor}
+                      fill={item.isNow ? "#C73E2E" : "white"}
+                      stroke={item.isNow ? "#C73E2E" : strokeColor}
                       strokeWidth="1.6"
                       style={{
                         animation: phase === "content"
@@ -1173,7 +1170,7 @@ function NavTile() {
                 }}
               >
                 <div className="flex items-baseline gap-2 whitespace-nowrap">
-                  <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
+                  <span className={`text-[22px] font-bold ${item.isNow ? "text-[#C73E2E]" : "text-[#1A1A1A]"} ${HEADING}`}>
                     {item.year}
                   </span>
                   <span className={`text-[14px] font-semibold text-[#9A8176] ${HEADING}`}>
@@ -1222,7 +1219,7 @@ function NavTile() {
               }}
             >
               <div className="flex items-baseline gap-2 whitespace-nowrap justify-start">
-                <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
+                <span className={`text-[22px] font-bold ${item.isNow ? "text-[#C73E2E]" : "text-[#1A1A1A]"} ${HEADING}`}>
                   {item.year}
                 </span>
                 <span className={`text-[14px] font-semibold text-[#9A8176] ${HEADING}`}>
@@ -1369,7 +1366,7 @@ function TestimonialTile() {
             onClick={() => setIndex(dotIndex)}
             aria-label={`Show testimonial ${dotIndex + 1}`}
             aria-current={index === dotIndex ? "true" : "false"}
-            className={`h-3 rounded-full transition-all duration-300 ${index === dotIndex ? "w-10 bg-[#D96F45]" : "w-3 bg-[#EEF0F3] hover:bg-[#D8C5BB]"}`}
+            className={`h-3 rounded-full transition-all duration-300 ${index === dotIndex ? "w-10 bg-[#C73E2E]" : "w-3 bg-[#EEF0F3] hover:bg-[#D8C5BB]"}`}
           />
         ))}
       </div>
@@ -1378,7 +1375,7 @@ function TestimonialTile() {
         type="button"
         onClick={() => setIsPaused((current) => !current)}
         aria-label={isPaused ? "Play testimonials" : "Pause testimonials"}
-        className="absolute bottom-7 right-7 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]"
+        className="absolute bottom-7 right-7 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#C73E2E] hover:text-[#C73E2E]"
       >
         <span className="flex h-full w-full items-center justify-center leading-none">
           {isPaused ? <PlayIcon /> : <PauseIcon />}
@@ -1432,7 +1429,7 @@ function ModelDesignInlineLinks({ openProjectForActivePill }) {
           <p className={`text-[14px] font-semibold leading-[1.5] text-[#221B16] ${HEADING}`}>
             {link.title}
           </p>
-          <p className={`mt-1 inline text-[13px] leading-[1.6] text-[#8A817B] underline underline-offset-4 decoration-[#8A817B] group-hover:text-[#A5522A] group-hover:decoration-[#A5522A] transition ${HEADING}`}>
+          <p className={`mt-1 inline text-[13px] leading-[1.6] text-[#8A817B] underline underline-offset-4 decoration-[#8A817B] group-hover:text-[#C73E2E] group-hover:decoration-[#C73E2E] transition ${HEADING}`}>
             {link.question} →
           </p>
           <p className={`mt-2 text-[13px] leading-[1.65] text-[#5F5149] ${TYPEWRITE}`}>
@@ -1451,11 +1448,11 @@ function ResponseLinks({ active, openProjectForActivePill }) {
   if (active === "let's talk AI") {
     return (
       <div className="flex flex-wrap gap-x-6 gap-y-3 px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
-        <button onClick={() => openProjectForActivePill("ai-framer")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
+        <button onClick={() => openProjectForActivePill("ai-framer")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#C73E2E] ${HEADING}`}>
           agentic search experiences →
         </button>
 
-        <button onClick={() => openProjectForActivePill("casey-ai")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
+        <button onClick={() => openProjectForActivePill("casey-ai")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#C73E2E] ${HEADING}`}>
           conversational AI →
         </button>
       </div>
@@ -1475,7 +1472,7 @@ function ResponseLinks({ active, openProjectForActivePill }) {
 
   return (
     <div className="px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
-      <button onClick={() => openProjectForActivePill()} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
+      <button onClick={() => openProjectForActivePill()} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#C73E2E] ${HEADING}`}>
         {ctaText}
       </button>
     </div>
@@ -1486,7 +1483,7 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
   return (
     <>
       <div className="mb-6 flex justify-end">
-        <div className={`rounded-[48px_48px_0px_48px] bg-[#A5522A] px-6 py-3 text-[14px] leading-[1.8] text-white animate-[messageSend_0.35s_ease_forwards] ${TYPEWRITE}`}>
+        <div className={`rounded-[48px_48px_0px_48px] bg-[#C73E2E] px-6 py-3 text-[14px] leading-[1.8] text-white animate-[messageSend_0.35s_ease_forwards] ${TYPEWRITE}`}>
           {active}
         </div>
       </div>
@@ -1494,7 +1491,7 @@ function ChatConversation({ active, showThinking, showResponse, showPills, showU
       {showThinking && (
         <div className="rounded-[0px_36px_36px_36px] bg-white p-5 animate-[fadeUp_0.25s_ease_forwards] sm:p-6">
           <div className={`flex items-center gap-2 text-[12px] text-[#8A817B] ${HEADING}`}>
-            <span className="h-2 w-2 rounded-full bg-[#A5522A] animate-pulse" />
+            <span className="h-2 w-2 rounded-full bg-[#C73E2E] animate-pulse" />
             thinking
           </div>
         </div>
@@ -1544,7 +1541,7 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
   const [showHint, setShowHint] = useState(false);
 
   return (
-    <div className={`fixed inset-0 z-[60] flex flex-col bg-[#FFF8F5] ${BODY}`}>
+    <div className={`fixed inset-0 z-[60] flex flex-col bg-[#F7F2EA] ${BODY}`}>
       <div className="pointer-events-none fixed left-0 right-0 top-0 z-10 flex items-start justify-between gap-3 px-4 pt-4">
         <div className="pointer-events-auto max-w-[calc(100%-72px)] rounded-[999px] border border-[#E4E2E1] bg-white px-7 py-5 shadow-sm">
           <div className="flex items-center gap-2">
@@ -1556,7 +1553,7 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
               type="button"
               onClick={() => setShowHint((current) => !current)}
               aria-label={showHint ? "Hide hint" : "Show hint"}
-              className="flex h-4 w-4 items-center justify-center p-0 leading-none text-[#8A817B] transition hover:text-[#A5522A]"
+              className="flex h-4 w-4 items-center justify-center p-0 leading-none text-[#8A817B] transition hover:text-[#C73E2E]"
             >
               <ChevronRightIcon
                 className={`h-4 w-4 transition-transform duration-300 ${
@@ -1593,7 +1590,7 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
         />
       </div>
 
-      <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-[#FFF8F5] via-[#FFF8F5]/95 to-transparent px-4 pb-5 pt-8">
+      <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-10 bg-[#F7F2EA] px-4 pb-5 pt-8">
         <div className="pointer-events-auto no-scrollbar flex gap-2 overflow-x-auto">
           {PILLS.map((pill) => (
             <button
@@ -1601,7 +1598,7 @@ function MobileChatModal({ active, setActive, showThinking, showResponse, showPi
               onClick={() => setActive(pill)}
               className={`shrink-0 rounded-full border bg-white px-4 py-2 text-[11px] transition ${
                 active === pill
-                  ? "border-[#A5522A] text-[#A5522A]"
+                  ? "border-[#C73E2E] text-[#C73E2E]"
                   : "border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
               } ${HEADING}`}
             >
@@ -1646,16 +1643,17 @@ export default function PortfolioHome() {
   const chatCardRef = useRef(null);
   const chatScrollRef = useRef(null);
   const [active, setActive] = useState(DEFAULT_PILL);
-  const [projectOpen, setProjectOpen] = useState(null);
-  const [showPills, setShowPills] = useState(false);
-  const [showResponse, setShowResponse] = useState(false);
+  const [projectOpen, setProjectOpen] = useState(() => window.location.hash.startsWith("#work=") ? "work-browser" : null);
+  const [showPills, setShowPills] = useState(true);
+  const [showResponse, setShowResponse] = useState(true);
   const [showThinking, setShowThinking] = useState(false);
   const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
   const [mobileChatOpen, setMobileChatOpen] = useState(false);
   const [instantType, setInstantType] = useState(true);
-  const [workProjectSlug, setWorkProjectSlug] = useState("b2c");
+  const [workProjectSlug, setWorkProjectSlug] = useState(() => window.location.hash.startsWith("#work=") ? window.location.hash.replace("#work=", "") || "b2c" : "b2c");
   const [hoveredTile, setHoveredTile] = useState(null);
-  const isFirstLoad = useRef(true);
+  const [chatExpanded, setChatExpanded] = useState(false);
+  const previousActive = useRef(active);
 
   // SURGICAL CHANGE — smooth cursor glow via requestAnimationFrame lerp instead of
   // React state + CSS transition-transform (which was never actually animating,
@@ -1690,7 +1688,7 @@ export default function PortfolioHome() {
   }, []);
 
   useEffect(() => {
-    const faviconPath = "/logo.jpg";
+    const faviconPath = "/kolam/kolam-steps.svg";
 
     const removeExistingFavicons = () => {
       const links = document.querySelectorAll(
@@ -1710,31 +1708,15 @@ export default function PortfolioHome() {
     };
 
     removeExistingFavicons();
-    addFavicon("icon", faviconPath);
-    addFavicon("shortcut icon", faviconPath);
-    addFavicon("apple-touch-icon", faviconPath);
+    addFavicon("icon", faviconPath, "image/svg+xml");
+    addFavicon("shortcut icon", faviconPath, "image/svg+xml");
+    addFavicon("apple-touch-icon", "/kolam/step4.png", "image/png");
     document.title = "Sanjana Venkat";
   }, []);
 
   useEffect(() => {
-    const hash = window.location.hash || "";
-    if (hash.startsWith("#work=")) {
-      const slug = hash.replace("#work=", "");
-      setWorkProjectSlug(slug || "b2c");
-      setProjectOpen("work-browser");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isFirstLoad.current) {
-      isFirstLoad.current = false;
-      setInstantType(true);
-      setShowThinking(false);
-      setShowResponse(true);
-      setShowPills(true);
-      setShowUserNeedsRest(active === "how do you uncover user needs");
-      return;
-    }
+    if (previousActive.current === active) return;
+    previousActive.current = active;
 
     setInstantType(false);
     setShowPills(false);
@@ -1748,7 +1730,7 @@ export default function PortfolioHome() {
     }, 850);
 
     return () => clearTimeout(timer);
-  }, [active]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [active]);
 
   const handleTypeDone = () => {
     if (active === "how do you uncover user needs") {
@@ -1767,30 +1749,6 @@ export default function PortfolioHome() {
     setWorkProjectSlug(slug);
     window.history.replaceState(null, "", `#work=${slug}`);
     setProjectOpen("work-browser");
-  };
-
-  const handleNav = (item) => {
-    if (item === "my work") {
-      setWorkProjectSlug("b2c");
-      window.history.replaceState(null, "", "#work=b2c");
-      setProjectOpen("work-browser");
-      return;
-    }
-    if (item === "what are you building now") {
-      window.open(TRAVEL_DNA_URL, "_blank");
-      return;
-    }
-    if (item === "resume") {
-      window.open(RESUME_URL, "_blank");
-      return;
-    }
-    if (item === "github") {
-      window.open(GITHUB_URL, "_blank");
-      return;
-    }
-    if (item === "contact") {
-      window.open("https://www.linkedin.com/in/sanjana-venkat/", "_blank");
-    }
   };
 
   const openProjectForActivePill = (override) => {
@@ -1851,9 +1809,44 @@ export default function PortfolioHome() {
     }
   };
 
+  const kolamChat = (
+    <div ref={(element) => { chatCardRef.current = element; _chatScrollEl = element; }} className="kolam-chat">
+      <div className={`kolam-chat-history ${instantType && !chatExpanded ? "is-collapsed" : ""}`}>
+        <ChatConversation
+          active={active}
+          showThinking={showThinking}
+          showResponse={showResponse}
+          showPills={showPills}
+          showUserNeedsRest={showUserNeedsRest}
+          onTypeDone={handleTypeDone}
+          openProjectForActivePill={openProjectForActivePill}
+          instantType={instantType}
+        />
+      </div>
+      {instantType && !chatExpanded && <button type="button" className="kolam-chat-expand" onClick={() => setChatExpanded(true)}>keep reading</button>}
+      {showPills && <div className="kolam-chat-pills">{PILLS.map(pill => <button key={pill} type="button" onClick={() => handlePillSelect(pill)} aria-current={active === pill}>{pill}</button>)}</div>}
+    </div>
+  );
+
+  const homeVersion = "kolam";
+  if (homeVersion === "kolam") {
+    return (
+      <>
+        {projectOpen === "work-browser" && <WorkBrowserModal initialSlug={workProjectSlug} onClose={() => { setProjectOpen(null); if (window.location.hash.startsWith("#work=")) window.history.replaceState(null, "", window.location.pathname); }} />}
+        {projectOpen === "user-needs" && <FramerModal title="How I Uncover User Needs" url={USER_NEEDS_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
+        {projectOpen === "figma-deck" && <FigmaDeckModal onClose={() => setProjectOpen(null)} />}
+        {projectOpen === "ai-framer" && <FramerModal title="AI Search Interfaces" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
+        {projectOpen === "casey-ai" && <FramerModal title="Conversational AI" url={CASEY_AI_URL} onClose={() => setProjectOpen(null)} />}
+        {projectOpen === "marketing-tiles" && <FramerModal title="Intent-based Recommendations" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />}
+        {projectOpen === "apply-systems" && <FramerModal title="Designing Systems at Scale" url={APPLY_SYSTEMS_URL} onClose={() => setProjectOpen(null)} />}
+        <KolamHome story={<NavTile />} chat={kolamChat} onOpenProject={openWorkProject} />
+      </>
+    );
+  }
+
   return (
     <main
-      className={`relative min-h-screen w-full overflow-x-hidden bg-[#F7F4F2] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}
+      className={`relative min-h-screen w-full overflow-x-hidden bg-[#F7F2EA] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}
     >
       {/* Modals */}
       {projectOpen === "work-browser" && (
@@ -1894,7 +1887,7 @@ export default function PortfolioHome() {
         type="button"
         onClick={() => setMobileChatOpen(true)}
         aria-label="Open chat"
-        className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#A5522A] p-0 leading-none text-white shadow-lg transition hover:scale-105 md:hidden"
+        className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#C73E2E] p-0 leading-none text-white shadow-lg transition hover:scale-105 md:hidden"
       >
         <span className="flex h-full w-full items-center justify-center leading-none"><ChatIcon /></span>
       </button>
@@ -1907,7 +1900,7 @@ export default function PortfolioHome() {
           left: 0,
           top: 0,
           willChange: "transform",
-          background: "radial-gradient(circle, rgba(140,60,25,0.32) 0%, rgba(140,60,25,0.15) 45%, rgba(140,60,25,0) 72%)",
+          background: "transparent",
         }}
       />
 
@@ -1957,7 +1950,7 @@ export default function PortfolioHome() {
               />
             </div>
             {showPills && (
-              <div className="absolute bottom-0 left-0 right-0 px-6 pb-4 pt-8 bg-gradient-to-t from-white via-white/95 to-transparent animate-[fadeUp_0.45s_ease_forwards]">
+              <div className="absolute bottom-0 left-0 right-0 bg-white px-6 pb-4 pt-8 animate-[fadeUp_0.45s_ease_forwards]">
                 <div className="no-scrollbar overflow-x-auto">
                   <div className="flex gap-2" style={{ width: "max-content" }}>
                     {PILLS.map((pill) => (
@@ -1966,7 +1959,7 @@ export default function PortfolioHome() {
                         onClick={() => handlePillSelect(pill)}
                         className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] backdrop-blur-sm ${
                           active === pill
-                            ? "bg-white border-[#A5522A] text-[#A5522A]"
+                            ? "bg-white border-[#C73E2E] text-[#C73E2E]"
                             : "bg-white border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
                         } ${HEADING}`}
                       >
@@ -2102,7 +2095,7 @@ export default function PortfolioHome() {
         html,
         body {
           font-family: 'Open Sans', sans-serif;
-          background: #F7F4F2;
+          background: #F7F2EA;
         }
 
         h1,
