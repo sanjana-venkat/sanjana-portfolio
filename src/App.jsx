@@ -174,10 +174,10 @@ Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
   { slug: "muesli", label: "Muesli", title: "Muesli — Local-first dictation, made approachable", type: "case-study" },
-  { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: "/legacy-pages/b2c.html" },
-  { slug: "ai-personalization", label: "Intent-based Recommendations", title: "Intent-based Recommendations", url: "/legacy-pages/marketing.html" },
-  { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: "/legacy-pages/apply.html" },
-  { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", url: "/legacy-pages/ai.html" },
+  { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
+  { slug: "ai-personalization", label: "Intent-based Recommendations", title: "Intent-based Recommendations", url: MARKETING_TILES_URL },
+  { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
+  { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
   { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
   { slug: "model-design", label: "Outdone, Context-Aware Personalization", title: "Outdone, Context-Aware Personalization", type: "case-study" }

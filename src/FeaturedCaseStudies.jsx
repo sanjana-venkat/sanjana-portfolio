@@ -1,5 +1,5 @@
 const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
-const BODY = "[font-family:'Open_Sans',sans-serif]";
+const BODY = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
 
 function Link({ href, children, primary = false }) {
   return <a href={href} target="_blank" rel="noreferrer" className={`inline-flex rounded-full px-5 py-3 text-[13px] font-semibold transition hover:-translate-y-0.5 ${primary ? "bg-[#1D1D1B] text-white" : "bg-[#E8E3DF] text-[#1D1D1B]"} ${HEADING}`}>{children}<span className="ml-2">↗</span></a>;
@@ -14,15 +14,15 @@ function Image({ src, alt, className = "", contain = false }) {
 }
 
 function Shell({ children }) {
-  return <article className={`work-case-study h-full w-full min-w-0 max-w-full overflow-x-hidden overflow-y-auto bg-white text-[#161513] ${BODY}`}><div className="mx-auto w-full min-w-0 max-w-[1120px] px-5 py-9 sm:px-10 sm:py-16">{children}</div></article>;
+  return <article className={`work-case-study h-full w-full min-w-0 max-w-full overflow-x-hidden overflow-y-auto bg-white text-[#161513] ${BODY}`}><div className="mx-auto w-full min-w-0 max-w-[1080px] px-5 py-10 sm:px-10 sm:py-16">{children}</div></article>;
 }
 
 export function MuesliStudy() {
   return (
     <Shell>
-      <header className="grid min-w-0 gap-6 lg:grid-cols-[0.98fr_1.02fr]">
-        <div className="min-w-0 overflow-hidden rounded-[32px] bg-[#353533] p-3 sm:p-5"><video className="block h-full min-h-[340px] min-w-0 max-w-full rounded-[23px] object-cover" poster="/muesli-preview.jpg" autoPlay loop muted playsInline controls preload="metadata"><source src="/muesli-prototype.webm" type="video/webm" /><source src="/muesli-prototype.mp4" type="video/mp4" />Your browser cannot play this video.</video></div>
-        <div className="min-w-0 flex flex-col justify-center rounded-[32px] bg-[#F7F2EF] p-7 sm:p-11"><p className={`text-[12px] font-semibold uppercase tracking-[0.09em] text-[#B6632C] ${HEADING}`}>Muesli · Product design + SwiftUI</p><h1 className={`mt-7 break-words text-[38px] font-medium leading-[1.06] tracking-[-0.052em] sm:text-[54px] ${HEADING}`}>Making local-first dictation feel simple.</h1><p className="mt-5 text-[17px] leading-[1.65] text-[#68615D]">Muesli is a private Mac dictation app with a lot going on under the hood. I redesigned the experience so the first dictation felt easy—and the power was still there when people needed it.</p><div className="mt-8 flex flex-wrap gap-3"><Link href="https://github.com/Muesli-HQ/muesli/pull/329" primary>View my PR</Link><Link href="https://www.figma.com/design/QO5TcpLfxmcheMMjcMYg6C/Muesli?node-id=17-5">V1 → V2</Link><Link href="/muesli-prototype.mp4">Open video</Link></div></div>
+      <header className="grid min-w-0 gap-6 lg:grid-cols-[0.98fr_1.02fr] lg:gap-10">
+        <div className="min-w-0 overflow-hidden rounded-[26px] bg-[#353533] p-3 sm:p-4"><video className="block h-full min-h-[340px] min-w-0 max-w-full rounded-[19px] object-cover" poster="/muesli-preview.jpg" autoPlay loop muted playsInline controls preload="metadata"><source src="/muesli-prototype.webm" type="video/webm" /><source src="/muesli-prototype.mp4" type="video/mp4" />Your browser cannot play this video.</video></div>
+        <div className="min-w-0 flex flex-col justify-center rounded-[26px] bg-[#F7F2EF] p-7 sm:p-10"><p className={`text-[12px] font-semibold uppercase tracking-[0.09em] text-[#B6632C] ${HEADING}`}>Muesli · Product design + SwiftUI</p><h1 className={`mt-7 break-words text-[36px] font-medium leading-[1.08] tracking-[-0.045em] sm:text-[44px] ${HEADING}`}>Making local-first dictation feel simple.</h1><p className="mt-5 text-[16px] leading-[1.65] text-[#68615D]">Muesli is a private Mac dictation app with a lot going on under the hood. I redesigned the experience so the first dictation felt easy—and the power was still there when people needed it.</p><div className="mt-8 flex flex-wrap gap-3"><Link href="https://github.com/Muesli-HQ/muesli/pull/329" primary>View my PR</Link><Link href="https://www.figma.com/design/QO5TcpLfxmcheMMjcMYg6C/Muesli?node-id=17-5">V1 → V2</Link><Link href="/muesli-prototype.mp4">Open video</Link></div></div>
       </header>
 
       <Section eyebrow="Why this needed work" title="The product was powerful. The starting point was not obvious.">
@@ -60,9 +60,9 @@ export function OutdoneStudy() {
   const pipeline = [["01", "Context", "Place, time, who is coming and one non-negotiable"], ["02", "Mood", "What kind of day this should actually feel like"], ["03", "Plan builder", "Turns the inputs into a day instead of another long list"], ["04", "Real places", "Grounds each stop in names, photos and locations"]];
   return (
     <Shell>
-      <header className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
-        <Image src="/outdone-landing.webp" alt="Outdone landing page" className="min-h-[420px]" />
-        <div className="flex flex-col justify-center rounded-[32px] bg-[#F7F2EF] p-7 sm:p-11"><p className={`text-[12px] font-semibold uppercase tracking-[0.09em] text-[#B6632C] ${HEADING}`}>Outdone · Product + AI UX</p><h1 className={`mt-7 text-[38px] font-medium leading-[1.07] tracking-[-0.052em] sm:text-[50px] ${HEADING}`}>What if you know how you want to feel—but not what you want to do?</h1><p className="mt-5 text-[17px] leading-[1.65] text-[#68615D]">I built Outdone to turn mood, context and one specific request into a plan someone can actually follow.</p><div className="mt-8"><Link href="https://travel-dna-kohl.vercel.app/" primary>Try Outdone</Link></div></div>
+      <header className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:gap-10">
+        <Image src="/outdone-landing.webp" alt="Outdone landing page" className="min-h-[400px] rounded-[26px]" />
+        <div className="flex flex-col justify-center rounded-[26px] bg-[#F7F2EF] p-7 sm:p-10"><p className={`text-[12px] font-semibold uppercase tracking-[0.09em] text-[#B6632C] ${HEADING}`}>Outdone · Product + AI UX</p><h1 className={`mt-7 text-[36px] font-medium leading-[1.08] tracking-[-0.045em] sm:text-[44px] ${HEADING}`}>What if you know how you want to feel—but not what you want to do?</h1><p className="mt-5 text-[16px] leading-[1.65] text-[#68615D]">I built Outdone to turn mood, context and one specific request into a plan someone can actually follow.</p><div className="mt-8"><Link href="https://travel-dna-kohl.vercel.app/" primary>Try Outdone</Link></div></div>
       </header>
 
       <Section compact eyebrow="The problem" title="Sometimes “I want to get out” is the entire brief">
