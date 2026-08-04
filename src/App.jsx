@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { TESTIMONIALS } from "./data/portfolioData";
+import { AISearchCaseStudy, B2CCaseStudy, IntentCaseStudy, ServiceDesignCaseStudy } from "./LocalCaseStudies";
+import { MuesliStudy, OutdoneStudy } from "./FeaturedCaseStudies";
 
 const FIGMA_DECK_URL =
   "https://embed.figma.com/slides/rrAhQ5fBTULZu49L04zUZ8/jpmcpublic-slides?node-id=2-16488&embed-host=share";
@@ -173,10 +175,10 @@ Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
   { slug: "muesli", label: "Muesli", title: "Muesli — Local-first dictation, made approachable", type: "case-study" },
-  { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
-  { slug: "ai-personalization", label: "Intent-based Recommendations", title: "Intent-based Recommendations", url: MARKETING_TILES_URL },
-  { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
-  { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
+  { slug: "b2c", label: "B2C", title: "Uncover User Needs", type: "case-study" },
+  { slug: "ai-personalization", label: "Intent-based Recommendations", title: "Intent-based Recommendations", type: "case-study" },
+  { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", type: "case-study" },
+  { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", type: "case-study" },
   { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
   { slug: "model-design", label: "Outdone, Context-Aware Personalization", title: "Outdone, Context-Aware Personalization", type: "case-study" }
@@ -413,6 +415,8 @@ function MediaPlaceholder({ name, label, className = "" }) {
   );
 }
 
+// Kept temporarily for a safe rollback while the new local case-study module ships.
+// eslint-disable-next-line no-unused-vars
 function MuesliCaseStudy() {
   return (
     <article className={`h-full overflow-y-auto bg-white text-[#161513] ${BODY}`}>
@@ -487,6 +491,8 @@ function MuesliCaseStudy() {
   );
 }
 
+// Kept temporarily for a safe rollback while the new local case-study module ships.
+// eslint-disable-next-line no-unused-vars
 function OutdoneCaseStudy() {
   const activities = ["Sunset walk", "Hidden café", "Kayaking", "Night market", "Museum", "Scenic drive", "Cooking class", "Live music"];
   const moods = ["Adventurous", "Slow and scenic", "Cultural", "Culinary", "Offbeat", "Social", "Active", "Night owl", "Romantic"];
@@ -648,7 +654,7 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
 
   return (
     <div className={`fixed inset-0 z-[70] h-[100dvh] overflow-hidden flex flex-col bg-[#FFF8F5] px-4 py-5 sm:px-6 sm:py-6 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
-      <div className="mx-auto w-full max-w-[1280px] flex flex-col flex-1 min-h-0">
+      <div className="mx-auto w-full min-w-0 max-w-[1280px] overflow-hidden flex flex-col flex-1 min-h-0">
         <div className="mb-4 flex items-center gap-4 shrink-0">
           <CircleIconButton onClick={onClose} ariaLabel="Close work browser">
             <ChevronLeftIcon />
@@ -659,7 +665,7 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
           </h2>
         </div>
 
-        <div className="no-scrollbar mb-4 flex gap-3 overflow-x-auto pb-2 shrink-0">
+        <div className="no-scrollbar mb-4 flex w-full min-w-0 max-w-full gap-3 overflow-x-auto pb-2 shrink-0">
           {PROJECTS.map((project) => (
             <button
               key={project.label}
@@ -675,12 +681,14 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
           ))}
         </div>
 
-        <div className="overflow-hidden rounded-[32px] bg-white w-full flex-1 min-h-0">
-          {activeProject.slug === "muesli" ? (
-            <MuesliCaseStudy />
-          ) : activeProject.slug === "model-design" ? (
-            <OutdoneCaseStudy />
-          ) : (
+        <div className="min-w-0 overflow-hidden rounded-[32px] bg-white w-full flex-1 min-h-0">
+          {activeProject.slug === "muesli" && <MuesliStudy />}
+          {activeProject.slug === "b2c" && <B2CCaseStudy />}
+          {activeProject.slug === "ai-personalization" && <IntentCaseStudy />}
+          {activeProject.slug === "service-design" && <ServiceDesignCaseStudy />}
+          {activeProject.slug === "ai-chat-journeys" && <AISearchCaseStudy />}
+          {activeProject.slug === "model-design" && <OutdoneStudy />}
+          {(activeProject.slug === "conversational-agentic-ai" || activeProject.slug === "exec-pitch") && (
             <iframe key={activeProject.url} src={activeProject.url} title={activeProject.title} className="h-full w-full border-0 bg-white" allowFullScreen />
           )}
         </div>
