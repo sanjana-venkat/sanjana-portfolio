@@ -357,16 +357,14 @@ function FramerModal({ title, url, onClose }) {
   );
 }
 
-function CaseStudyLink({ href, children, tone = "dark" }) {
+function CaseStudyLink({ href, children, primary = false }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noreferrer"
       className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13px] font-semibold transition hover:-translate-y-0.5 ${
-        tone === "light"
-          ? "bg-white text-[#1E322B] hover:bg-[#F1F4F1]"
-          : "bg-[#1E322B] text-white hover:bg-[#2B493E]"
+        primary ? "bg-[#1D1D1B] text-white hover:bg-[#383734]" : "bg-[#E8E3DF] text-[#1D1D1B] hover:bg-[#DDD6D1]"
       } ${HEADING}`}
     >
       {children}
@@ -375,49 +373,74 @@ function CaseStudyLink({ href, children, tone = "dark" }) {
   );
 }
 
+function CaseStudySection({ eyebrow, title, children, className = "" }) {
+  const sectionRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.12 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section ref={sectionRef} className={`case-study-section ${isVisible ? "is-visible" : ""} ${className}`}>
+      <p className={`text-[12px] font-semibold uppercase tracking-[0.08em] text-[#B6632C] ${HEADING}`}>{eyebrow}</p>
+      <h2 className={`mt-4 max-w-[900px] text-[32px] font-medium leading-[1.12] tracking-[-0.045em] text-[#161513] sm:text-[44px] ${HEADING}`}>{title}</h2>
+      <div className="mt-5 text-[17px] leading-[1.6] text-[#64615F] sm:text-[19px]">{children}</div>
+    </section>
+  );
+}
+
+function MediaPlaceholder({ name, label, className = "" }) {
+  return (
+    <div className={`flex min-h-[220px] items-center justify-center rounded-[28px] border border-dashed border-[#CFC7C2] bg-[#F6F2EF] p-6 text-center ${className}`}>
+      <div>
+        <p className={`text-[13px] font-semibold text-[#2B2927] ${HEADING}`}>{label}</p>
+        <p className={`mt-2 text-[11px] uppercase tracking-[0.12em] text-[#A09289] ${TYPEWRITE}`}>Replace /public/{name}</p>
+      </div>
+    </div>
+  );
+}
+
 function MuesliCaseStudy() {
   return (
-    <article className={`h-full overflow-y-auto bg-[#F2F0EB] text-[#183027] ${BODY}`}>
+    <article className={`h-full overflow-y-auto bg-white text-[#161513] ${BODY}`}>
       <div className="mx-auto max-w-[1120px] px-5 py-10 sm:px-10 sm:py-16">
-        <div className="max-w-[860px]">
-          <p className={`text-[12px] font-bold uppercase tracking-[0.18em] text-[#527067] ${HEADING}`}>
-            Product design · UX systems · SwiftUI
-          </p>
-          <h1 className={`mt-4 text-[44px] font-semibold leading-[0.98] tracking-[-0.055em] sm:text-[68px] ${HEADING}`}>
-            Making local-first dictation feel effortless.
-          </h1>
-          <p className="mt-6 max-w-[720px] text-[18px] leading-[1.65] text-[#53625D] sm:text-[21px]">
-            I redesigned Muesli’s first-run and daily experience, then carried the system into an implementation-ready SwiftUI pass—without losing the product’s quiet, private-by-default character.
-          </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <CaseStudyLink href={MUESLI_PR_URL}>View implementation PR</CaseStudyLink>
-            <CaseStudyLink href={MUESLI_FIGMA_URL} tone="light">Explore V1 → V2</CaseStudyLink>
+        <div className="grid gap-7 sm:grid-cols-[0.96fr_1.04fr]">
+          <div className="overflow-hidden rounded-[34px] bg-[#3B3A38] p-3 sm:p-5">
+            <video className="h-full min-h-[320px] w-full rounded-[24px] object-cover" poster="/muesli-preview.jpg" autoPlay loop muted playsInline controls preload="auto" aria-label="Prototype of the redesigned Muesli desktop app">
+              <source src="/muesli-prototype.webm" type="video/webm" />
+              <source src="/muesli-prototype.mp4" type="video/mp4" />
+              Your browser cannot play this video.
+            </video>
+          </div>
+          <div className="flex flex-col justify-center rounded-[34px] bg-[#F7F2EF] p-7 sm:p-10">
+            <p className={`text-[12px] font-semibold uppercase tracking-[0.08em] text-[#B6632C] ${HEADING}`}>Product designer · Muesli</p>
+            <h1 className={`mt-7 text-[38px] font-medium leading-[1.08] tracking-[-0.05em] sm:text-[52px] ${HEADING}`}>Making local-first dictation feel effortless.</h1>
+            <p className="mt-4 text-[17px] leading-[1.55] text-[#686461]">I redesigned Muesli’s first-run and daily experience, then translated the system into SwiftUI.</p>
+            <p className="mt-5 text-[15px] text-[#686461]">Product design, UX systems, prototyping</p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <CaseStudyLink href={MUESLI_PR_URL} primary>Implementation PR</CaseStudyLink>
+              <CaseStudyLink href={MUESLI_FIGMA_URL}>V1 → V2</CaseStudyLink>
+              <CaseStudyLink href="/muesli-prototype.webm">Open video</CaseStudyLink>
+            </div>
           </div>
         </div>
 
-        <div className="mt-12 overflow-hidden rounded-[28px] border border-[#D7D9D4] bg-[#DCD9D4] shadow-[0_28px_80px_rgba(24,48,39,0.14)] sm:rounded-[36px]">
-          <video
-            className="block h-auto w-full"
-            src="/muesli-prototype.mp4"
-            poster="/muesli-preview.jpg"
-            autoPlay
-            loop
-            muted
-            playsInline
-            controls
-            aria-label="Prototype of the redesigned Muesli desktop app"
-          />
-        </div>
-
-        <section className="grid gap-8 py-16 sm:grid-cols-[0.8fr_1.2fr] sm:py-24">
-          <div>
-            <p className={`text-[12px] font-bold uppercase tracking-[0.18em] text-[#527067] ${HEADING}`}>The tension</p>
-            <h2 className={`mt-3 text-[30px] font-semibold leading-[1.08] tracking-[-0.04em] ${HEADING}`}>Powerful product, too much interface.</h2>
-          </div>
-          <p className="text-[18px] leading-[1.75] text-[#53625D]">
-            Muesli already did the hard thing: fast, private dictation on the Mac. But setup split permissions, shortcuts, microphone choice, and testing across too many moments. Once inside, flat navigation made the product’s deeper tools feel disconnected from the core action.
-          </p>
-        </section>
+        <CaseStudySection eyebrow="THE TENSION" title="Powerful product, too much interface." className="py-20 sm:py-28">
+          <p className="max-w-[880px]">Muesli already did the hard thing: fast, private dictation on the Mac. But setup split permissions, shortcuts, microphone choice, and testing across too many moments. Once inside, flat navigation made the product’s deeper tools feel disconnected from the core action.</p>
+        </CaseStudySection>
 
         <section className="grid gap-4 sm:grid-cols-3">
           {[
@@ -425,37 +448,37 @@ function MuesliCaseStudy() {
             ["02", "One obvious way in", "Record is the primary destination, with a persistent control and the shortcut taught in context."],
             ["03", "Depth without density", "A collapsible rail, clearer grouping, and responsive spacing keep advanced tools close without making the app feel heavy."],
           ].map(([number, title, copy]) => (
-            <div key={number} className="rounded-[24px] bg-[#E3E9E4] p-6 sm:p-7">
-              <p className={`text-[11px] font-bold tracking-[0.18em] text-[#648076] ${HEADING}`}>{number}</p>
-              <h3 className={`mt-8 text-[21px] font-semibold tracking-[-0.025em] ${HEADING}`}>{title}</h3>
-              <p className="mt-3 text-[15px] leading-[1.65] text-[#53625D]">{copy}</p>
+            <div key={number} className="rounded-[24px] bg-[#F7F2EF] p-6 sm:p-7">
+              <p className={`text-[11px] font-semibold tracking-[0.12em] text-[#B6632C] ${HEADING}`}>{number}</p>
+              <h3 className={`mt-8 text-[21px] font-medium tracking-[-0.025em] text-[#161513] ${HEADING}`}>{title}</h3>
+              <p className="mt-3 text-[15px] leading-[1.65] text-[#686461]">{copy}</p>
             </div>
           ))}
         </section>
 
         <section className="py-16 sm:py-24">
-          <p className={`text-[12px] font-bold uppercase tracking-[0.18em] text-[#527067] ${HEADING}`}>V1 → V2</p>
+          <p className={`text-[12px] font-semibold uppercase tracking-[0.08em] text-[#B6632C] ${HEADING}`}>V1 → V2</p>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <div className="rounded-[24px] border border-[#D6D9D4] bg-white/55 p-6 sm:p-8">
+            <div className="rounded-[24px] bg-[#F7F2EF] p-6 sm:p-8">
               <p className={`text-[13px] font-semibold text-[#7B817E] ${HEADING}`}>Before</p>
               <p className={`mt-3 text-[25px] font-semibold leading-[1.2] tracking-[-0.035em] ${HEADING}`}>
                 Setup felt procedural. Daily tools felt separate.
               </p>
               <p className="mt-4 text-[15px] leading-[1.7] text-[#69736F]">Permission steps, device setup, and the first dictation were fragmented. Insights, meetings, and personal vocabulary lacked a shared hierarchy.</p>
             </div>
-            <div className="rounded-[24px] bg-[#1E322B] p-6 text-white sm:p-8">
-              <p className={`text-[13px] font-semibold text-[#AFC2BA] ${HEADING}`}>After</p>
+            <div className="rounded-[24px] bg-[#E9E5E1] p-6 text-[#161513] sm:p-8">
+              <p className={`text-[13px] font-semibold text-[#B6632C] ${HEADING}`}>After</p>
               <p className={`mt-3 text-[25px] font-semibold leading-[1.2] tracking-[-0.035em] ${HEADING}`}>
                 One guided start. One coherent workspace.
               </p>
-              <p className="mt-4 text-[15px] leading-[1.7] text-[#C5D0CB]">A combined setup and live test builds confidence early; the rounded navigation rail, bento insights, and personal dictionary make the broader product easier to scan.</p>
+              <p className="mt-4 text-[15px] leading-[1.7] text-[#686461]">A combined setup and live test builds confidence early; the rounded navigation rail, bento insights, and personal dictionary make the broader product easier to scan.</p>
             </div>
           </div>
         </section>
 
-        <section className="rounded-[28px] bg-[#DCE7DF] px-6 py-9 sm:px-10 sm:py-12">
-          <p className={`text-[12px] font-bold uppercase tracking-[0.18em] text-[#527067] ${HEADING}`}>What I delivered</p>
-          <p className={`mt-4 max-w-[850px] text-[28px] font-semibold leading-[1.25] tracking-[-0.04em] sm:text-[36px] ${HEADING}`}>
+        <section className="mb-8 rounded-[28px] bg-[#F7F2EF] px-6 py-9 sm:px-10 sm:py-12">
+          <p className={`text-[12px] font-semibold uppercase tracking-[0.08em] text-[#B6632C] ${HEADING}`}>What I delivered</p>
+          <p className={`mt-4 max-w-[850px] text-[28px] font-medium leading-[1.25] tracking-[-0.04em] sm:text-[36px] ${HEADING}`}>
             A cohesive product direction translated directly into the open-source app—from onboarding and navigation to Dictations, Meetings, Insights, Dictionary, Models, and Settings.
           </p>
         </section>
@@ -465,42 +488,134 @@ function MuesliCaseStudy() {
 }
 
 function OutdoneCaseStudy() {
+  const activities = ["Sunset walk", "Hidden café", "Kayaking", "Night market", "Museum", "Scenic drive", "Cooking class", "Live music"];
+  const moods = ["Adventurous", "Slow and scenic", "Cultural", "Culinary", "Offbeat", "Social", "Active", "Night owl", "Romantic"];
+  const pipeline = [
+    ["01", "User context", "Mood signals, constraints, and a specific request"],
+    ["02", "Intent layer", "Selections become structured behavioral direction"],
+    ["03", "Gemini", "Composes a coherent itinerary structure"],
+    ["04", "Google Places", "Grounds stops in names, ratings, photos, and addresses"],
+    ["05", "Product logic", "Orders by proximity and applies transportation context"],
+    ["06", "Final itinerary", "A plan ready to save, map, share, or export"],
+  ];
+
   return (
-    <article className={`h-full overflow-y-auto bg-[#F5F0EC] text-[#251C18] ${BODY}`}>
+    <article className={`h-full overflow-y-auto bg-white text-[#161513] ${BODY}`}>
       <div className="mx-auto max-w-[1120px] px-5 py-10 sm:px-10 sm:py-16">
-        <div className="grid items-end gap-10 sm:grid-cols-[1.05fr_0.95fr]">
-          <div>
-            <p className={`text-[12px] font-bold uppercase tracking-[0.18em] text-[#A5522A] ${HEADING}`}>Personal project · Model design · Gemini</p>
-            <h1 className={`mt-4 text-[46px] font-semibold leading-[0.98] tracking-[-0.055em] sm:text-[68px] ${HEADING}`}>Personalization for who you are today.</h1>
-            <p className="mt-6 text-[18px] leading-[1.65] text-[#665851] sm:text-[20px]">
-              I built Outdone to test a simple idea: recommendations should respond to a person’s current mood and intent—not only their history.
-            </p>
-            <div className="mt-7"><CaseStudyLink href={TRAVEL_DNA_URL}>Try the live prototype</CaseStudyLink></div>
+        <div className="grid gap-7 sm:grid-cols-[0.96fr_1.04fr]">
+          <div className="relative min-h-[430px] overflow-hidden rounded-[34px] bg-[#263D36]">
+            <img src="/outdone-preview.png" alt="Outdone mood-first recommendation prototype" className="h-full w-full object-cover" />
+            <div className="absolute inset-x-5 bottom-5 rounded-[18px] bg-[#15241F]/90 p-4 text-white backdrop-blur">
+              <p className={`text-[12px] font-semibold ${HEADING}`}>Hero product walkthrough</p>
+              <p className={`mt-1 text-[10px] uppercase tracking-[0.1em] text-white/65 ${TYPEWRITE}`}>Replace /public/outdone-hero.mp4</p>
+            </div>
           </div>
-          <div className="overflow-hidden rounded-[28px] border-[6px] border-white bg-white shadow-[0_28px_70px_rgba(83,50,33,0.16)]">
-            <img src="/outdone-preview.png" alt="Outdone context-aware personalization interface" className="h-auto w-full" />
+          <div className="flex flex-col justify-center rounded-[34px] bg-[#F7F2EF] p-7 sm:p-10">
+            <p className={`text-[12px] font-semibold uppercase tracking-[0.08em] text-[#B6632C] ${HEADING}`}>Product designer · Outdone</p>
+            <p className={`mt-7 text-[17px] text-[#686461] ${HEADING}`}>Mood-first AI recommendations</p>
+            <h1 className={`mt-3 text-[36px] font-medium leading-[1.08] tracking-[-0.05em] sm:text-[48px] ${HEADING}`}>People rarely know exactly what they want to do. They just know how they want to feel.</h1>
+            <p className="mt-5 text-[16px] leading-[1.55] text-[#686461]">Outdone turns a destination, real-world constraints, and the user’s current mood into a plan they can actually follow.</p>
+            <div className="mt-7"><CaseStudyLink href={TRAVEL_DNA_URL} primary>View live product</CaseStudyLink></div>
           </div>
         </div>
 
-        <section className="grid gap-5 py-16 sm:grid-cols-3 sm:py-24">
-          {[
-            ["The hypothesis", "Historical behavior is useful, but it can flatten people into a past version of themselves."],
-            ["The model", "I classified intent into nine archetypes so Gemini could sort a huge response space into useful directions."],
-            ["The trust layer", "The loading state reveals how the system is interpreting the prompt, making generation feel legible instead of magical."],
-          ].map(([title, copy]) => (
-            <div key={title} className="rounded-[24px] bg-white p-6 sm:p-7">
-              <h2 className={`text-[20px] font-semibold tracking-[-0.03em] ${HEADING}`}>{title}</h2>
-              <p className="mt-4 text-[15px] leading-[1.7] text-[#665851]">{copy}</p>
-            </div>
-          ))}
-        </section>
+        <div className="mt-7 grid gap-3 rounded-[28px] bg-[#F7F2EF] p-6 sm:grid-cols-3 sm:p-8">
+          <div><p className={`text-[11px] font-semibold uppercase tracking-[0.08em] text-[#B6632C] ${HEADING}`}>Role</p><p className="mt-2 text-[14px] leading-[1.55] text-[#5F5B58]">Product strategy, product design, visual design, motion design, AI UX, frontend prototyping</p></div>
+          <div><p className={`text-[11px] font-semibold uppercase tracking-[0.08em] text-[#B6632C] ${HEADING}`}>Collaboration</p><p className="mt-2 text-[14px] leading-[1.55] text-[#5F5B58]">Abishek Sridhar, Research Engineer at Google DeepMind</p></div>
+          <div><p className={`text-[11px] font-semibold uppercase tracking-[0.08em] text-[#B6632C] ${HEADING}`}>Tools</p><p className="mt-2 text-[14px] leading-[1.55] text-[#5F5B58]">React, Gemini, Google Places, Google Maps</p></div>
+        </div>
 
-        <section className="rounded-[28px] bg-[#A5522A] px-6 py-9 text-white sm:px-10 sm:py-12">
-          <p className={`text-[12px] font-bold uppercase tracking-[0.18em] text-[#F2C9B7] ${HEADING}`}>How I worked</p>
-          <p className={`mt-4 max-w-[850px] text-[28px] font-semibold leading-[1.25] tracking-[-0.04em] sm:text-[36px] ${HEADING}`}>
-            I treated the model, interface, and explanation layer as one product—defining the classification logic, designing the experience, and wiring the APIs myself.
-          </p>
-        </section>
+        <CaseStudySection eyebrow="THE PROBLEM" title="Sometimes ‘I want to do something’ is the entire brief." className="py-20 sm:py-28">
+          <p className="max-w-[880px]">Search works when people already know what they want. When someone is bored, restless, or spontaneous, forming the query is often the hardest part.</p>
+          <div className="mt-10 rounded-[30px] bg-[#F7F2EF] p-6 sm:p-10">
+            <div className={`mx-auto w-fit rounded-full bg-[#1D1D1B] px-6 py-3 text-[15px] font-medium text-white ${HEADING}`}>I want to get out</div>
+            <div className="mx-auto h-10 w-px bg-[#C9BFB9]" />
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {activities.map((activity) => <div key={activity} className={`rounded-[18px] bg-white px-4 py-5 text-center text-[14px] font-medium text-[#292725] ${HEADING}`}>{activity}</div>)}
+            </div>
+          </div>
+          <p className={`mt-8 max-w-[900px] text-[23px] font-medium leading-[1.35] text-[#1D1D1B] ${HEADING}`}>The opportunity was not to improve search results. It was to help people form intent before they had a search query.</p>
+        </CaseStudySection>
+
+        <CaseStudySection eyebrow="THE REFRAME" title="What if recommendations started with mood instead of category?" className="pb-20 sm:pb-28">
+          <p className="max-w-[850px]">Mood becomes useful when it is combined with destination, time, dietary needs, company, transportation, and activities the user wants included.</p>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            {[
+              ["Traditional recommendation flow", ["Category", "Search", "Long list", "More filtering", "User builds the plan"]],
+              ["Outdone", ["Mood + context", "Interpreted intent", "Curated options", "Plan ready to use"]],
+            ].map(([label, steps], flowIndex) => (
+              <div key={label} className={`rounded-[28px] p-7 ${flowIndex === 1 ? "bg-[#E8F0EC]" : "bg-[#F7F2EF]"}`}>
+                <p className={`text-[14px] font-semibold text-[#272522] ${HEADING}`}>{label}</p>
+                <div className="mt-7 space-y-3">{steps.map((step, index) => <div key={step} className="flex items-center gap-3"><span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[10px] ${flowIndex === 1 ? "bg-[#1F5447] text-white" : "bg-white text-[#736B66]"}`}>{index + 1}</span><span className="text-[15px] text-[#5F5B58]">{step}</span></div>)}</div>
+              </div>
+            ))}
+          </div>
+        </CaseStudySection>
+
+        <CaseStudySection eyebrow="DESIGNING THE INPUT" title="Ask only for what changes the recommendation." className="pb-20 sm:pb-28">
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div className="rounded-[26px] bg-[#F7F2EF] p-6"><p className={`text-[15px] font-semibold ${HEADING}`}>Context</p><p className="mt-4 text-[14px] leading-7">Destination<br />Date and time<br />Dietary preference<br />Who is coming<br />Transportation</p></div>
+            <div className="rounded-[26px] bg-[#E8F0EC] p-6"><p className={`text-[15px] font-semibold ${HEADING}`}>Short-term intent</p><div className="mt-4 flex flex-wrap gap-2">{moods.map((mood) => <span key={mood} className="rounded-full bg-white px-3 py-2 text-[12px] text-[#31564C]">{mood}</span>)}</div></div>
+            <div className="rounded-[26px] bg-[#F7F2EF] p-6"><p className={`text-[15px] font-semibold ${HEADING}`}>Specific request</p><p className={`mt-5 text-[20px] leading-[1.4] text-[#383431] ${TYPEWRITE}`}>“Include a cooking class.”</p><p className="mt-5 text-[14px] leading-[1.6]">One non-negotiable idea keeps the user in control.</p></div>
+          </div>
+          <div className="mt-5 grid gap-5 sm:grid-cols-2"><MediaPlaceholder name="outdone-setup.webp" label="Setup-screen screenshot" /><MediaPlaceholder name="outdone-moods.webp" label="Mood-selection screenshot" /></div>
+        </CaseStudySection>
+
+        <CaseStudySection eyebrow="THE FIRST MODEL PROBLEM" title="The model understood the words, but not always the intent." className="pb-20 sm:pb-28">
+          <p className="max-w-[850px]">Early generations were plausible but generic. The suggestions were technically valid, yet they did not satisfy the emotional promise made by the interface.</p>
+          <div className="mt-10 grid gap-5 sm:grid-cols-[0.7fr_1.3fr]">
+            <div className="rounded-[28px] bg-[#1F5447] p-7 text-white"><p className={`text-[11px] uppercase tracking-[0.1em] text-white/60 ${HEADING}`}>Selected mood</p><p className={`mt-4 text-[32px] font-medium ${HEADING}`}>Adventurous</p></div>
+            <div className="rounded-[28px] bg-[#F7F2EF] p-7"><p className={`text-[13px] font-semibold text-[#8A7F78] ${HEADING}`}>Weak output</p><div className="mt-5 grid grid-cols-2 gap-3">{["Popular museum", "City park", "Walking tour", "Well-rated restaurant"].map(item => <div key={item} className="rounded-[16px] bg-white p-4 text-[14px] text-[#5F5B58]">{item}</div>)}</div></div>
+          </div>
+          <p className={`mt-8 text-[25px] font-medium tracking-[-0.025em] text-[#1D1D1B] ${HEADING}`}>A technically correct recommendation can still feel completely wrong.</p>
+        </CaseStudySection>
+
+        <CaseStudySection eyebrow="MODEL + PROMPT ITERATION" title="We turned moods from labels into behavioral constraints." className="pb-20 sm:pb-28">
+          <p className="max-w-[900px]">Working with Abishek Sridhar, I iterated on how selections became model instructions. We reduced ambiguity before generation instead of asking the model to repair weak results afterward.</p>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            <div className="rounded-[28px] bg-[#F7F2EF] p-7"><p className={`text-[12px] font-semibold uppercase tracking-[0.08em] text-[#A09289] ${HEADING}`}>Before</p><p className={`mt-5 text-[28px] font-medium ${HEADING}`}>“Adventurous”</p><p className="mt-5 text-[14px] leading-[1.65]">A label leaves the interpretation space almost completely open.</p></div>
+            <div className="rounded-[28px] bg-[#E8F0EC] p-7"><p className={`text-[12px] font-semibold uppercase tracking-[0.08em] text-[#1F6B58] ${HEADING}`}>After</p><p className={`mt-5 text-[18px] leading-[1.55] text-[#24483F] ${TYPEWRITE}`}>Prioritize elevation, speed, water, physical effort, risk, or a safety briefing. Avoid passive sightseeing and activities that could fit any mood.</p></div>
+          </div>
+          <div className="mt-5 grid gap-5 sm:grid-cols-2">
+            <div className="rounded-[24px] border border-[#E1DAD5] p-6"><p className={`text-[14px] font-semibold ${HEADING}`}>Generic</p><p className="mt-3 text-[15px] text-[#716B67]">Park · Museum · Food hall</p></div>
+            <div className="rounded-[24px] border border-[#BFD2CA] p-6"><p className={`text-[14px] font-semibold text-[#1F6B58] ${HEADING}`}>Intent-matched</p><p className="mt-3 text-[15px] text-[#4A625B]">Via ferrata · Paragliding · Cliffside zipline</p></div>
+          </div>
+          <p className="mt-7 max-w-[900px] text-[15px] leading-[1.7]">Structured mood definitions reduced interpretation space, unnecessary regeneration, and mood drift. The first response became more likely to match the user’s intent without claiming a measured performance improvement.</p>
+        </CaseStudySection>
+
+        <CaseStudySection eyebrow="RECOMMENDATION SYSTEM" title="The itinerary was generated, enriched, and grounded in real places." className="pb-20 sm:pb-28">
+          <div className="mt-10 grid gap-3">
+            {pipeline.map(([number, title, copy], index) => (
+              <div key={number} className="case-study-pipeline-step grid gap-3 rounded-[22px] bg-[#F7F2EF] p-5 sm:grid-cols-[52px_190px_1fr] sm:items-center" style={{ "--pipeline-delay": `${index * 90}ms` }}>
+                <span className={`text-[12px] font-semibold text-[#B6632C] ${HEADING}`}>{number}</span><span className={`text-[16px] font-semibold text-[#252320] ${HEADING}`}>{title}</span><span className="text-[14px] leading-[1.55] text-[#716B67]">{copy}</span>
+              </div>
+            ))}
+          </div>
+          <p className="mt-7 max-w-[900px] text-[15px] leading-[1.7]">Gemini composed the day. Google Places grounded the output, while the product layer handled routing, saved stops, transportation mode, maps, sharing, and calendar export.</p>
+        </CaseStudySection>
+
+        <CaseStudySection eyebrow="MOTION AS PRODUCT COMMUNICATION" title="The loading state explains what the product is doing." className="pb-20 sm:pb-28">
+          <p className="max-w-[870px]">A generic spinner would make generation feel uncertain. The loading sequence creates progress, anticipation, and trust while showing how the user’s inputs shape the result.</p>
+          <MediaPlaceholder name="outdone-loading.mp4" label="Loading-animation video" className="mt-10 min-h-[360px]" />
+          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-5">{["Reading context", "Interpreting mood", "Understanding place", "Scanning real places", "Building itinerary"].map((stage, index) => <div key={stage} className="rounded-[18px] bg-[#F7F2EF] p-4"><span className="text-[10px] text-[#B6632C]">0{index + 1}</span><p className="mt-3 text-[12px] leading-[1.4] text-[#5F5B58]">{stage}</p></div>)}</div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2"><MediaPlaceholder name="outdone-motion-cards.mp4" label="Mood-card selection clip" className="min-h-[180px]" /><MediaPlaceholder name="outdone-motion-save.mp4" label="Save and Maps action clip" className="min-h-[180px]" /></div>
+        </CaseStudySection>
+
+        <CaseStudySection eyebrow="VISUAL SYSTEM" title="The interface needed to feel emotional without becoming vague." className="pb-20 sm:pb-28">
+          <p className="max-w-[850px]">Photography carries the feeling. Restrained typography, cards, and progress states keep the experience usable and trustworthy.</p>
+          <div className="mt-10 grid gap-5 sm:grid-cols-[0.8fr_1.2fr]">
+            <div className="rounded-[28px] bg-[#F7F2EF] p-7"><p className={`text-[13px] font-semibold ${HEADING}`}>Palette</p><div className="mt-6 grid grid-cols-2 gap-3">{[["#153A31","Dark green"],["#2A8A78","Teal"],["#F4F0EB","Soft neutral"],["#1D1D1B","Ink"]].map(([color,label]) => <div key={color}><div className="h-16 rounded-[14px]" style={{background:color}} /><p className="mt-2 text-[10px] text-[#847B75]">{label}</p></div>)}</div></div>
+            <div className="rounded-[28px] bg-[#153A31] p-7 text-white"><p className={`text-[13px] font-semibold text-white/65 ${HEADING}`}>Editorial type + structured controls</p><p className={`mt-10 text-[42px] leading-[1.03] tracking-[-0.05em] ${HEADING}`}>Today feels different.</p><div className="mt-8 flex flex-wrap gap-2">{["Image-led mood", "Rounded cards", "Quiet depth", "Route motifs"].map(item => <span key={item} className="rounded-full border border-white/20 px-3 py-2 text-[11px] text-white/75">{item}</span>)}</div></div>
+          </div>
+          <MediaPlaceholder name="outdone-visual-system.webp" label="Visual-design system board" className="mt-5" />
+        </CaseStudySection>
+
+        <CaseStudySection eyebrow="FINAL EXPERIENCE + REFLECTION" title="The hardest part was not generating ideas. It was deciding what the AI should understand." className="pb-10 sm:pb-16">
+          <div className="grid gap-3 sm:grid-cols-5">{["Landing", "Setup", "Mood selection", "Loading", "Results"].map((screen, index) => <div key={screen} className="rounded-[22px] bg-[#F7F2EF] p-4"><div className="aspect-[9/16] rounded-[14px] border border-dashed border-[#CFC7C2] bg-white" /><p className={`mt-3 text-[11px] font-semibold text-[#655F5B] ${HEADING}`}>{index + 1}. {screen}</p></div>)}</div>
+          <p className="mt-10 max-w-[900px]">Building Outdone changed how I think about AI products. Abundance was not the same as relevance. The real design work was deciding what the system should know, what it should ask, how intent should be translated, and where the user should remain in control.</p>
+          <p className="mt-5 max-w-[900px]">That intersection between product behavior, model behavior, and interaction design became the most important part of the project.</p>
+          <div className="mt-8"><CaseStudyLink href={TRAVEL_DNA_URL} primary>View live product</CaseStudyLink></div>
+        </CaseStudySection>
       </div>
     </article>
   );
