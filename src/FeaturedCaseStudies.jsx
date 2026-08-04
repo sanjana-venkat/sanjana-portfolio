@@ -5,8 +5,8 @@ function Link({ href, children, primary = false }) {
   return <a href={href} target="_blank" rel="noreferrer" className={`inline-flex rounded-full px-5 py-3 text-[13px] font-semibold transition hover:-translate-y-0.5 ${primary ? "bg-[#1D1D1B] text-white" : "bg-[#E8E3DF] text-[#1D1D1B]"} ${HEADING}`}>{children}<span className="ml-2">↗</span></a>;
 }
 
-function Section({ eyebrow, title, children }) {
-  return <section className="py-16 sm:py-24"><p className={`text-[12px] font-semibold uppercase tracking-[0.09em] text-[#B6632C] ${HEADING}`}>{eyebrow}</p><h2 className={`mt-4 max-w-[920px] text-[31px] font-medium leading-[1.12] tracking-[-0.045em] text-[#161513] sm:text-[45px] ${HEADING}`}>{title}</h2><div className="mt-6 text-[17px] leading-[1.7] text-[#66605C] sm:text-[19px]">{children}</div></section>;
+function Section({ eyebrow, title, children, compact = false }) {
+  return <section className={compact ? "py-10 sm:py-14" : "py-16 sm:py-24"}><p className={`text-[12px] font-semibold uppercase tracking-[0.09em] text-[#B6632C] ${HEADING}`}>{eyebrow}</p><h2 className={`mt-4 max-w-[920px] text-[31px] font-medium leading-[1.12] tracking-[-0.045em] text-[#161513] sm:text-[45px] ${HEADING}`}>{title}</h2><div className="mt-6 text-[17px] leading-[1.7] text-[#66605C] sm:text-[19px]">{children}</div></section>;
 }
 
 function Image({ src, alt, className = "", contain = false }) {
@@ -57,7 +57,7 @@ export function MuesliStudy() {
 }
 
 export function OutdoneStudy() {
-  const pipeline = [["01", "Context", "Place, time, who is coming and one non-negotiable"], ["02", "Mood", "Short-term intent translated into behavioral constraints"], ["03", "Gemini", "Builds a coherent plan instead of a long list"], ["04", "Places", "Grounds each stop in real names, photos and locations"]];
+  const pipeline = [["01", "Context", "Place, time, who is coming and one non-negotiable"], ["02", "Mood", "What kind of day this should actually feel like"], ["03", "Plan builder", "Turns the inputs into a day instead of another long list"], ["04", "Real places", "Grounds each stop in names, photos and locations"]];
   return (
     <Shell>
       <header className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
@@ -65,32 +65,33 @@ export function OutdoneStudy() {
         <div className="flex flex-col justify-center rounded-[32px] bg-[#F7F2EF] p-7 sm:p-11"><p className={`text-[12px] font-semibold uppercase tracking-[0.09em] text-[#B6632C] ${HEADING}`}>Outdone · Product + AI UX</p><h1 className={`mt-7 text-[38px] font-medium leading-[1.07] tracking-[-0.052em] sm:text-[50px] ${HEADING}`}>What if you know how you want to feel—but not what you want to do?</h1><p className="mt-5 text-[17px] leading-[1.65] text-[#68615D]">I built Outdone to turn mood, context and one specific request into a plan someone can actually follow.</p><div className="mt-8"><Link href="https://travel-dna-kohl.vercel.app/" primary>Try Outdone</Link></div></div>
       </header>
 
-      <Section eyebrow="The problem" title="Sometimes “I want to get out” is the entire brief">
+      <Section compact eyebrow="The problem" title="Sometimes “I want to get out” is the entire brief">
         <p className="max-w-[900px]">Search works when I already know what I want. It is much worse when I am bored, restless or just want today to feel different. The hard part is not finding options. It is forming the query.</p>
-        <p className={`mt-8 max-w-[900px] text-[24px] font-medium leading-[1.4] text-[#24211F] sm:text-[31px] ${HEADING}`}>So I started with mood instead of category.</p>
+        <p className={`mt-7 max-w-[900px] text-[24px] font-medium leading-[1.4] text-[#24211F] sm:text-[31px] ${HEADING}`}>So I started with how I wanted the day to feel, not a category I had to pick.</p>
       </Section>
 
-      <Section eyebrow="Designing the input" title="Ask only for what will actually change the answer">
+      <Section compact eyebrow="Designing the input" title="Ask only for what will actually change the answer">
         <p className="max-w-[900px]">Destination and transportation ground the plan. Mood tells the system what kind of day this should be. One specific request—like “include a cooking class”—keeps the user in control.</p>
         <div className="mt-10 grid gap-4 sm:grid-cols-2"><Image src="/outdone-setup.webp" alt="Outdone trip setup screen" /><Image src="/outdone-moods.webp" alt="Outdone mood selection screen" /></div>
       </Section>
 
-      <Section eyebrow="The model problem" title="Gemini understood “adventurous.” It still gave me museums and parks.">
-        <p className="max-w-[900px]">Technically valid. Completely wrong. Working with Abishek, I stopped treating moods like labels and turned them into constraints. Adventurous could mean elevation, speed, water, effort or risk—and should actively avoid passive sightseeing.</p>
+      <Section compact eyebrow="The recommendation problem" title="“You’re a designer, so you must like museums.”">
+        <p className="max-w-[900px]">That was basically the kind of logic I kept getting. It knew something about me, but missed what I wanted today. A museum is not wrong—it is just not adventurous because I happen to be a designer.</p>
+        <p className="mt-5 max-w-[900px]">So Abishek and I stopped treating moods like labels and made them more specific. Adventurous could mean elevation, speed, water, effort or risk. It should not quietly turn back into sightseeing.</p>
         <div className="mt-10 grid gap-4 sm:grid-cols-2"><div className="rounded-[26px] bg-[#F7F2EF] p-7"><p className={`text-[12px] uppercase tracking-[0.1em] text-[#8B817A] ${HEADING}`}>Label</p><p className={`mt-5 text-[30px] font-medium ${HEADING}`}>“Adventurous”</p><p className="mt-5 text-[15px]">Too much room for the model to guess.</p></div><div className="rounded-[26px] bg-[#E5EFEB] p-7"><p className={`text-[12px] uppercase tracking-[0.1em] text-[#2A6858] ${HEADING}`}>Constraint</p><p className="mt-5 text-[16px] leading-[1.7] text-[#2F5148]">Prioritize elevation, speed, water, physical effort, risk or a safety briefing. Avoid activities that could fit any mood.</p></div></div>
       </Section>
 
-      <Section eyebrow="What runs behind it" title="Generate the day, then ground it in real places">
+      <Section compact eyebrow="What runs behind it" title="Build the day, then ground it in real places">
         <div className="grid gap-3">{pipeline.map(([number, title, copy]) => <div key={number} className="grid gap-2 rounded-[22px] bg-[#F7F2EF] p-5 sm:grid-cols-[56px_160px_1fr] sm:items-center"><span className={`text-[12px] font-semibold text-[#B6632C] ${HEADING}`}>{number}</span><span className={`text-[16px] font-semibold ${HEADING}`}>{title}</span><span className="text-[14px] leading-[1.6] text-[#6D6661]">{copy}</span></div>)}</div>
       </Section>
 
-      <Section eyebrow="Showing the magic" title="The loading state tells you what the AI is doing">
-        <p className="max-w-[880px]">I did not want a spinner. The wait is part of the product, so I used it to show the system reading context, interpreting mood, finding real places and building the route.</p>
+      <Section compact eyebrow="Showing the magic" title="The loading state tells you what is happening">
+        <p className="max-w-[880px]">I did not want a spinner. The wait is part of the product, so I used it to show the system reading the details, understanding the mood, finding real places and building the route.</p>
         <Image src="/outdone-loading.webp" alt="Outdone animated generation state" className="mt-10" />
       </Section>
 
-      <Section eyebrow="The final experience" title="From a vague feeling to one specific plan">
-        <div className="grid gap-4 sm:grid-cols-[1.35fr_0.65fr]"><Image src="/outdone-results.webp" alt="Generated Outdone recommendation" /><Image src="/outdone-results-mobile.webp" alt="Outdone result on mobile" /></div>
+      <Section compact eyebrow="The final experience" title="From a vague feeling to one specific plan">
+        <Image src="/outdone-results.webp" alt="Generated Outdone itinerary with a real San Francisco activity" />
         <p className="mt-10 max-w-[900px]">The biggest lesson was that more ideas did not make the product feel smarter. Relevance came from deciding what the AI should understand, what it should ask and where the user should stay in control.</p>
         <div className="mt-8"><Link href="https://travel-dna-kohl.vercel.app/" primary>Try the live product</Link></div>
       </Section>

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { TESTIMONIALS } from "./data/portfolioData";
-import { AISearchCaseStudy, B2CCaseStudy, IntentCaseStudy, ServiceDesignCaseStudy } from "./LocalCaseStudies";
 import { MuesliStudy, OutdoneStudy } from "./FeaturedCaseStudies";
 
 const FIGMA_DECK_URL =
@@ -175,10 +174,10 @@ Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
   { slug: "muesli", label: "Muesli", title: "Muesli — Local-first dictation, made approachable", type: "case-study" },
-  { slug: "b2c", label: "B2C", title: "Uncover User Needs", type: "case-study" },
-  { slug: "ai-personalization", label: "Intent-based Recommendations", title: "Intent-based Recommendations", type: "case-study" },
-  { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", type: "case-study" },
-  { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", type: "case-study" },
+  { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: "/legacy-pages/b2c.html" },
+  { slug: "ai-personalization", label: "Intent-based Recommendations", title: "Intent-based Recommendations", url: "/legacy-pages/marketing.html" },
+  { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: "/legacy-pages/apply.html" },
+  { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", url: "/legacy-pages/ai.html" },
   { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
   { slug: "model-design", label: "Outdone, Context-Aware Personalization", title: "Outdone, Context-Aware Personalization", type: "case-study" }
@@ -683,12 +682,8 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
 
         <div className="min-w-0 overflow-hidden rounded-[32px] bg-white w-full flex-1 min-h-0">
           {activeProject.slug === "muesli" && <MuesliStudy />}
-          {activeProject.slug === "b2c" && <B2CCaseStudy />}
-          {activeProject.slug === "ai-personalization" && <IntentCaseStudy />}
-          {activeProject.slug === "service-design" && <ServiceDesignCaseStudy />}
-          {activeProject.slug === "ai-chat-journeys" && <AISearchCaseStudy />}
           {activeProject.slug === "model-design" && <OutdoneStudy />}
-          {(activeProject.slug === "conversational-agentic-ai" || activeProject.slug === "exec-pitch") && (
+          {activeProject.slug !== "muesli" && activeProject.slug !== "model-design" && (
             <iframe key={activeProject.url} src={activeProject.url} title={activeProject.title} className="h-full w-full border-0 bg-white" allowFullScreen />
           )}
         </div>
