@@ -22,6 +22,11 @@ const APPLY_SYSTEMS_URL =
 const TRAVEL_DNA_URL =
   "https://travel-dna-kohl.vercel.app/";
 
+const MUESLI_FIGMA_URL =
+  "https://www.figma.com/design/QO5TcpLfxmcheMMjcMYg6C/Muesli?node-id=17-5";
+
+const MUESLI_PR_URL = "https://github.com/Muesli-HQ/muesli/pull/329";
+
 const WAYFARER_URL = TRAVEL_DNA_URL;
 
 const RESUME_URL = "/SanjanaVenkat_Design-Engineer_Resume1.pdf";
@@ -167,13 +172,14 @@ In a few sprints, we pushed toward redesigning the full journey and got design s
 Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
+  { slug: "muesli", label: "Muesli", title: "Muesli — Local-first dictation, made approachable", type: "case-study" },
   { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
   { slug: "ai-personalization", label: "Intent-based Recommendations", title: "Intent-based Recommendations", url: MARKETING_TILES_URL },
   { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
   { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
   { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
-  { slug: "model-design", label: "Outdone, Context-Aware Personalization", title: "Outdone, Context-Aware Personalization", url: TRAVEL_DNA_URL }
+  { slug: "model-design", label: "Outdone, Context-Aware Personalization", title: "Outdone, Context-Aware Personalization", type: "case-study" }
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
@@ -351,6 +357,155 @@ function FramerModal({ title, url, onClose }) {
   );
 }
 
+function CaseStudyLink({ href, children, tone = "dark" }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13px] font-semibold transition hover:-translate-y-0.5 ${
+        tone === "light"
+          ? "bg-white text-[#1E322B] hover:bg-[#F1F4F1]"
+          : "bg-[#1E322B] text-white hover:bg-[#2B493E]"
+      } ${HEADING}`}
+    >
+      {children}
+      <span aria-hidden="true">↗</span>
+    </a>
+  );
+}
+
+function MuesliCaseStudy() {
+  return (
+    <article className={`h-full overflow-y-auto bg-[#F2F0EB] text-[#183027] ${BODY}`}>
+      <div className="mx-auto max-w-[1120px] px-5 py-10 sm:px-10 sm:py-16">
+        <div className="max-w-[860px]">
+          <p className={`text-[12px] font-bold uppercase tracking-[0.18em] text-[#527067] ${HEADING}`}>
+            Product design · UX systems · SwiftUI
+          </p>
+          <h1 className={`mt-4 text-[44px] font-semibold leading-[0.98] tracking-[-0.055em] sm:text-[68px] ${HEADING}`}>
+            Making local-first dictation feel effortless.
+          </h1>
+          <p className="mt-6 max-w-[720px] text-[18px] leading-[1.65] text-[#53625D] sm:text-[21px]">
+            I redesigned Muesli’s first-run and daily experience, then carried the system into an implementation-ready SwiftUI pass—without losing the product’s quiet, private-by-default character.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <CaseStudyLink href={MUESLI_PR_URL}>View implementation PR</CaseStudyLink>
+            <CaseStudyLink href={MUESLI_FIGMA_URL} tone="light">Explore V1 → V2</CaseStudyLink>
+          </div>
+        </div>
+
+        <div className="mt-12 overflow-hidden rounded-[28px] border border-[#D7D9D4] bg-[#DCD9D4] shadow-[0_28px_80px_rgba(24,48,39,0.14)] sm:rounded-[36px]">
+          <video
+            className="block h-auto w-full"
+            src="/muesli-prototype.mp4"
+            poster="/muesli-preview.jpg"
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls
+            aria-label="Prototype of the redesigned Muesli desktop app"
+          />
+        </div>
+
+        <section className="grid gap-8 py-16 sm:grid-cols-[0.8fr_1.2fr] sm:py-24">
+          <div>
+            <p className={`text-[12px] font-bold uppercase tracking-[0.18em] text-[#527067] ${HEADING}`}>The tension</p>
+            <h2 className={`mt-3 text-[30px] font-semibold leading-[1.08] tracking-[-0.04em] ${HEADING}`}>Powerful product, too much interface.</h2>
+          </div>
+          <p className="text-[18px] leading-[1.75] text-[#53625D]">
+            Muesli already did the hard thing: fast, private dictation on the Mac. But setup split permissions, shortcuts, microphone choice, and testing across too many moments. Once inside, flat navigation made the product’s deeper tools feel disconnected from the core action.
+          </p>
+        </section>
+
+        <section className="grid gap-4 sm:grid-cols-3">
+          {[
+            ["01", "Earn trust early", "Permission-specific guidance and local-processing reassurance appear exactly when the user needs them."],
+            ["02", "One obvious way in", "Record is the primary destination, with a persistent control and the shortcut taught in context."],
+            ["03", "Depth without density", "A collapsible rail, clearer grouping, and responsive spacing keep advanced tools close without making the app feel heavy."],
+          ].map(([number, title, copy]) => (
+            <div key={number} className="rounded-[24px] bg-[#E3E9E4] p-6 sm:p-7">
+              <p className={`text-[11px] font-bold tracking-[0.18em] text-[#648076] ${HEADING}`}>{number}</p>
+              <h3 className={`mt-8 text-[21px] font-semibold tracking-[-0.025em] ${HEADING}`}>{title}</h3>
+              <p className="mt-3 text-[15px] leading-[1.65] text-[#53625D]">{copy}</p>
+            </div>
+          ))}
+        </section>
+
+        <section className="py-16 sm:py-24">
+          <p className={`text-[12px] font-bold uppercase tracking-[0.18em] text-[#527067] ${HEADING}`}>V1 → V2</p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-[24px] border border-[#D6D9D4] bg-white/55 p-6 sm:p-8">
+              <p className={`text-[13px] font-semibold text-[#7B817E] ${HEADING}`}>Before</p>
+              <p className={`mt-3 text-[25px] font-semibold leading-[1.2] tracking-[-0.035em] ${HEADING}`}>
+                Setup felt procedural. Daily tools felt separate.
+              </p>
+              <p className="mt-4 text-[15px] leading-[1.7] text-[#69736F]">Permission steps, device setup, and the first dictation were fragmented. Insights, meetings, and personal vocabulary lacked a shared hierarchy.</p>
+            </div>
+            <div className="rounded-[24px] bg-[#1E322B] p-6 text-white sm:p-8">
+              <p className={`text-[13px] font-semibold text-[#AFC2BA] ${HEADING}`}>After</p>
+              <p className={`mt-3 text-[25px] font-semibold leading-[1.2] tracking-[-0.035em] ${HEADING}`}>
+                One guided start. One coherent workspace.
+              </p>
+              <p className="mt-4 text-[15px] leading-[1.7] text-[#C5D0CB]">A combined setup and live test builds confidence early; the rounded navigation rail, bento insights, and personal dictionary make the broader product easier to scan.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="rounded-[28px] bg-[#DCE7DF] px-6 py-9 sm:px-10 sm:py-12">
+          <p className={`text-[12px] font-bold uppercase tracking-[0.18em] text-[#527067] ${HEADING}`}>What I delivered</p>
+          <p className={`mt-4 max-w-[850px] text-[28px] font-semibold leading-[1.25] tracking-[-0.04em] sm:text-[36px] ${HEADING}`}>
+            A cohesive product direction translated directly into the open-source app—from onboarding and navigation to Dictations, Meetings, Insights, Dictionary, Models, and Settings.
+          </p>
+        </section>
+      </div>
+    </article>
+  );
+}
+
+function OutdoneCaseStudy() {
+  return (
+    <article className={`h-full overflow-y-auto bg-[#F5F0EC] text-[#251C18] ${BODY}`}>
+      <div className="mx-auto max-w-[1120px] px-5 py-10 sm:px-10 sm:py-16">
+        <div className="grid items-end gap-10 sm:grid-cols-[1.05fr_0.95fr]">
+          <div>
+            <p className={`text-[12px] font-bold uppercase tracking-[0.18em] text-[#A5522A] ${HEADING}`}>Personal project · Model design · Gemini</p>
+            <h1 className={`mt-4 text-[46px] font-semibold leading-[0.98] tracking-[-0.055em] sm:text-[68px] ${HEADING}`}>Personalization for who you are today.</h1>
+            <p className="mt-6 text-[18px] leading-[1.65] text-[#665851] sm:text-[20px]">
+              I built Outdone to test a simple idea: recommendations should respond to a person’s current mood and intent—not only their history.
+            </p>
+            <div className="mt-7"><CaseStudyLink href={TRAVEL_DNA_URL}>Try the live prototype</CaseStudyLink></div>
+          </div>
+          <div className="overflow-hidden rounded-[28px] border-[6px] border-white bg-white shadow-[0_28px_70px_rgba(83,50,33,0.16)]">
+            <img src="/outdone-preview.png" alt="Outdone context-aware personalization interface" className="h-auto w-full" />
+          </div>
+        </div>
+
+        <section className="grid gap-5 py-16 sm:grid-cols-3 sm:py-24">
+          {[
+            ["The hypothesis", "Historical behavior is useful, but it can flatten people into a past version of themselves."],
+            ["The model", "I classified intent into nine archetypes so Gemini could sort a huge response space into useful directions."],
+            ["The trust layer", "The loading state reveals how the system is interpreting the prompt, making generation feel legible instead of magical."],
+          ].map(([title, copy]) => (
+            <div key={title} className="rounded-[24px] bg-white p-6 sm:p-7">
+              <h2 className={`text-[20px] font-semibold tracking-[-0.03em] ${HEADING}`}>{title}</h2>
+              <p className="mt-4 text-[15px] leading-[1.7] text-[#665851]">{copy}</p>
+            </div>
+          ))}
+        </section>
+
+        <section className="rounded-[28px] bg-[#A5522A] px-6 py-9 text-white sm:px-10 sm:py-12">
+          <p className={`text-[12px] font-bold uppercase tracking-[0.18em] text-[#F2C9B7] ${HEADING}`}>How I worked</p>
+          <p className={`mt-4 max-w-[850px] text-[28px] font-semibold leading-[1.25] tracking-[-0.04em] sm:text-[36px] ${HEADING}`}>
+            I treated the model, interface, and explanation layer as one product—defining the classification logic, designing the experience, and wiring the APIs myself.
+          </p>
+        </section>
+      </div>
+    </article>
+  );
+}
+
 function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
   useEffect(() => {
     const previousBodyOverflow = document.body.style.overflow;
@@ -377,7 +532,7 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
   };
 
   return (
-    <div className={`fixed inset-0 z-50 h-[100dvh] overflow-hidden flex flex-col bg-[#FFF8F5] px-4 py-5 sm:px-6 sm:py-6 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
+    <div className={`fixed inset-0 z-[70] h-[100dvh] overflow-hidden flex flex-col bg-[#FFF8F5] px-4 py-5 sm:px-6 sm:py-6 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
       <div className="mx-auto w-full max-w-[1280px] flex flex-col flex-1 min-h-0">
         <div className="mb-4 flex items-center gap-4 shrink-0">
           <CircleIconButton onClick={onClose} ariaLabel="Close work browser">
@@ -406,7 +561,13 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
         </div>
 
         <div className="overflow-hidden rounded-[32px] bg-white w-full flex-1 min-h-0">
-          <iframe key={activeProject.url} src={activeProject.url} title={activeProject.title} className="h-full w-full border-0 bg-white" allowFullScreen />
+          {activeProject.slug === "muesli" ? (
+            <MuesliCaseStudy />
+          ) : activeProject.slug === "model-design" ? (
+            <OutdoneCaseStudy />
+          ) : (
+            <iframe key={activeProject.url} src={activeProject.url} title={activeProject.title} className="h-full w-full border-0 bg-white" allowFullScreen />
+          )}
         </div>
       </div>
     </div>
@@ -990,9 +1151,9 @@ function NavTile() {
 
 /* ─── BENTO TILE: My Work, 3 project thumbnails in one row ─── */
 const WORK_PREVIEWS = [
-  { src: "/marketing-preview.png", label: "JPMC, intent-based recommendations", projectKey: "marketing-tiles" },
+  { src: "/muesli-preview.jpg",   label: "Muesli, local-first dictation", isNew: true, projectKey: "muesli" },
   { src: "/ai-chat-preview.png",   label: "JPMC, agentic search experiences",   projectKey: "ai-framer" },
-  { src: "/outdone-preview.png",   label: "Outdone, context-aware personalization", isNew: true, projectKey: "travel-dna" },
+  { src: "/outdone-preview.png",   label: "Outdone, context-aware personalization", projectKey: "travel-dna" },
 ];
 
 function MyWorkTile({ onOpenProject }) {
@@ -1720,6 +1881,7 @@ export default function PortfolioHome() {
             <MyWorkTile
               onOpenProject={(key) => {
                 const slugByKey = {
+                  "muesli": "muesli",
                   "marketing-tiles": "ai-personalization",
                   "ai-framer": "ai-chat-journeys",
                   "travel-dna": "model-design",
@@ -1752,6 +1914,7 @@ export default function PortfolioHome() {
             <MyWorkTile
               onOpenProject={(key) => {
                 const slugByKey = {
+                  "muesli": "muesli",
                   "marketing-tiles": "ai-personalization",
                   "ai-framer": "ai-chat-journeys",
                   "travel-dna": "model-design",
