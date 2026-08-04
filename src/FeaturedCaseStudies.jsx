@@ -48,7 +48,7 @@ export function LegacyMuesliStudy() {
 
       <Section eyebrow="Designing with the build" title="I did not stop at the Figma file">
         <p className="max-w-[900px]">I translated the direction into SwiftUI and opened a PR against the actual Muesli codebase. That forced the design to handle real window sizes, component states and the existing product architecture—not just the clean path in a prototype.</p>
-        <div className="mt-8 rounded-[27px] bg-[#1E1E1D] p-7 text-white sm:p-10"><p className={`text-[12px] uppercase tracking-[0.1em] text-white/55 ${HEADING}`}>What I shipped</p><p className={`mt-5 max-w-[900px] text-[25px] font-medium leading-[1.4] tracking-[-0.03em] sm:text-[34px] ${HEADING}`}>Onboarding, navigation, record controls, dictation history and a responsive foundation for the broader app.</p><div className="mt-7"><Link href="https://github.com/Muesli-HQ/muesli/pull/329">See the implementation</Link></div></div>
+        <div className="mt-8 rounded-[27px] bg-[#1E1E1D] p-7 text-white sm:p-10"><p className={`text-[12px] uppercase tracking-[0.1em] text-white/55 ${HEADING}`}>What I designed and built</p><p className={`mt-5 max-w-[900px] text-[25px] font-medium leading-[1.4] tracking-[-0.03em] sm:text-[34px] ${HEADING}`}>Onboarding, navigation, record controls, dictation history and a responsive foundation for the broader app.</p><div className="mt-7"><Link href="https://github.com/Muesli-HQ/muesli/pull/329">See the implementation</Link></div></div>
       </Section>
 
       <Section eyebrow="Reflection" title="A local-first product still has to earn trust through the interface">
