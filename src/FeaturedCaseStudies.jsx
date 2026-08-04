@@ -1,6 +1,8 @@
 const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
 const BODY = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
 
+export { MuesliStudy } from "./MuesliCaseStudy";
+
 function Link({ href, children, primary = false }) {
   return <a href={href} target="_blank" rel="noreferrer" className={`inline-flex rounded-full px-5 py-3 text-[13px] font-semibold transition hover:-translate-y-0.5 ${primary ? "bg-[#1D1D1B] text-white" : "bg-[#E8E3DF] text-[#1D1D1B]"} ${HEADING}`}>{children}<span className="ml-2">↗</span></a>;
 }
@@ -17,7 +19,7 @@ function Shell({ children }) {
   return <article className={`work-case-study h-full w-full min-w-0 max-w-full overflow-x-hidden overflow-y-auto bg-white text-[#161513] ${BODY}`}><div className="mx-auto w-full min-w-0 max-w-[1080px] px-5 py-10 sm:px-10 sm:py-16">{children}</div></article>;
 }
 
-export function MuesliStudy() {
+export function LegacyMuesliStudy() {
   return (
     <Shell>
       <header className="grid min-w-0 gap-6 lg:grid-cols-[0.98fr_1.02fr] lg:gap-10">
