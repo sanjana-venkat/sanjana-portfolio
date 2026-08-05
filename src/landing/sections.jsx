@@ -1,41 +1,44 @@
 import { useLayoutEffect, useRef, useState } from "react";
+import { LotusMarker } from "./marks";
 import {
   CHAT_OPENER,
   INTRO,
   LINKS,
-  LOCATION,
+  MOVED_MOMENT,
   SNIPPETS,
   STATEMENTS,
   STORY_MOMENTS,
 } from "./landingData";
 
-/* Every section is the same shape: a label and title on the left, supporting
-   material on the right, and nothing at all in the middle where the kolam is. */
+/* Every section is the same shape: a lotus-marked eyebrow and a display title
+   on the left, supporting material on the right, and nothing at all in the
+   middle where the kolam is. */
 
-export function SectionLabel({ n, title }) {
+function Eyebrow({ title }) {
   return (
     <p className="pc-label">
-      <span className="on">{n}</span> / {title.toUpperCase()}
+      <LotusMarker />
+      {title}
     </p>
   );
 }
 
-/* ── 01 · Sanjana ──────────────────────────────────────────────────────── */
+/* ── Sanjana ───────────────────────────────────────────────────────────── */
 
 export function Sanjana() {
   return (
     <>
       <div className="pc-zone pc-zone-l pc-fade">
         <div style={{ "--i": 0 }}>
-          <SectionLabel n="01" title="Sanjana" />
-          <h1 className="pc-name">{INTRO.name}</h1>
+          <Eyebrow title="Sanjana" />
+          <h1 className="pc-title">{INTRO.name}</h1>
           <p className="pc-lead">{INTRO.lead}</p>
         </div>
       </div>
 
       <div className="pc-zone pc-zone-r pc-fade">
         <div className="pc-stack" style={{ "--i": 1 }}>
-          <p className="pc-body" style={{ color: "var(--ink)" }}>
+          <p className="pc-lead" style={{ margin: 0 }}>
             {INTRO.role}
           </p>
           <p className="pc-body">{INTRO.bio}</p>
@@ -58,11 +61,36 @@ export function Sanjana() {
   );
 }
 
-/* ── 02 · Story ────────────────────────────────────────────────────────── */
+/* ── Story ─────────────────────────────────────────────────────────────── */
 
-const TL_PATH = "M 22 26 C 96 26, 96 118, 170 118 C 244 118, 244 212, 318 212";
-const TL_W = 372;
-const TL_H = 240;
+/* A vertical kolam-ish wave: eleven moments need height, not width. */
+const TL_PATH =
+  "M 78 12 C 130 60, 130 108, 78 156 C 26 204, 26 252, 78 300 C 130 348, 130 396, 78 444 C 44 476, 44 520, 70 548";
+const TL_W = 232;
+const TL_H = 560;
+
+/**
+ * Frisco, Texas becomes San Francisco, California — but only when the timeline
+ * gets there. "San" slides in, "anc" opens up inside "Frisco", and the state
+ * swaps underneath. The word is never retyped; it grows.
+ */
+function LocationLine({ there }) {
+  return (
+    <p className={`pc-loc${there ? " is-there" : ""}`}>
+      <span>
+        <span className="grow">San&nbsp;</span>
+        Fr
+        <span className="grow">anc</span>
+        isco
+      </span>
+      <span className="region" aria-hidden="true">
+        <span className="tx">Texas</span>
+        <span className="ca">California</span>
+      </span>
+      <span className="pc-sr">{there ? "California" : "Texas"}</span>
+    </p>
+  );
+}
 
 export function Story() {
   const pathRef = useRef(null);
@@ -83,30 +111,23 @@ export function Story() {
 
   const index = Math.max(0, STORY_MOMENTS.findIndex((m) => m.id === active));
   const moment = STORY_MOMENTS[index];
+  const movedIndex = STORY_MOMENTS.findIndex((m) => m.id === MOVED_MOMENT);
 
   return (
     <>
       <div className="pc-zone pc-zone-l pc-fade">
         <div className="pc-stack" style={{ "--i": 0 }}>
           <div>
-            <SectionLabel n="02" title="Story" />
+            <Eyebrow title="Story" />
             <h2 className="pc-title">Story</h2>
           </div>
 
-          <p className="pc-loc">
-            <span>
-              {LOCATION.from.city}
-              <span className="sub">{LOCATION.from.region}</span>
-            </span>
-            <span className="rule" aria-hidden="true" />
-            <span className="to">
-              {LOCATION.to.city}
-              <span className="sub">{LOCATION.to.region}</span>
-            </span>
-          </p>
+          <LocationLine there={index >= movedIndex} />
 
           <figure className="pc-moment">
-            <img key={moment.image} src={moment.image} alt={moment.title} decoding="async" />
+            <div className="shot pc-framed">
+              <img key={moment.image} src={moment.image} alt={moment.title} decoding="async" />
+            </div>
             <figcaption aria-live="polite">
               <p className="pc-label" style={{ margin: 0 }}>
                 {moment.year}
@@ -160,7 +181,7 @@ export function Story() {
   );
 }
 
-/* ── 03 · Snippets ─────────────────────────────────────────────────────── */
+/* ── Snippets ──────────────────────────────────────────────────────────── */
 
 function matchQuestion(input, questions) {
   const words = input.toLowerCase().match(/[a-z]+/g) || [];
@@ -183,6 +204,7 @@ export function Snippets({ chat, onOpenProject }) {
   const [asking, setAsking] = useState(false);
   const [draft, setDraft] = useState("");
   const [miss, setMiss] = useState(false);
+  const [allPills, setAllPills] = useState(false);
 
   const group = SNIPPETS[side];
   const project = group.projects.find((p) => p.id === projectId) || group.projects[0];
@@ -210,7 +232,7 @@ export function Snippets({ chat, onOpenProject }) {
       <div className="pc-zone pc-zone-l pc-fade">
         <div className="pc-stack" style={{ "--i": 0 }}>
           <div>
-            <SectionLabel n="03" title="Snippets" />
+            <Eyebrow title="Snippets" />
             <h2 className="pc-title">Snippets</h2>
           </div>
 
@@ -274,31 +296,46 @@ export function Snippets({ chat, onOpenProject }) {
             </div>
           ) : (
             <div className="pc-chat">
-              <p className="pc-body" style={{ margin: 0 }}>
+              <p className="pc-small" style={{ margin: 0 }}>
                 {CHAT_OPENER}
               </p>
-              <div className="pc-chat-log">
-                <p className="pc-q">{chat.active}</p>
-                {chat.thinking ? (
-                  <p className="pc-a" style={{ color: "var(--faint)" }}>
-                    thinking…
-                  </p>
-                ) : (
-                  <p className="pc-a">{chat.answer}</p>
-                )}
-              </div>
-              <div className="pc-links">
-                {chat.questions.slice(0, 3).map((q) => (
+
+              <div className="pc-chat-pills">
+                {(allPills ? chat.questions : chat.questions.slice(0, 4)).map((q) => (
                   <button
                     key={q}
                     type="button"
-                    className="pc-link"
+                    className={`pc-pill${q === chat.active ? " on" : ""}`}
                     onClick={() => chat.onAsk(q)}
                   >
                     {q}
                   </button>
                 ))}
+                {chat.questions.length > 4 && (
+                  <button
+                    type="button"
+                    className="pc-pill"
+                    aria-expanded={allPills}
+                    onClick={() => setAllPills((v) => !v)}
+                  >
+                    {allPills ? "fewer" : `+${chat.questions.length - 4}`}
+                  </button>
+                )}
               </div>
+
+              <div className="pc-thread">
+                <p className="pc-said">{chat.active}</p>
+                {chat.thinking ? (
+                  <div className="pc-typing" aria-label="thinking">
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+                ) : (
+                  <p className="pc-reply">{chat.answer}</p>
+                )}
+              </div>
+
               <form className="pc-input" onSubmit={submit}>
                 <label className="pc-sr" htmlFor="pc-ask">
                   Ask a question
@@ -317,11 +354,13 @@ export function Snippets({ chat, onOpenProject }) {
                   ↵
                 </button>
               </form>
+
               {miss && (
-                <p className="pc-body" style={{ fontSize: 14 }} role="status">
+                <p className="pc-small" role="status">
                   I have answers ready for the questions above — try one of those.
                 </p>
               )}
+
               <button type="button" className="pc-link" onClick={() => setAsking(false)}>
                 Back to {project.name}
               </button>
@@ -333,7 +372,7 @@ export function Snippets({ chat, onOpenProject }) {
   );
 }
 
-/* ── 04 · Statements ───────────────────────────────────────────────────── */
+/* ── Statements ────────────────────────────────────────────────────────── */
 
 export function Statements() {
   const [openId, setOpenId] = useState(STATEMENTS[0].id);
@@ -344,11 +383,11 @@ export function Statements() {
       <div className="pc-zone pc-zone-l pc-fade">
         <div className="pc-stack" style={{ "--i": 0 }}>
           <div>
-            <SectionLabel n="04" title="Statements" />
+            <Eyebrow title="Statements" />
             <h2 className="pc-title">Statements</h2>
           </div>
           <ul className="pc-index">
-            {STATEMENTS.map((s, i) => (
+            {STATEMENTS.map((s) => (
               <li key={s.id}>
                 <button
                   type="button"
@@ -357,8 +396,7 @@ export function Statements() {
                   onFocus={() => setOpenId(s.id)}
                   onClick={() => setOpenId(s.id)}
                 >
-                  <span className="n">{String(i + 1).padStart(2, "0")}</span>
-                  <span>{s.index || s.attr}</span>
+                  {s.attr}
                 </button>
               </li>
             ))}
@@ -367,7 +405,8 @@ export function Statements() {
       </div>
 
       <div className="pc-zone pc-zone-r pc-fade">
-        <figure style={{ margin: 0, "--i": 1 }} aria-live="polite">
+        {/* Fixed slot: switching statements must never move the page. */}
+        <figure className="pc-quote-slot" style={{ margin: 0, "--i": 1 }} aria-live="polite">
           <blockquote className="pc-quote" key={open.id}>
             {open.text}
           </blockquote>
@@ -380,4 +419,3 @@ export function Statements() {
     </>
   );
 }
-

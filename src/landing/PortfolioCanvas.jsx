@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import KolamMark from "./KolamMark";
+import { CornerOrnament, PaperGrain } from "./marks";
 import { Sanjana, Snippets, Statements, Story } from "./sections";
 import { INTRO, SECTIONS, SELECTED_WORK, STORY_MOMENTS } from "./landingData";
 import { useMediaQuery, usePrefersReducedMotion } from "./useMediaQuery";
@@ -25,7 +26,6 @@ export default function PortfolioCanvas({ chat, onOpenProject }) {
   const [open, setOpen] = useState(null);
   const [hovered, setHovered] = useState(null);
   const [workOpen, setWorkOpen] = useState(false);
-  const glowRef = useRef(null);
 
   // The four quarters draw themselves from CSS; this only records that they did.
   const skipDraw = reduced || alreadyDrawn;
@@ -55,35 +55,6 @@ export default function PortfolioCanvas({ chat, onOpenProject }) {
     return () => clearTimeout(timer);
   }, [skipDraw]);
 
-  /* ── Cursor glow, behind everything ──────────────────────────────── */
-
-  useEffect(() => {
-    if (isMobile || reduced) return undefined;
-    const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    const at = { ...mouse };
-    const onMove = (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    };
-    window.addEventListener("mousemove", onMove);
-
-    let raf;
-    const tick = () => {
-      at.x += (mouse.x - at.x) * 0.08;
-      at.y += (mouse.y - at.y) * 0.08;
-      if (glowRef.current) {
-        glowRef.current.style.transform = `translate(${at.x - 210}px, ${at.y - 210}px)`;
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      cancelAnimationFrame(raf);
-    };
-  }, [isMobile, reduced]);
-
   /* ── Escape closes whatever is open ──────────────────────────────── */
 
   useEffect(() => {
@@ -103,10 +74,24 @@ export default function PortfolioCanvas({ chat, onOpenProject }) {
 
   return (
     <div className={`pc-root${open ? " is-open" : ""}`}>
-      <div ref={glowRef} className="pc-glow" aria-hidden="true" />
+      <div className="pc-light" aria-hidden="true" />
+      <PaperGrain />
 
-      <button type="button" className="pc-wordmark" onClick={() => setOpen(null)}>
-        {INTRO.wordmark}
+      {/* Four corners at rest so the kolam is the framed object; a diagonal
+          pair inside a section so the frame does not fight the text. */}
+      <CornerOrnament where="tl" />
+      <CornerOrnament where="tr" />
+      {!open && <CornerOrnament where="bl" />}
+      {!open && <CornerOrnament where="br" />}
+
+      <button type="button" className="pc-id" onClick={() => setOpen(null)}>
+        <span className="pc-id-portrait pc-framed">
+          <img src={INTRO.portrait} alt="" />
+        </span>
+        <span>
+          <span className="pc-id-name">{INTRO.wordmark}</span>
+          <span className="pc-id-tag">{INTRO.tagline}</span>
+        </span>
       </button>
 
       <nav className="pc-work" aria-label="Selected work">
@@ -130,6 +115,7 @@ export default function PortfolioCanvas({ chat, onOpenProject }) {
               }}
             >
               {p.name}
+              <img src={p.image} alt="" loading="lazy" decoding="async" />
             </a>
           ))}
         </div>
@@ -156,7 +142,6 @@ export default function PortfolioCanvas({ chat, onOpenProject }) {
               onBlur={() => setHovered(null)}
               onClick={() => select(s.id)}
             >
-              <span className="n">{s.n}</span>
               {s.title}
             </button>
           ))}
@@ -164,7 +149,10 @@ export default function PortfolioCanvas({ chat, onOpenProject }) {
       )}
 
       {open && (
-        <div className="pc-zones" key={open}>
+        <div
+          className={`pc-zones${open === "statements" ? " is-fixed" : ""}`}
+          key={open}
+        >
           {open === "sanjana" && <Sanjana />}
           {open === "story" && <Story />}
           {open === "snippets" && <Snippets chat={chat} onOpenProject={onOpenProject} />}

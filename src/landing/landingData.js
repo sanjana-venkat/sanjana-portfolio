@@ -1,34 +1,41 @@
 /*
- * Content for the landing canvas. Everything here is lifted from copy that
- * already existed elsewhere in the site — the hero, the "what I believe in"
- * bio, the animated timeline, the chat answers and the testimonials — so the
- * redesign re-composes the portfolio rather than rewriting it.
+ * Content for the landing canvas. Everything is lifted from copy that already
+ * existed elsewhere in the site — the hero, the bio, the animated timeline, the
+ * chat answers and the testimonials — so this re-composes the portfolio rather
+ * than rewriting it.
  */
 
 import { TESTIMONIALS } from "../data/portfolioData";
 
 export const SECTIONS = [
-  { id: "sanjana", n: "01", title: "Sanjana" },
-  { id: "story", n: "02", title: "Story" },
-  { id: "snippets", n: "03", title: "Snippets" },
-  { id: "statements", n: "04", title: "Statements" },
+  { id: "sanjana", title: "Sanjana" },
+  { id: "story", title: "Story" },
+  { id: "snippets", title: "Snippets" },
+  { id: "statements", title: "Statements" },
 ];
 
-/* ── Persistent project shortcuts ──────────────────────────────────────── */
+/* ── Selected work ─────────────────────────────────────────────────────── */
 
 export const SELECTED_WORK = [
-  { slug: "ai-personalization", name: "Intent-based recommendations" },
-  { slug: "model-design", name: "Outdone" },
-  { slug: "muesli", name: "Muesli" },
+  {
+    slug: "ai-personalization",
+    name: "Intent-based recommendations",
+    image: "/legacy/intent/01-ULRP0FZksJHUAfiiIvrdPTDdkE4.png",
+  },
+  { slug: "ai-chat-journeys", name: "Agentic search", image: "/ai-chat-preview.png" },
+  { slug: "model-design", name: "Outdone", image: "/outdone-preview.png" },
+  { slug: "muesli", name: "Muesli", image: "/muesli-preview.jpg" },
 ];
 
-/* ── 01 · Sanjana ──────────────────────────────────────────────────────── */
+/* ── Sanjana ───────────────────────────────────────────────────────────── */
 
 export const INTRO = {
   name: "Sanjana",
   wordmark: "Sanjana Venkat",
+  tagline: "Product designer + builder",
+  portrait: "/profile.jpg",
   lead: "I turn ambiguity into reality. Let me show you.",
-  role: "Product designer + builder designing AI interfaces, recommendation systems, and model behavior.",
+  role: "Designing AI interfaces, recommendation systems, and model behavior.",
   bio: "I studied psychology because I loved thinking about how people think. That curiosity never left, it just found a new home in product design. I've always tried to get closer to user needs and intent — through data, research, and lately model design.",
 };
 
@@ -39,35 +46,77 @@ export const LINKS = [
   { label: "Email", href: "mailto:sanjanavnkt20@gmail.com", external: false },
 ];
 
-/* ── 02 · Story ────────────────────────────────────────────────────────── */
+/* ── Story ─────────────────────────────────────────────────────────────── */
 
 export const STORY_MOMENTS = [
   {
-    id: "psychology",
+    id: "childhood",
+    year: "2000s",
+    title: "Childhood in India",
+    copy: "Grew up close to my roots, culture, and community.",
+    image: "/Childhood.jpg",
+  },
+  {
+    id: "states",
+    year: "2014",
+    title: "Moved to the States",
+    copy: "A big leap. New country, new world.",
+    image: "/2014.jpg",
+  },
+  {
+    id: "presenter",
+    year: "2019",
+    title: "Best Presenter Award",
+    copy: "My first publication, on temple architecture.",
+    image: "/2019.png",
+  },
+  {
+    id: "utd",
     year: "2020",
-    title: "UTD, Psychology & Design",
+    title: "UTD · Psychology & Design",
     copy: "Studied how people think, feel, and make decisions.",
     image: "/2020.jpg",
   },
   {
-    id: "design",
+    id: "chetna",
     year: "2021",
     title: "Chetna · Graphic Design",
     copy: "Moved into design, and raised $10K+ for South Asian mental health.",
     image: "/2021.jpg",
   },
   {
+    id: "dialexa",
+    year: "2022",
+    title: "Dialexa · DTour",
+    copy: "Built an AR travel concept with Dialexa.",
+    image: "/2022.jpg",
+  },
+  {
+    id: "uxclub",
+    year: "2022",
+    title: "UX Club · Vice President",
+    copy: "Organised design events with Paycom, Bottle Rocket and Intuit.",
+    image: "/2022-1.jpg",
+  },
+  {
     id: "paycom",
     year: "2023",
     title: "Paycom · Associate Product Designer",
-    copy: "A founding member of a brand new B2B enterprise subteam, focused on the design system.",
+    copy: "A founding member of a brand new B2B subteam, focused on the design system.",
     image: "/2023.jpg",
   },
   {
     id: "jpmc",
-    year: "2024—25",
-    title: "JPMorgan Chase · Senior, then Lead",
-    copy: "Owned the apply flow and HELOC 0-to-1, then led AI & Marketing and exec-facing Gemini concepts.",
+    year: "2024",
+    title: "JPMorgan Chase · Senior Product Designer",
+    copy: "Owned the apply flow and HELOC 0-to-1.",
+    image: "/2024.jpg",
+  },
+  {
+    id: "lead",
+    year: "2025",
+    title: "JPMorgan Chase · Lead",
+    copy: "Led AI & Marketing, and the exec-facing Gemini concepts.",
     image: "/2025.jpg",
   },
   {
@@ -75,16 +124,14 @@ export const STORY_MOMENTS = [
     year: "2026",
     title: "Moved to the Bay Area",
     copy: "A new chapter, building AI products.",
-    image: "/2026.png",
+    image: "/2026.jpg",
   },
 ];
 
-export const LOCATION = {
-  from: { city: "Frisco", region: "Texas" },
-  to: { city: "San Francisco", region: "California" },
-};
+/** The location line resolves when the timeline reaches this moment. */
+export const MOVED_MOMENT = "bay";
 
-/* ── 03 · Snippets ─────────────────────────────────────────────────────── */
+/* ── Snippets ──────────────────────────────────────────────────────────── */
 
 export const SNIPPETS = {
   "nine-to-five": {
@@ -113,7 +160,7 @@ export const SNIPPETS = {
         slug: "ai-chat-journeys",
         summary:
           "ChatGPT and Gemini surfaces for Chase. I explored how search-time intent could turn into action without breaking the conversational flow.",
-        metric: "Prototyped in under a week; used by leadership",
+        metric: "Prototyped in under a week, used by leadership",
       },
     ],
   },
@@ -127,7 +174,7 @@ export const SNIPPETS = {
         slug: "model-design",
         summary:
           "Personalization leans too hard on historical data and forgets what someone might want today. Outdone starts from mood instead of category, and shows its working in the loading state so people can see how the AI is reasoning.",
-        metric: "9 archetypes classified by Gemini; APIs wired myself",
+        metric: "9 archetypes classified by Gemini, APIs wired myself",
       },
       {
         id: "muesli",
@@ -152,28 +199,12 @@ export const SNIPPETS = {
 export const CHAT_OPENER =
   "Ask me about my work, process, AI projects, or what I'd bring to your team.";
 
-/* ── 04 · Statements ───────────────────────────────────────────────────── */
+/* ── Statements ────────────────────────────────────────────────────────── */
 
-export const STATEMENTS = [
-  {
-    id: "ambiguity",
-    text: "I turn ambiguity into reality. Let me show you.",
-    attr: "Sanjana Venkat",
-    role: "The promise this portfolio is trying to keep",
-    index: "The promise",
-  },
-  {
-    id: "believe",
-    text: "With good design, I want to meet users where they are — and also take them where they want to be.",
-    attr: "Sanjana Venkat",
-    role: "What I believe in",
-    index: "What I believe in",
-  },
-  ...TESTIMONIALS.slice(0, 3).map(([text, attr, role], i) => ({
-    id: `t${i}`,
-    text: text.trim(),
-    attr,
-    role,
-    index: attr,
-  })),
-];
+/** What other people have said. Nothing of mine — this section is theirs. */
+export const STATEMENTS = TESTIMONIALS.map(([text, attr, role], i) => ({
+  id: `t${i}`,
+  text: text.trim(),
+  attr,
+  role,
+}));
