@@ -1,238 +1,26 @@
 /*
- * Kolam geometry.
+ * The kolam.
  *
- * The landing page is built on a 9 x 9 dot grid (a sikku kolam) plus a family of
- * S-shaped loops that weave around the dots. Everything below is expressed in
- * "grid units": a dot sits at integer (column, row) with 0 <= c, r <= 8, so one
- * unit is exactly one dot spacing. The SVG viewBox is padded so the loops that
- * overhang the outer dots are never clipped.
- */
-
-export const GRID_N = 9;
-const MAX = GRID_N - 1; // 8
-const PAD = 1.2;
-
-export const VIEW_BOX = `${-PAD} ${-PAD} ${MAX + PAD * 2} ${MAX + PAD * 2}`;
-
-const round = (value) => Math.round(value * 1000) / 1000;
-
-/* ── Dots ──────────────────────────────────────────────────────────────── */
-
-const CENTER = MAX / 2;
-
-export const DOTS = (() => {
-  const dots = [];
-  for (let r = 0; r < GRID_N; r += 1) {
-    for (let c = 0; c < GRID_N; c += 1) {
-      // Chebyshev ring from the middle dot drives the radial reveal order.
-      const ring = Math.max(Math.abs(c - CENTER), Math.abs(r - CENTER));
-      dots.push({ c, r, ring });
-    }
-  }
-  return dots;
-})();
-
-/* ── The S ─────────────────────────────────────────────────────────────── */
-
-/**
- * A single kolam "S": two loops stacked around a pair of dots that sit at
- * (0, -h) and (0, +h), joined by one continuous crossing through the middle.
- * The upper loop wraps the top dot counter-clockwise, the line crosses the
- * centre, and the lower loop wraps the bottom dot the other way — which is
- * both how the loop is drawn by hand and, at a glance, the letter S.
- */
-export function sPath(h, r) {
-  const p = [
-    ["M", 0.85 * r, -(h + 0.62 * r)],
-    ["C", 0.25 * r, -(h + 1.05 * r), -1.0 * r, -(h + 0.78 * r), -1.0 * r, -h],
-    ["C", -1.0 * r, -(h - 0.78 * r), -0.22 * r, -0.34 * h, 0, 0],
-    ["C", 0.22 * r, 0.34 * h, 1.0 * r, h - 0.78 * r, 1.0 * r, h],
-    ["C", 1.0 * r, h + 0.78 * r, 0.25 * r, h + 1.05 * r, -0.85 * r, h + 0.62 * r],
-  ];
-  return p.map(([cmd, ...nums]) => `${cmd} ${nums.map(round).join(" ")}`).join(" ");
-}
-
-/**
- * The hero S: the one that is drawn during the intro, then detaches from the
- * grid and becomes the first letter of "Sanjana". Its upper loop wraps the dot
- * at (6, 2) — top-right of the grid — and its lower loop wraps (6, 4), the
- * middle-right, exactly as the loop is drawn by hand.
- */
-const HERO_H = 1;
-const HERO_R = 0.92;
-const HERO_CX = 6;
-const HERO_CY = 3;
-
-export const HERO_S = {
-  d: sPath(HERO_H, HERO_R),
-  cx: HERO_CX,
-  cy: HERO_CY,
-  transform: `translate(${HERO_CX} ${HERO_CY})`,
-  // Padded bounding box in grid units, used to give the flying overlay a tight viewBox.
-  box: {
-    x: HERO_CX - HERO_R * 1.08,
-    y: HERO_CY - (HERO_H + HERO_R),
-    w: HERO_R * 2.16,
-    h: (HERO_H + HERO_R) * 2,
-  },
-};
-
-/* ── The woven field ───────────────────────────────────────────────────── */
-
-/* ── The continuous ribbon ─────────────────────────────────────────────── */
-
-/**
- * The rest of the kolam is one line, not a collection of shapes.
+ * A 3 x 3 pulli kolam: nine dots, one continuous looping line. The geometry was
+ * traced from the reference recording, then regularised — a sikku kolam has
+ * exact four-fold rotational symmetry, so the four quarters of the trace were
+ * averaged together and smoothed. Each quarter is one section of the site, and
+ * they are drawn in order during the intro.
  *
- * It walks a route through the grid and throws a loop around every dot it
- * meets, alternating which side the loop falls on. The connector from one
- * loop to the next therefore has to cross back over the line it just left —
- * and those crossings are the whole point of a sikku kolam. Drawn as arcs of a
- * circle centred on each dot, so every loop is round and the same size.
+ * Coordinates: dots sit at integer (x, y) with -1 <= x, y <= 1, so one unit is
+ * one dot spacing and the origin is the centre dot.
  */
 
-const LOBE_R = 0.62;
-const LOBE_SWEEP = 300; // degrees of wrap; the missing 60 is where it crosses
-const LOBE_STEPS = 4;
-// Control-point length for a cubic that approximates an arc of this width.
-const K = (4 / 3) * Math.tan((((LOBE_SWEEP / LOBE_STEPS) * Math.PI) / 180) / 4);
+export const DOTS = [-1, 0, 1].flatMap((y) => [-1, 0, 1].map((x) => ({ x, y })));
 
-const rad = (deg) => (deg * Math.PI) / 180;
-const onCircle = (cx, cy, r, deg) => [cx + r * Math.cos(rad(deg)), cy + r * Math.sin(rad(deg))];
-// Unit tangent at an angle, for a sweep in the given direction.
-const tangent = (deg, dir) => [-dir * Math.sin(rad(deg)), dir * Math.cos(rad(deg))];
+export const VIEW_BOX = "-1.78 -1.78 3.56 3.56";
 
-const unit = ([x, y]) => {
-  const length = Math.hypot(x, y) || 1;
-  return [x / length, y / length];
-};
+/** One quarter of the line per section: top-left, then clockwise. */
+export const SEGMENTS = [
+  "M -0.3122 -0.1806 C -0.2581 -0.2340 -0.2029 -0.2865 -0.1484 -0.3390 C -0.0940 -0.3915 -0.0377 -0.4422 0.0144 -0.4955 C 0.0664 -0.5487 0.1182 -0.6022 0.1638 -0.6586 C 0.2094 -0.7150 0.2534 -0.7737 0.2881 -0.8337 C 0.3228 -0.8938 0.3554 -0.9573 0.3721 -1.0191 C 0.3888 -1.0810 0.3968 -1.1468 0.3885 -1.2047 C 0.3801 -1.2626 0.3551 -1.3221 0.3220 -1.3666 C 0.2889 -1.4110 0.2399 -1.4494 0.1899 -1.4711 C 0.1398 -1.4929 0.0797 -1.5013 0.0219 -1.4970 C -0.0360 -1.4927 -0.0980 -1.4724 -0.1572 -1.4454 C -0.2163 -1.4184 -0.2754 -1.3771 -0.3328 -1.3350 C -0.3902 -1.2930 -0.4454 -1.2414 -0.5014 -1.1931 C -0.5575 -1.1449 -0.6117 -1.0916 -0.6689 -1.0457 C -0.7262 -0.9997 -0.7842 -0.9526 -0.8451 -0.9174 C -0.9060 -0.8823 -0.9707 -0.8508 -1.0342 -0.8346 C -1.0978 -0.8184 -1.1666 -0.8126 -1.2262 -0.8205 C -1.2858 -0.8283 -1.3468 -0.8512 -1.3921 -0.8819 C -1.4375 -0.9125 -1.4762 -0.9578 -1.4983 -1.0043 C -1.5205 -1.0508 -1.5301 -1.1091 -1.5250 -1.1611 C -1.5199 -1.2130 -1.4995 -1.2724 -1.4680 -1.3159 C -1.4364 -1.3594 -1.3879 -1.4004 -1.3358 -1.4221 C -1.2837 -1.4438 -1.2176 -1.4514 -1.1554 -1.4461 C -1.0932 -1.4407 -1.0251 -1.4182 -0.9624 -1.3902 C -0.8998 -1.3621 -0.8381 -1.3205 -0.7795 -1.2775 C -0.7208 -1.2345 -0.6652 -1.1831 -0.6105 -1.1319 C -0.5558 -1.0807 -0.5037 -1.0253 -0.4515 -0.9703 C -0.3993 -0.9154 -0.3489 -0.8583 -0.2973 -0.8025 C -0.2457 -0.7466 -0.1946 -0.6902 -0.1419 -0.6353 C -0.0893 -0.5804 -0.0353 -0.5267 0.0184 -0.4729 C 0.0722 -0.4190 0.1272 -0.3663 0.1806 -0.3122",
+  "M 0.1806 -0.3122 C 0.2340 -0.2581 0.2865 -0.2029 0.3390 -0.1484 C 0.3915 -0.0940 0.4422 -0.0377 0.4955 0.0144 C 0.5487 0.0664 0.6022 0.1182 0.6586 0.1638 C 0.7150 0.2094 0.7737 0.2534 0.8337 0.2881 C 0.8938 0.3228 0.9573 0.3554 1.0191 0.3721 C 1.0810 0.3888 1.1468 0.3968 1.2047 0.3885 C 1.2626 0.3801 1.3221 0.3551 1.3666 0.3220 C 1.4110 0.2889 1.4494 0.2399 1.4711 0.1899 C 1.4929 0.1398 1.5013 0.0797 1.4970 0.0219 C 1.4927 -0.0360 1.4724 -0.0980 1.4454 -0.1572 C 1.4184 -0.2163 1.3771 -0.2754 1.3350 -0.3328 C 1.2930 -0.3902 1.2414 -0.4454 1.1931 -0.5014 C 1.1449 -0.5575 1.0916 -0.6117 1.0457 -0.6689 C 0.9997 -0.7262 0.9526 -0.7842 0.9174 -0.8451 C 0.8823 -0.9060 0.8508 -0.9707 0.8346 -1.0342 C 0.8184 -1.0978 0.8126 -1.1666 0.8205 -1.2262 C 0.8283 -1.2858 0.8512 -1.3468 0.8819 -1.3921 C 0.9125 -1.4375 0.9578 -1.4762 1.0043 -1.4983 C 1.0508 -1.5205 1.1091 -1.5301 1.1611 -1.5250 C 1.2130 -1.5199 1.2724 -1.4995 1.3159 -1.4680 C 1.3594 -1.4364 1.4004 -1.3879 1.4221 -1.3358 C 1.4438 -1.2837 1.4514 -1.2176 1.4461 -1.1554 C 1.4407 -1.0932 1.4182 -1.0251 1.3902 -0.9624 C 1.3621 -0.8998 1.3205 -0.8381 1.2775 -0.7795 C 1.2345 -0.7208 1.1831 -0.6652 1.1319 -0.6105 C 1.0807 -0.5558 1.0253 -0.5037 0.9703 -0.4515 C 0.9154 -0.3993 0.8583 -0.3489 0.8025 -0.2973 C 0.7466 -0.2457 0.6902 -0.1946 0.6353 -0.1419 C 0.5804 -0.0893 0.5267 -0.0353 0.4729 0.0184 C 0.4190 0.0722 0.3663 0.1272 0.3122 0.1806",
+  "M 0.3122 0.1806 C 0.2581 0.2340 0.2029 0.2865 0.1484 0.3390 C 0.0940 0.3915 0.0377 0.4422 -0.0144 0.4955 C -0.0664 0.5487 -0.1182 0.6022 -0.1638 0.6586 C -0.2094 0.7150 -0.2534 0.7737 -0.2881 0.8337 C -0.3228 0.8938 -0.3554 0.9573 -0.3721 1.0191 C -0.3888 1.0810 -0.3968 1.1468 -0.3885 1.2047 C -0.3801 1.2626 -0.3551 1.3221 -0.3220 1.3666 C -0.2889 1.4110 -0.2399 1.4494 -0.1899 1.4711 C -0.1398 1.4929 -0.0797 1.5013 -0.0219 1.4970 C 0.0360 1.4927 0.0980 1.4724 0.1572 1.4454 C 0.2163 1.4184 0.2754 1.3771 0.3328 1.3350 C 0.3902 1.2930 0.4454 1.2414 0.5014 1.1931 C 0.5575 1.1449 0.6117 1.0916 0.6689 1.0457 C 0.7262 0.9997 0.7842 0.9526 0.8451 0.9174 C 0.9060 0.8823 0.9707 0.8508 1.0342 0.8346 C 1.0978 0.8184 1.1666 0.8126 1.2262 0.8205 C 1.2858 0.8283 1.3468 0.8512 1.3921 0.8819 C 1.4375 0.9125 1.4762 0.9578 1.4983 1.0043 C 1.5205 1.0508 1.5301 1.1091 1.5250 1.1611 C 1.5199 1.2130 1.4995 1.2724 1.4680 1.3159 C 1.4364 1.3594 1.3879 1.4004 1.3358 1.4221 C 1.2837 1.4438 1.2176 1.4514 1.1554 1.4461 C 1.0932 1.4407 1.0251 1.4182 0.9624 1.3902 C 0.8998 1.3621 0.8381 1.3205 0.7795 1.2775 C 0.7208 1.2345 0.6652 1.1831 0.6105 1.1319 C 0.5558 1.0807 0.5037 1.0253 0.4515 0.9703 C 0.3993 0.9154 0.3489 0.8583 0.2973 0.8025 C 0.2457 0.7466 0.1946 0.6902 0.1419 0.6353 C 0.0893 0.5804 0.0353 0.5267 -0.0184 0.4729 C -0.0722 0.4190 -0.1272 0.3663 -0.1806 0.3122",
+  "M -0.1806 0.3122 C -0.2340 0.2581 -0.2865 0.2029 -0.3390 0.1484 C -0.3915 0.0940 -0.4422 0.0377 -0.4955 -0.0144 C -0.5487 -0.0664 -0.6022 -0.1182 -0.6586 -0.1638 C -0.7150 -0.2094 -0.7737 -0.2534 -0.8337 -0.2881 C -0.8938 -0.3228 -0.9573 -0.3554 -1.0191 -0.3721 C -1.0810 -0.3888 -1.1468 -0.3968 -1.2047 -0.3885 C -1.2626 -0.3801 -1.3221 -0.3551 -1.3666 -0.3220 C -1.4110 -0.2889 -1.4494 -0.2399 -1.4711 -0.1899 C -1.4929 -0.1398 -1.5013 -0.0797 -1.4970 -0.0219 C -1.4927 0.0360 -1.4724 0.0980 -1.4454 0.1572 C -1.4184 0.2163 -1.3771 0.2754 -1.3350 0.3328 C -1.2930 0.3902 -1.2414 0.4454 -1.1931 0.5014 C -1.1449 0.5575 -1.0916 0.6117 -1.0457 0.6689 C -0.9997 0.7262 -0.9526 0.7842 -0.9174 0.8451 C -0.8823 0.9060 -0.8508 0.9707 -0.8346 1.0342 C -0.8184 1.0978 -0.8126 1.1666 -0.8205 1.2262 C -0.8283 1.2858 -0.8512 1.3468 -0.8819 1.3921 C -0.9125 1.4375 -0.9578 1.4762 -1.0043 1.4983 C -1.0508 1.5205 -1.1091 1.5301 -1.1611 1.5250 C -1.2130 1.5199 -1.2724 1.4995 -1.3159 1.4680 C -1.3594 1.4364 -1.4004 1.3879 -1.4221 1.3358 C -1.4438 1.2837 -1.4514 1.2176 -1.4461 1.1554 C -1.4407 1.0932 -1.4182 1.0251 -1.3902 0.9624 C -1.3621 0.8998 -1.3205 0.8381 -1.2775 0.7795 C -1.2345 0.7208 -1.1831 0.6652 -1.1319 0.6105 C -1.0807 0.5558 -1.0253 0.5037 -0.9703 0.4515 C -0.9154 0.3993 -0.8583 0.3489 -0.8025 0.2973 C -0.7466 0.2457 -0.6902 0.1946 -0.6353 0.1419 C -0.5804 0.0893 -0.5267 0.0353 -0.4729 -0.0184 C -0.4190 -0.0722 -0.3663 -0.1272 -0.3122 -0.1806"
+];
 
-/** The route: a serpentine over every other dot, inset one ring from the edge. */
-const ROUTE = (() => {
-  const points = [];
-  for (let i = 0; i < 4; i += 1) {
-    const r = 1 + i * 2;
-    const cols = [1, 3, 5, 7];
-    (i % 2 === 0 ? cols : [...cols].reverse()).forEach((c) => points.push([c, r]));
-  }
-  return points;
-})();
-
-/**
- * One entry per dot on the route: the loop around it plus the connector that
- * carries the line on to the next one. Rendering them in order reproduces a
- * single unbroken stroke, which is how the stages can extend the same line.
- */
-/**
- * Where the line touches a given dot: the angle it comes in at, the angle it
- * leaves at, and which way it wraps. The exit is chosen so its tangent points
- * straight along the direction of travel — otherwise the line doubles back on
- * itself between loops and the whole thing turns into scribble.
- */
-function lobeAt(index) {
-  const point = ROUTE[index];
-  const previous = ROUTE[index - 1] || point;
-  const next = ROUTE[index + 1] || point;
-
-  const inDir =
-    index === 0
-      ? unit([next[0] - point[0], next[1] - point[1]])
-      : unit([point[0] - previous[0], point[1] - previous[1]]);
-  const outDir =
-    index === ROUTE.length - 1 ? inDir : unit([next[0] - point[0], next[1] - point[1]]);
-  const axis = unit([inDir[0] + outDir[0], inDir[1] + outDir[1]]);
-  const heading = (Math.atan2(axis[1], axis[0]) * 180) / Math.PI;
-
-  // Consecutive loops wrap opposite ways, so the line has to cross itself on
-  // the way between them — that crossing is what makes this a knot.
-  const dir = index % 2 === 0 ? 1 : -1;
-  return { point, dir, entry: heading - dir * 30, exit: heading - dir * 90 };
-}
-
-/**
- * One entry per dot on the route: the loop around it plus the connector that
- * carries the line on to the next one. Rendering them in order reproduces a
- * single unbroken stroke, which is how the stages can extend the same line.
- */
-export const RIBBON = ROUTE.map((point, index) => {
-  const [px, py] = point;
-  const { dir, entry } = lobeAt(index);
-  const step = (LOBE_SWEEP / LOBE_STEPS) * dir;
-  const c = K * LOBE_R;
-
-  let d = "";
-  for (let s = 0; s < LOBE_STEPS; s += 1) {
-    const a0 = entry + s * step;
-    const a1 = a0 + step;
-    const [x0, y0] = onCircle(px, py, LOBE_R, a0);
-    const [x1, y1] = onCircle(px, py, LOBE_R, a1);
-    const [t0x, t0y] = tangent(a0, dir);
-    const [t1x, t1y] = tangent(a1, dir);
-    if (s === 0) d += `M ${round(x0)} ${round(y0)} `;
-    d += `C ${round(x0 + t0x * c)} ${round(y0 + t0y * c)} ${round(x1 - t1x * c)} ${round(
-      y1 - t1y * c
-    )} ${round(x1)} ${round(y1)} `;
-  }
-
-  // Connector: leave along the tangent this loop ends on, arrive along the one
-  // the next loop starts on, so the joins are invisible.
-  if (index < ROUTE.length - 1) {
-    const { exit } = lobeAt(index);
-    const [ex, ey] = onCircle(px, py, LOBE_R, exit);
-    const [etx, ety] = tangent(exit, dir);
-
-    const nextLobe = lobeAt(index + 1);
-    const [sx, sy] = onCircle(
-      nextLobe.point[0],
-      nextLobe.point[1],
-      LOBE_R,
-      nextLobe.entry
-    );
-    const [stx, sty] = tangent(nextLobe.entry, nextLobe.dir);
-
-    const reach = Math.hypot(sx - ex, sy - ey) * 0.3;
-    d += `C ${round(ex + etx * reach)} ${round(ey + ety * reach)} ${round(sx - stx * reach)} ${round(
-      sy - sty * reach
-    )} ${round(sx)} ${round(sy)} `;
-  }
-
-  return {
-    id: `lobe-${index}`,
-    d: d.trim(),
-    // Three roughly equal stretches, one added per stage after the first.
-    group: Math.min(3, Math.floor(index / Math.ceil(ROUTE.length / 3)) + 1),
-    order: index,
-  };
-});
-
-export const FIELD = RIBBON;
-
-export const FIELD_BY_GROUP = [1, 2, 3].map((group) =>
-  FIELD.filter((loop) => loop.group === group)
-);
-
-/* ── Screen mapping ────────────────────────────────────────────────────── */
-
-const VIEW_SIZE = MAX + PAD * 2;
-
-/**
- * Where the hero S currently sits on screen, in viewport pixels. The kolam SVG
- * fills a square container and its viewBox is square, so the mapping is exact —
- * no getBBox() needed, which keeps this stable while the grid is mid-transition.
- */
-export function heroScreenRect(containerEl) {
-  if (!containerEl) return null;
-  const rect = containerEl.getBoundingClientRect();
-  if (!rect.width) return null;
-  const scale = rect.width / VIEW_SIZE;
-  return {
-    left: rect.left + (HERO_S.box.x + PAD) * scale,
-    top: rect.top + (HERO_S.box.y + PAD) * scale,
-    width: HERO_S.box.w * scale,
-    height: HERO_S.box.h * scale,
-  };
-}
-
-export const HERO_VIEW_BOX = `${round(HERO_S.box.x)} ${round(HERO_S.box.y)} ${round(
-  HERO_S.box.w
-)} ${round(HERO_S.box.h)}`;
+export const SECTION_IDS = ["sanjana", "story", "snippets", "statements"];
