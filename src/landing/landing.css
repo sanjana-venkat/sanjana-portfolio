@@ -1,0 +1,1390 @@
+/* ==========================================================================
+   Portfolio canvas — a single 100vw x 100dvh composition built on the kolam.
+   No cards, no wrappers: hierarchy comes from spacing, type, dots and lines.
+   ========================================================================== */
+
+.pc-root {
+  --edge: clamp(20px, 3.4vw, 56px);
+  --kolam: clamp(200px, 25vw, 372px);
+  --gutter: clamp(26px, 4.2vw, 76px);
+  --rail: calc(var(--edge) + var(--kolam) + var(--gutter));
+
+  --ease: cubic-bezier(0.33, 0.02, 0.15, 1);
+  --slow: 900ms;
+  --mid: 520ms;
+  --quick: 220ms;
+
+  --ink: #221b16;
+  --muted: #6b625c;
+  --faint: #9a8176;
+  --hair: #e2dcd7;
+  --accent: #a5522a;
+  --deep: #9c3f14;
+  --paper: #f7f4f2;
+
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Open Sans", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The click target that advances stages. Real controls sit above it in the
+   stacking order and stop propagation, so they never advance by accident. */
+.pc-advance {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+}
+
+.pc-advance:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -4px;
+}
+
+/* ── Kolam layer ─────────────────────────────────────────────────────── */
+
+.pc-kolam {
+  position: absolute;
+  left: var(--edge);
+  top: 50%;
+  width: var(--kolam);
+  height: var(--kolam);
+  z-index: 2;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: transform var(--slow) var(--ease);
+}
+
+.pc-kolam.is-centered {
+  transform: translateY(-50%) translateX(calc(50vw - var(--edge) - var(--kolam) / 2))
+    scale(1.14);
+}
+
+.pc-kolam svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.pc-dot {
+  fill: #2b3d3f;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0.2);
+}
+
+.pc-dots.is-on .pc-dot {
+  animation: pcDotIn 380ms var(--ease) both;
+  animation-delay: var(--dot-delay, 0ms);
+}
+
+@keyframes pcDotIn {
+  to {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+}
+
+.pc-loop {
+  fill: none;
+  stroke: #2b3d3f;
+  stroke: #35494b;
+  stroke-width: 0.045;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.6;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.pc-loop.is-drawn {
+  animation: pcDraw 1100ms var(--ease) both;
+  animation-delay: var(--loop-delay, 0ms);
+}
+
+.pc-loop.is-hero {
+  stroke: var(--accent);
+  stroke-width: 0.05;
+  opacity: 0.85;
+}
+
+/* The hero slot redrawn faintly at the last stage: the structure closes. */
+.pc-loop.is-echo {
+  stroke: var(--accent);
+  opacity: 0.3;
+}
+
+@keyframes pcDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* The S that leaves the grid and becomes the letter. */
+.pc-flying-s {
+  position: fixed;
+  z-index: 40;
+  pointer-events: none;
+  overflow: visible;
+  transition: left var(--slow) var(--ease), top var(--slow) var(--ease),
+    width var(--slow) var(--ease), height var(--slow) var(--ease),
+    opacity 280ms linear;
+}
+
+.pc-flying-s path {
+  fill: none;
+  stroke: var(--deep);
+  stroke-width: 0.075;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ── Content stage ───────────────────────────────────────────────────── */
+
+.pc-stage {
+  position: absolute;
+  top: var(--edge);
+  right: var(--edge);
+  bottom: var(--edge);
+  left: var(--rail);
+  z-index: 3;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  pointer-events: none;
+}
+
+.pc-stage > * {
+  pointer-events: none;
+}
+
+.pc-stage a,
+.pc-stage button,
+.pc-stage input,
+.pc-stage [tabindex] {
+  pointer-events: auto;
+}
+
+.pc-panel {
+  grid-row: 2;
+  grid-column: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--mid) var(--ease), visibility 0s linear var(--mid);
+}
+
+.pc-panel.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--mid) var(--ease) 140ms, visibility 0s;
+}
+
+.pc-panel:not(.is-active) * {
+  pointer-events: none !important;
+}
+
+/* The chat is a working surface, so blank space inside it must not advance. */
+.pc-panel.is-active .pc-chat {
+  pointer-events: auto;
+}
+
+.pc-intro {
+  display: grid;
+  gap: clamp(10px, 1.8vh, 22px);
+}
+
+.pc-intro .pc-rise {
+  display: grid;
+  gap: clamp(10px, 1.8vh, 22px);
+}
+
+/* Staggered, masked reveals — the type is uncovered rather than faded in. */
+.pc-rise > * {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.pc-panel.is-active .pc-rise > * {
+  animation: pcRise 620ms var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 90ms + var(--rise-base, 180ms));
+}
+
+/* Visually hidden, still announced. */
+.pc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes pcRise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pc-wipe {
+  display: inline-block;
+  clip-path: inset(0 100% 0 0);
+}
+
+.pc-panel.is-active .pc-wipe,
+.pc-wipe.is-open {
+  animation: pcWipe 760ms var(--ease) both;
+  animation-delay: var(--wipe-delay, 0ms);
+}
+
+@keyframes pcWipe {
+  to {
+    clip-path: inset(0 -0.08em 0 0);
+  }
+}
+
+/* ── Typography ──────────────────────────────────────────────────────── */
+
+.pc-name {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: clamp(3.2rem, 9vw, 7.5rem);
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  color: var(--deep);
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+}
+
+.pc-name-s {
+  display: inline-block;
+  transition: opacity 320ms linear;
+}
+
+.pc-name-s.is-hidden {
+  opacity: 0;
+}
+
+.pc-statement {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: clamp(1.25rem, 2.4vw, 2.1rem);
+  font-weight: 500;
+  line-height: 1.22;
+  letter-spacing: -0.03em;
+  max-width: 22ch;
+  margin: 0;
+}
+
+.pc-role {
+  font-size: clamp(0.85rem, 1.05vw, 1rem);
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 48ch;
+  margin: 0;
+}
+
+.pc-bio {
+  font-size: clamp(0.78rem, 0.92vw, 0.9rem);
+  line-height: 1.75;
+  color: var(--faint);
+  max-width: 58ch;
+  margin: 0;
+}
+
+.pc-eyebrow {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 0;
+}
+
+.pc-heading {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: clamp(2rem, 4.6vw, 3.6rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  color: var(--deep);
+  margin: 0;
+}
+
+/* ── Inline links ────────────────────────────────────────────────────── */
+
+.pc-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(12px, 1.6vw, 24px);
+  align-items: baseline;
+}
+
+.pc-link {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--hair);
+  padding-bottom: 2px;
+  transition: color var(--quick) var(--ease), border-color var(--quick) var(--ease);
+  background: none;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  cursor: pointer;
+}
+
+.pc-link:hover,
+.pc-link:focus-visible {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.pc-root :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ── Compact identity strip (stages 2-4) ─────────────────────────────── */
+
+.pc-identity {
+  grid-row: 1;
+  grid-column: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding-right: clamp(140px, 17vw, 240px);
+  padding-bottom: clamp(14px, 2.4vh, 30px);
+  opacity: 0;
+  /* Hidden, not just transparent: it is aria-hidden on the first stage, so it
+     must not be reachable by keyboard either. */
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity var(--mid) var(--ease), transform var(--mid) var(--ease),
+    visibility 0s linear var(--mid);
+}
+
+.pc-identity.is-on {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity var(--mid) var(--ease), transform var(--mid) var(--ease),
+    visibility 0s;
+}
+
+.pc-identity-name {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  color: var(--deep);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pc-identity-line {
+  font-size: 12px;
+  color: var(--faint);
+}
+
+/* ── Selected work shortcuts (top right, always available) ───────────── */
+
+.pc-shortcuts {
+  position: absolute;
+  top: var(--edge);
+  right: var(--edge);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity var(--mid) var(--ease), transform var(--mid) var(--ease);
+  pointer-events: none;
+}
+
+.pc-shortcuts.is-on {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.pc-shortcuts-label {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 0 0 2px;
+}
+
+.pc-shortcut {
+  position: relative;
+  display: block;
+  text-align: right;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: clamp(12px, 0.92vw, 14px);
+  font-weight: 500;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  padding: 5px 0 5px 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color var(--quick) var(--ease);
+}
+
+.pc-shortcut::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  width: 5px;
+  height: 1px;
+  background: var(--hair);
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: right;
+  transition: transform var(--quick) var(--ease), background var(--quick) var(--ease);
+}
+
+.pc-shortcut:hover,
+.pc-shortcut:focus-visible {
+  color: var(--accent);
+}
+
+.pc-shortcut:hover::after,
+.pc-shortcut:focus-visible::after {
+  background: var(--accent);
+  transform: translateY(-50%) scaleX(1);
+}
+
+/* Expands to the LEFT so it never leaves the viewport. */
+.pc-shortcut-peek {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 14px);
+  transform: translateY(-50%) translateX(10px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: clamp(230px, 25vw, 340px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--quick) var(--ease), transform var(--quick) var(--ease),
+    visibility 0s linear var(--quick);
+}
+
+.pc-shortcut-slot:hover .pc-shortcut-peek,
+.pc-shortcut-slot:focus-within .pc-shortcut-peek {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+  transition: opacity var(--quick) var(--ease), transform var(--quick) var(--ease),
+    visibility 0s;
+}
+
+.pc-shortcut-peek img {
+  width: 96px;
+  height: 62px;
+  object-fit: cover;
+  object-position: center;
+  flex: none;
+  background: #ece7e3;
+}
+
+.pc-shortcut-peek span {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--faint);
+  text-align: left;
+}
+
+/* Mobile disclosure version */
+.pc-shortcuts-toggle {
+  display: none;
+}
+
+/* ── Stage navigation ────────────────────────────────────────────────── */
+
+.pc-nav {
+  position: absolute;
+  right: var(--edge);
+  bottom: var(--edge);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--faint);
+  letter-spacing: 0.06em;
+}
+
+.pc-nav > button {
+  background: none;
+  border: 0;
+  padding: 4px 6px;
+  color: var(--faint);
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+  transition: color var(--quick) var(--ease);
+}
+
+.pc-nav > button:hover:not(:disabled) {
+  color: var(--accent);
+}
+
+.pc-nav > button:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+.pc-nav-count strong {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.pc-nav-ticks {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.pc-nav-tick {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #cdc3bc;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: background var(--quick) var(--ease), transform var(--quick) var(--ease);
+}
+
+.pc-nav-tick.is-on {
+  background: var(--accent);
+  transform: scale(1.35);
+}
+
+.pc-hint {
+  position: absolute;
+  left: var(--rail);
+  bottom: var(--edge);
+  z-index: 15;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  opacity: 0;
+  transition: opacity 600ms var(--ease);
+  pointer-events: none;
+}
+
+.pc-hint.is-on {
+  opacity: 0.85;
+  animation: pcHintPulse 3.4s ease-in-out 1.2s infinite;
+}
+
+@keyframes pcHintPulse {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.pc-skip {
+  position: absolute;
+  left: var(--edge);
+  bottom: var(--edge);
+  z-index: 30;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  background: none;
+  border: 0;
+  padding: 4px;
+  cursor: pointer;
+  transition: color var(--quick) var(--ease), opacity 300ms linear;
+}
+
+.pc-skip:hover {
+  color: var(--accent);
+}
+
+/* ── Story ───────────────────────────────────────────────────────────── */
+
+.pc-story {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(20px, 3vw, 56px);
+  align-items: center;
+  min-height: 0;
+}
+
+.pc-location {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: clamp(0.78rem, 1.05vw, 0.98rem);
+  letter-spacing: -0.01em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.pc-location-city {
+  position: relative;
+  display: inline-block;
+}
+
+.pc-location-region {
+  display: block;
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-top: 3px;
+}
+
+.pc-location-from {
+  animation: pcLocFrom 6s var(--ease) infinite;
+}
+
+.pc-location-to {
+  color: var(--accent);
+  animation: pcLocTo 6s var(--ease) infinite;
+}
+
+.pc-location-rule {
+  position: relative;
+  flex: none;
+  width: clamp(34px, 5vw, 72px);
+  height: 1px;
+  background: var(--hair);
+  align-self: center;
+  overflow: visible;
+}
+
+.pc-location-rule::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: left;
+  animation: pcLocRule 6s var(--ease) infinite;
+}
+
+@keyframes pcLocFrom {
+  0%,
+  22% {
+    opacity: 1;
+  }
+  55%,
+  92% {
+    opacity: 0.28;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes pcLocTo {
+  0%,
+  30% {
+    opacity: 0.28;
+  }
+  62%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.28;
+  }
+}
+
+@keyframes pcLocRule {
+  0%,
+  18% {
+    transform: scaleX(0);
+  }
+  55%,
+  92% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
+  }
+}
+
+.pc-timeline {
+  position: relative;
+  width: 100%;
+}
+
+.pc-timeline svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.pc-timeline-path {
+  fill: none;
+  stroke: var(--hair);
+  stroke-width: 1.4;
+}
+
+.pc-timeline-progress {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  opacity: 0.55;
+  transition: stroke-dashoffset var(--mid) var(--ease);
+}
+
+.pc-timeline-points {
+  position: absolute;
+  inset: 0;
+}
+
+.pc-moment {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity var(--quick) var(--ease);
+}
+
+.pc-timeline.has-active .pc-moment:not(.is-active) {
+  opacity: 0.4;
+}
+
+.pc-moment-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: #2b3d3f;
+  transition: transform var(--quick) var(--ease), background var(--quick) var(--ease);
+}
+
+.pc-moment.is-active .pc-moment-dot,
+.pc-moment:hover .pc-moment-dot {
+  background: var(--accent);
+  transform: scale(1.6);
+}
+
+.pc-moment-year {
+  position: absolute;
+  left: calc(50% + 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.pc-moment.is-active .pc-moment-year {
+  color: var(--accent);
+}
+
+/* Open area of canvas reserved for the active moment — not a tooltip. */
+.pc-moment-detail {
+  display: grid;
+  grid-template-columns: clamp(88px, 9.5vw, 128px) minmax(0, 1fr);
+  gap: clamp(14px, 1.6vw, 26px);
+  align-items: start;
+  min-height: clamp(120px, 17vh, 190px);
+}
+
+.pc-moment-detail img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  background: #ece7e3;
+  transition: opacity 320ms var(--ease);
+}
+
+.pc-moment-title {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: clamp(0.95rem, 1.25vw, 1.18rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.pc-moment-copy {
+  font-size: clamp(0.78rem, 0.95vw, 0.92rem);
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 40ch;
+  margin: 8px 0 0;
+}
+
+/* ── Snippets ────────────────────────────────────────────────────────── */
+
+.pc-snippets {
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  gap: clamp(20px, 3.4vw, 64px);
+  min-height: 0;
+  align-items: stretch;
+}
+
+.pc-sides {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(14px, 2.4vh, 30px);
+  min-height: 0;
+}
+
+.pc-side-label {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  margin: 0;
+  color: var(--ink);
+}
+
+.pc-side.is-second .pc-side-label {
+  color: var(--accent);
+}
+
+.pc-side-copy {
+  font-size: clamp(0.74rem, 0.9vw, 0.86rem);
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 30ch;
+  margin: 6px 0 0;
+}
+
+.pc-side-projects {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pc-side-projects li {
+  font-size: clamp(0.7rem, 0.82vw, 0.8rem);
+  color: var(--faint);
+  line-height: 1.6;
+}
+
+.pc-side-projects button {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--faint);
+  cursor: pointer;
+  text-align: left;
+  border-bottom: 1px solid transparent;
+  transition: color var(--quick) var(--ease), border-color var(--quick) var(--ease);
+}
+
+.pc-side-projects button:hover,
+.pc-side-projects button:focus-visible {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.pc-side-join {
+  width: clamp(30px, 4vw, 52px);
+  height: clamp(30px, 5vh, 60px);
+  overflow: visible;
+}
+
+.pc-side-join path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  opacity: 0.45;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.pc-panel.is-active .pc-side-join path {
+  animation: pcDraw 900ms var(--ease) 460ms both;
+}
+
+/* ── Chat ────────────────────────────────────────────────────────────── */
+
+.pc-chat {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-left: 1px solid var(--hair);
+  padding-left: clamp(18px, 2.4vw, 40px);
+}
+
+.pc-chat-log {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding-right: 4px;
+}
+
+.pc-chat-log::-webkit-scrollbar {
+  display: none;
+}
+
+.pc-chat-opener {
+  font-size: clamp(0.82rem, 1.02vw, 0.98rem);
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 42ch;
+  margin: 0 0 18px;
+}
+
+.pc-msg-q {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--accent);
+  text-align: right;
+  margin: 22px 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--hair);
+}
+
+.pc-msg-q::before {
+  content: "you ";
+  color: var(--faint);
+  letter-spacing: 0.1em;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.pc-msg-a {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: var(--ink);
+  white-space: pre-line;
+  margin: 0;
+}
+
+.pc-msg-thinking {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pc-msg-thinking span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pcPulse 1.1s ease-in-out infinite;
+}
+
+@keyframes pcPulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.pc-chat-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.pc-chat-foot {
+  flex: none;
+  padding-top: 14px;
+}
+
+.pc-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-bottom: 12px;
+}
+
+.pc-suggestion {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 11.5px;
+  color: var(--faint);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--hair);
+  padding: 0 0 2px;
+  cursor: pointer;
+  transition: color var(--quick) var(--ease), border-color var(--quick) var(--ease);
+}
+
+.pc-suggestion:hover,
+.pc-suggestion:focus-visible,
+.pc-suggestion.is-on {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.pc-chat-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 7px;
+}
+
+.pc-chat-input input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  outline: none;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  color: var(--ink);
+}
+
+.pc-chat-input input::placeholder {
+  color: var(--faint);
+}
+
+.pc-chat-input button {
+  background: none;
+  border: 0;
+  padding: 2px 4px;
+  cursor: pointer;
+  color: var(--accent);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.pc-caret {
+  color: var(--accent);
+  animation: pcPulse 1s steps(2, end) infinite;
+}
+
+/* ── Statements ──────────────────────────────────────────────────────── */
+
+.pc-statements {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(20px, 3.4vw, 60px);
+  align-items: center;
+  min-height: 0;
+}
+
+.pc-statement-active blockquote {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: clamp(1.25rem, 2.2vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.32;
+  letter-spacing: -0.03em;
+  max-width: 24ch;
+  color: var(--ink);
+}
+
+.pc-statement-active figcaption {
+  margin-top: clamp(12px, 1.8vh, 22px);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--faint);
+}
+
+.pc-statement-active figcaption strong {
+  display: block;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.pc-statement-index {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1.1vh, 14px);
+}
+
+.pc-statement-index li:nth-child(even) {
+  padding-left: clamp(14px, 2.6vw, 46px);
+}
+
+.pc-statement-index button {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  background: none;
+  border: 0;
+  border-top: 1px solid transparent;
+  padding: 7px 0 0;
+  text-align: left;
+  cursor: pointer;
+  color: var(--faint);
+  transition: color var(--quick) var(--ease), border-color var(--quick) var(--ease);
+}
+
+.pc-statement-index button:hover,
+.pc-statement-index button:focus-visible,
+.pc-statement-index button[aria-current="true"] {
+  color: var(--accent);
+  border-top-color: var(--accent);
+}
+
+.pc-statement-index .num {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.pc-statement-index .lbl {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: clamp(0.72rem, 0.88vw, 0.84rem);
+  line-height: 1.45;
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .pc-root {
+    --edge: 20px;
+    --kolam: 104px;
+    --rail: var(--edge);
+  }
+
+  /* The drawing stays in the corner as a mark rather than shrinking the whole
+     desktop composition down until nothing is readable. */
+  .pc-kolam {
+    left: auto;
+    right: var(--edge);
+    top: var(--edge);
+    transform: none;
+    opacity: 0.55;
+  }
+
+  .pc-kolam.is-centered {
+    left: 50%;
+    right: auto;
+    top: 42%;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(2);
+  }
+
+  .pc-stage {
+    top: calc(var(--edge) + var(--kolam) + 20px);
+    left: var(--edge);
+    bottom: calc(var(--edge) + 30px);
+  }
+
+  /* One stage at a time, stacked and scrollable inside the viewport. */
+  .pc-panel {
+    justify-content: flex-start;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    padding-bottom: 16px;
+  }
+
+  .pc-panel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pc-panel > * {
+    flex: 0 0 auto;
+  }
+
+  .pc-identity {
+    padding-right: 0;
+    padding-bottom: 16px;
+  }
+
+  /* Grid tracks fight the stacked layout; block flow is what this wants. */
+  .pc-story,
+  .pc-snippets,
+  .pc-statements {
+    display: block;
+  }
+
+  .pc-story > * + *,
+  .pc-snippets > * + *,
+  .pc-statements > * + * {
+    margin-top: 22px;
+  }
+
+  .pc-sides {
+    display: block;
+  }
+
+  .pc-sides > * + * {
+    margin-top: 20px;
+  }
+
+  .pc-chat {
+    border-left: 0;
+    border-top: 1px solid var(--hair);
+    padding-left: 0;
+    padding-top: 18px;
+    min-height: 300px;
+  }
+
+  .pc-timeline {
+    max-width: 420px;
+  }
+
+  /* One control, top left, that opens into the same three links. */
+  .pc-shortcuts {
+    top: var(--edge);
+    bottom: auto;
+    left: var(--edge);
+    right: auto;
+    width: calc(100vw - var(--edge) * 2 - var(--kolam) - 16px);
+    align-items: flex-start;
+  }
+
+  .pc-shortcuts-label {
+    display: none;
+  }
+
+  .pc-shortcuts-toggle {
+    display: inline-block;
+    order: 2;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--accent);
+    padding: 0 0 3px;
+    cursor: pointer;
+  }
+
+  .pc-shortcuts-list {
+    order: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    margin-top: 8px;
+    /* Same colour as the canvas: it covers what is under it without ever
+       reading as a panel sitting on top of the page. */
+    width: 100%;
+    background: var(--paper);
+    padding: 4px 0 10px;
+  }
+
+  .pc-shortcuts-list[hidden] {
+    display: none;
+  }
+
+  .pc-shortcut {
+    text-align: left;
+    padding-left: 0;
+  }
+
+  .pc-shortcut-peek {
+    display: none;
+  }
+
+  .pc-hint {
+    left: var(--edge);
+    bottom: calc(var(--edge) - 4px);
+  }
+
+  .pc-statement-index li:nth-child(even) {
+    padding-left: 0;
+  }
+
+  .pc-moment-detail {
+    grid-template-columns: 84px minmax(0, 1fr);
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-root *,
+  .pc-root *::before,
+  .pc-root *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .pc-dot {
+    opacity: 0.9;
+    transform: none;
+  }
+
+  .pc-loop {
+    stroke-dashoffset: 0;
+  }
+
+  .pc-wipe {
+    clip-path: none;
+  }
+
+  .pc-rise > * {
+    opacity: 1;
+    transform: none;
+  }
+}
