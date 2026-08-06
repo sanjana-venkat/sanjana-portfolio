@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import { TESTIMONIALS } from "./data/portfolioData";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { MuesliStudy, OutdoneStudy } from "./FeaturedCaseStudies";
+import Scene from "./landing/Scene";
 
 const FIGMA_DECK_URL =
   "https://embed.figma.com/slides/rrAhQ5fBTULZu49L04zUZ8/jpmcpublic-slides?node-id=2-16488&embed-host=share";
@@ -32,9 +32,6 @@ const MUESLI_FIGMA_URL =
 const MUESLI_PR_URL = "https://github.com/Muesli-HQ/muesli/pull/329";
 
 const WAYFARER_URL = TRAVEL_DNA_URL;
-
-const RESUME_URL = "/SanjanaVenkat_Design-Engineer_Resume1.pdf";
-const GITHUB_URL = "https://github.com/sanjana-venkat";
 
 const BODY = "[font-family:'Open_Sans',sans-serif]";
 const HEADING = "[font-family:'Plus_Jakarta_Sans',sans-serif]";
@@ -176,14 +173,14 @@ In a few sprints, we pushed toward redesigning the full journey and got design s
 Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
-  { slug: "muesli", label: "Speech-to-Text", title: "Muesli — Local-first dictation, made approachable", type: "case-study" },
   { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
   { slug: "ai-personalization", label: "RecSys", title: "Intent-based Recommendations", url: MARKETING_TILES_URL },
+  { slug: "model-design", label: "Personalized Travel", title: "Outdone, Context-Aware Personalization", url: OUTDONE_FRAMER_URL },
   { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
   { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
   { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
-  { slug: "model-design", label: "Personalized Travel", title: "Outdone, Context-Aware Personalization", url: OUTDONE_FRAMER_URL }
+  { slug: "muesli", label: "Speech-to-Text", title: "Muesli — Local-first dictation, made approachable", type: "case-study" }
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
@@ -194,142 +191,11 @@ function ChevronLeftIcon({ className = "h-5 w-5" }) {
   );
 }
 
-function ChevronRightIcon({ className = "h-5 w-5" }) {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m9 6 6 6-6 6" />
-    </svg>
-  );
-}
-
-function MailIcon({ className = "h-[18px] w-[18px]" }) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="currentColor">
-      <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z" />
-    </svg>
-  );
-}
-
-function ChatIcon({ className = "h-6 w-6" }) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
-    </svg>
-  );
-}
-
-function CloseIcon({ className = "h-5 w-5" }) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
-      <path d="M18 6 6 18M6 6l12 12" />
-    </svg>
-  );
-}
-
-function PauseIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
-      <path d="M7 5h3v14H7V5Zm7 0h3v14h-3V5Z" />
-    </svg>
-  );
-}
-
-function PlayIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
-      <path d="M8 5v14l11-7L8 5Z" />
-    </svg>
-  );
-}
-
-// Module-level scroll target, set by the chat scroll div, read by Typewriter directly
-let _chatScrollEl = null;
-
-function Typewriter({ text, shouldStart, onDone, instant = false }) {
-  const cleanText = (text || "").trim();
-  const [displayed, setDisplayed] = useState("");
-  const [typedText, setTypedText] = useState(null);
-  const onDoneRef = useRef(onDone);
-  useEffect(() => { onDoneRef.current = onDone; }, [onDone]);
-
-  useEffect(() => {
-    setTypedText(null);
-  }, [cleanText]);
-
-  useEffect(() => {
-    if (instant) {
-      setDisplayed(cleanText);
-      setTypedText(cleanText);
-      setTimeout(() => onDoneRef.current?.(), 0);
-      return;
-    }
-
-    if (!shouldStart) return;
-
-    if (typedText === cleanText) {
-      setDisplayed(cleanText);
-      return;
-    }
-
-    setDisplayed("");
-    let interval;
-
-    const startDelay = setTimeout(() => {
-      let index = 0;
-
-      interval = setInterval(() => {
-        setDisplayed(cleanText.slice(0, index + 1));
-        index += 1;
-
-        // Scroll to bottom on every character
-        if (_chatScrollEl) {
-          _chatScrollEl.scrollTop = _chatScrollEl.scrollHeight;
-        }
-
-        if (index >= cleanText.length) {
-          clearInterval(interval);
-          setTypedText(cleanText);
-          setDisplayed(cleanText);
-          setTimeout(() => onDoneRef.current?.(), 250);
-        }
-      }, 15);
-    }, 350);
-
-    return () => {
-      clearTimeout(startDelay);
-      clearInterval(interval);
-    };
-  }, [cleanText, shouldStart, typedText, instant]);
-
-  return (
-    <p className={`whitespace-pre-line text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
-      {displayed}
-      {typedText !== cleanText && <span className="animate-pulse text-[#A5522A]">|</span>}
-    </p>
-  );
-}
 
 
-function SegmentationDiagram() {
-  return <img src="/segmentation.png" alt="Audience segmentation framework" className="mt-8 w-full object-contain" />;
-}
 
-function JourneyMapPreview() {
-  return (
-    <a href={APPLY_SYSTEMS_URL} target="_blank" rel="noreferrer" className="mt-8 block overflow-hidden rounded-[28px] border border-[#E4E2E1] bg-white transition hover:-translate-y-1 hover:shadow-sm">
-      <img src="/journey-map.png" alt="Service design journey map" className="w-full object-contain" />
-    </a>
-  );
-}
+
+
 
 function CircleIconButton({ children, onClick, ariaLabel, className = "" }) {
   return (
@@ -629,12 +495,38 @@ function OutdoneCaseStudy() {
   );
 }
 
-function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
+function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
+  const stageRef = useRef(null);
+  const phase = origin ? "expanding" : "open";
+
+  // FLIP: put the stage where the frame was, then let it grow into place.
+  useLayoutEffect(() => {
+    if (!origin || !stageRef.current) return;
+    const el = stageRef.current;
+    // Measure the stage untransformed — on a re-run it may still be carrying
+    // the previous frame's transform, which would measure the frame instead.
+    el.style.setProperty("--ox", "0px");
+    el.style.setProperty("--oy", "0px");
+    el.style.setProperty("--osx", "1");
+    el.style.setProperty("--osy", "1");
+    const to = el.getBoundingClientRect();
+    if (!to.width || !to.height) return;
+    el.style.setProperty("--ox", `${origin.left - to.left}px`);
+    el.style.setProperty("--oy", `${origin.top - to.top}px`);
+    el.style.setProperty("--osx", `${origin.width / to.width}`);
+    el.style.setProperty("--osy", `${origin.height / to.height}`);
+    
+  }, [origin]);
   useEffect(() => {
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
+    // Only on pointer devices. On touch, locking the document also stops the
+    // embedded case-study page from scrolling inside its frame.
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    if (!coarse) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    }
 
     return () => {
       document.body.style.overflow = previousBodyOverflow;
@@ -655,41 +547,38 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
   };
 
   return (
-    <div className={`fixed inset-0 z-[70] h-[100dvh] overflow-hidden flex flex-col bg-[#FFF8F5] px-4 py-5 sm:px-6 sm:py-6 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
+    <div className={`work-shell${phase === "expanding" ? " is-expanding" : ""}`}>
       <div className="mx-auto w-full min-w-0 max-w-[1280px] overflow-hidden flex flex-col flex-1 min-h-0">
-        <div className="mb-4 flex items-center gap-4 shrink-0">
-          <CircleIconButton onClick={onClose} ariaLabel="Close work browser">
-            <ChevronLeftIcon />
-          </CircleIconButton>
-
-          <h2 className={`min-w-0 text-[32px] font-semibold leading-[1.03] tracking-[-0.04em] text-[#9C3F14] ${HEADING}`}>
-            My Work
-          </h2>
+        <div className="work-head">
+          <button type="button" className="work-back" onClick={onClose} aria-label="Close work browser">
+            <ChevronLeftIcon className="h-[18px] w-[18px]" />
+          </button>
+          <h2 className="work-title">My Work</h2>
         </div>
 
-        <div className="no-scrollbar mb-4 flex w-full min-w-0 max-w-full gap-3 overflow-x-auto pb-2 shrink-0">
+        <div className="work-tabs no-scrollbar">
           {PROJECTS.map((project) => (
             <button
               key={project.label}
               onClick={() => selectProject(project)}
-              className={`shrink-0 rounded-full border px-6 py-3 text-[14px] font-medium transition sm:px-7 sm:text-[15px] ${
-                activeProject.label === project.label
-                  ? "border-[#9C3F14] bg-white text-[#9C3F14]"
-                  : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
-              } ${HEADING}`}
+              className={`pc-pill${activeProject.label === project.label ? " on" : ""}`}
             >
               {project.label}
             </button>
           ))}
         </div>
 
-        <div className="min-w-0 overflow-hidden rounded-[32px] bg-white w-full flex-1 min-h-0">
+        <div
+          ref={stageRef}
+          className={`work-stage${phase === "expanding" ? " is-expanding" : ""}`}
+        >
           {activeProject.url ? (
             <iframe
               key={activeProject.url}
               src={activeProject.url}
               title={activeProject.title}
-              className="h-full w-full border-0 bg-white"
+              className="work-frame border-0 bg-white"
+              scrolling="yes"
               allowFullScreen
             />
           ) : (
@@ -708,698 +597,8 @@ function FigmaDeckModal({ onClose }) {
   return <FramerModal title="Chase HL Public" url={FIGMA_DECK_URL} onClose={onClose} />;
 }
 
-/* ─── BENTO TILE: Hero (name + tagline + profile pic popping out) ─── */
-function HeroTile() {
-  return (
-    <>
-      {/* ── DESKTOP hero ── */}
-      <div
-        className="relative overflow-hidden rounded-[32px] p-8 flex-col justify-center hidden lg:flex"
-        style={{
-          background: "rgba(156, 63, 20, 0.17)",
-          minHeight: "219px",
-          paddingRight: "220px",
-        }}
-      >
-        <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] whitespace-nowrap ${HEADING}`}
-          style={{ fontSize: "40px" }}>
-          Sanjana Venkat
-        </h1>
-        <div className="h-5" />
-        <p className="leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          I turn ambiguity into direction. Let me show you.
-        </p>
-        <p className="mt-1 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          Designing AI interfaces, recommendation systems and model behavior
-        </p>
-        <div
-          className="absolute overflow-hidden"
-          style={{
-            width: "200px",
-            height: "240px",
-            bottom: "-55px",
-            right: "32px",
-            borderRadius: "22px",
-            border: "8px solid #FFFFFF",
-            boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
-            transform: "rotate(9.83deg)",
-            zIndex: 30,
-          }}
-        >
-          <img src="/profile.jpg" alt="Sanjana Venkat" className="w-full h-full object-cover object-center" />
-        </div>
-      </div>
-
-      {/* ── MOBILE hero, taller, image centered at bottom ── */}
-      <div
-        className="relative overflow-hidden rounded-[32px] p-8 pb-0 flex flex-col lg:hidden"
-        style={{
-          background: "rgba(156, 63, 20, 0.17)",
-          minHeight: "420px",
-        }}
-      >
-        <h1 className={`font-semibold leading-[1.2] tracking-[-0.02em] text-[#9C3F14] ${HEADING}`}
-          style={{ fontSize: "36px" }}>
-          Sanjana Venkat
-        </h1>
-        <div className="h-5" />
-        <p className="leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          I turn ambiguity into direction. Let me show you.
-        </p>
-        <p className="mt-1 leading-[1.5]" style={{ color: "#57423A", fontSize: "15px" }}>
-          Designing AI interfaces, recommendation systems and model behavior
-        </p>
-        {/* Image centered at bottom, taller */}
-        <div className="flex justify-center mt-8 flex-1 items-end">
-          <div
-            className="overflow-hidden"
-            style={{
-              width: "100%",
-              height: "280px",
-              borderRadius: "22px 22px 0 0",
-              border: "none",
-              boxShadow: "none",
-            }}
-          >
-            <img src="/profile.jpg" alt="Sanjana Venkat" className="w-full h-full object-cover object-top" />
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
-
-/* ─── BENTO TILE: What I Believe In (fixed height matching NavTile) ─── */
-function WhatIBelieveTile() {
-  return (
-    <article className={`rounded-[32px] bg-white p-6 text-[14px] h-full flex flex-col justify-between ${BODY}`} style={{ minHeight: "220px" }}>
-      <div>
-        <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-          what i believe in
-        </p>
-
-        <p className="leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
-          I study psychology because I love thinking about how people think. And that curiosity never left, it just found a new home in product design.
-        </p>
-
-        <p className="mt-3 leading-[1.6] text-[#5F5149]" style={{ fontSize: "13px" }}>
-          I always tried to get closer to user needs and intent with data analytics, user research, or recently model design to classify, filter and map responses. With good design, I want to meet users where they are and also take them where they want to be.
-        </p>
-      </div>
-
-      <div className="mt-6 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <a href="mailto:sanjanavnkt20@gmail.com" aria-label="Email Sanjana" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]">
-            <span className="flex h-full w-full items-center justify-center leading-none"><MailIcon /></span>
-          </a>
-          <a href="https://www.linkedin.com/in/sanjana-venkat/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 text-[13px] font-semibold leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A] ${HEADING}`}>
-            <span className="flex h-full w-full items-center justify-center leading-none">in</span>
-          </a>
-        </div>
-        <a
-          href={RESUME_URL}
-          target="_blank"
-          rel="noreferrer"
-          className={`inline-flex items-center gap-1 text-[13px] text-[#8A817B] underline underline-offset-4 hover:text-[#A5522A] transition ${HEADING}`}
-        >
-          resume →
-        </a>
-      </div>
-    </article>
-  );
-}
-
-/* ─── BENTO TILE: Animated Timeline ─── */
-
-// SURGICAL CHANGE 1: Added lineStyle per item, "very-wavy" | "slightly-wavy" | "straight"
-// and orange flag for post-Chetna items. Removed the two wave:true dampened oscillation items.
-const TIMELINE_ITEMS = [
-  { year: "2000s", label: "Childhood in India",      sub: "Grew up close to my roots, culture, and community",     heart: false, isNow: false, img: "/Childhood.jpg", lineStyle: "very-wavy",     orange: false },
-  { year: "2014",  label: "Moved to the States",     sub: "A big leap, new country, new world",                   heart: false, isNow: false, img: "/2014.jpg",      lineStyle: "very-wavy",     orange: false },
-  { year: "2018",  label: "Future teacher",          sub: "Wanted to teach, loved reading and learning",     heart: false, isNow: false, img: "/2018.png",      lineStyle: "very-wavy",     orange: false },
-  { year: "2019",  label: "Best Presenter Award",    sub: "First publication on temple architecture",  heart: false, isNow: false, img: "/2019.png",      lineStyle: "very-wavy",     orange: false },
-  { year: "2020",  label: "UTD, Psychology & Design",   sub: "Studied how people think, feel, and make decisions",    heart: false, isNow: false, img: "/2020.jpg",      lineStyle: "slightly-wavy", orange: false },
-  { year: "2021",  label: "Chetna · Graphic Design", sub: "Dabbled into design, raised $10K+ for South Asian mental health",           heart: false, isNow: false, img: "/2021.jpg",      lineStyle: "slightly-wavy", orange: false },
-  // After Chetna: lines go straight and orange
-  { year: "2022",  label: "Dialexa",                 sub: "Built an AR travel concept for with Dialexa, DTour",   heart: false, isNow: false, img: "/2022.jpg",      lineStyle: "straight",      orange: true  },
-  { year: "2022",  label: "UX Club · VP",             sub: "Organized design events with Paycom, Bottle Rocket & Intuit", heart: false, isNow: false, img: "/2022-1.jpg",    lineStyle: "straight",      orange: true,  mobileObjectPosition: "center 28%"  },
-  { year: "2023",  label: "Paycom · Associate Product Designer", sub: "B2B enterprise subteam, design system focus",    heart: false, isNow: false, img: "/2023.jpg",      lineStyle: "straight",      orange: true,  mobileObjectPosition: "center 34%"  },
-  { year: "2024",  label: "JPMC · Senior PD",        sub: "Owned apply flow and HELOC 0-to-1",    heart: false, isNow: false, img: "/2024.jpg",      lineStyle: "straight",      orange: true,  mobileObjectPosition: "center 30%"  },
-  { year: "2025",  label: "JPMC · Lead",         sub: "Led AI & Marketing and exec-facing Gemini concepts",   heart: false, isNow: false, img: "/2025.jpg",      lineStyle: "straight",      orange: true,  mobileObjectPosition: "center 24%"  },
-  { year: "2026",  label: "Married · Bay Area",      sub: "Moved to the Bay Area for a new chapter",              heart: true,  isNow: false, img: "/2026.png",      lineStyle: "straight",      orange: true  },
-  { year: "NOW",   label: "Design Engineer",         sub: "Building polished AI product ideas fast",              heart: false, isNow: true,  img: "/2026.jpg",      lineStyle: "straight",      orange: true,  mobileObjectPosition: "center 22%"  },
-];
-
-// SURGICAL CHANGE 2: Three line paths replacing the single straight line + removing dampened wave
-// Very wavy: big organic undulations (psychology era)
-const LINE_VERY_WAVY   = "M 95 38 C 108 22, 122 54, 138 38 C 154 22, 168 54, 184 38 C 200 22, 214 54, 230 38 C 246 22, 260 52, 278 40 C 288 34, 295 38, 300 38";
-// Slightly wavy: gentler undulations (transition, psychology meets design)
-const LINE_SLIGHTLY_WAVY = "M 95 38 C 112 30, 130 46, 150 38 C 170 30, 188 46, 208 38 C 228 31, 248 44, 268 38 C 282 34, 293 40, 300 38";
-// Straight: full design era
-const LINE_STRAIGHT    = "M 95 38 C 150 38, 220 38, 300 38";
-
-// Mobile versions, full width edge to edge, centered at y=30
-const MOBILE_VERY_WAVY    = "M 0 30 C 18 14, 36 46, 54 30 C 72 14, 90 46, 108 30 C 126 14, 144 46, 162 30 C 180 14, 198 46, 216 30 C 234 14, 252 44, 270 30 C 290 18, 310 30, 320 30";
-const MOBILE_SLIGHTLY_WAVY = "M 0 30 C 28 22, 56 38, 84 30 C 112 22, 140 38, 168 30 C 196 22, 224 38, 252 30 C 278 23, 302 36, 320 30";
-const MOBILE_STRAIGHT     = "M 0 30 C 80 30, 200 30, 320 30";
-
-// SURGICAL CHANGE 3: Idle scribble matches the screenshot, loopy knot trailing into a line
-// Scribble ends at ~x=95,y=38 so it flows naturally into LINE_VERY_WAVY which starts there
-const SCRIBBLE_PATH = "M 155 55 C 140 30, 115 18, 108 36 C 100 56, 120 74, 142 62 C 164 50, 166 26, 150 24 C 132 22, 116 44, 132 60 C 148 76, 170 68, 155 48 C 142 32, 128 30, 112 36 C 100 40, 95 38, 95 38";
-const SCRIBBLE_LEN = 520;
-
-function NavTile() {
-  const [active, setActive]         = useState(false);
-  const [step, setStep]             = useState(0);
-  const [phase, setPhase]           = useState("idle");
-  const [imgVisible, setImgVisible] = useState(false);
-  const timers = useRef([]);
-
-  const clearAll = () => { timers.current.forEach(clearTimeout); timers.current = []; };
-  const push = (fn, ms) => { const t = setTimeout(fn, ms); timers.current.push(t); return t; };
-
-  const runStep = (s, isFirst) => {
-    clearAll();
-    setStep(s);
-    setImgVisible(false);
-
-    const item = TIMELINE_ITEMS[s];
-    const hold = item.isNow ? 3600 : item.heart ? 2800 : 2200;
-
-    if (isFirst) {
-      setPhase("scribble");
-      push(() => setPhase("line"),    600);
-      push(() => setPhase("content"), 1050);
-      push(() => setImgVisible(true), 1450);
-      push(() => setPhase("hold"),    1350);
-      push(() => runStep(1, false),   1350 + hold);
-    } else {
-      setPhase("line");
-      push(() => setPhase("content"), 450);
-      push(() => setImgVisible(true), 850);
-      push(() => setPhase("hold"),    600);
-      push(() => runStep((s + 1) % TIMELINE_ITEMS.length, false), 600 + hold);
-    }
-  };
-
-  const startAnimation = () => {
-    if (active) return;
-    setActive(true);
-    runStep(0, true);
-  };
-
-  const stopAnimation = () => {
-    clearAll();
-    setActive(false);
-    setStep(0);
-    setPhase("idle");
-    setImgVisible(false);
-  };
-
-  useEffect(() => () => clearAll(), []);
-
-  const item        = TIMELINE_ITEMS[step];
-
-  // SURGICAL CHANGE 4: pick line path and stroke color per item
-  const linePath    = item.lineStyle === "very-wavy"
-    ? LINE_VERY_WAVY
-    : item.lineStyle === "slightly-wavy"
-    ? LINE_SLIGHTLY_WAVY
-    : LINE_STRAIGHT;
-  const strokeColor = item.orange ? "#A5522A" : "#2F2F2F";
-
-  const showLine    = phase === "line" || phase === "content" || phase === "hold";
-  const showContent = phase === "content" || phase === "hold";
-
-  return (
-    <div
-      className={`rounded-[32px] bg-white h-full flex flex-col overflow-hidden relative select-none cursor-pointer ${BODY}`}
-      style={{ minHeight: "340px" }}
-      onMouseEnter={startAnimation}
-      onMouseLeave={stopAnimation}
-      onClick={startAnimation}
-    >
-      {/* ── IDLE ── */}
-      {!active && (
-        <div className="absolute inset-0 flex flex-col px-6 pt-6 pb-5">
-          <p className={`text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] mb-4 ${HEADING}`}>
-            my story
-          </p>
-          <div className="flex-1 relative overflow-hidden">
-            {/* SURGICAL CHANGE 5: idle scribble uses the new loopy path */}
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet">
-              <path
-                d={SCRIBBLE_PATH}
-                fill="none"
-                stroke="#D4CBC6"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <p className={`absolute bottom-0 left-0 text-[10px] text-[#C0B8B4] ${HEADING}`}>
-              hover to explore
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* ── ACTIVE ── */}
-      {active && (
-        <>
-          <p className={`pt-6 px-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
-            my story
-          </p>
-
-          <div className="relative flex-1 flex flex-col justify-between overflow-hidden">
-            {/* CENTER BLOCK: image + line, vertically centered in available space */}
-            <div className="flex-1 relative lg:block hidden">
-              {/* IMAGE, desktop only: absolute left */}
-              {item.img && (
-                <div
-                  key={`img-${step}`}
-                  className="absolute overflow-hidden"
-                  style={{
-                    top: "50%",
-                    left: "-8px",
-                    transform: imgVisible
-                      ? "translateY(-50%) rotate(-5deg)"
-                      : "translateY(-50%) rotate(-5deg) translateX(-10px)",
-                    width: "110px",
-                    height: "150px",
-                    borderRadius: "20px",
-                    border: "5px solid #FFFFFF",
-                    boxShadow: "0 4px 16px rgba(0,0,0,0.13)",
-                    opacity: imgVisible ? 1 : 0,
-                    transition: "opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)",
-                    zIndex: 10,
-                  }}
-                >
-                  <img
-                    src={item.img}
-                    alt={item.label}
-                    className="w-full h-full object-cover"
-                    onError={(e) => { e.currentTarget.style.display = "none"; }}
-                  />
-                </div>
-              )}
-
-              {/* SVG LINE, desktop only, absolute centered */}
-              <svg
-                className="absolute left-0 right-0 w-full h-[78px]"
-                viewBox="0 0 320 80"
-                preserveAspectRatio="none"
-                style={{ top: "50%", transform: "translateY(-50%)", overflow: "visible" }}
-              >
-                {phase === "scribble" && (
-                  <path
-                    key="scribble"
-                    d={SCRIBBLE_PATH}
-                    fill="none"
-                    stroke="#2F2F2F"
-                    strokeWidth="1.4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{
-                      strokeDasharray: SCRIBBLE_LEN,
-                      strokeDashoffset: SCRIBBLE_LEN,
-                      animation: "tlScribbleDraw 0.6s cubic-bezier(0.4,0,0.6,1) forwards",
-                    }}
-                  />
-                )}
-
-                {/* SURGICAL CHANGE 6: use linePath (wavy or straight) and strokeColor (orange or dark) */}
-                {showLine && phase !== "scribble" && (
-                  <path
-                    key={`line-${step}-${phase}`}
-                    d={linePath}
-                    fill="none"
-                    stroke={strokeColor}
-                    strokeWidth="1.3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{
-                      strokeDasharray: 520,
-                      strokeDashoffset: phase === "line" ? 520 : 0,
-                      animation: phase === "line"
-                        ? "tlDraw 0.45s cubic-bezier(0.22,1,0.36,1) forwards"
-                        : "none",
-                    }}
-                  />
-                )}
-
-                {item.heart && showContent && (
-                  <g key={`heart-${step}`}>
-                    {/* Outline only, smaller, centered on the line (cy=38) */}
-                    <path
-                      d="M 160 43 C 153 38 149 33 149 30 C 149 26 152 24 155 25 C 157 26 159 28 160 30 C 161 28 163 26 165 25 C 168 24 171 26 171 30 C 171 33 167 38 160 43 Z"
-                      fill="none"
-                      stroke={strokeColor}
-                      strokeWidth="1.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      style={{
-                        strokeDasharray: 80,
-                        strokeDashoffset: 80,
-                        animation: "tlHeartDraw 0.55s cubic-bezier(0.4,0,0.2,1) forwards",
-                      }}
-                    />
-                  </g>
-                )}
-
-                {/* SURGICAL CHANGE 7: oval instead of circle, animate only on phase==="content" not "hold" */}
-                {showContent && !item.heart && (
-                  <circle
-                    key={`dot-${step}`}
-                    cx="160"
-                    cy="38"
-                    r="5"
-                    fill={item.isNow ? "#D96F45" : "white"}
-                    stroke={item.isNow ? "#D96F45" : strokeColor}
-                    strokeWidth="1.6"
-                    style={{
-                      animation: phase === "content"
-                        ? item.isNow
-                          ? "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both, tlNowGlow 1.8s ease-in-out 0.5s infinite"
-                          : "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both"
-                        : item.isNow
-                          ? "tlNowGlow 1.8s ease-in-out 0.5s infinite"
-                          : "none",
-                      filter: item.isNow ? "drop-shadow(0 0 5px rgba(217,111,69,0.8))" : "none",
-                    }}
-                  />
-                )}
-              </svg>
-            </div>
-
-            {/* MOBILE LAYOUT: SVG line, text, then cropped bottom image */}
-            <div className="lg:hidden flex flex-col flex-1 min-h-[430px]">
-              {/* Mobile SVG line, fixed height, normal flow */}
-              <div style={{ height: "60px", position: "relative", flexShrink: 0 }}>
-                <svg
-                  className="absolute left-0 right-0 w-full h-full"
-                  viewBox="0 0 320 60"
-                  preserveAspectRatio="none"
-                  style={{ overflow: "visible" }}
-                >
-                  {phase === "scribble" && (
-                    <path
-                      d={SCRIBBLE_PATH}
-                      fill="none"
-                      stroke="#2F2F2F"
-                      strokeWidth="1.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      style={{
-                        strokeDasharray: SCRIBBLE_LEN,
-                        strokeDashoffset: SCRIBBLE_LEN,
-                        animation: "tlScribbleDraw 0.6s cubic-bezier(0.4,0,0.6,1) forwards",
-                      }}
-                    />
-                  )}
-                  {showLine && phase !== "scribble" && (
-                    <path
-                      key={`line-m-${step}-${phase}`}
-                      d={item.lineStyle === "very-wavy" ? MOBILE_VERY_WAVY : item.lineStyle === "slightly-wavy" ? MOBILE_SLIGHTLY_WAVY : MOBILE_STRAIGHT}
-                      fill="none"
-                      stroke={strokeColor}
-                      strokeWidth="1.3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      style={{
-                        strokeDasharray: 520,
-                        strokeDashoffset: phase === "line" ? 520 : 0,
-                        animation: phase === "line"
-                          ? "tlDraw 0.45s cubic-bezier(0.22,1,0.36,1) forwards"
-                          : "none",
-                      }}
-                    />
-                  )}
-                  {item.heart && showContent && (
-                    <g key={`heart-m-${step}`}>
-                      <path
-                        d="M 160 36 C 153 31 149 26 149 23 C 149 19 152 17 155 18 C 157 19 159 21 160 23 C 161 21 163 19 165 18 C 168 17 171 19 171 23 C 171 26 167 31 160 36 Z"
-                        fill="none"
-                        stroke={strokeColor}
-                        strokeWidth="1.4"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        style={{
-                          strokeDasharray: 80,
-                          strokeDashoffset: 80,
-                          animation: "tlHeartDraw 0.55s cubic-bezier(0.4,0,0.2,1) forwards",
-                        }}
-                      />
-                    </g>
-                  )}
-                  {showContent && !item.heart && (
-                    <circle
-                      key={`dot-m-${step}`}
-                      cx="160"
-                      cy="30"
-                      r="5"
-                      fill={item.isNow ? "#D96F45" : "white"}
-                      stroke={item.isNow ? "#D96F45" : strokeColor}
-                      strokeWidth="1.6"
-                      style={{
-                        animation: phase === "content"
-                          ? item.isNow
-                            ? "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both, tlNowGlow 1.8s ease-in-out 0.5s infinite"
-                            : "timelineDotSlide 0.38s cubic-bezier(0.22,1,0.36,1) both"
-                          : item.isNow ? "tlNowGlow 1.8s ease-in-out 0.5s infinite" : "none",
-                        filter: item.isNow ? "drop-shadow(0 0 5px rgba(217,111,69,0.8))" : "none",
-                      }}
-                    />
-                  )}
-                </svg>
-              </div>
-              {/* Mobile text above image */}
-              <div
-                key={`content-mobile-${step}`}
-                className="px-6 pt-4 pb-5 text-left shrink-0"
-                style={{
-                  opacity: showContent ? 1 : 0,
-                  animation: phase === "content"
-                    ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both"
-                    : "none",
-                }}
-              >
-                <div className="flex items-baseline gap-2 whitespace-nowrap">
-                  <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
-                    {item.year}
-                  </span>
-                  <span className={`text-[14px] font-semibold text-[#9A8176] ${HEADING}`}>
-                    {item.label}
-                  </span>
-                </div>
-                <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149] whitespace-nowrap">
-                  {item.sub}
-                </p>
-              </div>
-
-              {/* Mobile image pinned bottom, fixed height, cropped off like profile tile */}
-              {item.img && (
-                <div
-                  key={`img-mobile-${step}`}
-                  className="mx-5 mt-auto"
-                  style={{
-                    height: "230px",
-                    borderRadius: "22px 22px 0 0",
-                    overflow: "hidden",
-                    opacity: imgVisible ? 1 : 0,
-                    transform: imgVisible ? "translateY(0px)" : "translateY(10px)",
-                    transition: "opacity 0.35s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)",
-                  }}
-                >
-                  <img
-                    src={item.img}
-                    alt={item.label}
-                    className="w-full h-full object-cover"
-                    style={{ objectPosition: item.mobileObjectPosition || "center top" }}
-                    onError={(e) => { e.currentTarget.style.display = "none"; }}
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* SURGICAL CHANGE 8: content only animates on phase==="content", not on "hold" (stops re-sliding) */}
-            <div
-              key={`content-${step}`}
-              className="hidden lg:block px-6 pb-4 text-left shrink-0"
-              style={{
-                opacity: showContent ? 1 : 0,
-                animation: phase === "content"
-                  ? "timelineContentSlide 0.42s cubic-bezier(0.22,1,0.36,1) both"
-                  : "none",
-              }}
-            >
-              <div className="flex items-baseline gap-2 whitespace-nowrap justify-start">
-                <span className={`text-[22px] font-bold ${item.isNow ? "text-[#D96F45]" : "text-[#1A1A1A]"} ${HEADING}`}>
-                  {item.year}
-                </span>
-                <span className={`text-[14px] font-semibold text-[#9A8176] ${HEADING}`}>
-                  {item.label}
-                </span>
-              </div>
-              <p className="mt-1 text-[12px] leading-[1.45] text-[#5F5149] whitespace-nowrap text-left">
-                {item.sub}
-              </p>
-            </div>
-          </div>
-        </>
-      )}
-
-      <style>{`
-        @keyframes tlScribbleDraw {
-          from { stroke-dashoffset: ${SCRIBBLE_LEN}; }
-          to   { stroke-dashoffset: 0; }
-        }
-        @keyframes tlDraw {
-          from { stroke-dashoffset: 520; }
-          to   { stroke-dashoffset: 0; }
-        }
-        @keyframes timelineContentSlide {
-          from { opacity: 0; transform: translateX(120px); }
-          to   { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes timelineDotSlide {
-          from { opacity: 0; transform: translateX(120px); }
-          to   { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes tlHeartDraw {
-          from { stroke-dashoffset: 80; }
-          to   { stroke-dashoffset: 0; }
-        }
-        @keyframes tlNowGlow {
-          0%,100% { filter: drop-shadow(0 0 3px rgba(217,111,69,0.5)); }
-          50%      { filter: drop-shadow(0 0 8px rgba(217,111,69,0.9)); }
-        }
-      `}</style>
-    </div>
-  );
-}
-
-/* ─── BENTO TILE: My Work, 3 project thumbnails in one row ─── */
-const WORK_PREVIEWS = [
-  { src: "/muesli-preview.jpg",   label: "Muesli, local-first dictation", isNew: true, projectKey: "muesli" },
-  { src: "/ai-chat-preview.png",   label: "JPMC, agentic search experiences",   projectKey: "ai-framer" },
-  { src: "/outdone-preview.png",   label: "Outdone, context-aware personalization", projectKey: "travel-dna" },
-];
-
-function MyWorkTile({ onOpenProject }) {
-  return (
-    <div
-      className={`group relative w-full rounded-[32px] bg-white flex flex-col text-left overflow-hidden ${BODY}`}
-    >
-      {/* MY WORK label */}
-      <p className={`pt-7 px-7 pb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] shrink-0 ${HEADING}`}>
-        selected work
-      </p>
-
-      <div style={{ display: "flex", gap: "12px", marginLeft: "-12px", marginRight: "-12px", marginBottom: "-2px" }}>
-        {WORK_PREVIEWS.map((proj) => (
-          <div
-            key={proj.label}
-            className="relative flex-1 overflow-hidden"
-            style={{
-              height: "200px",
-              borderRadius: "16px 16px 0 0",
-              border: "5px solid rgba(221, 192, 182, 0.45)",
-              borderBottom: "none",
-              boxShadow: "0px 2.8px 4.2px -0.7px rgba(0,0,0,0.1), 0px 1.4px 2.8px -1.4px rgba(0,0,0,0.1)",
-              background: "#EDEAE7",
-              minWidth: 0,
-              cursor: "pointer",
-            }}
-            onClick={() => onOpenProject(proj.projectKey)}
-          >
-            <img
-              src={proj.src}
-              alt={proj.label}
-              className="w-full h-full object-cover object-top"
-              onError={(e) => { e.target.style.opacity = "0"; }}
-            />
-            <div
-              className="absolute inset-0 flex items-end transition-opacity duration-200 opacity-0 hover:opacity-100"
-              style={{ background: "rgba(0,0,0,0.5)" }}
-            >
-              <p className={`px-5 py-3 text-[11px] font-bold tracking-[0.14em] uppercase text-white ${HEADING}`}>
-                {proj.label}
-              </p>
-            </div>
-            {proj.isNew && (
-              <div className={`absolute top-3 right-3 px-2.5 py-1 bg-white rounded-full text-[8px] font-bold tracking-[0.9px] uppercase text-black ${HEADING}`}>
-                New
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ─── BENTO TILE: Testimonials ─── */
-function TestimonialTile() {
-  const [index, setIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [quote, name, title] = TESTIMONIALS[index] || [];
-
-  useEffect(() => {
-    if (!TESTIMONIALS.length || isPaused) return;
-    const timer = setInterval(() => {
-      setIndex((current) => (current + 1) % TESTIMONIALS.length);
-    }, 5200);
-    return () => clearInterval(timer);
-  }, [isPaused]);
-
-  return (
-    <article className={`relative rounded-[32px] bg-white p-7 text-[13px] ${BODY}`} style={{ height: "100%", overflow: "hidden" }}>
-      <p className={`mb-5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-        what people say about me
-      </p>
-
-      <div key={index} className="animate-[slideIn_0.35s_ease_forwards]" style={{ height: "130px", overflow: "hidden" }}>
-        <p
-          className="italic leading-[1.55] text-[#4F4741]"
-          style={{
-            display: "-webkit-box",
-            WebkitLineClamp: 4,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-          }}
-        >"{quote}"</p>
-        <p className={`mt-3 text-[14px] font-semibold text-[#111827] ${HEADING}`}>{name}</p>
-        <p className="mt-0.5 text-[11px] uppercase tracking-[0.12em] text-[#9CA3AF]">{title}</p>
-      </div>
-
-      <div className="mt-4 flex gap-3 pr-14">
-        {TESTIMONIALS.map((_, dotIndex) => (
-          <button
-            key={dotIndex}
-            type="button"
-            onClick={() => setIndex(dotIndex)}
-            aria-label={`Show testimonial ${dotIndex + 1}`}
-            aria-current={index === dotIndex ? "true" : "false"}
-            className={`h-3 rounded-full transition-all duration-300 ${index === dotIndex ? "w-10 bg-[#D96F45]" : "w-3 bg-[#EEF0F3] hover:bg-[#D8C5BB]"}`}
-          />
-        ))}
-      </div>
-
-      <button
-        type="button"
-        onClick={() => setIsPaused((current) => !current)}
-        aria-label={isPaused ? "Play testimonials" : "Pause testimonials"}
-        className="absolute bottom-7 right-7 inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#E4E2E1] bg-white p-0 leading-none text-[#6B625C] transition hover:border-[#A5522A] hover:text-[#A5522A]"
-      >
-        <span className="flex h-full w-full items-center justify-center leading-none">
-          {isPaused ? <PlayIcon /> : <PauseIcon />}
-        </span>
-      </button>
-    </article>
-  );
-}
-
+/* ── Chat knowledge ─────────────────────────────────────────────────────
+   Same questions, same answers. Only the presentation moved onto the canvas. */
 
 const MODEL_DESIGN_INTRO = `I drove work and teams towards launch and learn even in a traditionally slower environment, deeply collaborating with product, engineering, marketing, and yes, data science and ML teams too!
 
@@ -1409,297 +608,68 @@ const MODEL_DESIGN_LINKS = [
   {
     title: "Chase MyHome Intent-Based Recommendations",
     question: "How should the system decide what to recommend?",
-    description: "Built behavioral segmentation model to classify user intent and map it to personalized messaging that resonates with what users actually need in that moment.",
     target: "ai-personalization",
   },
   {
     title: "Casey Conversational AI",
     question: "How should the model respond?",
-    description: "Defined constraints for edge cases in an omni-channel conversational AI handling 1,000+ customer conversations.",
     target: "casey-ai",
   },
   {
     title: "AI Search Interfaces",
     question: "How should AI become the interface?",
-    description: "Explored how ChatGPT and Gemini could turn search-time intent into action without breaking the conversational flow.",
     target: "ai-framer",
   },
   {
     title: "Outdone Mood-Based Personalization",
     question: "What context should guide generation?",
-    description: "I built Outdone because I felt personalization relies too much on historical data and forgets what someone might want today.",
     target: "travel-dna",
   },
 ];
 
-function ModelDesignInlineLinks({ openProjectForActivePill }) {
-  return (
-    <div className="mt-5 space-y-5 animate-[fadeUp_0.35s_ease_forwards]">
-      {MODEL_DESIGN_LINKS.map((link) => (
-        <button
-          key={link.title}
-          onClick={() => openProjectForActivePill(link.target)}
-          className="block w-full text-left group"
-        >
-          <p className={`text-[14px] font-semibold leading-[1.5] text-[#221B16] ${HEADING}`}>
-            {link.title}
-          </p>
-          <p className={`mt-1 inline text-[13px] leading-[1.6] text-[#8A817B] underline underline-offset-4 decoration-[#8A817B] group-hover:text-[#A5522A] group-hover:decoration-[#A5522A] transition ${HEADING}`}>
-            {link.question} →
-          </p>
-          <p className={`mt-2 text-[13px] leading-[1.65] text-[#5F5149] ${TYPEWRITE}`}>
-            {link.description}
-          </p>
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function ResponseLinks({ active, openProjectForActivePill }) {
-  if (active === "show model design thinking") return null;
-
-
-  if (active === "let's talk AI") {
-    return (
-      <div className="flex flex-wrap gap-x-6 gap-y-3 px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
-        <button onClick={() => openProjectForActivePill("ai-framer")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
-          agentic search experiences →
-        </button>
-
-        <button onClick={() => openProjectForActivePill("casey-ai")} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
-          conversational AI →
-        </button>
-      </div>
-    );
+/** The follow-up links that belong to each answer. */
+function linksForQuestion(question, open) {
+  if (question === "show model design thinking") {
+    return MODEL_DESIGN_LINKS.map((link) => ({
+      label: link.title,
+      onSelect: () => open(link.target),
+    }));
   }
 
-  const ctaText = (() => {
-    if (active === "how do you get exec buy-in") return "walk me through the project →";
-    if (active === "product strategy thinking") return "show me the framework →";
-    if (active === "how do you uncover user needs") return "show me the work →";
-    if (active === "designing systems at scale") return "show me the system →";
-    if (active === "how do you ship fast") return "what have you been building? →";
-    return "";
-  })();
+  if (question === "let's talk AI") {
+    return [
+      { label: "agentic search experiences", onSelect: () => open("ai-framer") },
+      { label: "conversational AI", onSelect: () => open("casey-ai") },
+    ];
+  }
 
-  if (!ctaText) return null;
+  const single = {
+    "uncovering user needs": ["show me the work", "b2c"],
+    "product strategy thinking": ["show me the framework", "ai-personalization"],
+    "designing systems at scale": ["show me the system", "service-design"],
+    "how do you ship fast": ["what have you been building?", "travel-dna-live"],
+    "getting exec buy-in": ["walk me through the project", "exec-pitch"],
+  }[question];
 
-  return (
-    <div className="px-2 pt-4 animate-[fadeUp_0.35s_ease_forwards]">
-      <button onClick={() => openProjectForActivePill()} className={`inline-flex text-[14px] font-medium text-[#8A817B] underline underline-offset-4 transition-colors hover:text-[#A5522A] ${HEADING}`}>
-        {ctaText}
-      </button>
-    </div>
-  );
+  return single ? [{ label: single[0], onSelect: () => open(single[1]) }] : [];
 }
 
-function ChatConversation({ active, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, instantType = false }) {
-  return (
-    <>
-      <div className="mb-6 flex justify-end">
-        <div className={`rounded-[48px_48px_0px_48px] bg-[#A5522A] px-6 py-3 text-[14px] leading-[1.8] text-white animate-[messageSend_0.35s_ease_forwards] ${TYPEWRITE}`}>
-          {active}
-        </div>
-      </div>
-
-      {showThinking && (
-        <div className="rounded-[0px_36px_36px_36px] bg-white p-5 animate-[fadeUp_0.25s_ease_forwards] sm:p-6">
-          <div className={`flex items-center gap-2 text-[12px] text-[#8A817B] ${HEADING}`}>
-            <span className="h-2 w-2 rounded-full bg-[#A5522A] animate-pulse" />
-            thinking
-          </div>
-        </div>
-      )}
-
-      {showResponse && (
-        <>
-          <div className="rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-            {active === "show model design thinking" ? (
-              <>
-                <Typewriter
-                  text={MODEL_DESIGN_INTRO}
-                  shouldStart={showResponse}
-                  onDone={onTypeDone}
-                  instant={instantType}
-                />
-
-                {showPills && (
-                  <ModelDesignInlineLinks openProjectForActivePill={openProjectForActivePill} />
-                )}
-              </>
-            ) : (
-              <Typewriter text={CONTENT?.[active] || ""} shouldStart={showResponse} onDone={onTypeDone} instant={instantType} />
-            )}
-
-            {active === "how do you uncover user needs" && showUserNeedsRest && <SegmentationDiagram />}
-
-            {showPills && active === "designing systems at scale" && <JourneyMapPreview />}
-          </div>
-
-          {active === "how do you uncover user needs" && showUserNeedsRest && (
-            <div className="mt-5 rounded-[0px_36px_36px_36px] bg-[#F1EFED] p-5 animate-[answerBubbleIn_0.45s_ease_forwards] sm:p-6">
-              <p className={`whitespace-pre-line break-words text-[14px] leading-[1.8] text-[#221B16] ${TYPEWRITE}`}>
-                {USER_NEEDS_REST}
-              </p>
-            </div>
-          )}
-
-          {showPills && <ResponseLinks active={active} openProjectForActivePill={openProjectForActivePill} />}
-        </>
-      )}
-    </>
-  );
-}
-
-function MobileChatModal({ active, setActive, showThinking, showResponse, showPills, showUserNeedsRest, onTypeDone, openProjectForActivePill, onClose, instantType = false }) {
-  const [showHint, setShowHint] = useState(false);
-
-  return (
-    <div className={`fixed inset-0 z-[60] flex flex-col bg-[#FFF8F5] ${BODY}`}>
-      <div className="pointer-events-none fixed left-0 right-0 top-0 z-10 flex items-start justify-between gap-3 px-4 pt-4">
-        <div className="pointer-events-auto max-w-[calc(100%-72px)] rounded-[999px] border border-[#E4E2E1] bg-white px-7 py-5 shadow-sm">
-          <div className="flex items-center gap-2">
-            <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9A8176] ${HEADING}`}>
-              ask me
-            </p>
-
-            <button
-              type="button"
-              onClick={() => setShowHint((current) => !current)}
-              aria-label={showHint ? "Hide hint" : "Show hint"}
-              className="flex h-4 w-4 items-center justify-center p-0 leading-none text-[#8A817B] transition hover:text-[#A5522A]"
-            >
-              <ChevronRightIcon
-                className={`h-4 w-4 transition-transform duration-300 ${
-                  showHint ? "rotate-90" : ""
-                }`}
-              />
-            </button>
-          </div>
-
-          {showHint && (
-            <p className="mt-2 text-[13px] text-[#6B625C] animate-[fadeUp_0.25s_ease_forwards]">
-              Tap a chip to send a question.
-            </p>
-          )}
-        </div>
-
-        <div className="pointer-events-auto">
-          <CircleIconButton onClick={onClose} ariaLabel="Close chat" className="shadow-sm">
-            <CloseIcon />
-          </CircleIconButton>
-        </div>
-      </div>
-
-      <div className="flex-1 overflow-y-auto px-4 pb-32 pt-28">
-        <ChatConversation
-          active={active}
-          showThinking={showThinking}
-          showResponse={showResponse}
-          showPills={showPills}
-          showUserNeedsRest={showUserNeedsRest}
-          onTypeDone={onTypeDone}
-          openProjectForActivePill={openProjectForActivePill}
-          instantType={instantType}
-        />
-      </div>
-
-      <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-[#FFF8F5] via-[#FFF8F5]/95 to-transparent px-4 pb-5 pt-8">
-        <div className="pointer-events-auto no-scrollbar flex gap-2 overflow-x-auto">
-          {PILLS.map((pill) => (
-            <button
-              key={pill}
-              onClick={() => setActive(pill)}
-              className={`shrink-0 rounded-full border bg-white px-4 py-2 text-[11px] transition ${
-                active === pill
-                  ? "border-[#A5522A] text-[#A5522A]"
-                  : "border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
-              } ${HEADING}`}
-            >
-              {pill}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// SURGICAL ADD: SpotlightTile — wraps each bento cell to give it:
-// 1) a staggered "tumble in" entrance on mount (opacity/translate/scale/rotate, animejs-style easing)
-// 2) a hover "pop" (slight scale + lift) and a spotlight glow that follows the cursor within the tile
-// 3) an opaque white backer layer so the page-level cursor glow never bleeds through a tile's own
-//    (possibly translucent, e.g. Hero) background or through corner gaps
-// 4) dimming of sibling tiles while one tile is hovered, via lifted hoveredKey state
-function SpotlightTile({ children, index = 0, className = "", style = {}, tileKey, hoveredKey, onHover }) {
-  const dimmed = hoveredKey !== null && hoveredKey !== tileKey;
-
-  return (
-    <div
-      onMouseEnter={() => onHover?.(tileKey)}
-      onMouseLeave={() => onHover?.(null)}
-      className={`bento-tile relative rounded-[32px] ${className}`}
-      style={{
-        ...style,
-        animationDelay: `${index * 90}ms`,
-        opacity: dimmed ? 0.55 : 1,
-        transition: "opacity 0.35s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease",
-      }}
-    >
-      {/* Opaque white backer, sits under everything so the page-level cursor glow never shows through */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[32px] bg-white" />
-      <div className="relative">{children}</div>
-    </div>
-  );
+function answerFor(question) {
+  if (question === "show model design thinking") return MODEL_DESIGN_INTRO;
+  if (question === "uncovering user needs") {
+    return `${CONTENT[question]}\n\n${USER_NEEDS_REST}`;
+  }
+  return CONTENT[question] || "";
 }
 
 export default function PortfolioHome() {
-  const chatCardRef = useRef(null);
-  const chatScrollRef = useRef(null);
   const [active, setActive] = useState(DEFAULT_PILL);
   const [projectOpen, setProjectOpen] = useState(null);
-  const [showPills, setShowPills] = useState(false);
-  const [showResponse, setShowResponse] = useState(false);
-  const [showThinking, setShowThinking] = useState(false);
-  const [showUserNeedsRest, setShowUserNeedsRest] = useState(false);
-  const [mobileChatOpen, setMobileChatOpen] = useState(false);
-  const [instantType, setInstantType] = useState(true);
+  const [showLinks, setShowLinks] = useState(false);
+  const [thinking, setThinking] = useState(false);
   const [workProjectSlug, setWorkProjectSlug] = useState("b2c");
-  const [hoveredTile, setHoveredTile] = useState(null);
+  const [instantType, setInstantType] = useState(true);
   const isFirstLoad = useRef(true);
-
-  // SURGICAL CHANGE — smooth cursor glow via requestAnimationFrame lerp instead of
-  // React state + CSS transition-transform (which was never actually animating,
-  // since left/top were being set directly and transition-transform only watches
-  // the `transform` property).
-  const glowRef = useRef(null);
-  const mousePos = useRef({ x: 0, y: 0 });
-  const glowPos = useRef({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      mousePos.current = { x: e.clientX, y: e.clientY };
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-
-    let rafId;
-    const animate = () => {
-      glowPos.current.x += (mousePos.current.x - glowPos.current.x) * 0.08;
-      glowPos.current.y += (mousePos.current.y - glowPos.current.y) * 0.08;
-      if (glowRef.current) {
-        glowRef.current.style.transform =
-          `translate(${glowPos.current.x - 150}px, ${glowPos.current.y - 150}px)`;
-      }
-      rafId = requestAnimationFrame(animate);
-    };
-    rafId = requestAnimationFrame(animate);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
 
   useEffect(() => {
     const faviconPath = "/logo.jpg";
@@ -1728,416 +698,132 @@ export default function PortfolioHome() {
     document.title = "Sanjana Venkat";
   }, []);
 
+  // Deep links such as /#work=muesli still open straight into a case study.
   useEffect(() => {
-    const hash = window.location.hash || "";
-    if (hash.startsWith("#work=")) {
-      const slug = hash.replace("#work=", "");
-      setWorkProjectSlug(slug || "b2c");
-      setProjectOpen("work-browser");
-    }
+    const openFromHash = () => {
+      const hash = window.location.hash || "";
+      if (hash.startsWith("#work=")) {
+        setWorkProjectSlug(hash.replace("#work=", "") || "b2c");
+        setProjectOpen("work-browser");
+      } else {
+        setProjectOpen(null);
+      }
+    };
+
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+    return () => window.removeEventListener("hashchange", openFromHash);
   }, []);
 
   useEffect(() => {
     if (isFirstLoad.current) {
       isFirstLoad.current = false;
       setInstantType(true);
-      setShowThinking(false);
-      setShowResponse(true);
-      setShowPills(true);
-      setShowUserNeedsRest(active === "how do you uncover user needs");
-      return;
+      setThinking(false);
+      setShowLinks(true);
+      return undefined;
     }
 
     setInstantType(false);
-    setShowPills(false);
-    setShowResponse(false);
-    setShowUserNeedsRest(false);
-    setShowThinking(true);
+    setShowLinks(false);
+    setThinking(true);
 
-    const timer = setTimeout(() => {
-      setShowThinking(false);
-      setShowResponse(true);
-    }, 850);
-
+    const timer = setTimeout(() => setThinking(false), 850);
     return () => clearTimeout(timer);
-  }, [active]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [active]);
 
-  const handleTypeDone = () => {
-    if (active === "how do you uncover user needs") {
-      setShowUserNeedsRest(true);
-    }
-    setShowPills(true);
-  };
+  const [workOrigin, setWorkOrigin] = useState(null);
 
-  const handlePillSelect = (pill) => {
-    if (pill === active) return;
-    chatCardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    setActive(pill);
-  };
-
-  const openWorkProject = (slug) => {
+  const openWorkProject = (slug, origin) => {
+    setWorkOrigin(origin || null);
     setWorkProjectSlug(slug);
-    window.history.replaceState(null, "", `#work=${slug}`);
+    window.history.pushState(null, "", `#work=${slug}`);
     setProjectOpen("work-browser");
   };
 
-  const handleNav = (item) => {
-    if (item === "my work") {
-      setWorkProjectSlug("b2c");
-      window.history.replaceState(null, "", "#work=b2c");
-      setProjectOpen("work-browser");
-      return;
-    }
-    if (item === "what are you building now") {
-      window.open(TRAVEL_DNA_URL, "_blank");
-      return;
-    }
-    if (item === "resume") {
-      window.open(RESUME_URL, "_blank");
-      return;
-    }
-    if (item === "github") {
-      window.open(GITHUB_URL, "_blank");
-      return;
-    }
-    if (item === "contact") {
-      window.open("https://www.linkedin.com/in/sanjana-venkat/", "_blank");
+  const closeWorkProject = () => {
+    setProjectOpen(null);
+    if (window.location.hash.startsWith("#work=")) {
+      window.history.pushState(null, "", window.location.pathname);
     }
   };
 
-  const openProjectForActivePill = (override) => {
-    setMobileChatOpen(false);
+  const openProjectTarget = (target, origin) => {
+    const slugByTarget = {
+      "ai-framer": "ai-chat-journeys",
+      "casey-ai": "conversational-agentic-ai",
+      "ai-personalization": "ai-personalization",
+      "travel-dna": "model-design",
+      "model-design": "model-design",
+      muesli: "muesli",
+      b2c: "b2c",
+      "service-design": "service-design",
+      "exec-pitch": "exec-pitch",
+      "ai-chat-journeys": "ai-chat-journeys",
+      "conversational-agentic-ai": "conversational-agentic-ai",
+    };
 
-    if (override === "ai-framer") {
-      openWorkProject("ai-chat-journeys");
+    if (target === "travel-dna-live") {
+      window.open(TRAVEL_DNA_URL, "_blank", "noreferrer");
       return;
     }
 
-    if (override === "casey-ai") {
-      openWorkProject("conversational-agentic-ai");
-      return;
-    }
-
-    if (override === "ai-personalization") {
-      openWorkProject("ai-personalization");
-      return;
-    }
-
-    if (override === "travel-dna") {
-      openWorkProject("model-design");
-      return;
-    }
-
-    if (active === "how do you uncover user needs") {
-      openWorkProject("b2c");
-      return;
-    }
-
-    if (active === "let's talk AI") {
-      openWorkProject("ai-chat-journeys");
-      return;
-    }
-
-    if (active === "product strategy thinking") {
-      openWorkProject("ai-personalization");
-      return;
-    }
-
-    if (active === "designing systems at scale") {
-      openWorkProject("service-design");
-      return;
-    }
-
-    if (active === "how do you ship fast") {
-      window.open("https://travel-dna-kohl.vercel.app/", "_blank");
-      return;
-    }
-
-    if (active === "how do you get exec buy-in") {
-      openWorkProject("exec-pitch");
-      return;
-    }
-
-    if (active === "model design") {
-      window.open("https://travel-dna-kohl.vercel.app/", "_blank");
-    }
+    openWorkProject(slugByTarget[target] || "b2c", origin);
   };
 
   return (
-    <main
-      className={`relative min-h-screen w-full overflow-x-hidden bg-[#F7F4F2] px-4 py-6 text-[#221B16] sm:px-8 sm:py-10 ${BODY}`}
-    >
-      {/* Modals */}
+    <main className={`bg-[#F7F4F2] text-[#221B16] ${BODY}`}>
       {projectOpen === "work-browser" && (
         <WorkBrowserModal
           initialSlug={workProjectSlug}
-          onClose={() => {
-            setProjectOpen(null);
-            if (window.location.hash.startsWith("#work=")) {
-              window.history.replaceState(null, "", window.location.pathname);
-            }
-          }}
+          origin={workOrigin}
+          onClose={closeWorkProject}
         />
       )}
-      {projectOpen === "user-needs" && <FramerModal title="How I Uncover User Needs" url={USER_NEEDS_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
       {projectOpen === "figma-deck" && <FigmaDeckModal onClose={() => setProjectOpen(null)} />}
       {projectOpen === "ai-framer" && <FramerModal title="AI Search Interfaces" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
       {projectOpen === "casey-ai" && <FramerModal title="Conversational AI" url={CASEY_AI_URL} onClose={() => setProjectOpen(null)} />}
-      {projectOpen === "marketing-tiles" && <FramerModal title="Intend-based Recommendations" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />}
+      {projectOpen === "user-needs" && <FramerModal title="How I Uncover User Needs" url={USER_NEEDS_FRAMER_URL} onClose={() => setProjectOpen(null)} />}
+      {projectOpen === "marketing-tiles" && <FramerModal title="Intent-based Recommendations" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />}
       {projectOpen === "apply-systems" && <FramerModal title="Designing Systems at Scale" url={APPLY_SYSTEMS_URL} onClose={() => setProjectOpen(null)} />}
 
-      {mobileChatOpen && (
-        <MobileChatModal
-          active={active}
-          setActive={setActive}
-          showThinking={showThinking}
-          showResponse={showResponse}
-          showPills={showPills}
-          showUserNeedsRest={showUserNeedsRest}
-          onTypeDone={handleTypeDone}
-          openProjectForActivePill={openProjectForActivePill}
-          onClose={() => setMobileChatOpen(false)}
-          instantType={instantType}
-        />
-      )}
-
-      {/* Mobile chat FAB */}
-      <button
-        type="button"
-        onClick={() => setMobileChatOpen(true)}
-        aria-label="Open chat"
-        className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#A5522A] p-0 leading-none text-white shadow-lg transition hover:scale-105 md:hidden"
-      >
-        <span className="flex h-full w-full items-center justify-center leading-none"><ChatIcon /></span>
-      </button>
-
-      {/* Cursor glow — position now driven by rAF lerp loop above, via ref + transform */}
-      <div
-        ref={glowRef}
-        className="pointer-events-none fixed z-0 h-[340px] w-[340px] rounded-full blur-3xl"
-        style={{
-          left: 0,
-          top: 0,
-          willChange: "transform",
-          background: "radial-gradient(circle, rgba(140,60,25,0.32) 0%, rgba(140,60,25,0.15) 45%, rgba(140,60,25,0) 72%)",
+      <Scene
+        onOpenProject={openProjectTarget}
+        chat={{
+          active,
+          questions: PILLS,
+          answer: answerFor(active),
+          thinking,
+          instant: instantType,
+          showLinks,
+          links: linksForQuestion(active, openProjectTarget),
+          onAsk: setActive,
+          onAnswerDone: () => setShowLinks(true),
         }}
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1280px]">
-
-        {/* ── DESKTOP ── */}
-        <div
-          className="hidden lg:grid"
-          style={{
-            gridTemplateColumns: "480px 1fr 1fr",
-            gridTemplateRows: "auto auto auto",
-            gap: "14px",
-          }}
-        >
-
-          {/* Chat: col 1, rows 1-2, fixed height with internal scroll */}
-          <div
-            ref={chatCardRef}
-            className="bento-tile relative rounded-[32px] overflow-hidden flex flex-col"
-            style={{
-              gridColumn: "1",
-              gridRow: "1 / 3",
-              height: "560px",
-              animationDelay: "0ms",
-              opacity: hoveredTile !== null && hoveredTile !== "chat" ? 0.55 : 1,
-              transition: "opacity 0.35s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease",
-            }}
-            onMouseEnter={() => setHoveredTile("chat")}
-            onMouseLeave={() => setHoveredTile(null)}
-          >
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[32px] bg-white" />
-            <div className="px-6 pt-6 pb-3 shrink-0">
-              <p className={`text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9A8176] ${HEADING}`}>
-                ask me
-              </p>
-            </div>
-            <div ref={(el) => { chatScrollRef.current = el; _chatScrollEl = el; }} data-chat-scroll className="flex-1 overflow-y-auto px-6 no-scrollbar" style={{ paddingBottom: showPills ? "64px" : "16px" }}>
-              <ChatConversation
-                active={active}
-                showThinking={showThinking}
-                showResponse={showResponse}
-                showPills={showPills}
-                showUserNeedsRest={showUserNeedsRest}
-                onTypeDone={handleTypeDone}
-                openProjectForActivePill={openProjectForActivePill}
-                instantType={instantType}
-              />
-            </div>
-            {showPills && (
-              <div className="absolute bottom-0 left-0 right-0 px-6 pb-4 pt-8 bg-gradient-to-t from-white via-white/95 to-transparent animate-[fadeUp_0.45s_ease_forwards]">
-                <div className="no-scrollbar overflow-x-auto">
-                  <div className="flex gap-2" style={{ width: "max-content" }}>
-                    {PILLS.map((pill) => (
-                      <button
-                        key={pill}
-                        onClick={() => handlePillSelect(pill)}
-                        className={`rounded-full border px-4 py-2 text-[11px] whitespace-nowrap transition hover:scale-[1.02] backdrop-blur-sm ${
-                          active === pill
-                            ? "bg-white border-[#A5522A] text-[#A5522A]"
-                            : "bg-white border-[#E4E2E1] text-[#6B625C] hover:border-[#D8C5BB]"
-                        } ${HEADING}`}
-                      >
-                        {pill}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Hero: col 2-3, row 1 */}
-          <SpotlightTile index={1} tileKey="hero" hoveredKey={hoveredTile} onHover={setHoveredTile} style={{ gridColumn: "2 / 4", gridRow: "1" }} className="overflow-visible">
-            <HeroTile />
-          </SpotlightTile>
-
-          {/* NavTile: col 2, row 2 */}
-          <SpotlightTile index={2} tileKey="nav" hoveredKey={hoveredTile} onHover={setHoveredTile} style={{ gridColumn: "2", gridRow: "2" }}>
-            <NavTile />
-          </SpotlightTile>
-
-          {/* What I Believe: col 3, row 2 */}
-          <SpotlightTile index={3} tileKey="believe" hoveredKey={hoveredTile} onHover={setHoveredTile} style={{ gridColumn: "3", gridRow: "2" }}>
-            <WhatIBelieveTile />
-          </SpotlightTile>
-
-          {/* My Work: col 1-2, row 3 */}
-          <SpotlightTile index={4} tileKey="work" hoveredKey={hoveredTile} onHover={setHoveredTile} style={{ gridColumn: "1 / 3", gridRow: "3" }}>
-            <MyWorkTile
-              onOpenProject={(key) => {
-                const slugByKey = {
-                  "muesli": "muesli",
-                  "marketing-tiles": "ai-personalization",
-                  "ai-framer": "ai-chat-journeys",
-                  "travel-dna": "model-design",
-                };
-                openWorkProject(slugByKey[key] || "b2c");
-              }}
-            />
-          </SpotlightTile>
-
-          {/* Testimonials: col 3, row 3 */}
-          <SpotlightTile index={5} tileKey="testimonials" hoveredKey={hoveredTile} onHover={setHoveredTile} style={{ gridColumn: "3", gridRow: "3" }}>
-            <TestimonialTile />
-          </SpotlightTile>
-
-        </div>
-
-        {/* ── MOBILE stack ── */}
-        <div className="flex flex-col gap-4 lg:hidden">
-          <SpotlightTile index={0} tileKey="hero-m" hoveredKey={hoveredTile} onHover={setHoveredTile} className="overflow-visible">
-            <HeroTile />
-          </SpotlightTile>
-          <SpotlightTile index={1} tileKey="nav-m" hoveredKey={hoveredTile} onHover={setHoveredTile}>
-            <NavTile />
-          </SpotlightTile>
-          <SpotlightTile index={2} tileKey="believe-m" hoveredKey={hoveredTile} onHover={setHoveredTile}>
-            <WhatIBelieveTile />
-          </SpotlightTile>
-
-          <SpotlightTile index={3} tileKey="work-m" hoveredKey={hoveredTile} onHover={setHoveredTile}>
-            <MyWorkTile
-              onOpenProject={(key) => {
-                const slugByKey = {
-                  "muesli": "muesli",
-                  "marketing-tiles": "ai-personalization",
-                  "ai-framer": "ai-chat-journeys",
-                  "travel-dna": "model-design",
-                };
-                openWorkProject(slugByKey[key] || "b2c");
-              }}
-            />
-          </SpotlightTile>
-          <SpotlightTile index={4} tileKey="testimonials-m" hoveredKey={hoveredTile} onHover={setHoveredTile}>
-            <TestimonialTile />
-          </SpotlightTile>
-        </div>
-
-      </div>
-
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-        @keyframes bentoTumbleIn {
-          0% { opacity: 0; transform: translateY(52px) scale(0.9) rotate(-2.5deg); }
-          65% { opacity: 1; }
-          100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
-        }
-
-        .bento-tile {
-          animation: bentoTumbleIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-          will-change: transform;
-        }
-
-        .bento-tile:hover {
-          transform: translateY(-6px) scale(1.015);
-          box-shadow: 0 10px 24px -12px rgba(60, 48, 40, 0.18);
-        }
 
         @keyframes modalIn {
           from { opacity: 0; transform: translateY(18px) scale(0.98); }
           to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideIn {
-          from { opacity: 0; transform: translateX(18px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes messageSend {
-          from { opacity: 0; transform: translateY(10px) scale(0.96); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        @keyframes answerBubbleIn {
-          from { opacity: 0; transform: translateY(14px) scale(0.98); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        @keyframes glow {
-          0% { box-shadow: 0 0 0 0 rgba(217,111,69,0.6); }
-          50% { box-shadow: 0 0 0 12px rgba(217,111,69,0); }
-          100% { box-shadow: 0 0 0 0 rgba(217,111,69,0); }
-        }
-
-        html,
-        body {
+        html, body {
           font-family: 'Open Sans', sans-serif;
           background: #F7F4F2;
         }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        button {
+        h1, h2, h3, h4, h5, h6, button {
           font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        .animate-glow {
-          animation: glow 2s ease-in-out infinite;
-        }
+        .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
 
-        .no-scrollbar {
-          scrollbar-width: none;
-          -ms-overflow-style: none;
-        }
-
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
+        @media (prefers-reduced-motion: reduce) {
+          [class*="animate-["] { animation: none !important; }
         }
       `}</style>
     </main>

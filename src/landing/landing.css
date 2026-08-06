@@ -1,0 +1,1403 @@
+@import url("https://fonts.googleapis.com/css2?family=Eczar:wght@400;500;600&family=Karla:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap");
+
+/* ==========================================================================
+   sanjanavenkat.com — hand-drawn precision on a swept floor.
+   Tokens per BRAND.md. No hex values below this block.
+   ========================================================================== */
+
+/* The token block lives on :root so every surface — the room, the sections,
+   the case-study shell — resolves from the same source. */
+:root {
+  /* Ground */
+  --cream-50: #fbf8f2;
+  --cream-100: #f4efe5;
+  --cream-200: #e9e1d2;
+
+  /* Ink */
+  --ink-900: #211e1a;
+  --ink-600: #5c554a;
+  --ink-400: #8c8477;
+
+  /* Lotus — the primary: the kolam line, links, active state */
+  --lotus-600: #b85c72;
+  --lotus-800: #8e4256;
+  --lotus-100: #ecd7dd;
+
+  /* The kumkum names now point at lotus, so every rule follows. */
+  --terracotta-600: var(--lotus-600);
+  --terracotta-800: var(--lotus-800);
+  --terracotta-100: var(--lotus-100);
+
+  /* Banana leaf — the accent */
+  --leaf-700: #2e5145;
+  --leaf-300: #8aa294;
+
+  /* Brass — hairline only */
+  --brass-600: #a8823f;
+
+  /* Vintage wood — corner ornament */
+  --wood-800: #57391f;
+  --wood-700: #6e4b31;
+  --wood-400: #a08061;
+  --brass-200: #ddc9a0;
+  --shadow: rgba(33, 30, 26, 0.14);
+
+  /* Carved wood — three values, no more. Light always from the upper left:
+     --wood-lit is the face catching it, --wood-deep is the relief channel.
+     Flat shapes only; never a gradient, a bevel or an inner shadow. */
+  --wood-lit: #a9663f;
+  --wood-mid: #8a4f30;
+  --wood-deep: #5e3220;
+
+  /* Brass — two values. Gold on the lit face, green-black in the groove. */
+  --brass: #c9a227;
+  --brass-deep: #3d3a22;
+
+  /* Every object in the room sits on or hangs from something. */
+  --contact: drop-shadow(3px 7px 10px rgba(34, 27, 22, 0.16));
+
+  --jasmine: #fffdf8;
+
+  /* Type */
+  --font-display: "Eczar", Georgia, serif;
+  --font-body: "Karla", system-ui, sans-serif;
+  --font-label: "Space Mono", ui-monospace, monospace;
+
+  --t-display: clamp(2.75rem, 4.4vw, 4.75rem);
+  --t-h1: 2.25rem;
+  --t-h2: 1.375rem;
+  --t-lead: 1.1875rem;
+  --t-body: 1rem;
+  --t-small: 0.875rem;
+  --t-label: 0.6875rem;
+
+  /* Spacing — 8px base, no other values */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 16px;
+  --s4: 24px;
+  --s5: 40px;
+  --s6: 64px;
+  --s7: 104px;
+  --s8: 168px;
+
+  --edge: var(--s7);
+  --zone: 28%;
+  --kolam: clamp(232px, 26vw, 400px);
+
+  /* Motion */
+  --in: cubic-bezier(0.22, 1, 0.36, 1);
+  --out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pc-root,
+.sc {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: var(--cream-50);
+  color: var(--ink-900);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+
+/* Lime plaster. A tiled background, not a live filter: filters get
+   re-rasterised on colour-profile changes and can blow up mid-render. */
+.pc-plaster {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.045;
+  background-repeat: repeat;
+}
+
+/* The one permitted gradient: warm light behind the mark. */
+.pc-light {
+  position: fixed;
+  z-index: 0;
+  left: 50%;
+  top: 50%;
+  width: min(78vw, 940px);
+  height: min(78vw, 940px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background: radial-gradient(
+    circle closest-side,
+    rgba(181, 83, 44, 0.06) 0%,
+    rgba(181, 83, 44, 0) 55%
+  );
+}
+
+/* ── Kolam — geometry and animation untouched ────────────────────────── */
+
+.km {
+  position: fixed;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  width: var(--kolam);
+  height: var(--kolam);
+  transform: translate(-50%, calc(-50% + 0.6vh));
+  transition: transform 480ms var(--in);
+}
+
+.km svg {
+  width: 100%;
+  height: 100%;
+  /* Deliberately not overflow:visible — see note above. */
+}
+
+.km-dot {
+  fill: var(--leaf-700);
+  opacity: 0;
+  animation: kmDot 420ms var(--in) both;
+  animation-delay: var(--d, 0ms);
+}
+
+@keyframes kmDot {
+  to {
+    opacity: 1;
+  }
+}
+
+.km-line {
+  fill: none;
+  stroke: var(--terracotta-600);
+  stroke-width: 0.058;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.9;
+  transition: stroke-width 240ms var(--in), opacity 240ms var(--in);
+}
+
+.km-line.is-drawn {
+  animation: kmDraw 900ms var(--in) both;
+  animation-delay: calc(400ms + var(--i, 0) * 620ms);
+}
+
+.km-line.is-lit {
+  stroke-width: 0.084;
+  opacity: 1;
+}
+
+@keyframes kmDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.km-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 0.34;
+  stroke-linecap: round;
+  cursor: pointer;
+  outline: none;
+}
+
+.km-hit:focus-visible {
+  stroke: var(--terracotta-100);
+}
+
+/* ── Corner ornament — the frame ─────────────────────────────────────── */
+
+.pc-corner {
+  position: fixed;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.pc-corner svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.pc-corner.tl {
+  top: var(--s4);
+  left: var(--s4);
+}
+
+.pc-corner.tr {
+  top: var(--s4);
+  right: var(--s4);
+  transform: scaleX(-1);
+}
+
+.pc-corner.bl {
+  bottom: var(--s4);
+  left: var(--s4);
+  transform: scaleY(-1);
+}
+
+.pc-corner.br {
+  bottom: var(--s4);
+  right: var(--s4);
+  transform: scale(-1);
+}
+
+/* ── Page frame ──────────────────────────────────────────────────────── */
+
+.pc-id {
+  position: fixed;
+  z-index: 20;
+  top: var(--edge);
+  left: var(--edge);
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.pc-id-portrait {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 44px;
+}
+
+.pc-id-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+  display: block;
+}
+
+/* The brass inset frame: the site's one use of brass at any scale. */
+.pc-framed {
+  position: relative;
+}
+
+.pc-framed::after {
+  content: "";
+  position: absolute;
+  inset: calc(-1 * var(--s2));
+  border: 1px solid var(--brass-600);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.pc-id-name {
+  font-family: var(--font-body);
+  font-size: var(--t-small);
+  font-weight: 600;
+  color: var(--ink-900);
+  display: block;
+  line-height: 1.3;
+}
+
+.pc-id-tag {
+  font-family: var(--font-label);
+  font-size: var(--t-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  display: block;
+  margin-top: var(--s1);
+}
+
+.pc-id:hover .pc-id-name {
+  color: var(--terracotta-600);
+}
+
+/* Selected work, upper right, with thumbnails. */
+.pc-work {
+  position: fixed;
+  z-index: 20;
+  top: var(--edge);
+  right: var(--edge);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--s2);
+}
+
+.pc-eyebrow {
+  font-family: var(--font-label);
+  font-size: var(--t-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  margin: 0;
+}
+
+.pc-work .list {
+  display: block;
+  /* Narrow enough that the wall never reaches the Story label beside it. */
+  width: clamp(248px, 23vw, 320px);
+}
+
+.pc-work-toggle {
+  display: none;
+}
+
+/* Footer utilities. */
+.pc-utils {
+  position: fixed;
+  left: var(--edge);
+  bottom: var(--edge);
+  z-index: 20;
+  display: flex;
+  gap: var(--s4);
+  align-items: center;
+}
+
+.pc-utils a,
+.pc-close {
+  font-family: var(--font-label);
+  font-size: var(--t-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 240ms var(--in);
+}
+
+.pc-utils a:hover,
+.pc-close:hover {
+  color: var(--terracotta-600);
+}
+
+.pc-close {
+  position: fixed;
+  right: var(--edge);
+  bottom: var(--edge);
+  z-index: 20;
+}
+
+/* ── Zones ───────────────────────────────────────────────────────────── */
+
+.pc-zones {
+  position: relative;
+  z-index: 4;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: var(--zone) 1fr var(--zone);
+  align-items: center;
+  gap: var(--s5);
+  padding: var(--s6) var(--edge) var(--s7);
+  pointer-events: none;
+}
+
+.pc-zone {
+  min-width: 0;
+  pointer-events: none;
+}
+
+.pc-zone > * {
+  pointer-events: auto;
+}
+
+.pc-zone-l {
+  grid-column: 1;
+}
+
+.pc-zone-r {
+  grid-column: 3;
+}
+
+@media (min-width: 861px) {
+  /* The hung work owns the top of this column; content starts clear of it. */
+  .pc-zones .pc-zone-r {
+    padding-top: 300px;
+  }
+}
+
+/* Statements must not shift as the quote changes length, and its quote
+   column earns a wider measure than the other sections need. */
+.pc-zones.is-fixed {
+  align-items: center;
+  grid-template-columns: 24% 1fr 34%;
+}
+
+/* ── Resting state ───────────────────────────────────────────────────── */
+
+.pc-rest {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.pc-rest button {
+  position: absolute;
+  pointer-events: auto;
+  background: none;
+  border: 0;
+  padding: var(--s2) var(--s1);
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--t-h2);
+  letter-spacing: -0.01em;
+  color: var(--ink-600);
+  transition: color 240ms var(--in);
+  white-space: nowrap;
+}
+
+.pc-rest button::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background: var(--terracotta-600);
+  opacity: 0;
+  transition: opacity 240ms var(--in);
+}
+
+.pc-rest button:hover,
+.pc-rest button:focus-visible,
+.pc-rest button.is-lit {
+  color: var(--terracotta-600);
+}
+
+.pc-rest button:hover::before,
+.pc-rest button.is-lit::before {
+  opacity: 1;
+}
+
+.pc-rest .r0 { left: 50%; top: 50%; transform: translate(calc(-100% - var(--kolam) * 0.6), calc(-50% - var(--kolam) * 0.56)); }
+.pc-rest .r1 { left: 50%; top: 50%; transform: translate(calc(var(--kolam) * 0.6), calc(-50% - var(--kolam) * 0.56)); }
+.pc-rest .r2 { left: 50%; top: 50%; transform: translate(calc(var(--kolam) * 0.6), calc(-50% + var(--kolam) * 0.56)); }
+.pc-rest .r3 { left: 50%; top: 50%; transform: translate(calc(-100% - var(--kolam) * 0.6), calc(-50% + var(--kolam) * 0.56)); }
+
+/* ── Type ────────────────────────────────────────────────────────────── */
+
+.pc-label {
+  font-family: var(--font-label);
+  font-size: var(--t-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  margin: 0 0 var(--s3);
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+/* Lotus marker sits immediately left of the eyebrow. */
+.pc-lotus {
+  flex: none;
+  width: 12px;
+  height: 20px;
+  color: var(--brass-600);
+  opacity: 0.45;
+}
+
+.pc-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--t-display);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--ink-900);
+}
+
+.pc-lead {
+  font-family: var(--font-body);
+  font-size: var(--t-lead);
+  line-height: 1.55;
+  max-width: 34em;
+  margin: var(--s4) 0 0;
+  color: var(--ink-900);
+}
+
+.pc-body {
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--ink-600);
+  max-width: 34em;
+  margin: 0;
+}
+
+.pc-small {
+  font-size: var(--t-small);
+  line-height: 1.5;
+  color: var(--ink-400);
+  margin: 0;
+}
+
+.pc-stack {
+  display: grid;
+  gap: var(--s4);
+}
+
+.pc-link {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  color: var(--ink-600);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  transition: color 240ms var(--in);
+}
+
+.pc-link::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background: var(--terracotta-600);
+  opacity: 0;
+  transition: opacity 240ms var(--in);
+}
+
+.pc-link:hover,
+.pc-link:focus-visible {
+  color: var(--terracotta-600);
+}
+
+.pc-link:hover::before,
+.pc-link:focus-visible::before {
+  opacity: 1;
+}
+
+.pc-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+}
+
+.pc-root :focus-visible {
+  outline: 1px solid var(--terracotta-600);
+  outline-offset: 3px;
+}
+
+.pc-fade > * {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: pcIn 480ms var(--in) both;
+  animation-delay: calc(var(--i, 0) * 40ms + 40ms);
+}
+
+@keyframes pcIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Story ───────────────────────────────────────────────────────────── */
+
+.pc-loc {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s2);
+  font-family: var(--font-display);
+  font-size: var(--t-h2);
+  color: var(--ink-900);
+  white-space: nowrap;
+  margin: 0;
+}
+
+.pc-loc .grow {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 0;
+  opacity: 0;
+  vertical-align: bottom;
+  transition: max-width 640ms var(--in), opacity 400ms var(--in) 120ms;
+}
+
+.pc-loc.is-there .grow {
+  max-width: 4em;
+  opacity: 1;
+}
+
+.pc-loc .region {
+  font-family: var(--font-label);
+  font-size: var(--t-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  margin-left: var(--s2);
+  position: relative;
+  display: inline-block;
+  min-width: 6.5em;
+}
+
+.pc-loc .region span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: opacity 320ms var(--out);
+}
+
+.pc-loc .region .tx {
+  opacity: 1;
+}
+
+.pc-loc .region .ca {
+  opacity: 0;
+  color: var(--terracotta-600);
+}
+
+.pc-loc.is-there .region .tx {
+  opacity: 0;
+}
+
+.pc-loc.is-there .region .ca {
+  opacity: 1;
+}
+
+.pc-moment {
+  display: grid;
+  grid-template-columns: 104px 1fr;
+  gap: var(--s4);
+  align-items: start;
+  margin: 0;
+  min-height: 152px;
+}
+
+.pc-moment .shot {
+  width: 104px;
+  aspect-ratio: 3 / 4;
+}
+
+.pc-moment img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--cream-100);
+  display: block;
+}
+
+.pc-moment h3 {
+  font-family: var(--font-body);
+  font-size: var(--t-h2);
+  font-weight: 600;
+  line-height: 1.3;
+  margin: var(--s1) 0 0;
+  color: var(--ink-900);
+}
+
+.pc-moment p {
+  font-size: var(--t-small);
+  line-height: 1.5;
+  color: var(--ink-600);
+  margin: var(--s2) 0 0;
+  max-width: 34em;
+}
+
+.pc-timeline {
+  position: relative;
+  width: 100%;
+  max-width: 160px;
+  margin-left: auto;
+}
+
+.pc-timeline svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.pc-timeline .track {
+  fill: none;
+  stroke: var(--cream-200);
+  stroke-width: 1.4;
+}
+
+.pc-timeline .lit {
+  fill: none;
+  stroke: var(--terracotta-600);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 480ms var(--in);
+}
+
+.pc-pt {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pc-pt i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: var(--cream-200);
+  transition: background 240ms var(--in), transform 240ms var(--in);
+}
+
+.pc-pt span {
+  position: absolute;
+  left: calc(50% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-label);
+  font-size: var(--t-label);
+  letter-spacing: 0.18em;
+  color: var(--ink-400);
+  white-space: nowrap;
+  transition: color 240ms var(--in);
+}
+
+.pc-pt:hover i {
+  background: var(--ink-400);
+}
+
+.pc-pt.on i {
+  background: var(--terracotta-600);
+  transform: scale(1.6);
+}
+
+.pc-pt.on span {
+  color: var(--terracotta-600);
+}
+
+/* ── Snippets ────────────────────────────────────────────────────────── */
+
+.pc-seg {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  font-family: var(--font-display);
+  font-size: var(--t-h1);
+}
+
+.pc-seg button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: var(--ink-400);
+  transition: color 240ms var(--in);
+}
+
+.pc-seg button.on {
+  color: var(--terracotta-600);
+}
+
+.pc-seg .sep {
+  color: var(--cream-200);
+  font-size: var(--t-h2);
+}
+
+.pc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s2);
+}
+
+.pc-list button {
+  position: relative;
+  background: none;
+  border: 0;
+  padding: 0 0 0 var(--s3);
+  font: inherit;
+  font-size: var(--t-body);
+  text-align: left;
+  color: var(--ink-600);
+  cursor: pointer;
+  transition: color 240ms var(--in);
+}
+
+.pc-list button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background: var(--cream-200);
+  transition: background 240ms var(--in);
+}
+
+.pc-list button:hover {
+  color: var(--ink-900);
+}
+
+.pc-list button.on {
+  color: var(--terracotta-600);
+}
+
+.pc-list button.on::before {
+  background: var(--terracotta-600);
+}
+
+.pc-summary h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--t-h1);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--ink-900);
+}
+
+.pc-summary .metric {
+  font-family: var(--font-label);
+  font-size: var(--t-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--terracotta-600);
+  margin: 0;
+}
+
+/* ── Chat ────────────────────────────────────────────────────────────── */
+
+.pc-chat {
+  display: grid;
+  gap: var(--s4);
+}
+
+.pc-chat-pills {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--s2);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  padding-bottom: var(--s1);
+}
+
+.pc-chat-pills::-webkit-scrollbar {
+  display: none;
+}
+
+.pc-pill {
+  font-family: var(--font-body);
+  font-size: var(--t-small);
+  line-height: 1.2;
+  color: var(--ink-600);
+  background: var(--cream-100);
+  border: 1px solid var(--cream-200);
+  border-radius: 0;
+  padding: var(--s2) var(--s3);
+  cursor: pointer;
+  flex: none;
+  white-space: nowrap;
+  transition: color 240ms var(--in), border-color 240ms var(--in),
+    background 240ms var(--in);
+}
+
+.pc-pill:hover,
+.pc-pill:focus-visible {
+  color: var(--terracotta-600);
+  border-color: var(--terracotta-600);
+}
+
+.pc-pill.on {
+  color: var(--jasmine);
+  background: var(--terracotta-600);
+  border-color: var(--terracotta-600);
+}
+
+.pc-thread {
+  display: grid;
+  gap: var(--s3);
+}
+
+/* The question, sent. */
+.pc-said {
+  justify-self: end;
+  max-width: 30em;
+  background: var(--terracotta-100);
+  color: var(--terracotta-800);
+  font-size: var(--t-small);
+  padding: var(--s2) var(--s3);
+  margin: 0;
+}
+
+/* The answer, plain on the ground. */
+.pc-reply {
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--ink-900);
+  white-space: pre-line;
+  max-width: 34em;
+  margin: 0;
+  padding-left: var(--s3);
+  border-left: 1px solid var(--cream-200);
+}
+
+.pc-typing {
+  display: flex;
+  gap: var(--s1);
+  padding-left: var(--s3);
+}
+
+.pc-typing i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--terracotta-600);
+  animation: pcType 1.1s ease-in-out infinite;
+}
+
+.pc-typing i:nth-child(2) { animation-delay: 0.15s; }
+.pc-typing i:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes pcType {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+.pc-input {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  border-bottom: 1px solid var(--ink-900);
+  padding-bottom: var(--s2);
+}
+
+.pc-input input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  outline: none;
+  font: inherit;
+  font-size: var(--t-body);
+  color: var(--ink-900);
+}
+
+.pc-input input::placeholder {
+  color: var(--ink-400);
+}
+
+.pc-input button {
+  background: none;
+  border: 0;
+  color: var(--terracotta-600);
+  cursor: pointer;
+  font-size: var(--t-body);
+  padding: 0 var(--s1);
+}
+
+/* ── Statements ──────────────────────────────────────────────────────── */
+
+.pc-quote {
+  font-family: var(--font-display);
+  font-weight: 400;
+  /* Lead size, not display: these run long and must never overflow. */
+  font-size: var(--t-lead);
+  line-height: 1.5;
+  letter-spacing: 0;
+  max-width: 34em;
+  margin: 0;
+  color: var(--ink-900);
+}
+
+/* Reserved so switching statements never moves the page. */
+.pc-quote-slot {
+  min-height: 300px;
+}
+
+.pc-attr {
+  margin: var(--s4) 0 0;
+  font-size: var(--t-body);
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.pc-role {
+  font-size: var(--t-small);
+  color: var(--ink-400);
+  margin: var(--s1) 0 0;
+}
+
+.pc-index {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s1);
+}
+
+.pc-index button {
+  position: relative;
+  display: block;
+  width: 100%;
+  background: none;
+  border: 0;
+  padding: var(--s2) 0 var(--s2) var(--s3);
+  text-align: left;
+  cursor: pointer;
+  color: var(--ink-400);
+  font: inherit;
+  font-size: var(--t-body);
+  transition: color 240ms var(--in);
+}
+
+.pc-index button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background: var(--cream-200);
+  transition: background 240ms var(--in);
+}
+
+.pc-index button:hover,
+.pc-index button.on {
+  color: var(--terracotta-600);
+}
+
+.pc-index button.on::before {
+  background: var(--terracotta-600);
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 860px) {
+  .pc-root {
+    --edge: var(--s4);
+    --kolam: 186px;
+    overflow: visible;
+  }
+
+  .pc-corner {
+    width: 44px;
+    height: 44px;
+    top: var(--s4);
+  }
+
+  .pc-corner.tl { left: var(--s4); }
+  .pc-corner.tr { right: var(--s4); }
+  .pc-corner.bl,
+  .pc-corner.br { display: none; }
+
+  .km {
+    position: absolute;
+    left: 50%;
+    top: calc(var(--edge) + var(--s7));
+    transform: translateX(-50%);
+  }
+
+  .pc-light {
+    position: absolute;
+    top: calc(var(--edge) + var(--s7) + var(--kolam) / 2);
+  }
+
+  .pc-zones {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    padding: calc(var(--edge) + var(--kolam) + var(--s8)) var(--edge) var(--s6);
+    gap: var(--s5);
+  }
+
+  .pc-zones.is-fixed {
+    padding-top: calc(var(--edge) + var(--kolam) + var(--s8));
+  }
+
+  .pc-zone-l,
+  .pc-zone-r {
+    grid-column: 1;
+  }
+
+  .pc-rest {
+    position: static;
+    display: grid;
+    padding: calc(var(--edge) + var(--kolam) + var(--s8)) var(--edge) var(--s4);
+  }
+
+  .pc-rest button {
+    position: static;
+    transform: none !important;
+    text-align: left;
+    font-size: var(--t-h1);
+    padding: var(--s3) 0;
+    border-top: 1px solid var(--cream-200);
+  }
+
+  .pc-rest button::before {
+    display: none;
+  }
+
+  .pc-work .list[hidden] {
+    display: none;
+  }
+
+  .pc-work-toggle {
+    display: inline-block;
+    font-family: var(--font-label);
+    font-size: var(--t-label);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta-600);
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .pc-work .pc-eyebrow {
+    display: none;
+  }
+
+  .pc-id-portrait {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pc-quote-slot {
+    min-height: 0;
+  }
+
+  .pc-thread {
+    max-height: none;
+  }
+
+  .pc-utils,
+  .pc-close {
+    position: static;
+  }
+
+  .pc-utils {
+    padding: 0 var(--edge) var(--s5);
+  }
+
+  .pc-close {
+    margin: var(--s5) var(--edge) 0;
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-root *,
+  .pc-root *::before,
+  .pc-root *::after {
+    animation-duration: 120ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 120ms !important;
+  }
+
+  .km-dot {
+    opacity: 1;
+  }
+
+  .km-line {
+    stroke-dashoffset: 0;
+  }
+
+  .pc-fade > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.pc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   The wall — §4.5. Selected work hangs from a picture rail on cords, tilted,
+   casting the site's only shadow. Light is upper-left of centre (§4.4), so
+   every shadow falls down and to the right.
+   ========================================================================== */
+
+.pc-rail {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background: var(--brass-600);
+  opacity: 0.4;
+  margin-bottom: 0;
+}
+
+.pc-wall {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s2);
+}
+
+.pc-hung {
+  position: relative;
+  display: block;
+  padding-top: var(--cord);
+  text-decoration: none;
+  flex: none;
+}
+
+.pc-hook {
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--brass-600);
+}
+
+.pc-cord {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: var(--cord);
+  background: var(--wood-700);
+  opacity: 0.55;
+}
+
+.pc-frame {
+  display: block;
+  width: var(--fw);
+  height: var(--fh);
+  border: 2px solid var(--brass-600);
+  background: var(--cream-50);
+  box-shadow: 0 8px 20px -6px var(--shadow);
+  /* Pivot from the hook above, not the frame's own centre. */
+  transform-origin: 50% calc(-1 * var(--cord));
+  transform: rotate(var(--tilt));
+  transition: box-shadow 240ms var(--in);
+}
+
+.pc-mat {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 8px 8px 10px; /* real mats are bottom-weighted */
+  box-sizing: border-box;
+}
+
+.pc-mat img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--cream-100);
+}
+
+.pc-caption {
+  display: block;
+  margin-top: var(--s2);
+  font-family: var(--font-label);
+  font-size: var(--t-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  text-align: center;
+  width: var(--fw);
+  line-height: 1.4;
+  transition: color 240ms var(--in);
+}
+
+.pc-hung:hover .pc-caption,
+.pc-hung:focus-visible .pc-caption {
+  color: var(--terracotta-600);
+}
+
+/* A damped pendulum: three diminishing swings, settling. */
+.pc-hung:hover .pc-frame,
+.pc-hung:focus-visible .pc-frame {
+  animation: pcSwing 900ms var(--out) both;
+  box-shadow: 0 12px 26px -6px var(--shadow);
+}
+
+@keyframes pcSwing {
+  0% { transform: rotate(var(--tilt)); }
+  22% { transform: rotate(calc(var(--tilt) + 1.6deg)); }
+  48% { transform: rotate(calc(var(--tilt) - 0.9deg)); }
+  72% { transform: rotate(calc(var(--tilt) + 0.4deg)); }
+  88% { transform: rotate(calc(var(--tilt) - 0.15deg)); }
+  100% { transform: rotate(var(--tilt)); }
+}
+
+/* The portrait hangs too — it teaches the interaction before the work does. */
+.pc-id-portrait {
+  --cord: 20px;
+  --tilt: 0.5deg;
+  --fw: 44px;
+  --fh: 44px;
+}
+
+/* In-section imagery is propped, not hung: frame and shadow, nothing else. */
+.pc-propped {
+  border: 2px solid var(--brass-600);
+  background: var(--cream-50);
+  box-shadow: 0 8px 20px -6px var(--shadow);
+  padding: 8px 8px 10px;
+  box-sizing: border-box;
+}
+
+.pc-propped img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--cream-100);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-hung:hover .pc-frame,
+  .pc-hung:focus-visible .pc-frame {
+    animation: none;
+    box-shadow: 0 10px 24px -6px var(--shadow);
+  }
+}
+
+@media (max-width: 860px) {
+  .pc-wall {
+    gap: var(--s3);
+  }
+
+  .pc-caption {
+    display: none;
+  }
+}

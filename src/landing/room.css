@@ -1,0 +1,1657 @@
+/* ==========================================================================
+   The room.
+
+   ── The coordinate system ────────────────────────────────────────────────
+   The room is designed on a 1600×900 canvas. The canvas is sized to the
+   largest 16:9 box that fits the window, and every object inside is placed
+   with a percentage of that box and sized in `cqw` (1cqw = 16 canvas px).
+   So the composition scales as one piece and cannot come apart.
+
+       x%   = canvasX / 1600 * 100
+       y%   = canvasY /  900 * 100
+       size = canvasPx / 16  →  cqw
+
+   ── The rules for this file ──────────────────────────────────────────────
+   One prefix (rm-, plus rc- for the phone column). Every selector declared
+   exactly once. One breakpoint, at 900px, and below it the phone gets its own
+   component rather than overrides. Light falls from the upper left on every
+   object, and everything that sits on or hangs from something casts a shadow.
+   ========================================================================== */
+
+.rm {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  background: var(--cream-50);
+  color: var(--ink-900);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rm-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Browser default focus rings leak blue into a warm room. */
+.rm :focus { outline: none; }
+.rm :focus-visible {
+  outline: 2px solid var(--wood-deep);
+  outline-offset: 3px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   The canvas
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.rm-stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  background:
+    radial-gradient(130% 100% at 8% 4%, rgba(255, 253, 248, 0.92) 0%, rgba(255, 253, 248, 0) 62%),
+    radial-gradient(90% 80% at 96% 96%, rgba(94, 50, 32, 0.05) 0%, rgba(94, 50, 32, 0) 70%),
+    var(--cream-50);
+}
+
+.rm-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  aspect-ratio: 1600 / 900;
+  width: min(100cqw, calc(100cqh * 1600 / 900));
+  container-type: inline-size;
+}
+
+/* ── The shell: back wall, side wall, and the arris between them ───────── */
+
+.rm-backwall,
+.rm-rake {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* One flat wall. The light falling across it from the doors is what gives it
+   depth, rather than a corner. */
+.rm-backwall {
+  inset: 0;
+  background: none;
+}
+
+/* The daylight the doors throw across the wall. It drifts, slowly, so the
+   room reads as a moment rather than a diagram. */
+.rm-rake {
+  left: 0;
+  top: 0;
+  width: 62%;
+  height: 100%;
+  background: linear-gradient(104deg, rgba(255, 252, 244, 0.72) 0%, rgba(255, 252, 244, 0.24) 36%, rgba(255, 252, 244, 0) 66%);
+  animation: rmRake 26s ease-in-out infinite alternate;
+}
+
+@keyframes rmRake {
+  from { opacity: 0.72; transform: translateX(-1.2%); }
+  to { opacity: 1; transform: translateX(1.6%); }
+}
+
+/* ── Teak doors onto the backyard ─────────────────────────────────────── */
+
+.rm-doors {
+  position: absolute;
+  left: -1.5%;
+  top: 9%;
+  width: 20%;
+  height: 60%;
+  background: var(--wood-mid);
+  padding: 1.1cqw;
+  box-shadow: 0.5cqw 0.7cqw 1.8cqw -0.7cqw rgba(34, 27, 22, 0.34);
+}
+
+.rm-door-glass {
+  position: absolute;
+  inset: 1.1cqw;
+  overflow: hidden;
+  background: #dfe4d2;
+}
+
+/* ── The garden, in two layers ─────────────────────────────────────────
+   The painted mass sits behind; a nearer frond hangs in front of it. Each
+   sways from the base of its stems on its own clock, so the wind never looks
+   like a loop — the periods are coprime enough that they drift apart. */
+
+.rm-garden-far,
+.rm-garden-near {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  transform-origin: 50% 100%;
+  backface-visibility: hidden;
+}
+
+.rm-garden-far {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  animation: rmSwayFar 13s ease-in-out infinite alternate;
+}
+
+/* The near frond overhangs the glass a little on the left, the way a plant
+   pressed against a window actually does. */
+.rm-garden-near {
+  left: -12%;
+  bottom: -4%;
+  width: 78%;
+  height: auto;
+  opacity: 0.96;
+  animation: rmSwayNear 9s ease-in-out infinite alternate;
+}
+
+@keyframes rmSwayFar {
+  from { transform: rotate(-0.5deg) translateX(-0.35%); }
+  to   { transform: rotate(0.55deg) translateX(0.4%); }
+}
+
+@keyframes rmSwayNear {
+  from { transform: rotate(-1.15deg) translateX(-0.9%) scaleY(1); }
+  to   { transform: rotate(1.3deg) translateX(1%) scaleY(1.008); }
+}
+
+/* The mullion between the two leaves, and the lock rail. */
+.rm-door-mullion {
+  position: absolute;
+  left: 50%;
+  top: 1.1cqw;
+  bottom: 1.1cqw;
+  width: 0.8cqw;
+  translate: -50% 0;
+  background: var(--wood-mid);
+  box-shadow: 0.12cqw 0 0.4cqw rgba(34, 27, 22, 0.22);
+}
+
+.rm-door-rail {
+  position: absolute;
+  left: 1.1cqw;
+  right: 1.1cqw;
+  top: 62%;
+  height: 0.9cqw;
+  background: var(--wood-mid);
+}
+
+.rm-sill {
+  position: absolute;
+  left: -1.5%;
+  top: 69%;
+  width: 26.5%;
+  height: 1.5%;
+  background: var(--wood-lit);
+  box-shadow: 0 0.6cqw 1.2cqw -0.5cqw rgba(34, 27, 22, 0.32);
+}
+
+/* ── Her name, and the kolam ──────────────────────────────────────────── */
+
+.rm-name {
+  position: absolute;
+  left: 44%;
+  top: 4.4%;
+  translate: -50% 0;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 5.4cqw;
+  line-height: 1;
+  letter-spacing: -0.012em;
+  color: var(--wood-deep);
+  white-space: nowrap;
+}
+
+.rm-tagline {
+  position: absolute;
+  left: 44%;
+  top: 16.4%;
+  translate: -50% 0;
+  margin: 0;
+  font-size: 0.86cqw;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  white-space: nowrap;
+}
+
+/* The kolam keeps its own geometry, colours and drawing animation. This only
+   places it. */
+.rm-kolam {
+  position: absolute;
+  left: 44%;
+  top: 36.5%;
+  translate: -50% -50%;
+  width: 12.4cqw;
+  height: 12.4cqw;
+}
+
+.rm-kolam .km {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+}
+
+/* ── The carved bracket ───────────────────────────────────────────────── */
+
+.rm-bracket {
+  position: absolute;
+  left: auto;
+  right: 0;
+  top: 0;
+  z-index: 2;
+  width: clamp(86px, 6.6vw, 150px);
+  height: auto;
+  display: block;
+  pointer-events: none;
+  transform: scaleX(-1);
+  filter: drop-shadow(-0.26cqw 0.55cqw 0.8cqw rgba(34, 27, 22, 0.28));
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   The work, on the side wall
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Affordance is craft, not caption. Everything clickable rests with a close
+   shadow and lifts into a longer one. Nothing is labelled. */
+.rm-monitor,
+.rm-frame,
+.rm-polaroid,
+.rm-postcard,
+.rm-desk {
+  position: absolute;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(0 0.12cqw 0.4cqw rgba(34, 27, 22, 0.1));
+  transition: transform 300ms var(--in), filter 300ms var(--in);
+}
+
+.rm-polaroid:hover,
+.rm-polaroid:focus-visible,
+.rm-postcard:hover,
+.rm-postcard:focus-visible {
+  transform: translateY(-0.25cqw);
+  filter: drop-shadow(0 0.62cqw 1.5cqw rgba(34, 27, 22, 0.18));
+}
+
+/* The framed work hangs from a hook, so it swings from the hook rather than
+   lifting — a damped pendulum that settles after about a second. */
+.rm-monitor { transform-origin: 50% -2.6cqw; }
+.rm-frame { transform-origin: 50% -2cqw; }
+
+.rm-monitor:hover,
+.rm-monitor:focus-visible,
+.rm-frame:hover,
+.rm-frame:focus-visible {
+  animation: rmDangle 1200ms var(--out) both;
+  filter: drop-shadow(0 0.5cqw 1.2cqw rgba(34, 27, 22, 0.2));
+}
+
+@keyframes rmDangle {
+  0% { rotate: 0deg; }
+  16% { rotate: 1.6deg; }
+  38% { rotate: -1.05deg; }
+  58% { rotate: 0.6deg; }
+  76% { rotate: -0.3deg; }
+  90% { rotate: 0.12deg; }
+  100% { rotate: 0deg; }
+}
+
+.rm-monitor {
+  left: 68.5%;
+  top: 17%;
+  width: 17.5%;
+}
+
+/* The carved gilt frame, used as a border-image so the carving stays sharp
+   at any size. The slice is the frame's own thickness in the source; the
+   border-width keeps it modest on the wall. */
+.rm-monitor-bezel,
+.rm-frame-body {
+  display: block;
+  background: var(--cream-50);
+  border-style: solid;
+  border-image-source: url("/scene/frame-gold.webp");
+  border-image-slice: 138;
+  border-image-repeat: round;
+}
+
+.rm-monitor-bezel {
+  padding: 0.3cqw;
+  border-width: 1.5cqw;
+}
+
+.rm-monitor-bezel img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top center;
+  background: var(--cream-100);
+}
+
+.rm-frame {
+  left: 87.5%;
+  top: 19.5%;
+  width: 10.5%;
+}
+
+.rm-hook {
+  position: absolute;
+  left: 50%;
+  width: 0.42cqw;
+  height: 0.42cqw;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: var(--brass);
+  box-shadow: 0 0.08cqw 0.16cqw rgba(34, 27, 22, 0.4);
+}
+
+/* Two cords from the one hook, splayed to the frame's top corners — which is
+   how a picture wire actually sits. */
+.rm-cord {
+  position: absolute;
+  left: 50%;
+  width: 0.09cqw;
+  translate: -50% 0;
+  background: linear-gradient(180deg, var(--brass) 0%, rgba(201, 162, 39, 0.55) 100%);
+}
+
+.rm-monitor .rm-hook { bottom: calc(100% + 2.6cqw); }
+.rm-monitor .rm-cord { bottom: 100%; height: 2.6cqw; }
+
+.rm-frame .rm-hook { bottom: calc(100% + 2cqw); }
+.rm-frame .rm-cord { bottom: 100%; height: 2cqw; }
+
+.rm-frame-body {
+  padding: 0.28cqw;
+  border-width: 1.25cqw;
+}
+
+.rm-frame-body img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--cream-100);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   The pin board
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* One organised board, taped to the wall under the two hangings. */
+.rm-board {
+  position: absolute;
+  left: 68.5%;
+  top: 42%;
+  width: 29.5%;
+  height: 27%;
+  background: var(--cream-100);
+  box-shadow: 0 0.5cqw 1.4cqw -0.6cqw rgba(34, 27, 22, 0.28);
+  overflow: hidden;
+}
+
+/* The zari border — the only place blue appears on the whole site. */
+.rm-board-zari {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0.9cqw;
+  background:
+    repeating-linear-gradient(90deg, var(--brass) 0 0.3cqw, transparent 0.3cqw 0.75cqw),
+    #2f4a63;
+}
+
+.rm-board-inner {
+  position: absolute;
+  inset: 1.7cqw 0.9cqw 0.9cqw;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: center;
+  gap: 0.6cqw;
+}
+
+.rm-polaroid,
+.rm-postcard {
+  position: relative;
+  rotate: var(--tilt);
+  background: var(--jasmine);
+  padding: 0.32cqw 0.32cqw 0;
+}
+
+.rm-polaroid img {
+  display: block;
+  width: 4.1cqw;
+  height: 4.1cqw;
+  object-fit: cover;
+  background: var(--cream-100);
+}
+
+.rm-polaroid-cap,
+.rm-postcard-cap {
+  display: block;
+  padding: 0.28cqw 0 0.4cqw;
+  font-size: 0.62cqw;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  text-align: center;
+}
+
+.rm-tack {
+  position: absolute;
+  left: 50%;
+  top: -0.24cqw;
+  width: 0.5cqw;
+  height: 0.5cqw;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: var(--lotus-600);
+  box-shadow: 0 0.1cqw 0.2cqw rgba(34, 27, 22, 0.3);
+}
+
+.rm-postcard {
+  width: 6.4cqw;
+  padding: 0.62cqw 0.5cqw 0;
+  background: var(--cream-50);
+  /* The airmail edge, from the reference — the only place blue appears. */
+  border: 0.16cqw solid transparent;
+  border-image: repeating-linear-gradient(
+      45deg,
+      var(--lotus-600) 0 0.35cqw,
+      var(--jasmine) 0.35cqw 0.7cqw,
+      #2f4a63 0.7cqw 1.05cqw,
+      var(--jasmine) 1.05cqw 1.4cqw
+    ) 8;
+}
+
+.rm-script {
+  display: block;
+  height: 1.9cqw;
+  background: linear-gradient(var(--cream-200) 0 1px, transparent 1px) 0 0.2cqw / 100% 0.45cqw repeat-y;
+  opacity: 0.8;
+}
+
+.rm-stamp {
+  position: absolute;
+  right: 0.5cqw;
+  top: 0.5cqw;
+  width: 1.05cqw;
+  height: 1.3cqw;
+  background: var(--lotus-100);
+  border: 1px dashed var(--lotus-600);
+}
+
+.rm-postcard-cap {
+  text-align: left;
+  color: var(--ink-600);
+  font-size: 0.58cqw;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Sanjana, at her desk
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.rm-desk {
+  left: 44%;
+  bottom: 0;
+  width: 44cqw;
+  translate: -50% 0;
+}
+
+/* The loop of her working. Its background is already the wall colour; the
+   mask feathers the top and sides so the edge of the frame never shows. */
+.rm-film,
+.rm-still {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, #000 9%),
+    linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0, #000 9%),
+    linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* ── Elsewhere ────────────────────────────────────────────────────────── */
+
+.rm-utils {
+  position: absolute;
+  left: 3.5%;
+  top: 93%;
+  display: flex;
+  gap: 1.5cqw;
+}
+
+.rm-utils a {
+  font-size: 0.76cqw;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  text-decoration: none;
+  transition: color 300ms var(--in);
+}
+
+.rm-utils a:hover { color: var(--lotus-600); }
+
+/* ── The one-time settle ──────────────────────────────────────────────── */
+
+.rm-canvas.is-arriving .rm-settle {
+  animation: rmSettle 600ms var(--in) both;
+  animation-delay: calc(var(--step) * 140ms);
+}
+
+@keyframes rmSettle {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   The shade
+
+   It hangs above the room and draws down over all of it. Reaching for her
+   nudges it; asking her pulls it the whole way and the conversation happens
+   on the cloth. Warm off-white, never pure white, with a weighted hem that
+   casts a real shadow onto whatever it is covering.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.rm-shade {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100dvh;
+  z-index: 40;
+  pointer-events: none;
+  /* The transform comes from the component; this only animates it. */
+  transition: transform 720ms var(--in);
+  will-change: transform;
+}
+
+/* The hem sits at the bottom edge inside the shade rather than hanging below
+   it. So when the shade is fully down it lands exactly on the bottom of the
+   window — on screen, and still the handle that sends it back up. */
+.rm-hem {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46px;
+  border: 0;
+  padding: 0;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+  background: linear-gradient(180deg, var(--wood-lit) 0%, var(--wood-mid) 55%, var(--wood-deep) 100%);
+  box-shadow: 0 10px 24px -8px rgba(34, 27, 22, 0.3);
+}
+
+.rm-shade.is-down .rm-hem { cursor: grab; }
+
+/* The pull grip, centred on the bar. */
+.rm-hem-grip {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 54px;
+  height: 4px;
+  translate: -50% -50%;
+  border-radius: 999px;
+  background: var(--brass);
+  opacity: 0.85;
+  transition: width 300ms var(--in), opacity 300ms var(--in);
+}
+
+.rm-hem:hover .rm-hem-grip,
+.rm-hem:focus-visible .rm-hem-grip {
+  width: 74px;
+  opacity: 1;
+}
+
+.rm-cloth {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(180deg, rgba(94, 50, 32, 0.025) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, #fdfaf4 0%, var(--jasmine) 74%, #f5eee1 100%);
+  box-shadow: inset 0 14px 26px -16px rgba(34, 27, 22, 0.4);
+}
+
+.rm-cloth-content {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 300ms var(--in);
+}
+
+.rm-shade.is-down .rm-cloth-content {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 420ms;
+}
+
+/* ── The conversation ─────────────────────────────────────────────────── */
+
+.rm-talk {
+  width: min(660px, calc(100vw - 48px));
+  max-height: 72dvh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  margin-bottom: 46px;
+}
+
+/* The ask is the heading; the pills are how you answer it. */
+.rm-talk-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+  line-height: 1.1;
+  color: var(--wood-deep);
+}
+
+.rm-talk-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: var(--s2);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--cream-200);
+}
+
+/* Transparent at rest, filled on hover. Active reads as hover. */
+.rm-talk-pill {
+  border: 1px solid var(--cream-200);
+  border-radius: 999px;
+  background: transparent;
+  padding: 7px 16px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-600);
+  cursor: pointer;
+  transition: color 300ms var(--in), border-color 300ms var(--in);
+}
+
+.rm-talk-pill:hover,
+.rm-talk-pill.is-on {
+  color: var(--lotus-600);
+  border-color: var(--lotus-600);
+}
+
+/* A fixed well for the answer. Titles and pills are anchored, so a short
+   answer, a long one and the thinking dots all leave them exactly where
+   they were. */
+.rm-talk-thread {
+  flex: none;
+  height: 42dvh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.rm-talk-pills { flex: none; }
+
+.rm-talk-thread::-webkit-scrollbar { display: none; }
+
+/* Mono is correct here and only here — it is the machine voice. */
+.rm-talk-reply {
+  margin: 0;
+  white-space: pre-line;
+  font-family: var(--font-label);
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--ink-900);
+}
+
+.rm-talk-typing { display: flex; gap: 5px; }
+
+.rm-talk-typing i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--lotus-600);
+  animation: rmDot 1.1s ease-in-out infinite;
+}
+
+.rm-talk-typing i:nth-child(2) { animation-delay: 0.16s; }
+.rm-talk-typing i:nth-child(3) { animation-delay: 0.32s; }
+
+@keyframes rmDot {
+  0%, 60%, 100% { opacity: 0.25; }
+  30% { opacity: 1; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Story and Statements, as a sheet over the dimmed room
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.rm-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+}
+
+.rm-scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  cursor: default;
+  background: var(--cream-50);
+  animation: rmFade 380ms var(--in) both;
+}
+
+.rm-sheet {
+  position: absolute;
+  inset: 4% 6%;
+  display: flex;
+  flex-direction: column;
+  animation: rmRise 480ms var(--in) both;
+  /* Only the content itself takes the pointer, so clicking the space around
+     it reaches the scrim and closes the sheet. */
+  pointer-events: none;
+}
+
+.rm-sheet-scroll > * { pointer-events: auto; }
+
+.rm-sheet-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  align-items: center;
+  align-content: center;
+  gap: clamp(28px, 4vw, 64px);
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Story leads with the photograph; the timeline is a narrow rail right beside
+   it. The tracks are sized to their contents and centred as a group, so the
+   two halves sit together instead of at opposite edges of the window. */
+.rm-sheet[data-section="story"] .rm-sheet-scroll {
+  grid-template-columns: minmax(0, 720px) 150px;
+  justify-content: center;
+}
+
+/* Statements: the title heads the section, names and note sit under it. */
+.rm-sheet[data-section="statements"] .rm-sheet-scroll {
+  grid-template-columns: minmax(0, 300px) minmax(0, 560px);
+  grid-template-rows: auto auto;
+  justify-content: center;
+  align-content: center;
+  align-items: start;
+  row-gap: clamp(20px, 2.6vw, 36px);
+}
+
+/* Both columns start at the same line, so the first name lines up with the
+   first line of the note rather than floating to its own centre. */
+.rm-sheet[data-section="statements"] .pc-zone-l,
+.rm-sheet[data-section="statements"] .pc-zone-r,
+.rm-sheet[data-section="statements"] .pc-stack,
+.rm-sheet[data-section="statements"] .pc-quote-slot,
+.rm-sheet[data-section="statements"] .pc-index {
+  margin-top: 0;
+  padding-top: 0;
+  align-self: start;
+}
+
+.rm-sheet .pc-sheet-title {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  margin: 0;
+  pointer-events: auto;
+}
+
+.rm-sheet[data-section="statements"] .pc-zone-l,
+.rm-sheet[data-section="statements"] .pc-zone-r {
+  grid-row: 2;
+}
+
+.rm-sheet .pc-zone-l { grid-column: 1; }
+
+.rm-sheet .pc-zone-r {
+  grid-column: 2;
+  padding-top: 0;
+}
+
+/* The photograph earns its size — it is the thing you came to look at. */
+.rm-sheet .pc-moment {
+  grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+  gap: clamp(20px, 2.4vw, 34px);
+  align-items: center;
+  min-height: 0;
+}
+
+.rm-sheet .pc-moment .shot {
+  width: 280px;
+  aspect-ratio: 4 / 5;
+}
+
+/* The rail sits centred in its own column rather than pinned to the edge. */
+.rm-sheet .pc-timeline {
+  max-width: 150px;
+  margin: 0 auto;
+}
+
+.rm-sheet-close {
+  align-self: flex-end;
+  border: 0;
+  background: none;
+  padding: var(--s2) 0 0;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  cursor: pointer;
+}
+
+.rm-sheet-close:hover { color: var(--lotus-600); }
+
+@keyframes rmFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes rmRise {
+  from { opacity: 0; transform: translateY(18px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   The phone. One column, 20px gutters, nothing side by side.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.rc {
+  position: relative;
+  min-height: 100dvh;
+  padding: 40px 20px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(255, 253, 248, 0.9) 0%, rgba(255, 253, 248, 0) 60%),
+    var(--cream-50);
+}
+
+.rc-head { text-align: center; }
+
+.rc-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.4rem, 12vw, 3.2rem);
+  line-height: 1;
+  color: var(--wood-deep);
+}
+
+.rc-tagline {
+  margin: 12px 0 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+}
+
+.rc-kolam {
+  position: relative;
+  width: min(190px, 52vw);
+  height: min(190px, 52vw);
+  margin: 24px auto 0;
+}
+
+.rc-kolam .km {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+}
+
+.rc-desk {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.rc-desk img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 6px 16px rgba(34, 27, 22, 0.14));
+}
+
+.rc-section { display: flex; flex-direction: column; gap: 16px; }
+
+.rc-h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: var(--ink-900);
+}
+
+.rc-work { display: flex; flex-direction: column; gap: 16px; }
+
+.rc-card {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--cream-200);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--jasmine);
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.rc-card-img { display: block; overflow: hidden; }
+
+.rc-card-img img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.rc-card-cap {
+  display: block;
+  padding: 14px 16px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-900);
+}
+
+.rc-photos {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.rc-photos::-webkit-scrollbar { display: none; }
+
+.rc-photo {
+  flex: 0 0 auto;
+  border: 0;
+  background: var(--jasmine);
+  padding: 6px 6px 0;
+  cursor: pointer;
+  box-shadow: 0 4px 12px -6px rgba(34, 27, 22, 0.3);
+}
+
+.rc-photo img {
+  display: block;
+  width: 108px;
+  height: 108px;
+  object-fit: cover;
+}
+
+.rc-photo-cap,
+.rc-letter-cap {
+  display: block;
+  padding: 8px 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  text-align: center;
+}
+
+.rc-letters { display: flex; flex-direction: column; gap: 10px; }
+
+.rc-letter {
+  position: relative;
+  border: 1px solid var(--cream-200);
+  border-radius: 14px;
+  background: var(--cream-50);
+  padding: 16px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.rc-letter-stamp {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 18px;
+  height: 22px;
+  background: var(--lotus-100);
+  border: 1px dashed var(--lotus-600);
+}
+
+.rc-letter-cap { text-align: left; color: var(--ink-600); }
+
+.rc-utils {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: auto;
+}
+
+.rc-utils a {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  text-decoration: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Reduced motion: the room arrives, it just does not perform.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-rake,
+  .rm-garden-far,
+  .rm-garden-near { animation: none; }
+  .rm-shade { transition-duration: 200ms; }
+  .rm-shade.is-down .rm-cloth-content { transition-delay: 80ms; }
+  .rm-canvas.is-arriving .rm-settle { animation: none; }
+  .rm-monitor:hover,
+  .rm-frame:hover { animation: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   The carved bracket's material: three wood values and two brass values.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.el-lit { fill: var(--wood-lit); }
+.el-mid { fill: var(--wood-mid); }
+.el-deep { fill: var(--wood-deep); }
+.el-brass { fill: var(--brass); }
+.el-brass-deep { fill: var(--brass-deep); }
+
+.el-line {
+  fill: none;
+  stroke: var(--wood-deep);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+
+.el-line-thin { stroke-width: 1.5; }
+
+.el-wave {
+  fill: none;
+  stroke: var(--wood-lit);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  opacity: 0.6;
+}
+
+.el-volute {
+  fill: none;
+  stroke: var(--wood-mid);
+  stroke-width: 11;
+  stroke-linecap: round;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   The music box on the sill
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.rm-music {
+  position: absolute;
+  left: 15%;
+  top: 63.1%;
+  width: 6cqw;
+  z-index: 3;
+}
+
+.rm-music-box {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(0 0.14cqw 0.26cqw rgba(34, 27, 22, 0.22));
+  transition: transform 300ms var(--in), filter 300ms var(--in);
+}
+
+.rm-music-box svg { display: block; width: 100%; height: auto; }
+
+.rm-music-box:hover,
+.rm-music-box:focus-visible {
+  transform: translateY(-0.18cqw);
+  filter: drop-shadow(0 0.5cqw 1cqw rgba(34, 27, 22, 0.22));
+}
+
+/* Three notes lift off the horn while it is playing. */
+.rm-music-note {
+  position: absolute;
+  left: 78%;
+  bottom: 84%;
+  display: flex;
+  gap: 0.35cqw;
+  opacity: 0;
+  transition: opacity 300ms var(--in);
+}
+
+.rm-music-box.is-on .rm-music-note { opacity: 1; }
+
+.rm-music-note i {
+  width: 0.34cqw;
+  height: 0.34cqw;
+  border-radius: 50%;
+  background: var(--brass);
+  animation: rmNote 2.4s ease-in-out infinite;
+}
+
+.rm-music-note i:nth-child(2) { animation-delay: 0.4s; }
+.rm-music-note i:nth-child(3) { animation-delay: 0.8s; }
+
+@keyframes rmNote {
+  0% { opacity: 0; transform: translateY(0) scale(0.7); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-1.6cqw) scale(1.1); }
+}
+
+/* The player sits on the sill beside the box, not over the room. */
+.rm-music-player {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 0.7cqw);
+  width: 19cqw;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0.6cqw 1.4cqw -0.5cqw rgba(34, 27, 22, 0.3);
+  animation: rmRise 380ms var(--in) both;
+}
+
+.rm-music-player iframe { display: block; border: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-music-note i { animation: none; opacity: 1; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   My Work
+
+   The case-study browser had animation modifiers (.work-shell.is-expanding
+   and friends) but no base layout anywhere in the stylesheets, so it mounted
+   as an unstyled div — which is why opening a case study appeared to do
+   nothing. These are the base rules it was missing. It sits above the room,
+   which is fixed, so it needs a stacking order of its own.
+
+   This is layout only; the tab bar still wants the rebuild the direction doc
+   asks for in §5.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* The room scopes its own focus ring; this lives outside it, so the browser
+   default was leaking blue into a warm page. */
+.work-shell :focus { outline: none; }
+.work-shell :focus-visible {
+  outline: 2px solid var(--wood-deep);
+  outline-offset: 3px;
+}
+
+.work-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(16px, 2.4vw, 32px) clamp(16px, 3vw, 44px) clamp(16px, 2.4vw, 32px);
+  background: var(--cream-50);
+  overflow: hidden;
+}
+
+.work-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  flex: none;
+  padding-bottom: var(--s3);
+}
+
+.work-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border: 1px solid var(--cream-200);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-600);
+  cursor: pointer;
+  transition: color 300ms var(--in), border-color 300ms var(--in);
+}
+
+.work-back:hover,
+.work-back:focus-visible {
+  color: var(--lotus-600);
+  border-color: var(--lotus-600);
+}
+
+.work-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: 1.1;
+  color: var(--ink-900);
+}
+
+/* A scrollable row, so a long list never wraps into a filing cabinet. */
+.work-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--s2);
+  flex: none;
+  overflow-x: auto;
+  padding-bottom: var(--s3);
+}
+
+/* The same pill as the conversation: transparent at rest, accent on hover,
+   and active reads as hover. No filled container. */
+.work-tabs .pc-pill {
+  flex: none;
+  border: 1px solid var(--cream-200);
+  border-radius: 999px;
+  background: transparent;
+  padding: 7px 16px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-600);
+  transition: color 300ms var(--in), border-color 300ms var(--in);
+}
+
+.work-tabs .pc-pill:hover,
+.work-tabs .pc-pill.on {
+  background: transparent;
+  color: var(--lotus-600);
+  border-color: var(--lotus-600);
+}
+
+/* The same frame a Story photograph wears: a thin gold rule around a cream
+   mat. Quiet enough to sit behind a page of work. */
+.work-stage {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  border: 2px solid rgba(168, 130, 63, 0.45);
+  border-radius: 2px;
+  background: var(--cream-50);
+  padding: 10px;
+  box-shadow: 0 10px 26px -14px rgba(34, 27, 22, 0.22);
+}
+
+.work-stage > * {
+  border-radius: 1px;
+  background: var(--jasmine);
+}
+
+.work-stage > iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 60vh;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .work-shell { padding: 12px 20px 20px; }
+  .work-stage { border-radius: 16px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Phone: the opened sheets
+
+   The Story and Statements grids are a desktop composition — two tracks side
+   by side. On a phone they have to become rows, and the story timeline has to
+   stop being an absolutely-positioned rail, because its points are placed
+   along an SVG path that has no room to exist at this width.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .rm-sheet {
+    inset: 0;
+    padding: 20px;
+  }
+
+  .rm-sheet-scroll,
+  .rm-sheet[data-section="story"] .rm-sheet-scroll,
+  .rm-sheet[data-section="statements"] .rm-sheet-scroll {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    align-content: start;
+    align-items: start;
+    justify-content: stretch;
+    gap: 24px;
+    max-width: none;
+    padding: 0;
+  }
+
+  .rm-sheet .pc-zone-l,
+  .rm-sheet .pc-zone-r,
+  .rm-sheet .pc-sheet-title,
+  .rm-sheet[data-section="statements"] .pc-zone-l,
+  .rm-sheet[data-section="statements"] .pc-zone-r {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  /* The photograph goes above its caption rather than beside it. */
+  .rm-sheet .pc-moment {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .rm-sheet .pc-moment .shot {
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 4 / 5;
+  }
+
+  /* The timeline becomes a scrolling row of years. The drawn path and the
+     absolute placement are desktop-only ideas. */
+  .rm-sheet .pc-timeline {
+    max-width: none;
+    margin: 0;
+    height: auto;
+  }
+
+  .rm-sheet .pc-timeline svg { display: none; }
+
+  .rm-sheet .pc-timeline ol {
+    position: static !important;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  .rm-sheet .pc-timeline ol::-webkit-scrollbar { display: none; }
+
+  .rm-sheet .pc-pt {
+    position: static;
+    transform: none;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--cream-200);
+    border-radius: 999px;
+    padding: 6px 14px;
+    background: transparent;
+    white-space: nowrap;
+  }
+
+  .rm-sheet .pc-pt {
+    width: auto;
+    height: auto;
+  }
+
+  .rm-sheet .pc-pt i {
+    position: static;
+    margin: 0;
+    width: 6px;
+    height: 6px;
+    flex: none;
+  }
+
+  .rm-sheet .pc-pt span {
+    position: static;
+    transform: none;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .rm-sheet .pc-pt.on {
+    border-color: var(--lotus-600);
+  }
+
+  .rm-sheet .pc-pt.on i { background: var(--lotus-600); }
+  .rm-sheet .pc-pt.on span { color: var(--lotus-600); }
+}
+
+/* The embedded case-study pages.
+   iOS will not scroll an iframe that is sized to its container, so on touch
+   the frame is given real height inside a scrolling wrapper, and the header
+   carries a link out in case the embed still refuses. */
+.work-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.work-stage {
+  -webkit-overflow-scrolling: touch;
+}
+
+
+
+/* On touch the frame keeps its own height and scrolls natively; forcing it
+   tall only revealed blank page below the content. */
+@media (hover: none) and (pointer: coarse) {
+  .work-stage {
+    overflow: hidden;
+  }
+
+  .work-frame {
+    height: 100%;
+  }
+}
+
+/* The line she leads with, in the same treatment as the role above it —
+   small, tracked and muted — so it sits under the tagline without crowding
+   the kolam. */
+.rm-creed {
+  position: absolute;
+  left: 44%;
+  top: 19%;
+  translate: -50% 0;
+  margin: 0;
+  width: 25%;
+  font-family: var(--font-body);
+  font-size: 0.68cqw;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1.7;
+  text-align: center;
+  color: var(--ink-400);
+}
+
+.rc-creed {
+  margin: 12px auto 0;
+  max-width: 32ch;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.7;
+  color: var(--ink-400);
+}
+
+/* Work with me, opposite the other links. */
+.rm-hire {
+  position: absolute;
+  right: 3.5%;
+  top: 93%;
+  font-size: 0.76cqw;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  text-decoration: none;
+  transition: color 300ms var(--in);
+}
+
+.rm-hire:hover,
+.rm-hire:focus-visible { color: var(--lotus-600); }
+
+.rc-hire {
+  display: block;
+  margin: 8px auto 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  text-decoration: none;
+}
+
+/* Where an answer leads. */
+.rm-talk-links {
+  list-style: none;
+  margin: var(--s4) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rm-talk-links button {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  border: 0;
+  background: none;
+  padding: 6px 0;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--lotus-600);
+  cursor: pointer;
+  text-align: left;
+  transition: color 300ms var(--in);
+}
+
+.rm-talk-links button::before {
+  content: "→";
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.rm-talk-links button:hover,
+.rm-talk-links button:focus-visible { color: var(--wood-deep); }
+
+/* ── Phone: the story photographs as a reel ──────────────────────────────
+   One slide per viewport width, snapping, with the caption underneath
+   following whichever photograph settles. */
+@media (max-width: 900px) {
+  /* Slides sit narrower than the reel, so the next photograph peeks in on
+     either side and it reads as a deck you can push through. */
+  .pc-reel {
+    display: flex;
+    /* A grid item defaults to min-width:auto, which lets the reel size to its
+       contents instead of overflowing — so it never actually scrolled. */
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    scroll-padding-left: 0;
+    gap: 10px;
+    padding: 4px 0;
+    margin: 0 -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .pc-reel::-webkit-scrollbar { display: none; }
+
+  .pc-reel-slide {
+    flex: 0 0 calc(100% - 56px);
+    scroll-snap-align: start;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: opacity 300ms var(--in), transform 300ms var(--in);
+  }
+
+  .pc-reel-slide img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    background: var(--cream-100);
+  }
+
+  /* Both sheets sit in the middle of the screen rather than at the top. */
+  .rm-sheet-scroll,
+  .rm-sheet[data-section="story"] .rm-sheet-scroll,
+  .rm-sheet[data-section="statements"] .rm-sheet-scroll {
+    align-content: center;
+    min-height: 100%;
+  }
+}
+
+/* The way out of an open sheet on a phone. */
+.rm-sheet-x {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--cream-200);
+  border-radius: 999px;
+  background: var(--cream-50);
+  color: var(--ink-600);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color 300ms var(--in), border-color 300ms var(--in);
+}
+
+.rm-sheet-x svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.rm-sheet-x:hover,
+.rm-sheet-x:focus-visible {
+  color: var(--lotus-600);
+  border-color: var(--lotus-600);
+}
