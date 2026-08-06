@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { MuesliStudy, OutdoneStudy } from "./FeaturedCaseStudies";
-import { AISearchCaseStudy, B2CCaseStudy, IntentCaseStudy, ServiceDesignCaseStudy } from "./LegacyCaseStudies";
 import Scene from "./landing/Scene";
 
 const FIGMA_DECK_URL =
@@ -23,6 +22,9 @@ const APPLY_SYSTEMS_URL =
 
 const TRAVEL_DNA_URL =
   "https://travel-dna-kohl.vercel.app/";
+
+const OUTDONE_FRAMER_URL =
+  "https://sanjanavenkat.framer.website/works/outdone-2";
 
 const MUESLI_FIGMA_URL =
   "https://www.figma.com/design/QO5TcpLfxmcheMMjcMYg6C/Muesli?node-id=17-5";
@@ -172,13 +174,13 @@ Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
   { slug: "muesli", label: "Speech-to-Text", title: "Muesli — Local-first dictation, made approachable", type: "case-study" },
-  { slug: "b2c", label: "B2C", title: "Uncover User Needs", type: "case-study" },
-  { slug: "ai-personalization", label: "RecSys", title: "Intent-based Recommendations", type: "case-study" },
-  { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", type: "case-study" },
-  { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", type: "case-study" },
+  { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
+  { slug: "ai-personalization", label: "RecSys", title: "Intent-based Recommendations", url: MARKETING_TILES_URL },
+  { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
+  { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
   { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
-  { slug: "model-design", label: "Personalized Travel", title: "Outdone, Context-Aware Personalization", type: "case-study" }
+  { slug: "model-design", label: "Personalized Travel", title: "Outdone, Context-Aware Personalization", url: OUTDONE_FRAMER_URL }
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
@@ -544,7 +546,7 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
       <div className="mx-auto w-full min-w-0 max-w-[1280px] overflow-hidden flex flex-col flex-1 min-h-0">
         <div className="work-head">
           <button type="button" className="work-back" onClick={onClose} aria-label="Close work browser">
-            ←
+            <ChevronLeftIcon className="h-[18px] w-[18px]" />
           </button>
           <h2 className="work-title">My Work</h2>
         </div>
@@ -565,14 +567,19 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
           ref={stageRef}
           className={`work-stage${phase === "expanding" ? " is-expanding" : ""}`}
         >
-          {activeProject.slug === "muesli" && <MuesliStudy />}
-          {activeProject.slug === "b2c" && <B2CCaseStudy />}
-          {activeProject.slug === "ai-personalization" && <IntentCaseStudy />}
-          {activeProject.slug === "service-design" && <ServiceDesignCaseStudy />}
-          {activeProject.slug === "ai-chat-journeys" && <AISearchCaseStudy />}
-          {activeProject.slug === "model-design" && <OutdoneStudy />}
-          {!activeProject.type && (
-            <iframe key={activeProject.url} src={activeProject.url} title={activeProject.title} className="h-full w-full border-0 bg-white" allowFullScreen />
+          {activeProject.url ? (
+            <iframe
+              key={activeProject.url}
+              src={activeProject.url}
+              title={activeProject.title}
+              className="h-full w-full border-0 bg-white"
+              allowFullScreen
+            />
+          ) : (
+            <>
+              {activeProject.slug === "muesli" && <MuesliStudy />}
+              {activeProject.slug === "model-design" && <OutdoneStudy />}
+            </>
           )}
         </div>
       </div>

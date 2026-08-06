@@ -43,7 +43,8 @@ const SETTLE_KEY = "sv-room-settled";
    appears on the window sill and opens the player when tapped. Left empty the
    box is simply not in the room, so nothing half-working ships.
    e.g. "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M"        */
-const SPOTIFY_URL = "";
+const SPOTIFY_URL =
+  "https://open.spotify.com/playlist/4QAHsxVZyx7Me34ewDzv4Z";
 
 /** Turn any Spotify share link into its embed player URL. */
 function spotifyEmbed(url) {
@@ -216,57 +217,64 @@ function RoomCanvas({ openWith, onOpenProject, setNearHer, ask, settled }) {
 }
 
 /* ── Sanjana at her desk ─────────────────────────────────────────────────
-   Four drawings of the same figure at the same desk: drawing on the tablet,
-   typing, taking a drink, reading. She moves between them on unequal dwells
-   and never repeats the same one twice, so it reads as an afternoon of work
-   rather than a loop. The book and the bottle are part of the illustration,
-   so nothing pops in or out between frames. */
-/* Two, not four. Every extra activity is another cut, and a cut between two
-   drawings that differ across the whole frame is the thing that reads as a
-   flicker. Drawing and typing differ only in her arms, so the change lands
-   where the eye expects it. */
-const POSES = [
-  { key: "draw", src: "/scene/desk-draw.webp", hold: [9000, 15000] },
-  { key: "type", src: "/scene/desk-type.webp", hold: [9000, 15000] },
-];
+   A ten-second loop: she types, reaches for the bottle and drinks, sets it
+   down, then picks up the book and reads.
 
+   Swapping between still drawings was the wrong tool — every change of pose
+   was a cut, and cutting between two images that differ across the whole
+   frame reads as a flicker or a shrug. This is one continuous take, so the
+   motion is actually motion.
+
+   The clip's background is composited onto the wall colour rather than being
+   made transparent — VP9 alpha does not survive Safari — and the CSS feathers
+   its edges into the wall, so the rectangle does not show. Reduced motion and
+   any browser that cannot play it get the poster frame instead. */
 function Sanjana() {
-  const [cur, setCur] = useState(0);
   const reduced = usePrefersReducedMotion();
+  const film = useRef(null);
 
+  // Some browsers decline the autoplay attribute but allow a muted play()
+  // once the element is in the document.
   useEffect(() => {
-    if (reduced) return undefined;
-    let timer;
-    let current = 0;
+    const el = film.current;
+    if (!el) return undefined;
 
-    const step = () => {
-      let next = current;
-      while (next === current) next = Math.floor(Math.random() * POSES.length);
-      setCur(next);
-      current = next;
-      const [lo, hi] = POSES[next].hold;
-      timer = setTimeout(step, lo + Math.random() * (hi - lo));
+    const go = () => el.play?.().catch(() => {});
+    go();
+    el.addEventListener("canplay", go);
+
+    // If the browser declines to autoplay at all, the first thing the visitor
+    // touches starts it, so she is never frozen mid-sip.
+    const onFirstInput = () => go();
+    document.addEventListener("pointerdown", onFirstInput, { once: true });
+    document.addEventListener("keydown", onFirstInput, { once: true });
+
+    return () => {
+      el.removeEventListener("canplay", go);
+      document.removeEventListener("pointerdown", onFirstInput);
+      document.removeEventListener("keydown", onFirstInput);
     };
-
-    timer = setTimeout(step, 4000 + Math.random() * 3000);
-    return () => clearTimeout(timer);
   }, [reduced]);
 
+  if (reduced) {
+    return <img className="rm-still" src="/scene/sanjana-poster.webp" alt="" decoding="async" />;
+  }
+
   return (
-    <span className="rm-poses">
-      {POSES.map((pose, index) => {
-        return (
-          <img
-            key={pose.key}
-            className={`rm-pose${index === cur ? " is-on" : ""}`}
-            src={pose.src}
-            alt=""
-            decoding="async"
-            fetchPriority={index === 0 ? "high" : "low"}
-          />
-        );
-      })}
-    </span>
+    <video
+      ref={film}
+      className="rm-film"
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      poster="/scene/sanjana-poster.webp"
+      aria-hidden="true"
+    >
+      <source src="/scene/sanjana.webm" type="video/webm" />
+      <source src="/scene/sanjana.mp4" type="video/mp4" />
+    </video>
   );
 }
 
@@ -287,18 +295,7 @@ function MusicBox() {
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
       >
-        <svg viewBox="0 0 100 76" aria-hidden="true">
-          <path d="M4,30 h74 q6,0 6,6 v30 q0,6 -6,6 H10 q-6,0 -6,-6 Z" fill="var(--wood-mid)" />
-          <path d="M4,30 h74 q6,0 6,6 v5 H4 Z" fill="var(--wood-lit)" />
-          <path d="M4,66 h80 v3 q0,3 -6,3 H10 q-6,0 -6,-3 Z" fill="var(--wood-deep)" />
-          {/* the horn */}
-          <path d="M62,30 q4,-22 20,-27 l6,4 q-14,7 -16,23 Z" fill="var(--brass)" />
-          <path d="M82,3 l6,4 q-4,2 -7,5 Z" fill="var(--brass-deep)" />
-          {/* the crank and the grille */}
-          <circle cx="22" cy="51" r="9" fill="var(--wood-deep)" />
-          <circle cx="22" cy="51" r="3.4" fill="var(--brass)" />
-          <path d="M40,44 h30 M40,51 h30 M40,58 h30" stroke="var(--wood-deep)" strokeWidth="2.4" strokeLinecap="round" />
-        </svg>
+        <img src="/scene/speaker.webp" alt="" decoding="async" />
         <span className="rm-music-note" aria-hidden="true">
           <i />
           <i />
@@ -505,7 +502,7 @@ function RoomColumn({ openWith, onOpenProject, ask }) {
       </header>
 
       <button type="button" className="rc-desk" onClick={ask}>
-        <img src="/scene/desk-draw.webp" alt="Sanjana at her desk" decoding="async" />
+        <img src="/scene/sanjana-poster.webp" alt="Sanjana at her desk" decoding="async" />
       </button>
 
       <section className="rc-section">
