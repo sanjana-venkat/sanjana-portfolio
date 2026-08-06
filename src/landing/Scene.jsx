@@ -497,6 +497,12 @@ function Shade({ state, children, onPull, onDrop }) {
 
   return (
     <div className={`rm-shade is-${state}`} style={{ transform: SHADE_Y[state] }}>
+      <div className="rm-cloth" aria-hidden={state !== "down"}>
+        <div className="rm-cloth-content">{children}</div>
+      </div>
+
+      {/* After the cloth, not before it: the cloth is inset:0 and would
+          otherwise cover the hem and swallow every click meant for it. */}
       <button
         type="button"
         className="rm-hem"
@@ -510,10 +516,6 @@ function Shade({ state, children, onPull, onDrop }) {
       >
         <span className="rm-hem-grip" />
       </button>
-
-      <div className="rm-cloth" aria-hidden={state !== "down"}>
-        <div className="rm-cloth-content">{children}</div>
-      </div>
     </div>
   );
 }
