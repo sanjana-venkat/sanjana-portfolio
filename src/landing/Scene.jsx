@@ -38,6 +38,19 @@ const CANVAS_H = 900;
 
 const SETTLE_KEY = "sv-room-settled";
 
+/* The music box on the sill.
+   Paste a Spotify share link here — a playlist, album or track — and the box
+   appears on the window sill and opens the player when tapped. Left empty the
+   box is simply not in the room, so nothing half-working ships.
+   e.g. "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M"        */
+const SPOTIFY_URL = "";
+
+/** Turn any Spotify share link into its embed player URL. */
+function spotifyEmbed(url) {
+  const m = url.match(/open\.spotify\.com\/(playlist|album|track|artist)\/([A-Za-z0-9]+)/);
+  return m ? `https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&theme=0` : null;
+}
+
 const BOARD_PHOTOS = STORY_MOMENTS.filter((m) =>
   ["childhood", "utd", "chetna", "uxclub", "jpmc", "bay"].includes(m.id)
 );
@@ -102,8 +115,8 @@ export default function Scene({ chat, onOpenProject }) {
 
       {isPhone ? <RoomColumn {...props} /> : <RoomCanvas {...props} />}
 
-      <Shade state={shade}>
-        {open === "chat" && <DeskChat chat={chat} onClose={close} />}
+      <Shade state={shade} onPull={() => setOpen("chat")} onDrop={close}>
+        {open === "chat" && <DeskChat chat={chat} />}
       </Shade>
 
       {(open === "story" || open === "statements") && (
@@ -157,6 +170,7 @@ function RoomCanvas({ openWith, onOpenProject, setNearHer, ask, settled }) {
           <div className="rm-door-rail" />
         </div>
         <div className="rm-sill" />
+        <MusicBox />
 
         {/* ── Her name, and the kolam, painted on the wall ──────────── */}
         <h1 className="rm-name rm-settle" style={{ "--step": 0 }}>
@@ -202,78 +216,110 @@ function RoomCanvas({ openWith, onOpenProject, setNearHer, ask, settled }) {
 }
 
 /* ── Sanjana at her desk ─────────────────────────────────────────────────
-   She works: a while drawing on the tablet, then a while typing, and back.
-   The two poses are the same drawing with different arms, so cross-fading
-   between them reads as a person shifting rather than as a loop. The dwell
-   times are deliberately unequal so it never falls into a rhythm. */
-/* Three drawings of the same figure: one drawing on the tablet, and two
-   typing positions a keystroke apart. Cutting between the two typing frames
-   in bursts reads as someone actually typing; cutting to the tablet reads as
-   her turning to draw. The gaps are irregular and there are pauses, so it
-   never settles into a loop. */
-const DRAW = 0;
-const TYPE_A = 1;
-const TYPE_B = 2;
+   Four drawings of the same figure at the same desk: drawing on the tablet,
+   typing, taking a drink, reading. She moves between them on unequal dwells
+   and never repeats the same one twice, so it reads as an afternoon of work
+   rather than a loop. The book and the bottle are part of the illustration,
+   so nothing pops in or out between frames. */
+/* Two, not four. Every extra activity is another cut, and a cut between two
+   drawings that differ across the whole frame is the thing that reads as a
+   flicker. Drawing and typing differ only in her arms, so the change lands
+   where the eye expects it. */
+const POSES = [
+  { key: "draw", src: "/scene/desk-draw.webp", hold: [9000, 15000] },
+  { key: "type", src: "/scene/desk-type.webp", hold: [9000, 15000] },
+];
 
 function Sanjana() {
-  const [pose, setPose] = useState(DRAW);
+  const [cur, setCur] = useState(0);
   const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
     if (reduced) return undefined;
-
     let timer;
-    let mode = "draw";
-    let strokes = 0;
-    let flip = false;
-    const rand = (a, b) => a + Math.random() * (b - a);
+    let current = 0;
 
     const step = () => {
-      if (mode === "type") {
-        flip = !flip;
-        setPose(flip ? TYPE_A : TYPE_B);
-        strokes -= 1;
-        if (strokes <= 0) {
-          mode = "draw";
-          setPose(DRAW);
-          timer = setTimeout(step, rand(4200, 7600));
-          return;
-        }
-        // Every so often she stops to think mid-sentence.
-        timer = setTimeout(step, strokes % 7 === 0 ? rand(520, 980) : rand(115, 235));
-      } else {
-        mode = "type";
-        strokes = Math.round(rand(14, 30));
-        timer = setTimeout(step, 60);
-      }
+      let next = current;
+      while (next === current) next = Math.floor(Math.random() * POSES.length);
+      setCur(next);
+      current = next;
+      const [lo, hi] = POSES[next].hold;
+      timer = setTimeout(step, lo + Math.random() * (hi - lo));
     };
 
-    timer = setTimeout(step, rand(1400, 2600));
+    timer = setTimeout(step, 4000 + Math.random() * 3000);
     return () => clearTimeout(timer);
   }, [reduced]);
 
   return (
     <span className="rm-poses">
-      <img
-        className={`rm-pose${pose === DRAW ? " is-on" : ""}`}
-        src="/scene/desk.webp"
-        alt=""
-        decoding="async"
-        fetchPriority="high"
-      />
-      <img
-        className={`rm-pose${pose === TYPE_A ? " is-on" : ""}`}
-        src="/scene/desk-typing.webp"
-        alt=""
-        decoding="async"
-      />
-      <img
-        className={`rm-pose${pose === TYPE_B ? " is-on" : ""}`}
-        src="/scene/desk-typing2.webp"
-        alt=""
-        decoding="async"
-      />
+      {POSES.map((pose, index) => {
+        return (
+          <img
+            key={pose.key}
+            className={`rm-pose${index === cur ? " is-on" : ""}`}
+            src={pose.src}
+            alt=""
+            decoding="async"
+            fetchPriority={index === 0 ? "high" : "low"}
+          />
+        );
+      })}
     </span>
+  );
+}
+
+/* ── The music box on the sill ──────────────────────────────────────────
+   A small teak box with a brass horn. Tapping it opens the player, which
+   sits on the sill beside it rather than over the room. */
+function MusicBox() {
+  const [open, setOpen] = useState(false);
+  const embed = SPOTIFY_URL ? spotifyEmbed(SPOTIFY_URL) : null;
+  if (!embed) return null;
+
+  return (
+    <div className="rm-music">
+      <button
+        type="button"
+        className={`rm-music-box${open ? " is-on" : ""}`}
+        aria-label={open ? "Close the music" : "Play something"}
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+      >
+        <svg viewBox="0 0 100 76" aria-hidden="true">
+          <path d="M4,30 h74 q6,0 6,6 v30 q0,6 -6,6 H10 q-6,0 -6,-6 Z" fill="var(--wood-mid)" />
+          <path d="M4,30 h74 q6,0 6,6 v5 H4 Z" fill="var(--wood-lit)" />
+          <path d="M4,66 h80 v3 q0,3 -6,3 H10 q-6,0 -6,-3 Z" fill="var(--wood-deep)" />
+          {/* the horn */}
+          <path d="M62,30 q4,-22 20,-27 l6,4 q-14,7 -16,23 Z" fill="var(--brass)" />
+          <path d="M82,3 l6,4 q-4,2 -7,5 Z" fill="var(--brass-deep)" />
+          {/* the crank and the grille */}
+          <circle cx="22" cy="51" r="9" fill="var(--wood-deep)" />
+          <circle cx="22" cy="51" r="3.4" fill="var(--brass)" />
+          <path d="M40,44 h30 M40,51 h30 M40,58 h30" stroke="var(--wood-deep)" strokeWidth="2.4" strokeLinecap="round" />
+        </svg>
+        <span className="rm-music-note" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </span>
+      </button>
+
+      {open && (
+        <div className="rm-music-player">
+          <iframe
+            title="Music"
+            src={embed}
+            width="100%"
+            height="152"
+            frameBorder="0"
+            loading="lazy"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          />
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -360,16 +406,70 @@ function Board({ photos, letters, onPhoto, onLetter }) {
   );
 }
 
-/* ── The shade ───────────────────────────────────────────────────────────── */
-function Shade({ state, children }) {
+/* ── The shade ─────────────────────────────────────────────────────────────
+   It rests along the bottom of the room with its hem showing, like a blind
+   wound down. Pull the hem up — click it, or drag it — and the cloth rises
+   over the room with the conversation on it. Pulling it back down closes. */
+function Shade({ state, children, onPull, onDrop }) {
+  const drag = useRef(null);
+  const handled = useRef(false);
+  const toggle = () => (state === "down" ? onDrop() : onPull());
+
+  const start = (e) => {
+    drag.current = { y: e.clientY, moved: false };
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  };
+
+  const move = (e) => {
+    const d = drag.current;
+    if (!d) return;
+    const dy = d.y - e.clientY;
+    if (!d.moved && Math.abs(dy) > 26) {
+      d.moved = true;
+      if (dy > 0) onPull();
+      else onDrop();
+    }
+  };
+
+  const end = (e) => {
+    const d = drag.current;
+    drag.current = null;
+    // A tap with no drag toggles it. Flagged so the click that follows the
+    // pointer sequence does not toggle it straight back.
+    if (d && !d.moved) {
+      handled.current = true;
+      toggle();
+    }
+    e.currentTarget.releasePointerCapture?.(e.pointerId);
+  };
+
+  // Keyboard activation and any click that arrives without pointer events.
+  const onClick = () => {
+    if (handled.current) {
+      handled.current = false;
+      return;
+    }
+    toggle();
+  };
+
   return (
-    <div className={`rm-shade is-${state}`} aria-hidden={state !== "down"}>
-      <div className="rm-cloth">
+    <div className={`rm-shade is-${state}`}>
+      <button
+        type="button"
+        className="rm-hem"
+        aria-label={state === "down" ? "Close the conversation" : "Ask me something"}
+        aria-expanded={state === "down"}
+        onPointerDown={start}
+        onPointerMove={move}
+        onPointerUp={end}
+        onPointerCancel={() => (drag.current = null)}
+        onClick={onClick}
+      >
+        <span className="rm-hem-grip" />
+      </button>
+
+      <div className="rm-cloth" aria-hidden={state !== "down"}>
         <div className="rm-cloth-content">{children}</div>
-      </div>
-      <div className="rm-hem">
-        <span className="rm-hem-cord" />
-        <span className="rm-hem-ring" />
       </div>
     </div>
   );
@@ -405,7 +505,7 @@ function RoomColumn({ openWith, onOpenProject, ask }) {
       </header>
 
       <button type="button" className="rc-desk" onClick={ask}>
-        <img src="/scene/desk.webp" alt="Sanjana at her desk" decoding="async" />
+        <img src="/scene/desk-draw.webp" alt="Sanjana at her desk" decoding="async" />
       </button>
 
       <section className="rc-section">
@@ -470,68 +570,12 @@ function RoomColumn({ openWith, onOpenProject, ask }) {
    The conversation, on the cloth.
    ══════════════════════════════════════════════════════════════════════════ */
 
-function bestMatch(draft, questions) {
-  const words = (draft.toLowerCase().match(/[a-z']+/g) || []).filter((w) => w.length > 2);
-  if (!words.length) return null;
-
-  let best = null;
-  let top = 0;
-  questions.forEach((q) => {
-    const hay = q.toLowerCase();
-    const score = words.reduce((t, w) => (hay.includes(w) ? t + w.length : t), 0);
-    if (score > top) {
-      top = score;
-      best = q;
-    }
-  });
-  return top >= 4 ? best : null;
-}
-
-function DeskChat({ chat, onClose }) {
-  const [draft, setDraft] = useState("");
-  const [miss, setMiss] = useState(false);
-  const inputRef = useRef(null);
-
-  // Focus lands once the cloth has finished falling.
-  useEffect(() => {
-    const t = setTimeout(() => inputRef.current?.focus(), 760);
-    return () => clearTimeout(t);
-  }, []);
-
-  const submit = (e) => {
-    e.preventDefault();
-    if (!draft.trim()) return;
-    const match = bestMatch(draft, chat.questions);
-    if (match) {
-      chat.onAsk(match);
-      setDraft("");
-      setMiss(false);
-    } else {
-      setMiss(true);
-    }
-  };
-
+function DeskChat({ chat }) {
   return (
     <div className="rm-talk">
-      <div className="rm-talk-pills">
-        {chat.questions.map((q) => (
-          <button
-            key={q}
-            type="button"
-            className={`rm-talk-pill${q === chat.active ? " is-on" : ""}`}
-            aria-pressed={q === chat.active}
-            onClick={() => {
-              chat.onAsk(q);
-              setMiss(false);
-            }}
-          >
-            {q}
-          </button>
-        ))}
-      </div>
+      <h2 className="rm-talk-title">Ask me something</h2>
 
       <div className="rm-talk-thread">
-        <p className="rm-talk-asked">{chat.active}</p>
         {chat.thinking ? (
           <div className="rm-talk-typing" aria-label="Thinking">
             <i />
@@ -543,33 +587,20 @@ function DeskChat({ chat, onClose }) {
         )}
       </div>
 
-      <form className="rm-talk-input" onSubmit={submit}>
-        <label className="rm-sr" htmlFor="rm-ask">
-          Ask a question
-        </label>
-        <input
-          id="rm-ask"
-          ref={inputRef}
-          value={draft}
-          placeholder="Ask me something…"
-          autoComplete="off"
-          onChange={(e) => {
-            setDraft(e.target.value);
-            setMiss(false);
-          }}
-        />
-        <button type="submit" aria-label="Send">
-          ↵
-        </button>
-      </form>
-
-      <p className="rm-talk-miss" role="status">
-        {miss ? "I have answers ready for the questions above — try one of those." : ""}
-      </p>
-
-      <button type="button" className="rm-talk-close" onClick={onClose}>
-        Close
-      </button>
+      {/* What else you could ask, under the rule. */}
+      <div className="rm-talk-pills">
+        {chat.questions.map((q) => (
+          <button
+            key={q}
+            type="button"
+            className={`rm-talk-pill${q === chat.active ? " is-on" : ""}`}
+            aria-pressed={q === chat.active}
+            onClick={() => chat.onAsk(q)}
+          >
+            {q}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

@@ -520,13 +520,28 @@
   width: 100%;
   height: auto;
   opacity: 0;
-  transition: opacity 55ms linear;
 }
 
+/* A cut, not a blend.
+   These poses are cut-outs with transparent backgrounds and different
+   silhouettes, so any cross-fade shows the union of both — two arms, two
+   books, and the wall bleeding through the middle where both are partly
+   transparent. Limited animation has always solved this by cutting on the
+   action rather than dissolving through it. The dwells are long, so the cut
+   reads as her having moved, not as a flicker. */
+.rm-pose.is-on { opacity: 1; }
+
 /* The first pose holds the layout; the rest stack over it. */
+.rm-props {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 .rm-pose:first-child { position: relative; }
 .rm-pose:not(:first-child) { position: absolute; inset: 0; }
-.rm-pose.is-on { opacity: 1; }
 
 .rm-desk:hover,
 .rm-desk:focus-visible {
@@ -584,15 +599,57 @@
   height: 100dvh;
   z-index: 40;
   pointer-events: none;
-  /* At rest the hem, cord and ring must clear the top edge too, or the bar
-     sits parked across the top of the room. */
-  transform: translateY(calc(-100% - 56px));
-  transition: transform 780ms var(--in);
+  /* Rolled up out of sight; the hem clears the top edge too. */
+  --y: calc(-100% - 46px);
+  transform: translateY(var(--y));
+  transition: transform 720ms var(--in);
   will-change: transform;
 }
 
-.rm-shade.is-peek { transform: translateY(calc(-100% + 18px)); }
-.rm-shade.is-down { transform: translateY(0); }
+.rm-shade.is-peek { --y: calc(-100% + 20px); }
+
+/* Down: the cloth covers the room and the hem comes to rest along the bottom
+   of the window, still grabbable. */
+.rm-shade.is-down { --y: -46px; }
+
+/* The hem hangs at the bottom of the cloth, so once the shade is down it
+   rests along the bottom of the window — and the same handle takes it back up. */
+.rm-hem {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 46px;
+  border: 0;
+  padding: 0;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+  background: linear-gradient(180deg, var(--wood-lit) 0%, var(--wood-mid) 55%, var(--wood-deep) 100%);
+  box-shadow: 0 10px 24px -8px rgba(34, 27, 22, 0.3);
+}
+
+.rm-shade.is-down .rm-hem { cursor: grab; }
+
+/* The pull grip, centred on the bar. */
+.rm-hem-grip {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 54px;
+  height: 4px;
+  translate: -50% -50%;
+  border-radius: 999px;
+  background: var(--brass);
+  opacity: 0.85;
+  transition: width 300ms var(--in), opacity 300ms var(--in);
+}
+
+.rm-hem:hover .rm-hem-grip,
+.rm-hem:focus-visible .rm-hem-grip {
+  width: 74px;
+  opacity: 1;
+}
 
 .rm-cloth {
   position: absolute;
@@ -600,39 +657,8 @@
   overflow: hidden;
   background:
     repeating-linear-gradient(180deg, rgba(94, 50, 32, 0.025) 0 1px, transparent 1px 4px),
-    linear-gradient(180deg, #f5eee1 0%, var(--jasmine) 22%, #fdfaf4 100%);
-  box-shadow: inset 0 14px 26px -16px rgba(34, 27, 22, 0.45);
-}
-
-.rm-hem {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 100%;
-  height: 14px;
-  background: linear-gradient(180deg, var(--wood-lit) 0%, var(--wood-mid) 60%, var(--wood-deep) 100%);
-  box-shadow: 0 12px 22px -6px rgba(34, 27, 22, 0.36);
-}
-
-.rm-hem-cord {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  width: 1.5px;
-  height: 26px;
-  background: var(--wood-mid);
-  opacity: 0.65;
-}
-
-.rm-hem-ring {
-  position: absolute;
-  left: 50%;
-  top: calc(100% + 26px);
-  width: 11px;
-  height: 11px;
-  translate: -50% 0;
-  border: 2px solid var(--brass);
-  border-radius: 50%;
+    linear-gradient(180deg, #fdfaf4 0%, var(--jasmine) 74%, #f5eee1 100%);
+  box-shadow: inset 0 14px 26px -16px rgba(34, 27, 22, 0.4);
 }
 
 .rm-cloth-content {
@@ -647,17 +673,28 @@
 .rm-shade.is-down .rm-cloth-content {
   opacity: 1;
   pointer-events: auto;
-  transition-delay: 460ms;
+  transition-delay: 420ms;
 }
 
 /* ── The conversation ─────────────────────────────────────────────────── */
 
 .rm-talk {
-  width: min(620px, calc(100vw - 40px));
-  max-height: 78dvh;
+  width: min(660px, calc(100vw - 48px));
+  max-height: 72dvh;
   display: flex;
   flex-direction: column;
-  gap: var(--s3);
+  gap: var(--s4);
+  margin-bottom: 46px;
+}
+
+/* The ask is the heading; the pills are how you answer it. */
+.rm-talk-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+  line-height: 1.1;
+  color: var(--wood-deep);
 }
 
 .rm-talk-pills {
@@ -665,6 +702,8 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: var(--s2);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--cream-200);
 }
 
 /* Transparent at rest, filled on hover. Active reads as hover. */
@@ -672,7 +711,7 @@
   border: 1px solid var(--cream-200);
   border-radius: 999px;
   background: transparent;
-  padding: 6px 15px;
+  padding: 7px 16px;
   font-family: inherit;
   font-size: 13px;
   font-weight: 500;
@@ -687,21 +726,19 @@
   border-color: var(--lotus-600);
 }
 
+/* A fixed well for the answer. Titles and pills are anchored, so a short
+   answer, a long one and the thinking dots all leave them exactly where
+   they were. */
 .rm-talk-thread {
-  flex: 1;
-  min-height: 0;
+  flex: none;
+  height: 42dvh;
   overflow-y: auto;
   scrollbar-width: none;
 }
 
-.rm-talk-thread::-webkit-scrollbar { display: none; }
+.rm-talk-pills { flex: none; }
 
-.rm-talk-asked {
-  margin: 0 0 var(--s3);
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  color: var(--ink-900);
-}
+.rm-talk-thread::-webkit-scrollbar { display: none; }
 
 /* Mono is correct here and only here — it is the machine voice. */
 .rm-talk-reply {
@@ -730,67 +767,6 @@
   0%, 60%, 100% { opacity: 0.25; }
   30% { opacity: 1; }
 }
-
-/* The input floats naked — no wrapper box, just the rule beneath it. */
-.rm-talk-input {
-  display: flex;
-  align-items: center;
-  gap: var(--s2);
-  border-bottom: 1px solid var(--cream-200);
-  padding-bottom: var(--s2);
-}
-
-.rm-talk-input input {
-  flex: 1;
-  min-width: 0;
-  border: 0;
-  background: none;
-  font-family: inherit;
-  font-size: 15px;
-  color: var(--ink-900);
-}
-
-.rm-talk-input input::placeholder { color: var(--ink-400); }
-
-/* The input floats naked, so focus is shown by the rule beneath it rather
-   than by a box drawn around it. */
-.rm-talk-input input:focus-visible { outline: none; }
-
-.rm-talk-input:focus-within {
-  border-bottom-color: var(--lotus-600);
-}
-
-.rm-talk-input button {
-  border: 0;
-  background: none;
-  color: var(--lotus-600);
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.rm-talk-miss {
-  margin: 0;
-  min-height: 1.2em;
-  font-size: 13px;
-  color: var(--ink-400);
-}
-
-.rm-talk-close {
-  align-self: flex-start;
-  border: 0;
-  background: none;
-  padding: 0;
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-400);
-  cursor: pointer;
-  transition: color 300ms var(--in);
-}
-
-.rm-talk-close:hover { color: var(--lotus-600); }
 
 /* ══════════════════════════════════════════════════════════════════════════
    Story and Statements, as a sheet over the dimmed room
@@ -852,7 +828,20 @@
   grid-template-rows: auto auto;
   justify-content: center;
   align-content: center;
+  align-items: start;
   row-gap: clamp(20px, 2.6vw, 36px);
+}
+
+/* Both columns start at the same line, so the first name lines up with the
+   first line of the note rather than floating to its own centre. */
+.rm-sheet[data-section="statements"] .pc-zone-l,
+.rm-sheet[data-section="statements"] .pc-zone-r,
+.rm-sheet[data-section="statements"] .pc-stack,
+.rm-sheet[data-section="statements"] .pc-quote-slot,
+.rm-sheet[data-section="statements"] .pc-index {
+  margin-top: 0;
+  padding-top: 0;
+  align-self: start;
 }
 
 .rm-sheet .pc-sheet-title {
@@ -1114,8 +1103,8 @@
   .rm-rake,
   .rm-garden-far,
   .rm-garden-near { animation: none; }
-  .rm-shade { transition-duration: 180ms; }
-  .rm-shade.is-peek { transform: translateY(calc(-100% - 56px)); }
+  .rm-shade { transition-duration: 200ms; }
+  .rm-shade.is-peek { --y: calc(-100% - 46px); }
   .rm-shade.is-down .rm-cloth-content { transition-delay: 80ms; }
   .rm-canvas.is-arriving .rm-settle { animation: none; }
   .rm-monitor:hover,
@@ -1154,4 +1143,83 @@
   stroke: var(--wood-mid);
   stroke-width: 11;
   stroke-linecap: round;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   The music box on the sill
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.rm-music {
+  position: absolute;
+  left: 14.5%;
+  top: 65.2%;
+  width: 6.6cqw;
+  z-index: 3;
+}
+
+.rm-music-box {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(0 0.16cqw 0.36cqw rgba(34, 27, 22, 0.28));
+  transition: transform 300ms var(--in), filter 300ms var(--in);
+}
+
+.rm-music-box svg { display: block; width: 100%; height: auto; }
+
+.rm-music-box:hover,
+.rm-music-box:focus-visible {
+  transform: translateY(-0.18cqw);
+  filter: drop-shadow(0 0.5cqw 1cqw rgba(34, 27, 22, 0.22));
+}
+
+/* Three notes lift off the horn while it is playing. */
+.rm-music-note {
+  position: absolute;
+  left: 74%;
+  bottom: 78%;
+  display: flex;
+  gap: 0.35cqw;
+  opacity: 0;
+  transition: opacity 300ms var(--in);
+}
+
+.rm-music-box.is-on .rm-music-note { opacity: 1; }
+
+.rm-music-note i {
+  width: 0.34cqw;
+  height: 0.34cqw;
+  border-radius: 50%;
+  background: var(--brass);
+  animation: rmNote 2.4s ease-in-out infinite;
+}
+
+.rm-music-note i:nth-child(2) { animation-delay: 0.4s; }
+.rm-music-note i:nth-child(3) { animation-delay: 0.8s; }
+
+@keyframes rmNote {
+  0% { opacity: 0; transform: translateY(0) scale(0.7); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-1.6cqw) scale(1.1); }
+}
+
+/* The player sits on the sill beside the box, not over the room. */
+.rm-music-player {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.6cqw);
+  width: 19cqw;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0.6cqw 1.4cqw -0.5cqw rgba(34, 27, 22, 0.3);
+  animation: rmRise 380ms var(--in) both;
+}
+
+.rm-music-player iframe { display: block; border: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-music-note i { animation: none; opacity: 1; }
 }
