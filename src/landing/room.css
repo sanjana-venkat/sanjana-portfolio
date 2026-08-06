@@ -1223,3 +1223,102 @@
 @media (prefers-reduced-motion: reduce) {
   .rm-music-note i { animation: none; opacity: 1; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   My Work
+
+   The case-study browser had animation modifiers (.work-shell.is-expanding
+   and friends) but no base layout anywhere in the stylesheets, so it mounted
+   as an unstyled div — which is why opening a case study appeared to do
+   nothing. These are the base rules it was missing. It sits above the room,
+   which is fixed, so it needs a stacking order of its own.
+
+   This is layout only; the tab bar still wants the rebuild the direction doc
+   asks for in §5.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.work-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(16px, 2.4vw, 32px) clamp(16px, 3vw, 44px) clamp(16px, 2.4vw, 32px);
+  background: var(--cream-50);
+  overflow: hidden;
+}
+
+.work-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  flex: none;
+  padding-bottom: var(--s3);
+}
+
+.work-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border: 1px solid var(--cream-200);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 17px;
+  line-height: 1;
+  color: var(--ink-600);
+  cursor: pointer;
+  transition: color 300ms var(--in), border-color 300ms var(--in);
+}
+
+.work-back:hover,
+.work-back:focus-visible {
+  color: var(--lotus-600);
+  border-color: var(--lotus-600);
+}
+
+.work-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: 1.1;
+  color: var(--ink-900);
+}
+
+/* A scrollable row, so a long list never wraps into a filing cabinet. */
+.work-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--s2);
+  flex: none;
+  overflow-x: auto;
+  padding-bottom: var(--s3);
+}
+
+.work-tabs .pc-pill { flex: none; }
+
+/* The work itself, on a warm surface that breathes. */
+.work-stage {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid var(--cream-200);
+  border-radius: 24px;
+  background: var(--jasmine);
+}
+
+.work-stage > iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 60vh;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .work-shell { padding: 12px 20px 20px; }
+  .work-stage { border-radius: 16px; }
+}
