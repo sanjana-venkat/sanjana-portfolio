@@ -29,7 +29,7 @@
   background:
     radial-gradient(120% 90% at 12% 8%, rgba(255, 253, 248, 0.85) 0%, rgba(255, 253, 248, 0) 55%),
     radial-gradient(80% 70% at 78% 82%, rgba(110, 75, 49, 0.05) 0%, rgba(110, 75, 49, 0) 60%),
-    radial-gradient(60% 55% at 60% 30%, rgba(181, 83, 44, 0.03) 0%, rgba(181, 83, 44, 0) 70%),
+    radial-gradient(60% 55% at 60% 30%, rgba(184, 92, 114, 0.04) 0%, rgba(184, 92, 114, 0) 70%),
     var(--cream-50);
 }
 
@@ -39,7 +39,7 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.11;
   background-repeat: repeat;
 }
 
@@ -72,8 +72,8 @@
   pointer-events: none;
   background: radial-gradient(
     circle closest-side,
-    rgba(181, 83, 44, 0.07) 0%,
-    rgba(181, 83, 44, 0) 62%
+    rgba(184, 92, 114, 0.09) 0%,
+    rgba(184, 92, 114, 0) 62%
   );
 }
 
@@ -540,12 +540,10 @@
 
 .sc-panel-chat {
   left: 2.5%;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 12%;
+  bottom: 12%;
   right: auto;
-  bottom: auto;
   width: clamp(280px, 27vw, 400px);
-  max-height: 76vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -707,5 +705,37 @@
 
   .sc-layer:has(.sc-panel-chat) ~ .sc-close {
     display: none;
+  }
+}
+
+/* ── The conversation happens on the closed blind ─────────────────────── */
+
+/* The blind is already white, so the panel carries no surface of its own —
+   the messages simply arrive on it. */
+.sc-panel-chat {
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.sc-panel-chat > .pc-chat > * {
+  animation: scMsg 420ms var(--in) both;
+}
+
+.sc-panel-chat > .pc-chat > *:nth-child(2) { animation-delay: 60ms; }
+.sc-panel-chat > .pc-chat > *:nth-child(3) { animation-delay: 120ms; }
+.sc-panel-chat > .pc-chat > *:nth-child(4) { animation-delay: 180ms; }
+
+@keyframes scMsg {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 860px) {
+  /* On a phone there is no blind behind it, so the sheet keeps its surface. */
+  .sc-panel-chat {
+    background: var(--jasmine);
+    border-top: 1px solid var(--cream-200);
+    box-shadow: 0 -10px 30px -12px var(--shadow);
   }
 }

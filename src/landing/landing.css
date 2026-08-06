@@ -18,12 +18,17 @@
   --ink-600: #5c554a;
   --ink-400: #8c8477;
 
-  /* Kumkum */
-  --terracotta-600: #b5532c;
-  --terracotta-800: #8c3c1b;
-  --terracotta-100: #ebd9cc;
+  /* Lotus — the primary: the kolam line, links, active state */
+  --lotus-600: #b85c72;
+  --lotus-800: #8e4256;
+  --lotus-100: #ecd7dd;
 
-  /* Banana leaf */
+  /* The kumkum names now point at lotus, so every rule follows. */
+  --terracotta-600: var(--lotus-600);
+  --terracotta-800: var(--lotus-800);
+  --terracotta-100: var(--lotus-100);
+
+  /* Banana leaf — the accent */
   --leaf-700: #2e5145;
   --leaf-300: #8aa294;
 

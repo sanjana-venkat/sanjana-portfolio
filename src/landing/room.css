@@ -72,16 +72,17 @@
   right: 0;
   top: calc(var(--i) * 4.7%);
   height: 1.5px;
-  background: linear-gradient(180deg, #e8dcc6 0%, #cdbb9c 100%);
-  opacity: 0.55;
+  background: linear-gradient(180deg, var(--jasmine) 0%, #efe9df 100%);
+  opacity: 0.6;
   transform-origin: top;
   transition: height 520ms var(--in), opacity 520ms var(--in);
   transition-delay: calc(var(--i) * 9ms);
 }
 
 .rm-window.is-shut .rm-slat {
-  height: 4.8%;
+  height: 4.75%;
   opacity: 1;
+  box-shadow: 0 1px 0 rgba(33, 30, 26, 0.06);
 }
 
 /* Sash bar and sill. */
@@ -582,7 +583,7 @@
 
 .el-wood { fill: var(--wood-700); }
 .el-relief { fill: var(--wood-400); }
-.el-cloth { fill: var(--terracotta-800); opacity: 0.85; }
+.el-cloth { fill: var(--lotus-800); opacity: 0.85; }
 .el-dark { fill: var(--wood-800); opacity: 0.7; }
 .el-bead { fill: var(--wood-800); opacity: 0.35; }
 .el-ivory { fill: var(--cream-100); }
