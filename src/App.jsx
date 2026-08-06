@@ -23,6 +23,9 @@ const APPLY_SYSTEMS_URL =
 const TRAVEL_DNA_URL =
   "https://travel-dna-kohl.vercel.app/";
 
+const OUTDONE_FRAMER_URL =
+  "https://sanjanavenkat.framer.website/works/outdone-2";
+
 const MUESLI_FIGMA_URL =
   "https://www.figma.com/design/QO5TcpLfxmcheMMjcMYg6C/Muesli?node-id=17-5";
 
@@ -180,7 +183,7 @@ const PROJECTS = [
   { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
   { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
-  { slug: "model-design", label: "Personalized Travel", title: "Outdone, Context-Aware Personalization", type: "case-study" }
+  { slug: "model-design", label: "Personalized Travel", title: "Outdone, Context-Aware Personalization", url: OUTDONE_FRAMER_URL }
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
