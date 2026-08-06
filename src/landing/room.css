@@ -761,7 +761,7 @@
   inset: 0;
   border: 0;
   cursor: default;
-  background: rgba(251, 248, 242, 0.94);
+  background: var(--cream-50);
   animation: rmFade 380ms var(--in) both;
 }
 
@@ -1129,9 +1129,9 @@
 
 .rm-music {
   position: absolute;
-  left: 13.5%;
-  top: 62.4%;
-  width: 7.4cqw;
+  left: 4.5%;
+  top: 76.5%;
+  width: 7cqw;
   z-index: 3;
 }
 
@@ -1188,7 +1188,7 @@
 .rm-music-player {
   position: absolute;
   left: 0;
-  top: calc(100% + 0.6cqw);
+  bottom: calc(100% + 0.7cqw);
   width: 19cqw;
   border-radius: 12px;
   overflow: hidden;
@@ -1214,6 +1214,14 @@
    This is layout only; the tab bar still wants the rebuild the direction doc
    asks for in §5.
    ══════════════════════════════════════════════════════════════════════════ */
+
+/* The room scopes its own focus ring; this lives outside it, so the browser
+   default was leaking blue into a warm page. */
+.work-shell :focus { outline: none; }
+.work-shell :focus-visible {
+  outline: 2px solid var(--wood-deep);
+  outline-offset: 3px;
+}
 
 .work-shell {
   position: fixed;
@@ -1321,4 +1329,116 @@
 @media (max-width: 900px) {
   .work-shell { padding: 12px 20px 20px; }
   .work-stage { border-radius: 16px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Phone: the opened sheets
+
+   The Story and Statements grids are a desktop composition — two tracks side
+   by side. On a phone they have to become rows, and the story timeline has to
+   stop being an absolutely-positioned rail, because its points are placed
+   along an SVG path that has no room to exist at this width.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .rm-sheet {
+    inset: 0;
+    padding: 20px;
+  }
+
+  .rm-sheet-scroll,
+  .rm-sheet[data-section="story"] .rm-sheet-scroll,
+  .rm-sheet[data-section="statements"] .rm-sheet-scroll {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    align-content: start;
+    align-items: start;
+    justify-content: stretch;
+    gap: 24px;
+    max-width: none;
+    padding: 0;
+  }
+
+  .rm-sheet .pc-zone-l,
+  .rm-sheet .pc-zone-r,
+  .rm-sheet .pc-sheet-title,
+  .rm-sheet[data-section="statements"] .pc-zone-l,
+  .rm-sheet[data-section="statements"] .pc-zone-r {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  /* The photograph goes above its caption rather than beside it. */
+  .rm-sheet .pc-moment {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .rm-sheet .pc-moment .shot {
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 4 / 5;
+  }
+
+  /* The timeline becomes a scrolling row of years. The drawn path and the
+     absolute placement are desktop-only ideas. */
+  .rm-sheet .pc-timeline {
+    max-width: none;
+    margin: 0;
+    height: auto;
+  }
+
+  .rm-sheet .pc-timeline svg { display: none; }
+
+  .rm-sheet .pc-timeline ol {
+    position: static !important;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  .rm-sheet .pc-timeline ol::-webkit-scrollbar { display: none; }
+
+  .rm-sheet .pc-pt {
+    position: static;
+    transform: none;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--cream-200);
+    border-radius: 999px;
+    padding: 6px 14px;
+    background: transparent;
+    white-space: nowrap;
+  }
+
+  .rm-sheet .pc-pt {
+    width: auto;
+    height: auto;
+  }
+
+  .rm-sheet .pc-pt i {
+    position: static;
+    margin: 0;
+    width: 6px;
+    height: 6px;
+    flex: none;
+  }
+
+  .rm-sheet .pc-pt span {
+    position: static;
+    transform: none;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .rm-sheet .pc-pt.on {
+    border-color: var(--lotus-600);
+  }
+
+  .rm-sheet .pc-pt.on i { background: var(--lotus-600); }
+  .rm-sheet .pc-pt.on span { color: var(--lotus-600); }
 }

@@ -173,14 +173,14 @@ In a few sprints, we pushed toward redesigning the full journey and got design s
 Today, the experience is live and evolving with AI.`;
 
 const PROJECTS = [
-  { slug: "muesli", label: "Speech-to-Text", title: "Muesli — Local-first dictation, made approachable", type: "case-study" },
   { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
   { slug: "ai-personalization", label: "RecSys", title: "Intent-based Recommendations", url: MARKETING_TILES_URL },
+  { slug: "model-design", label: "Personalized Travel", title: "Outdone, Context-Aware Personalization", url: OUTDONE_FRAMER_URL },
   { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
   { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
   { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
-  { slug: "model-design", label: "Personalized Travel", title: "Outdone, Context-Aware Personalization", url: OUTDONE_FRAMER_URL }
+  { slug: "muesli", label: "Speech-to-Text", title: "Muesli — Local-first dictation, made approachable", type: "case-study" }
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {

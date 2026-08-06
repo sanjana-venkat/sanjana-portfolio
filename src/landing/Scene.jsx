@@ -508,7 +508,7 @@ function RoomColumn({ openWith, onOpenProject, ask }) {
       <section className="rc-section">
         <h2 className="rc-h2">Selected work</h2>
         <div className="rc-work">
-          {FEATURED.map((p) => (
+          {FEATURED.filter((p) => p.slug !== "muesli").map((p) => (
             <button
               key={p.slug}
               type="button"
