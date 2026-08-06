@@ -43,6 +43,40 @@
   background-repeat: repeat;
 }
 
+/* The shaft of daylight the window throws across the wall. */
+.sc-shaft {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: min(70vw, 900px);
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    104deg,
+    rgba(255, 252, 244, 0.5) 0%,
+    rgba(255, 252, 244, 0.18) 34%,
+    rgba(255, 252, 244, 0) 62%
+  );
+}
+
+/* Warm light pooling on the wall behind the artwork. */
+.sc-halo {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: clamp(150px, 27vh, 270px);
+  width: clamp(420px, 46vw, 700px);
+  height: clamp(420px, 46vw, 700px);
+  transform: translate(-50%, -22%);
+  pointer-events: none;
+  background: radial-gradient(
+    circle closest-side,
+    rgba(181, 83, 44, 0.07) 0%,
+    rgba(181, 83, 44, 0) 62%
+  );
+}
+
 /* ── Her name, painted on the wall ────────────────────────────────────── */
 
 .sc-name {
@@ -102,8 +136,6 @@
   display: block;
   width: 100%;
   height: auto;
-  /* She sits in the room's light, not on top of it. */
-  mix-blend-mode: multiply;
 }
 
 .sc-desk-hint {
@@ -226,8 +258,8 @@
 /* ── Mobile: the same room, read top to bottom ───────────────────────── */
 
 @media (max-width: 860px) {
-  /* The wall, window and light stay behind; everything else becomes a column
-     in DOM order — name, artwork, sections, gallery, strip, her desk. */
+  /* The wall, the window and the light stay behind. Everything you can touch
+     becomes one column in DOM order. */
   .sc {
     display: flex;
     flex-direction: column;
@@ -236,15 +268,16 @@
     gap: var(--s5);
   }
 
-  .sc-window {
-    width: 46vw;
+  .sc-halo {
+    top: 20vh;
+    width: 300px;
+    height: 300px;
   }
 
   .sc-name,
   .sc .km,
-  .sc-labels,
   .sc-gallery,
-  .sc-strip,
+  .sc-bulletin,
   .sc-desk,
   .sc-utils {
     position: static;
@@ -258,68 +291,65 @@
     text-align: center;
   }
 
+  .sc-name b {
+    font-size: 2.75rem;
+  }
+
   .sc .km {
-    width: min(232px, 62vw);
-    height: min(232px, 62vw);
+    width: min(210px, 56vw);
+    height: min(210px, 56vw);
     align-self: center;
   }
 
-  .sc-halo {
-    top: 22vh;
-    width: 300px;
-    height: 300px;
-  }
-
-  .sc-labels {
-    display: grid;
-  }
-
-  .sc-labels button {
-    position: static;
-    transform: none !important;
-    text-align: left;
-    font-size: 1.25rem;
-    padding: var(--s3) 0;
-    border-top: 1px solid var(--cream-200);
-  }
-
-  .sc-labels button::before {
-    display: none;
-  }
-
-  /* Frame sizes are fixed in px so the wall stays deliberate; on a phone the
-     whole wall scales down rather than each frame being re-specified. */
-  .sc-frames {
-    zoom: 0.58;
-  }
-
-  .sc-eyebrow-r {
-    text-align: left;
-  }
-
+  /* She comes straight after the artwork: the chat is the main thing to do. */
   .sc-desk {
-    width: 88%;
+    order: 1;
+    width: 84%;
     align-self: center;
+  }
+
+  .sc-gallery {
+    order: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s4);
+    align-items: start;
+  }
+
+  .sc-gallery-pair {
+    display: contents;
+  }
+
+  .sc-bulletin {
+    order: 3;
+  }
+
+  .sc-utils {
+    order: 4;
+    display: flex;
+    justify-content: center;
+    gap: var(--s4);
   }
 
   .sc-desk-hint {
     display: none;
   }
 
-  .sc-utils {
-    display: flex;
-    gap: var(--s4);
+  .sc-board-hint {
+    text-align: center;
   }
 
+  /* Section content is a sheet over the room. */
   .sc-panel-wide {
     position: fixed;
     grid-template-columns: minmax(0, 1fr);
-    left: var(--s4);
-    right: var(--s4);
-    top: var(--s5);
+    left: var(--s3);
+    right: var(--s3);
+    top: var(--s4);
     bottom: var(--s6);
     align-content: start;
     overflow-y: auto;
+    gap: var(--s4);
   }
 
   .sc-scrim {
@@ -328,16 +358,26 @@
 
   .sc-panel-chat {
     position: fixed;
-    left: var(--s4);
-    right: var(--s4);
-    bottom: var(--s4);
+    left: 0;
+    right: 0;
+    bottom: 0;
     width: auto;
+    max-height: 82vh;
+    overflow-y: auto;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    padding: var(--s4) var(--s4) var(--s5);
   }
 
   .sc-close {
     position: fixed;
     right: var(--s4);
     bottom: var(--s4);
+    z-index: 20;
+    background: var(--cream-50);
+    padding: var(--s2) var(--s3);
+    border: 1px solid var(--cream-200);
   }
 }
 
@@ -364,29 +404,126 @@
   gap: var(--s3);
 }
 
-/* ── Placement of the room's objects ──────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════════
+   Placement.
+
+   The room is a corner: a back wall from 0 to 68% and a side wall from 68%
+   to the edge, meeting on a visible arris. Everything sits at a fixed
+   percentage of the viewport so nothing can drift into anything else.
+
+      back wall              │ side wall
+      ├ window  ├ name       │ ├ framed work
+      │         ├ kolam      │ ├ pin board
+      │         ├ shelf      │
+      │         └ her desk   │
+   ══════════════════════════════════════════════════════════════════════ */
+
+.sc-corner-edge {
+  position: absolute;
+  z-index: 3;
+  left: 68%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(110, 75, 49, 0.18) 0%,
+    rgba(110, 75, 49, 0.08) 60%,
+    rgba(110, 75, 49, 0) 100%
+  );
+  pointer-events: none;
+}
+
+/* The side wall turns away from the window, so it sits a shade deeper. */
+.sc-side-wall {
+  position: absolute;
+  z-index: 2;
+  left: 68%;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(110, 75, 49, 0.055) 0%,
+    rgba(110, 75, 49, 0.025) 30%,
+    rgba(110, 75, 49, 0.045) 100%
+  );
+}
+
+/* ── Back wall ─────────────────────────────────────────────────────── */
+
+.sc-name {
+  left: 41%;
+  top: 6%;
+}
+
+.sc-name b {
+  font-size: clamp(2rem, 3.4vw, 3.4rem);
+}
+
+.sc .km {
+  left: 41%;
+  top: 19%;
+  transform: translateX(-50%);
+  width: clamp(150px, 17vw, 260px);
+  height: clamp(150px, 17vw, 260px);
+}
+
+.sc-halo {
+  left: 41%;
+  top: 18%;
+  width: clamp(300px, 34vw, 520px);
+  height: clamp(300px, 34vw, 520px);
+}
+
+/* She sits below the artwork, never under it. */
+.sc-desk {
+  left: 41%;
+  bottom: 0;
+  width: clamp(260px, 27vw, 430px);
+}
+
+.sc-desk-hint {
+  left: 41%;
+  bottom: clamp(190px, 25vh, 300px);
+  font-family: var(--font-display);
+  font-size: var(--t-h2);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.sc-desk-hint.is-on {
+  opacity: 1;
+}
+
+/* ── Side wall ─────────────────────────────────────────────────────── */
 
 .sc-gallery {
   position: absolute;
   z-index: 6;
-  right: clamp(20px, 3.5vw, 68px);
-  top: clamp(48px, 8vh, 96px);
-  display: flex;
-  align-items: flex-start;
-  gap: clamp(12px, 1.6vw, 26px);
+  left: 70.5%;
+  right: 2.5%;
+  top: 6%;
+  max-height: 46%;
+  display: grid;
+  justify-items: center;
+  gap: clamp(14px, 2.2vh, 30px);
 }
 
 .sc-gallery-pair {
-  display: grid;
-  gap: clamp(12px, 1.8vh, 24px);
+  display: flex;
+  gap: clamp(10px, 1.2vw, 20px);
+  justify-content: center;
 }
 
 .sc-bulletin {
   position: absolute;
   z-index: 6;
-  right: clamp(20px, 3.5vw, 68px);
-  bottom: clamp(20px, 4vh, 56px);
-  width: clamp(280px, 32vw, 440px);
+  left: 70.5%;
+  right: 2.5%;
+  bottom: 4%;
+  top: 56%;
 }
 
 .sc-board-hint {
@@ -396,55 +533,179 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-400);
-  text-align: right;
+  text-align: center;
 }
 
-.sc-name b {
-  font-size: clamp(2.25rem, 4.4vw, 4.25rem);
-  line-height: 1;
+/* ── The conversation happens at the window ────────────────────────── */
+
+.sc-panel-chat {
+  left: 2.5%;
+  top: 50%;
+  transform: translateY(-50%);
+  right: auto;
+  bottom: auto;
+  width: clamp(280px, 27vw, 400px);
+  max-height: 76vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--jasmine);
+  border: 1px solid var(--cream-200);
+  box-shadow: 0 16px 40px -12px var(--shadow);
+  padding: var(--s4);
 }
 
-/* She sits left of the board, under the artwork. */
-.sc-desk {
-  left: clamp(40%, 44%, 48%);
-  width: clamp(300px, 34vw, 540px);
+.sc-panel-chat .pc-chat {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: var(--s3);
 }
 
-.sc-desk-hint {
-  left: clamp(40%, 44%, 48%);
-  bottom: clamp(210px, 34vh, 380px);
-  font-size: var(--t-h2);
-  font-family: var(--font-display);
-  text-transform: none;
-  letter-spacing: 0;
+.sc-panel-chat .pc-thread {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  min-height: 0;
 }
 
-.sc-desk-hint.is-on {
-  opacity: 1;
+.sc-panel-chat .pc-thread::-webkit-scrollbar {
+  display: none;
+}
+
+/* Clicking anywhere off the panel closes it. */
+.sc-chat-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  background: none;
+  border: 0;
+  cursor: default;
 }
 
 .sc-utils {
-  z-index: 12;
+  z-index: 14;
 }
 
+/* ══════════════════════════════════════════════════════════════════════
+   Mobile: the same room, read top to bottom.
+   ══════════════════════════════════════════════════════════════════════ */
+
 @media (max-width: 860px) {
+  .sc {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--s6) var(--s4) var(--s7);
+    gap: var(--s4);
+  }
+
+  .sc-corner-edge,
+  .sc-side-wall {
+    display: none;
+  }
+
+  .sc-halo {
+    left: 50%;
+    top: 16vh;
+    width: 300px;
+    height: 300px;
+  }
+
+  .sc-name,
+  .sc .km,
   .sc-gallery,
-  .sc-bulletin {
+  .sc-bulletin,
+  .sc-desk,
+  .sc-utils {
     position: static;
+    transform: none;
+    inset: auto;
     width: auto;
+    margin: 0;
   }
 
-  .sc-gallery {
-    justify-content: center;
-    flex-wrap: wrap;
+  .sc-name {
+    text-align: center;
   }
 
-  .sc-board-hint {
-    text-align: left;
+  .sc-name b {
+    font-size: 2.5rem;
+  }
+
+  .sc .km {
+    width: min(200px, 54vw);
+    height: min(200px, 54vw);
+    align-self: center;
   }
 
   .sc-desk {
-    left: auto;
-    width: 88%;
+    order: 1;
+    width: 80%;
+    align-self: center;
+  }
+
+  .sc-gallery {
+    order: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s3);
+    align-items: start;
+    justify-items: stretch;
+  }
+
+  .sc-gallery-pair {
+    display: contents;
+  }
+
+  .sc-bulletin {
+    order: 3;
+  }
+
+  .sc-utils {
+    order: 4;
+    display: flex;
+    justify-content: center;
+    gap: var(--s4);
+  }
+
+  .sc-desk-hint {
+    display: none;
+  }
+
+  .sc-panel-wide {
+    position: fixed;
+    grid-template-columns: minmax(0, 1fr);
+    left: var(--s3);
+    right: var(--s3);
+    top: var(--s4);
+    bottom: var(--s6);
+    align-content: start;
+    overflow-y: auto;
+    gap: var(--s4);
+  }
+
+  .sc-scrim {
+    position: fixed;
+  }
+
+  /* On a phone the conversation is a sheet, not a panel at the window. */
+  .sc-panel-chat {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    transform: none;
+    width: auto;
+    max-height: 84vh;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    padding: var(--s4) var(--s4) var(--s5);
+  }
+
+  .sc-layer:has(.sc-panel-chat) ~ .sc-close {
+    display: none;
   }
 }

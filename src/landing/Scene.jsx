@@ -84,6 +84,10 @@ export default function Scene({ chat, onOpenProject }) {
       <WindowWall shut={blindShut} />
       <div className="sc-shaft" aria-hidden="true" />
 
+      {/* The room turns a corner here: back wall left, side wall right. */}
+      <div className="sc-side-wall" aria-hidden="true" />
+      <div className="sc-corner-edge" aria-hidden="true" />
+
       {/* ── The wall ───────────────────────────────────────────────── */}
       <div className="sc-halo" aria-hidden="true" />
 
@@ -148,6 +152,13 @@ export default function Scene({ chat, onOpenProject }) {
 
       {open === "chat" && (
         <div className="sc-layer">
+          {/* Anywhere off the panel closes it. */}
+          <button
+            type="button"
+            className="sc-chat-scrim"
+            aria-label="Close the conversation"
+            onClick={close}
+          />
           <div className="sc-panel sc-panel-chat">
             <DeskChat chat={chat} onClose={close} />
           </div>

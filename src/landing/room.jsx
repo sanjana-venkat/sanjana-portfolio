@@ -1,3 +1,5 @@
+import Elephant from "./Elephant";
+
 /*
  * Things in the room. Objects, not motifs — so unlike the corner ornaments
  * these carry fills, because a teak shelf and a window frame are made of
@@ -40,66 +42,7 @@ export function WindowWall({ shut }) {
 export function CornerShelf() {
   return (
     <div className="rm-shelf" aria-hidden="true">
-      <svg viewBox="0 0 180 220" fill="none">
-        {/* Ganesha, seated */}
-        <g className="rm-brass">
-          <ellipse cx="52" cy="52" rx="21" ry="16" />
-          <circle cx="52" cy="30" r="13" />
-          <path d="M52 34 C 52 44, 46 50, 44 58" strokeWidth="3" fill="none" />
-          <ellipse cx="38" cy="30" rx="6" ry="9" />
-          <ellipse cx="66" cy="30" rx="6" ry="9" />
-          <rect x="30" y="62" width="44" height="6" rx="1" />
-        </g>
-
-        {/* Small standing elephant on the shelf */}
-        <g className="rm-teak">
-          <path d="M96 62 C 96 50, 106 44, 118 44 C 130 44, 138 50, 138 62 L 138 68 L 96 68 Z" />
-          <path d="M96 56 C 90 54, 86 48, 88 42 C 92 44, 95 48, 96 52 Z" />
-          <path d="M88 62 C 84 62, 82 58, 84 54" className="rm-line" fill="none" />
-        </g>
-
-        {/* Shelf plank */}
-        <g className="rm-teak">
-          <rect x="14" y="68" width="152" height="12" />
-          <rect x="14" y="80" width="152" height="4" className="rm-shade" />
-        </g>
-
-        {/* The carved bracket: an elephant in side profile, facing left */}
-        <g className="rm-teak">
-          <rect x="30" y="84" width="120" height="70" />
-        </g>
-        <g className="rm-carve">
-          {/* body */}
-          <path d="M62 146 C 52 146, 44 138, 44 126 C 44 112, 56 102, 74 102 C 96 102, 112 110, 112 126 C 112 140, 104 146, 94 146 Z" />
-          {/* head and ear */}
-          <path d="M44 126 C 36 126, 30 120, 30 112 C 30 104, 36 98, 44 100" />
-          <ellipse cx="52" cy="118" rx="10" ry="13" className="rm-line" fill="none" />
-          {/* trunk */}
-          <path
-            d="M32 116 C 26 124, 26 136, 32 144 C 36 149, 42 149, 44 145"
-            className="rm-line"
-            fill="none"
-            strokeWidth="5"
-          />
-          {/* legs */}
-          <rect x="52" y="140" width="12" height="14" />
-          <rect x="92" y="140" width="12" height="14" />
-          {/* tail */}
-          <path d="M112 122 C 118 126, 118 136, 114 140" className="rm-line" fill="none" />
-        </g>
-
-        {/* The wedge that lands the bracket on the wall */}
-        <g className="rm-teak">
-          <path d="M30 154 L 150 154 L 90 206 Z" />
-        </g>
-        <path d="M42 162 L 138 162" className="rm-line" fill="none" />
-
-        {/* A rolled drawing, tucked under the shelf */}
-        <g className="rm-paper">
-          <rect x="98" y="128" width="44" height="12" rx="6" />
-          <circle cx="140" cy="134" r="6" />
-        </g>
-      </svg>
+      <Elephant />
     </div>
   );
 }

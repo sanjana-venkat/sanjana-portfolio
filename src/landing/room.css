@@ -209,12 +209,17 @@
 }
 
 .rm-frame-lg .rm-frame-mat img {
-  height: clamp(150px, 22vh, 236px);
+  height: clamp(110px, 17vh, 190px);
 }
 
 .rm-frame-sm .rm-frame-mat img {
-  height: clamp(78px, 11vh, 118px);
+  height: clamp(62px, 9vh, 100px);
 }
+
+.rm-frame-lg { width: min(100%, 260px); }
+.rm-frame-sm { width: min(100%, 124px); }
+.rm-frame-lg .rm-frame-body,
+.rm-frame-sm .rm-frame-body { width: 100%; }
 
 .rm-frame-cap {
   display: block;
@@ -251,6 +256,8 @@
 
 .rm-board {
   position: relative;
+  max-height: 100%;
+  overflow: hidden;
   background: var(--cream-100);
   border: 1px solid var(--cream-200);
   padding: var(--s4) var(--s3) var(--s3);
@@ -375,107 +382,75 @@
 /* ── Mobile ───────────────────────────────────────────────────────────── */
 
 @media (max-width: 860px) {
+  /* The window narrows to a strip down the left edge — enough to keep the
+     daylight and the room, not enough to take the screen. */
   .rm-window {
     position: absolute;
-    width: 44vw;
-    height: 46vh;
+    left: calc(-1 * var(--s4));
+    top: var(--s4);
+    width: 30vw;
+    height: 38vh;
+    padding: 7px;
   }
 
+  .rm-sash {
+    top: 7px;
+    bottom: 7px;
+    width: 7px;
+    margin-left: -3.5px;
+  }
+
+  .rm-view,
+  .rm-blind {
+    inset: 7px;
+  }
+
+  /* The shelf tucks beside the artwork instead of taking a row of its own. */
   .rm-shelf {
-    position: static;
-    width: 92px;
-    margin: 0 auto;
+    position: absolute;
+    left: auto;
+    right: var(--s4);
+    top: 30vh;
+    width: 64px;
+    margin: 0;
   }
 
-  .rm-frame-lg .rm-frame-mat img {
-    height: 150px;
+  /* Frames fill their grid cell rather than keeping desktop pixel sizes. */
+  .rm-frame,
+  .rm-frame-body {
+    width: 100%;
   }
 
+  .rm-frame-lg .rm-frame-mat img,
   .rm-frame-sm .rm-frame-mat img {
-    height: 88px;
-  }
-}
-
-/* ==========================================================================
-   Case studies — the same room, seen through a window in the wall.
-   ========================================================================== */
-
-.work-shell {
-  position: fixed;
-  inset: 0;
-  z-index: 70;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: var(--cream-50);
-  padding: var(--s5) var(--s5) var(--s4);
-  font-family: var(--font-body);
-  animation: scIn 380ms var(--in) both;
-}
-
-.work-head {
-  display: flex;
-  align-items: center;
-  gap: var(--s3);
-  margin-bottom: var(--s4);
-  flex-shrink: 0;
-}
-
-.work-back {
-  width: 34px;
-  height: 34px;
-  border: 1px solid var(--cream-200);
-  background: none;
-  color: var(--ink-600);
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-  transition: color 240ms var(--in), border-color 240ms var(--in);
-}
-
-.work-back:hover {
-  color: var(--terracotta-600);
-  border-color: var(--terracotta-600);
-}
-
-.work-title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: var(--t-h1);
-  letter-spacing: -0.01em;
-  color: var(--ink-900);
-}
-
-.work-tabs {
-  display: flex;
-  gap: var(--s2);
-  overflow-x: auto;
-  padding-bottom: var(--s2);
-  margin-bottom: var(--s4);
-  flex-shrink: 0;
-}
-
-/* The framed opening the case study is seen through. */
-.work-stage {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  min-width: 0;
-  overflow: hidden;
-  background: var(--jasmine);
-  border: 2px solid var(--wood-700);
-  box-shadow: 0 14px 34px -12px var(--shadow);
-}
-
-@media (max-width: 860px) {
-  .work-shell {
-    padding: var(--s4) var(--s4) var(--s3);
+    height: 128px;
   }
 
-  .work-shell .pc-corner {
-    display: none;
+  .rm-frame-body {
+    border-width: 5px;
+  }
+
+  /* Touch targets on the board come up to size. */
+  .rm-board {
+    padding: var(--s4) var(--s3) var(--s3);
+  }
+
+  .rm-board-inner {
+    gap: var(--s3);
+  }
+
+  .rm-photo img {
+    width: 68px;
+    height: 68px;
+  }
+
+  .rm-letter {
+    width: 116px;
+  }
+
+  .rm-photo-cap,
+  .rm-letter-cap {
+    font-size: 9.5px;
   }
 }
 
@@ -534,37 +509,24 @@
   stroke: var(--terracotta-600);
   stroke-width: 1.6;
   fill: none;
-  transition: stroke-width 200ms var(--in), opacity 200ms var(--in);
   opacity: 0.75;
+  transition: stroke-width 200ms var(--in), opacity 200ms var(--in);
 }
 
-/* Over something interactive the loop opens up and firms. */
+/* Over something interactive the loop firms up. */
 .rc-loop.is-hot path {
   stroke-width: 2.2;
   opacity: 1;
 }
 
-.rc-loop.is-hot {
-  transform-box: fill-box;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rc-loop path {
-    transition: none;
-  }
-}
-
 /* ==========================================================================
-   A case study opens out of its frame.
+   A case study grows out of its frame.
 
-   The stage starts life sitting exactly where the frame was on the wall and
-   grows into place, so the page reads as that frame expanding rather than a
-   modal appearing over it.
+   The vars are written before paint, so the animation starts at the frame and
+   grows to identity. A keyframe rather than a state flip: no React timing to
+   get wrong, and StrictMode's double mount just restarts it.
    ========================================================================== */
 
-/* The vars are written before paint, so the animation starts at the frame and
-   grows to identity. A keyframe rather than a state flip: no React timing to
-   get wrong, and StrictMode's double mount just restarts it. */
 .work-stage.is-expanding {
   transform-origin: 0 0;
   animation: workGrow 560ms var(--in) both;
@@ -609,5 +571,93 @@
   .work-shell.is-expanding .pc-corner {
     animation-duration: 120ms;
     animation-delay: 0ms;
+  }
+
+  .rc-loop path {
+    transition: none;
+  }
+}
+
+/* ── The carved bracket ───────────────────────────────────────────────── */
+
+.el-wood { fill: var(--wood-700); }
+.el-relief { fill: var(--wood-400); }
+.el-cloth { fill: var(--terracotta-800); opacity: 0.85; }
+.el-dark { fill: var(--wood-800); opacity: 0.7; }
+.el-bead { fill: var(--wood-800); opacity: 0.35; }
+.el-ivory { fill: var(--cream-100); }
+.el-eye { fill: var(--wood-800); }
+.el-trunk {
+  fill: none;
+  stroke: var(--wood-400);
+  stroke-width: 13;
+  stroke-linecap: round;
+}
+.el-line {
+  fill: none;
+  stroke: var(--wood-800);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  opacity: 0.5;
+}
+
+/* ── Story, as an open layer ──────────────────────────────────────────── */
+
+/* One centred composition, not two columns pushed to opposite edges. */
+.sc-panel-wide {
+  max-width: 1080px;
+  margin: 0 auto;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  gap: clamp(24px, 4vw, 64px);
+}
+
+.sc-panel-wide .pc-moment {
+  grid-template-columns: clamp(150px, 15vw, 220px) minmax(0, 1fr);
+  gap: var(--s4);
+  min-height: 0;
+}
+
+.sc-panel-wide .pc-moment .shot {
+  width: 100%;
+}
+
+.sc-panel-wide .pc-moment h3 {
+  font-size: var(--t-h2);
+}
+
+.sc-panel-wide .pc-moment p {
+  font-size: var(--t-body);
+}
+
+/* The timeline sits right beside the picture rather than off at the edge. */
+.sc-panel-wide .pc-timeline {
+  max-width: 250px;
+  margin: 0;
+}
+
+.sc-panel-wide .pc-pt {
+  width: 34px;
+  height: 34px;
+}
+
+.sc-panel-wide .pc-pt i {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+}
+
+.sc-panel-wide .pc-pt span {
+  font-size: 12px;
+  left: calc(50% + 14px);
+}
+
+@media (max-width: 860px) {
+  .sc-panel-wide .pc-moment {
+    grid-template-columns: 130px minmax(0, 1fr);
+  }
+
+  .sc-panel-wide .pc-timeline {
+    max-width: 210px;
+    margin: 0 auto;
   }
 }
