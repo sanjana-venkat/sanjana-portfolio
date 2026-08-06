@@ -520,13 +520,8 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
   useEffect(() => {
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
-    // Only on pointer devices. On touch, locking the document also stops the
-    // embedded case-study page from scrolling inside its frame.
-    const coarse = window.matchMedia("(pointer: coarse)").matches;
-    if (!coarse) {
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
-    }
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 
     return () => {
       document.body.style.overflow = previousBodyOverflow;
