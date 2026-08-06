@@ -497,7 +497,9 @@ function Utils({ className }) {
       <a href="/SanjanaVenkat_Design-Engineer_Resume1.pdf" target="_blank" rel="noreferrer">
         Résumé
       </a>
-      <a href="mailto:sanjanavnkt20@gmail.com">Email</a>
+      <a href="https://github.com/sanjana-venkat" target="_blank" rel="noreferrer">
+        GitHub
+      </a>
       <a href="https://www.linkedin.com/in/sanjana-venkat/" target="_blank" rel="noreferrer">
         LinkedIn
       </a>

@@ -191,7 +191,7 @@
   left: -1.5%;
   top: 69%;
   width: 26.5%;
-  height: 2.3%;
+  height: 1.5%;
   background: var(--wood-lit);
   box-shadow: 0 0.6cqw 1.2cqw -0.5cqw rgba(34, 27, 22, 0.32);
 }
@@ -1130,7 +1130,7 @@
 .rm-music {
   position: absolute;
   left: 19.4%;
-  top: 62.3%;
+  top: 63.1%;
   width: 6cqw;
   z-index: 3;
 }
