@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
+import { useMediaQuery } from "./useMediaQuery";
 import { LotusMarker } from "./marks";
 import {
   CHAT_OPENER,
@@ -94,8 +95,13 @@ function LocationLine({ there }) {
 
 export function Story({ initialId }) {
   const pathRef = useRef(null);
+  const trackRef = useRef(null);
   const [pts, setPts] = useState([]);
   const [active, setActive] = useState(initialId || STORY_MOMENTS[0].id);
+  const isPhone = useMediaQuery("(max-width: 900px)");
+  // Set while the reel is being driven from a pill, so the scroll handler
+  // does not fight the programmatic scroll and snap it back.
+  const seeking = useRef(false);
 
   useLayoutEffect(() => {
     const path = pathRef.current;
@@ -110,6 +116,20 @@ export function Story({ initialId }) {
   }, []);
 
   const index = Math.max(0, STORY_MOMENTS.findIndex((m) => m.id === active));
+
+  // Picking a year moves the reel; swiping the reel picks the year.
+  const showSlide = (i) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const slide = el.querySelectorAll(".pc-reel-slide")[i];
+    if (!slide) return;
+    seeking.current = true;
+    el.scrollTo({ left: slide.offsetLeft - el.offsetLeft, behavior: "instant" });
+    setTimeout(() => {
+      seeking.current = false;
+    }, 120);
+  };
+
   const moment = STORY_MOMENTS[index];
   const movedIndex = STORY_MOMENTS.findIndex((m) => m.id === MOVED_MOMENT);
 
@@ -122,9 +142,36 @@ export function Story({ initialId }) {
           <LocationLine there={index >= movedIndex} />
 
           <figure className="pc-moment">
-            <div className="shot pc-propped">
-              <img key={moment.image} src={moment.image} alt={moment.title} decoding="async" />
-            </div>
+            {isPhone ? (
+              /* On a phone the photographs are a carousel: swipe through the
+                 years, and the caption below follows whichever one settles. */
+              <div
+                className="pc-reel"
+                ref={trackRef}
+                onScroll={(e) => {
+                  if (seeking.current) return;
+                  const el = e.currentTarget;
+                  const slides = el.querySelectorAll(".pc-reel-slide");
+                  if (!slides.length) return;
+                  const step = slides[1]
+                    ? slides[1].offsetLeft - slides[0].offsetLeft
+                    : slides[0].offsetWidth;
+                  const i = Math.round(el.scrollLeft / step);
+                  const next = STORY_MOMENTS[Math.min(i, STORY_MOMENTS.length - 1)];
+                  if (next && next.id !== active) setActive(next.id);
+                }}
+              >
+                {STORY_MOMENTS.map((m) => (
+                  <div className="pc-reel-slide" key={m.id}>
+                    <img src={m.image} alt={m.title} decoding="async" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="shot pc-propped">
+                <img key={moment.image} src={moment.image} alt={moment.title} decoding="async" />
+              </div>
+            )}
             <figcaption aria-live="polite">
               <p className="pc-label" style={{ margin: 0 }}>
                 {moment.year}
@@ -162,7 +209,10 @@ export function Story({ initialId }) {
                     aria-current={on ? "true" : "false"}
                     onMouseEnter={() => setActive(m.id)}
                     onFocus={() => setActive(m.id)}
-                    onClick={() => setActive(m.id)}
+                    onClick={() => {
+                      setActive(m.id);
+                      showSlide(i);
+                    }}
                   >
                     <i aria-hidden="true" />
                     <span>{m.year}</span>

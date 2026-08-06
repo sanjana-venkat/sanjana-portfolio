@@ -124,6 +124,16 @@ export default function Scene({ chat, onOpenProject }) {
         <div className="rm-layer">
           <button type="button" className="rm-scrim" aria-label="Close" onClick={close} />
           <div className="rm-sheet" data-section={open}>
+            {/* On a phone there is no room off the sheet to tap, so it needs
+                a way out of its own. */}
+            {isPhone && (
+              <button type="button" className="rm-sheet-x" onClick={close} aria-label="Close">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+
             <div className="rm-sheet-scroll">
               {open === "story" && <Story initialId={focusId} />}
               {open === "statements" && <Statements initialId={focusId} />}
@@ -178,6 +188,10 @@ function RoomCanvas({ openWith, onOpenProject, setNearHer, ask, settled }) {
           {INTRO.name}
         </h1>
         <p className="rm-tagline">{INTRO.tagline}</p>
+        <p className="rm-creed">
+          meet people where they are and take them where they want to be. Both
+          users and stakeholders :)
+        </p>
 
         <div className="rm-kolam rm-settle" style={{ "--step": 1 }}>
           <KolamMark drawn={4} active={null} hovered={null} onHover={() => {}} />
@@ -211,6 +225,10 @@ function RoomCanvas({ openWith, onOpenProject, setNearHer, ask, settled }) {
         </button>
 
         <Utils className="rm-utils" />
+
+        <a className="rm-hire" href="mailto:sanjanavnkt20@gmail.com">
+          Work with me
+        </a>
       </div>
     </div>
   );
@@ -426,6 +444,15 @@ function Board({ photos, letters, onPhoto, onLetter }) {
    It rests along the bottom of the room with its hem showing, like a blind
    wound down. Pull the hem up — click it, or drag it — and the cloth rises
    over the room with the conversation on it. Pulling it back down closes. */
+/* Where the shade sits in each state. Driven from here rather than from a
+   class, because the cascade would not let the down value override the base
+   transform and it was not worth another hour to find out why. */
+const SHADE_Y = {
+  up: "translateY(-100%)",
+  peek: "translateY(calc(-100% + 22px))",
+  down: "translateY(0)",
+};
+
 function Shade({ state, children, onPull, onDrop }) {
   const drag = useRef(null);
   const handled = useRef(false);
@@ -469,7 +496,7 @@ function Shade({ state, children, onPull, onDrop }) {
   };
 
   return (
-    <div className={`rm-shade is-${state}`}>
+    <div className={`rm-shade is-${state}`} style={{ transform: SHADE_Y[state] }}>
       <button
         type="button"
         className="rm-hem"
@@ -495,7 +522,7 @@ function Utils({ className }) {
   return (
     <nav className={className} aria-label="Elsewhere">
       <a href="/SanjanaVenkat_Design-Engineer_Resume1.pdf" target="_blank" rel="noreferrer">
-        Résumé
+        Resume
       </a>
       <a href="https://github.com/sanjana-venkat" target="_blank" rel="noreferrer">
         GitHub
@@ -517,6 +544,10 @@ function RoomColumn({ openWith, onOpenProject, ask }) {
       <header className="rc-head">
         <h1 className="rc-name">{INTRO.name}</h1>
         <p className="rc-tagline">{INTRO.tagline}</p>
+        <p className="rc-creed">
+          meet people where they are and take them where they want to be. Both
+          users and stakeholders :)
+        </p>
         <div className="rc-kolam">
           <KolamMark drawn={4} active={null} hovered={null} onHover={() => {}} />
         </div>
@@ -579,6 +610,10 @@ function RoomColumn({ openWith, onOpenProject, ask }) {
         </div>
       </section>
 
+      <a className="rc-hire" href="mailto:sanjanavnkt20@gmail.com">
+        Work with me
+      </a>
+
       <Utils className="rc-utils" />
     </div>
   );
@@ -601,7 +636,23 @@ function DeskChat({ chat }) {
             <i />
           </div>
         ) : (
-          <p className="rm-talk-reply">{chat.answer}</p>
+          <>
+            <p className="rm-talk-reply">{chat.answer}</p>
+
+            {/* Where each answer leads. These were dropped in the rewrite,
+                which is what made the model-design answer look truncated. */}
+            {chat.links?.length > 0 && (
+              <ul className="rm-talk-links">
+                {chat.links.map((link) => (
+                  <li key={link.label}>
+                    <button type="button" onClick={link.onSelect}>
+                      {link.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
         )}
       </div>
 

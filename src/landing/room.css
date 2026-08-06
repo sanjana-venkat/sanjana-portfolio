@@ -232,10 +232,10 @@
 .rm-kolam {
   position: absolute;
   left: 44%;
-  top: 33%;
+  top: 36.5%;
   translate: -50% -50%;
-  width: 13cqw;
-  height: 13cqw;
+  width: 12.4cqw;
+  height: 12.4cqw;
 }
 
 .rm-kolam .km {
@@ -319,11 +319,22 @@
   width: 17.5%;
 }
 
-.rm-monitor-bezel {
+/* The carved gilt frame, used as a border-image so the carving stays sharp
+   at any size. The slice is the frame's own thickness in the source; the
+   border-width keeps it modest on the wall. */
+.rm-monitor-bezel,
+.rm-frame-body {
   display: block;
-  padding: 0.7cqw;
-  background: var(--wood-deep);
-  border-radius: 0.3cqw;
+  background: var(--cream-50);
+  border-style: solid;
+  border-image-source: url("/scene/frame-gold.webp");
+  border-image-slice: 138;
+  border-image-repeat: round;
+}
+
+.rm-monitor-bezel {
+  padding: 0.3cqw;
+  border-width: 1.5cqw;
 }
 
 .rm-monitor-bezel img {
@@ -369,9 +380,8 @@
 .rm-frame .rm-cord { bottom: 100%; height: 2cqw; }
 
 .rm-frame-body {
-  display: block;
-  padding: 0.45cqw;
-  background: var(--wood-mid);
+  padding: 0.28cqw;
+  border-width: 1.25cqw;
 }
 
 .rm-frame-body img {
@@ -577,26 +587,19 @@
   height: 100dvh;
   z-index: 40;
   pointer-events: none;
-  /* Rolled up out of sight; the hem clears the top edge too. */
-  --y: calc(-100% - 46px);
-  transform: translateY(var(--y));
+  /* The transform comes from the component; this only animates it. */
   transition: transform 720ms var(--in);
   will-change: transform;
 }
 
-.rm-shade.is-peek { --y: calc(-100% + 20px); }
-
-/* Down: the cloth covers the room and the hem comes to rest along the bottom
-   of the window, still grabbable. */
-.rm-shade.is-down { --y: -46px; }
-
-/* The hem hangs at the bottom of the cloth, so once the shade is down it
-   rests along the bottom of the window — and the same handle takes it back up. */
+/* The hem sits at the bottom edge inside the shade rather than hanging below
+   it. So when the shade is fully down it lands exactly on the bottom of the
+   window — on screen, and still the handle that sends it back up. */
 .rm-hem {
   position: absolute;
   left: 0;
   right: 0;
-  top: 100%;
+  bottom: 0;
   height: 46px;
   border: 0;
   padding: 0;
@@ -1082,7 +1085,6 @@
   .rm-garden-far,
   .rm-garden-near { animation: none; }
   .rm-shade { transition-duration: 200ms; }
-  .rm-shade.is-peek { --y: calc(-100% - 46px); }
   .rm-shade.is-down .rm-cloth-content { transition-delay: 80ms; }
   .rm-canvas.is-arriving .rm-settle { animation: none; }
   .rm-monitor:hover,
@@ -1129,7 +1131,7 @@
 
 .rm-music {
   position: absolute;
-  left: 19.4%;
+  left: 15%;
   top: 63.1%;
   width: 6cqw;
   z-index: 3;
@@ -1304,18 +1306,22 @@
   border-color: var(--lotus-600);
 }
 
-/* Framed the way the pieces on the wall are framed: a teak edge around a
-   warm mount, so the browser belongs to the same room. */
+/* The same frame a Story photograph wears: a thin gold rule around a cream
+   mat. Quiet enough to sit behind a page of work. */
 .work-stage {
   flex: 1;
   min-height: 0;
   overflow: auto;
-  border: clamp(9px, 0.85vw, 14px) solid var(--wood-mid);
-  border-radius: 6px;
+  border: 2px solid rgba(168, 130, 63, 0.45);
+  border-radius: 2px;
+  background: var(--cream-50);
+  padding: 10px;
+  box-shadow: 0 10px 26px -14px rgba(34, 27, 22, 0.22);
+}
+
+.work-stage > * {
+  border-radius: 1px;
   background: var(--jasmine);
-  box-shadow:
-    0 18px 40px -20px rgba(34, 27, 22, 0.35),
-    inset 0 0 0 1px rgba(94, 50, 32, 0.16);
 }
 
 .work-stage > iframe {
@@ -1441,4 +1447,211 @@
 
   .rm-sheet .pc-pt.on i { background: var(--lotus-600); }
   .rm-sheet .pc-pt.on span { color: var(--lotus-600); }
+}
+
+/* The embedded case-study pages.
+   iOS will not scroll an iframe that is sized to its container, so on touch
+   the frame is given real height inside a scrolling wrapper, and the header
+   carries a link out in case the embed still refuses. */
+.work-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.work-stage {
+  -webkit-overflow-scrolling: touch;
+}
+
+
+
+/* On touch the frame keeps its own height and scrolls natively; forcing it
+   tall only revealed blank page below the content. */
+@media (hover: none) and (pointer: coarse) {
+  .work-stage {
+    overflow: hidden;
+  }
+
+  .work-frame {
+    height: 100%;
+  }
+}
+
+/* The line she leads with, in the same treatment as the role above it —
+   small, tracked and muted — so it sits under the tagline without crowding
+   the kolam. */
+.rm-creed {
+  position: absolute;
+  left: 44%;
+  top: 19%;
+  translate: -50% 0;
+  margin: 0;
+  width: 25%;
+  font-family: var(--font-body);
+  font-size: 0.68cqw;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1.7;
+  text-align: center;
+  color: var(--ink-400);
+}
+
+.rc-creed {
+  margin: 12px auto 0;
+  max-width: 32ch;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.7;
+  color: var(--ink-400);
+}
+
+/* Work with me, opposite the other links. */
+.rm-hire {
+  position: absolute;
+  right: 3.5%;
+  top: 93%;
+  font-size: 0.76cqw;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  text-decoration: none;
+  transition: color 300ms var(--in);
+}
+
+.rm-hire:hover,
+.rm-hire:focus-visible { color: var(--lotus-600); }
+
+.rc-hire {
+  display: block;
+  margin: 8px auto 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  text-decoration: none;
+}
+
+/* Where an answer leads. */
+.rm-talk-links {
+  list-style: none;
+  margin: var(--s4) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rm-talk-links button {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  border: 0;
+  background: none;
+  padding: 6px 0;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--lotus-600);
+  cursor: pointer;
+  text-align: left;
+  transition: color 300ms var(--in);
+}
+
+.rm-talk-links button::before {
+  content: "→";
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.rm-talk-links button:hover,
+.rm-talk-links button:focus-visible { color: var(--wood-deep); }
+
+/* ── Phone: the story photographs as a reel ──────────────────────────────
+   One slide per viewport width, snapping, with the caption underneath
+   following whichever photograph settles. */
+@media (max-width: 900px) {
+  /* Slides sit narrower than the reel, so the next photograph peeks in on
+     either side and it reads as a deck you can push through. */
+  .pc-reel {
+    display: flex;
+    /* A grid item defaults to min-width:auto, which lets the reel size to its
+       contents instead of overflowing — so it never actually scrolled. */
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    scroll-padding-left: 0;
+    gap: 10px;
+    padding: 4px 0;
+    margin: 0 -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .pc-reel::-webkit-scrollbar { display: none; }
+
+  .pc-reel-slide {
+    flex: 0 0 calc(100% - 56px);
+    scroll-snap-align: start;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: opacity 300ms var(--in), transform 300ms var(--in);
+  }
+
+  .pc-reel-slide img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    background: var(--cream-100);
+  }
+
+  /* Both sheets sit in the middle of the screen rather than at the top. */
+  .rm-sheet-scroll,
+  .rm-sheet[data-section="story"] .rm-sheet-scroll,
+  .rm-sheet[data-section="statements"] .rm-sheet-scroll {
+    align-content: center;
+    min-height: 100%;
+  }
+}
+
+/* The way out of an open sheet on a phone. */
+.rm-sheet-x {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--cream-200);
+  border-radius: 999px;
+  background: var(--cream-50);
+  color: var(--ink-600);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color 300ms var(--in), border-color 300ms var(--in);
+}
+
+.rm-sheet-x svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.rm-sheet-x:hover,
+.rm-sheet-x:focus-visible {
+  color: var(--lotus-600);
+  border-color: var(--lotus-600);
 }
