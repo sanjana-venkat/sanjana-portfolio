@@ -1,0 +1,480 @@
+/* ==========================================================================
+   Objects in the room: window, shelf, frames, pin board.
+
+   These carry fills, unlike the motifs — a teak shelf and a window frame are
+   made of something. Motif opacity ceilings do not apply here.
+   ========================================================================== */
+
+/* ── The window ───────────────────────────────────────────────────────── */
+
+.rm-window {
+  position: absolute;
+  z-index: 2;
+  left: clamp(-28px, -2vw, -12px);
+  top: clamp(28px, 5vh, 60px);
+  width: clamp(210px, 26vw, 420px);
+  height: clamp(380px, 74vh, 700px);
+  pointer-events: none;
+  background: var(--wood-700);
+  padding: clamp(10px, 1vw, 18px);
+  box-shadow: 8px 10px 26px -12px var(--shadow);
+}
+
+/* The garden, seen through the glass. */
+.rm-view {
+  position: absolute;
+  inset: clamp(10px, 1vw, 18px);
+  overflow: hidden;
+  background: linear-gradient(180deg, #cfd8c2 0%, #e2e6d4 58%, #d7ddc4 100%);
+}
+
+.rm-canopy,
+.rm-leaves,
+.rm-grass {
+  position: absolute;
+  display: block;
+}
+
+/* Layered foliage, kept as soft blobs rather than drawn leaves. */
+.rm-canopy {
+  inset: 0 0 42% 0;
+  background:
+    radial-gradient(38% 30% at 22% 26%, #7f9463 0%, rgba(127, 148, 99, 0) 70%),
+    radial-gradient(34% 26% at 68% 18%, #8ea470 0%, rgba(142, 164, 112, 0) 70%),
+    radial-gradient(42% 34% at 48% 46%, #6f855a 0%, rgba(111, 133, 90, 0) 72%),
+    radial-gradient(30% 24% at 86% 40%, #9bb07d 0%, rgba(155, 176, 125, 0) 70%);
+}
+
+.rm-leaves {
+  inset: 34% 0 22% 0;
+  background:
+    radial-gradient(26% 40% at 18% 60%, #6b8154 0%, rgba(107, 129, 84, 0) 72%),
+    radial-gradient(22% 46% at 44% 70%, #7d9563 0%, rgba(125, 149, 99, 0) 74%),
+    radial-gradient(20% 38% at 74% 62%, #62784e 0%, rgba(98, 120, 78, 0) 72%);
+}
+
+.rm-grass {
+  inset: auto 0 0 0;
+  height: 22%;
+  background: linear-gradient(180deg, #93a874 0%, #7d9260 100%);
+}
+
+/* The blind. Hairlines when open; full louvres when shut. */
+.rm-blind {
+  position: absolute;
+  inset: clamp(10px, 1vw, 18px);
+  overflow: hidden;
+}
+
+.rm-slat {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--i) * 4.7%);
+  height: 1.5px;
+  background: linear-gradient(180deg, #e8dcc6 0%, #cdbb9c 100%);
+  opacity: 0.55;
+  transform-origin: top;
+  transition: height 520ms var(--in), opacity 520ms var(--in);
+  transition-delay: calc(var(--i) * 9ms);
+}
+
+.rm-window.is-shut .rm-slat {
+  height: 4.8%;
+  opacity: 1;
+}
+
+/* Sash bar and sill. */
+.rm-sash {
+  position: absolute;
+  left: 50%;
+  top: clamp(10px, 1vw, 18px);
+  bottom: clamp(10px, 1vw, 18px);
+  width: clamp(8px, 0.8vw, 14px);
+  margin-left: calc(clamp(8px, 0.8vw, 14px) / -2);
+  background: var(--wood-700);
+}
+
+.rm-sill {
+  position: absolute;
+  left: -3%;
+  right: -3%;
+  bottom: calc(clamp(10px, 1vw, 18px) * -1.6);
+  height: clamp(10px, 1.1vw, 18px);
+  background: var(--wood-400);
+  box-shadow: 0 6px 14px -8px var(--shadow);
+}
+
+/* ── The carved corner shelf ──────────────────────────────────────────── */
+
+.rm-shelf {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: clamp(150px, 24vh, 250px);
+  width: clamp(76px, 7.6vw, 118px);
+  margin-left: clamp(112px, 12vw, 186px);
+  pointer-events: none;
+  filter: drop-shadow(4px 8px 12px rgba(33, 30, 26, 0.12));
+}
+
+.rm-shelf svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.rm-teak {
+  fill: var(--wood-700);
+}
+
+.rm-shade {
+  fill: var(--wood-800);
+  opacity: 0.5;
+}
+
+.rm-carve {
+  fill: var(--wood-400);
+}
+
+.rm-line {
+  stroke: var(--wood-800);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+.rm-brass {
+  fill: var(--brass-600);
+  stroke: var(--brass-600);
+}
+
+.rm-paper {
+  fill: var(--cream-100);
+}
+
+/* ── Framed work on the right wall ────────────────────────────────────── */
+
+.rm-frame {
+  position: relative;
+  display: block;
+  padding-top: var(--cord);
+  text-decoration: none;
+  flex: none;
+}
+
+.rm-hook {
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background: var(--brass-600);
+}
+
+.rm-cord {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: var(--cord);
+  background: var(--wood-700);
+  opacity: 0.5;
+}
+
+.rm-frame-body {
+  display: block;
+  border: 6px solid var(--wood-700);
+  background: var(--cream-50);
+  box-shadow: 0 12px 28px -8px var(--shadow);
+  transform-origin: 50% calc(-1 * var(--cord));
+  transform: rotate(var(--tilt));
+  transition: box-shadow 240ms var(--in), transform 240ms var(--in);
+}
+
+.rm-frame-mat {
+  display: block;
+  padding: 7px 7px 9px;
+  background: var(--cream-50);
+}
+
+.rm-frame-mat img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--cream-100);
+}
+
+.rm-frame-lg .rm-frame-mat img {
+  height: clamp(150px, 22vh, 236px);
+}
+
+.rm-frame-sm .rm-frame-mat img {
+  height: clamp(78px, 11vh, 118px);
+}
+
+.rm-frame-cap {
+  display: block;
+  margin-top: var(--s2);
+  font-family: var(--font-label);
+  font-size: var(--t-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  text-align: center;
+  transition: color 240ms var(--in);
+}
+
+.rm-frame:hover .rm-frame-body,
+.rm-frame:focus-visible .rm-frame-body {
+  animation: rmSwing 900ms var(--out) both;
+  box-shadow: 0 18px 36px -8px var(--shadow);
+}
+
+.rm-frame:hover .rm-frame-cap,
+.rm-frame:focus-visible .rm-frame-cap {
+  color: var(--terracotta-600);
+}
+
+@keyframes rmSwing {
+  0% { transform: rotate(var(--tilt)); }
+  22% { transform: rotate(calc(var(--tilt) + 1.4deg)); }
+  48% { transform: rotate(calc(var(--tilt) - 0.8deg)); }
+  72% { transform: rotate(calc(var(--tilt) + 0.35deg)); }
+  100% { transform: rotate(var(--tilt)); }
+}
+
+/* ── The pin board ────────────────────────────────────────────────────── */
+
+.rm-board {
+  position: relative;
+  background: var(--cream-100);
+  border: 1px solid var(--cream-200);
+  padding: var(--s4) var(--s3) var(--s3);
+  box-shadow: 0 10px 26px -12px var(--shadow);
+}
+
+/* The patterned tape that pins the board to the wall. */
+.rm-board-tape {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 12px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      var(--terracotta-800) 0 6px,
+      transparent 6px 12px
+    ),
+    var(--leaf-700);
+  opacity: 0.75;
+}
+
+.rm-board-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  align-items: flex-start;
+}
+
+.rm-photo,
+.rm-letter {
+  position: relative;
+  background: var(--jasmine);
+  border: 0;
+  padding: 5px 5px 0;
+  cursor: pointer;
+  transform: rotate(var(--tilt));
+  box-shadow: 0 5px 12px -6px var(--shadow);
+  transition: transform 240ms var(--in), box-shadow 240ms var(--in);
+}
+
+.rm-photo img {
+  display: block;
+  width: clamp(46px, 5vw, 64px);
+  height: clamp(46px, 5vw, 64px);
+  object-fit: cover;
+  background: var(--cream-100);
+}
+
+.rm-photo-cap,
+.rm-letter-cap {
+  display: block;
+  padding: 3px 0 5px;
+  font-family: var(--font-label);
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  text-align: center;
+}
+
+.rm-letter {
+  width: clamp(74px, 8.4vw, 104px);
+  padding: 9px 8px 0;
+  background: var(--cream-50);
+}
+
+.rm-letter .rm-rule {
+  display: block;
+  height: 1px;
+  margin: 0 0 5px;
+  background: var(--cream-200);
+}
+
+.rm-letter .rm-rule:nth-of-type(2) { width: 82%; }
+.rm-letter .rm-rule:nth-of-type(3) { width: 64%; }
+
+.rm-stamp {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  width: 13px;
+  height: 16px;
+  background: var(--terracotta-100);
+  border: 1px dashed var(--terracotta-600);
+}
+
+.rm-letter-cap {
+  color: var(--ink-600);
+  text-align: left;
+  font-size: 8px;
+}
+
+.rm-pin {
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-radius: 50%;
+  background: var(--terracotta-600);
+  box-shadow: 0 2px 3px -1px var(--shadow);
+}
+
+.rm-photo:hover,
+.rm-letter:hover,
+.rm-photo:focus-visible,
+.rm-letter:focus-visible {
+  transform: rotate(var(--tilt)) translateY(-3px);
+  box-shadow: 0 10px 20px -8px var(--shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-frame:hover .rm-frame-body,
+  .rm-frame:focus-visible .rm-frame-body {
+    animation: none;
+  }
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 860px) {
+  .rm-window {
+    position: absolute;
+    width: 44vw;
+    height: 46vh;
+  }
+
+  .rm-shelf {
+    position: static;
+    width: 92px;
+    margin: 0 auto;
+  }
+
+  .rm-frame-lg .rm-frame-mat img {
+    height: 150px;
+  }
+
+  .rm-frame-sm .rm-frame-mat img {
+    height: 88px;
+  }
+}
+
+/* ==========================================================================
+   Case studies — the same room, seen through a window in the wall.
+   ========================================================================== */
+
+.work-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--cream-50);
+  padding: var(--s5) var(--s5) var(--s4);
+  font-family: var(--font-body);
+  animation: scIn 380ms var(--in) both;
+}
+
+.work-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin-bottom: var(--s4);
+  flex-shrink: 0;
+}
+
+.work-back {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--cream-200);
+  background: none;
+  color: var(--ink-600);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  transition: color 240ms var(--in), border-color 240ms var(--in);
+}
+
+.work-back:hover {
+  color: var(--terracotta-600);
+  border-color: var(--terracotta-600);
+}
+
+.work-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--t-h1);
+  letter-spacing: -0.01em;
+  color: var(--ink-900);
+}
+
+.work-tabs {
+  display: flex;
+  gap: var(--s2);
+  overflow-x: auto;
+  padding-bottom: var(--s2);
+  margin-bottom: var(--s4);
+  flex-shrink: 0;
+}
+
+/* The framed opening the case study is seen through. */
+.work-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--jasmine);
+  border: 2px solid var(--wood-700);
+  box-shadow: 0 14px 34px -12px var(--shadow);
+}
+
+@media (max-width: 860px) {
+  .work-shell {
+    padding: var(--s4) var(--s4) var(--s3);
+  }
+
+  .work-shell .pc-corner {
+    display: none;
+  }
+}

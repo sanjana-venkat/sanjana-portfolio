@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { MuesliStudy, OutdoneStudy } from "./FeaturedCaseStudies";
 import { AISearchCaseStudy, B2CCaseStudy, IntentCaseStudy, ServiceDesignCaseStudy } from "./LegacyCaseStudies";
 import Scene from "./landing/Scene";
+import { CornerOrnament } from "./landing/marks";
 
 const FIGMA_DECK_URL =
   "https://embed.figma.com/slides/rrAhQ5fBTULZu49L04zUZ8/jpmcpublic-slides?node-id=2-16488&embed-host=share";
@@ -519,35 +520,30 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
   };
 
   return (
-    <div className={`fixed inset-0 z-[70] h-[100dvh] overflow-hidden flex flex-col bg-[#FFF8F5] px-4 py-5 sm:px-6 sm:py-6 animate-[modalIn_0.35s_ease_forwards] ${BODY}`}>
+    <div className="work-shell">
+      <CornerOrnament where="tl" size={72} />
+      <CornerOrnament where="br" size={72} />
       <div className="mx-auto w-full min-w-0 max-w-[1280px] overflow-hidden flex flex-col flex-1 min-h-0">
-        <div className="mb-4 flex items-center gap-4 shrink-0">
-          <CircleIconButton onClick={onClose} ariaLabel="Close work browser">
-            <ChevronLeftIcon />
-          </CircleIconButton>
-
-          <h2 className={`min-w-0 text-[32px] font-semibold leading-[1.03] tracking-[-0.04em] text-[#9C3F14] ${HEADING}`}>
-            My Work
-          </h2>
+        <div className="work-head">
+          <button type="button" className="work-back" onClick={onClose} aria-label="Close work browser">
+            ←
+          </button>
+          <h2 className="work-title">My Work</h2>
         </div>
 
-        <div className="no-scrollbar mb-4 flex w-full min-w-0 max-w-full gap-3 overflow-x-auto pb-2 shrink-0">
+        <div className="work-tabs no-scrollbar">
           {PROJECTS.map((project) => (
             <button
               key={project.label}
               onClick={() => selectProject(project)}
-              className={`shrink-0 rounded-full border px-6 py-3 text-[14px] font-medium transition sm:px-7 sm:text-[15px] ${
-                activeProject.label === project.label
-                  ? "border-[#9C3F14] bg-white text-[#9C3F14]"
-                  : "border-[#E4E2E1] bg-white text-[#6B625C] hover:border-[#9C3F14] hover:text-[#9C3F14]"
-              } ${HEADING}`}
+              className={`pc-pill${activeProject.label === project.label ? " on" : ""}`}
             >
               {project.label}
             </button>
           ))}
         </div>
 
-        <div className="min-w-0 overflow-hidden rounded-[32px] bg-white w-full flex-1 min-h-0">
+        <div className="work-stage">
           {activeProject.slug === "muesli" && <MuesliStudy />}
           {activeProject.slug === "b2c" && <B2CCaseStudy />}
           {activeProject.slug === "ai-personalization" && <IntentCaseStudy />}

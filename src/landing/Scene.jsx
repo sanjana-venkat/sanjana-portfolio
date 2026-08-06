@@ -1,30 +1,39 @@
 import { useCallback, useEffect, useState } from "react";
 import KolamMark from "./KolamMark";
-import { HungFrame, Plaster } from "./marks";
-import { Sanjana, Snippets, Statements, Story } from "./sections";
-import { FEATURED, INTRO, MORE_WORK, SECTIONS, STORY_MOMENTS } from "./landingData";
-import { useMediaQuery, usePrefersReducedMotion } from "./useMediaQuery";
+import { Plaster } from "./marks";
+import { Bulletin, CornerShelf, WallFrame, WindowWall } from "./room";
+import { Statements, Story } from "./sections";
+import { FEATURED, INTRO, STATEMENTS, STORY_MOMENTS } from "./landingData";
 import "./landing.css";
 import "./scene.css";
+import "./room.css";
 
 const SESSION_KEY = "sv-kolam-drawn";
+
+/* The photographs worth pinning up, and the letters people sent. */
+const BOARD_PHOTOS = STORY_MOMENTS.filter((m) =>
+  ["childhood", "utd", "chetna", "uxclub", "jpmc", "bay"].includes(m.id)
+);
+const BOARD_LETTERS = STATEMENTS.slice(0, 4);
 
 /**
  * The homepage is a room.
  *
- * A limewashed wall, a tall window throwing light across it from the left, the
- * kolam painted on the wall as the artwork, the work hung beside it in frames,
- * and Sanjana at a desk below. Opening a section lays content over the room; it
- * never replaces it. Clicking her opens the chat at her side of the desk.
+ * Teak window on the left with the garden behind it, the kolam painted on the
+ * wall, a carved elephant bracket holding a shelf, Sanjana at her desk, the
+ * featured work framed on the right wall and a pin board of photographs and
+ * letters below it.
  *
- * The kolam — geometry, colours and drawing animation — is untouched.
+ * Nothing is a tab. The photographs open the story, the letters open what
+ * people wrote, the frames open the case studies, and she opens the chat —
+ * the blind draws shut when you reach for her.
+ *
+ * The kolam — geometry, colours, drawing animation — is untouched.
  */
 export default function Scene({ chat, onOpenProject }) {
-  const reduced = usePrefersReducedMotion();
-  const isMobile = useMediaQuery("(max-width: 860px)");
-
-  const [open, setOpen] = useState(null); // section id | "chat" | null
-  const [hovered, setHovered] = useState(null);
+  const [open, setOpen] = useState(null); // "story" | "statements" | "chat" | null
+  const [focusId, setFocusId] = useState(null);
+  const [nearHer, setNearHer] = useState(false);
 
   useEffect(() => {
     try {
@@ -34,7 +43,6 @@ export default function Scene({ chat, onOpenProject }) {
     }
   }, []);
 
-  // Only the open section's images are fetched.
   useEffect(() => {
     if (open !== "story") return;
     STORY_MOMENTS.forEach((m) => {
@@ -51,133 +59,86 @@ export default function Scene({ chat, onOpenProject }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const select = useCallback((id) => {
-    setOpen(id);
-    setHovered(null);
+  const openWith = useCallback((section, id) => {
+    setFocusId(id);
+    setOpen(section);
+    setNearHer(false);
   }, []);
 
-  const isSection = open && open !== "chat";
+  const close = () => {
+    setOpen(null);
+    setFocusId(null);
+  };
+
+  // The blind is shut while she is being spoken to, or about to be.
+  const blindShut = nearHer || open === "chat";
 
   return (
-    <div className="sc">
-      {/* ── The room ───────────────────────────────────────────────── */}
+    <div className={`sc${open ? " is-open" : ""}`}>
       <div className="sc-wall" aria-hidden="true" />
       <Plaster className="sc-grain" />
 
-      <div className="sc-window" aria-hidden="true">
-        <svg viewBox="0 0 200 620" preserveAspectRatio="none">
-          <rect className="pane" x="8" y="8" width="184" height="604" />
-          <g className="mullion">
-            <rect x="8" y="8" width="184" height="604" />
-            <path d="M100 8 V 612" />
-            <path d="M8 160 H 192" />
-            <path d="M8 312 H 192" />
-            <path d="M8 464 H 192" />
-          </g>
-        </svg>
-      </div>
+      <WindowWall shut={blindShut} />
       <div className="sc-shaft" aria-hidden="true" />
 
-      {/* ── The artwork ────────────────────────────────────────────── */}
+      {/* ── The wall ───────────────────────────────────────────────── */}
       <div className="sc-halo" aria-hidden="true" />
 
-      <button type="button" className="sc-name" onClick={() => setOpen(null)}>
-        <b>{INTRO.wordmark}</b>
+      <button type="button" className="sc-name" onClick={close}>
+        <b>{INTRO.name}</b>
         <span>{INTRO.tagline}</span>
       </button>
 
-      <KolamMark
-        drawn={4}
-        active={isSection ? open : null}
-        hovered={hovered}
-        onHover={setHovered}
-        onSelect={select}
-      />
+      <KolamMark drawn={4} active={null} hovered={null} onHover={() => {}} />
 
-      <div className="sc-labels">
-        {SECTIONS.map((s, i) => (
-          <button
-            key={s.id}
-            type="button"
-            className={`l${i}${hovered === s.id || open === s.id ? " on" : ""}`}
-            onMouseEnter={() => setHovered(s.id)}
-            onMouseLeave={() => setHovered(null)}
-            onFocus={() => setHovered(s.id)}
-            onBlur={() => setHovered(null)}
-            onClick={() => select(s.id)}
-          >
-            {s.title}
-          </button>
-        ))}
-      </div>
+      <CornerShelf />
 
-      {/* ── The gallery wall ───────────────────────────────────────── */}
+      {/* ── The framed work ────────────────────────────────────────── */}
       <div className="sc-gallery">
-        <p className="pc-eyebrow sc-eyebrow-r">Selected work</p>
-        <div className="rail" aria-hidden="true" />
-        <div className="sc-frames">
-          {FEATURED.map((p) => (
-            <HungFrame
-              key={p.slug}
-              src={p.image}
-              alt={p.name}
-              label={p.short}
-              width={p.width}
-              height={p.height}
-              cord={p.cord}
-              tilt={p.tilt}
-              onOpen={{
-                href: `#work=${p.slug}`,
-                onClick: (e) => {
-                  e.preventDefault();
-                  onOpenProject(p.slug);
-                },
-              }}
-            />
-          ))}
+        <WallFrame project={FEATURED[0]} onOpen={onOpenProject} size="lg" />
+        <div className="sc-gallery-pair">
+          <WallFrame project={FEATURED[1]} onOpen={onOpenProject} size="sm" />
+          <WallFrame project={FEATURED[2]} onOpen={onOpenProject} size="sm" />
         </div>
       </div>
 
-      <div className="sc-strip">
-        <p className="pc-eyebrow sc-eyebrow-r">More work</p>
-        <div className="band">
-          {MORE_WORK.map((p) => (
-            <a
-              key={p.slug}
-              href={`#work=${p.slug}`}
-              onClick={(e) => {
-                e.preventDefault();
-                onOpenProject(p.slug);
-              }}
-            >
-              {p.name}
-            </a>
-          ))}
-        </div>
+      {/* ── The pin board ──────────────────────────────────────────── */}
+      <div className="sc-bulletin">
+        <Bulletin
+          photos={BOARD_PHOTOS}
+          letters={BOARD_LETTERS}
+          onPhoto={(id) => openWith("story", id)}
+          onLetter={(id) => openWith("statements", id)}
+        />
+        <p className="sc-board-hint" aria-hidden="true">
+          Photographs open the story · letters open what people said
+        </p>
       </div>
 
-      {/* ── Her desk. Clicking her opens the conversation. ─────────── */}
+      {/* ── Her desk ───────────────────────────────────────────────── */}
       <button
         type="button"
         className="sc-desk"
         aria-label="Ask me anything"
+        onMouseEnter={() => setNearHer(true)}
+        onMouseLeave={() => setNearHer(false)}
+        onFocus={() => setNearHer(true)}
+        onBlur={() => setNearHer(false)}
         onClick={() => setOpen("chat")}
       >
         <img src="/scene-desk.png" alt="" decoding="async" />
       </button>
-      <p className="sc-desk-hint" aria-hidden="true">
-        Ask me anything
+      <p className={`sc-desk-hint${blindShut ? " is-on" : ""}`} aria-hidden="true">
+        Ask me
       </p>
 
       {/* ── Layers over the room ───────────────────────────────────── */}
-      {isSection && (
+      {(open === "story" || open === "statements") && (
         <div className="sc-layer">
-          <div className="sc-scrim" aria-hidden="true" />
+          <div className="sc-scrim" aria-hidden="true" onClick={close} />
           <div className="sc-panel sc-panel-wide">
-            {open === "sanjana" && <Sanjana />}
-            {open === "story" && <Story />}
-            {open === "snippets" && <Snippets chat={chat} onOpenProject={onOpenProject} />}
-            {open === "statements" && <Statements />}
+            {open === "story" && <Story initialId={focusId} />}
+            {open === "statements" && <Statements initialId={focusId} />}
           </div>
         </div>
       )}
@@ -185,7 +146,7 @@ export default function Scene({ chat, onOpenProject }) {
       {open === "chat" && (
         <div className="sc-layer">
           <div className="sc-panel sc-panel-chat">
-            <DeskChat chat={chat} onClose={() => setOpen(null)} />
+            <DeskChat chat={chat} onClose={close} />
           </div>
         </div>
       )}
@@ -201,17 +162,10 @@ export default function Scene({ chat, onOpenProject }) {
       </div>
 
       {open && (
-        <button type="button" className="sc-close" onClick={() => setOpen(null)}>
+        <button type="button" className="sc-close" onClick={close}>
           Close
         </button>
       )}
-
-      <p className="pc-sr" aria-live="polite">
-        {isSection ? `${SECTIONS.find((s) => s.id === open)?.title} open` : "Choose a section"}
-      </p>
-
-      {/* Nothing below is rendered; it keeps the linter honest about deps. */}
-      <span hidden aria-hidden="true">{String(reduced)}{String(isMobile)}</span>
     </div>
   );
 }

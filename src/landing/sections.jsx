@@ -92,10 +92,10 @@ function LocationLine({ there }) {
   );
 }
 
-export function Story() {
+export function Story({ initialId }) {
   const pathRef = useRef(null);
   const [pts, setPts] = useState([]);
-  const [active, setActive] = useState(STORY_MOMENTS[0].id);
+  const [active, setActive] = useState(initialId || STORY_MOMENTS[0].id);
 
   useLayoutEffect(() => {
     const path = pathRef.current;
@@ -374,8 +374,8 @@ export function Snippets({ chat, onOpenProject }) {
 
 /* ── Statements ────────────────────────────────────────────────────────── */
 
-export function Statements() {
-  const [openId, setOpenId] = useState(STATEMENTS[0].id);
+export function Statements({ initialId }) {
+  const [openId, setOpenId] = useState(initialId || STATEMENTS[0].id);
   const open = STATEMENTS.find((s) => s.id === openId) || STATEMENTS[0];
 
   return (
