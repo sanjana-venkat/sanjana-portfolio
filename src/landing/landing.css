@@ -5,7 +5,9 @@
    Tokens per BRAND.md. No hex values below this block.
    ========================================================================== */
 
-.pc-root {
+/* The token block lives on :root so every surface — the room, the sections,
+   the case-study shell — resolves from the same source. */
+:root {
   /* Ground */
   --cream-50: #fbf8f2;
   --cream-100: #f4efe5;
@@ -67,7 +69,10 @@
   /* Motion */
   --in: cubic-bezier(0.22, 1, 0.36, 1);
   --out: cubic-bezier(0.4, 0, 0.2, 1);
+}
 
+.pc-root,
+.sc {
   position: relative;
   width: 100%;
   min-height: 100dvh;

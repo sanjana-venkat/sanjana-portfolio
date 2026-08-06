@@ -100,10 +100,10 @@ const PLASTER =
      </svg>`
   );
 
-export function Plaster() {
+export function Plaster({ className = "pc-plaster" }) {
   return (
     <div
-      className="pc-plaster"
+      className={className}
       aria-hidden="true"
       style={{ backgroundImage: `url("${PLASTER}")` }}
     />

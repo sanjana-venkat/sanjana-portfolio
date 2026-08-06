@@ -16,48 +16,54 @@ export const SECTIONS = [
 
 /* ── Selected work ─────────────────────────────────────────────────────── */
 
-export const SELECTED_WORK = [
+/**
+ * The gallery wall. Three large pieces hang from the rail; drop, size and tilt
+ * all vary and are fixed per project so the wall never re-rolls on a render.
+ */
+export const FEATURED = [
   {
     slug: "ai-personalization",
     name: "Intent-based recommendations",
-    short: "RecSys",
+    short: "Intent-based",
     image: "/legacy/intent/01-ULRP0FZksJHUAfiiIvrdPTDdkE4.png",
-    width: 96,
-    height: 64,
-    cord: 28,
+    width: 150,
+    height: 108,
+    cord: 30,
     tilt: -0.6,
-  },
-  {
-    slug: "ai-chat-journeys",
-    name: "Agentic search",
-    short: "Agentic search",
-    image: "/ai-chat-preview.png",
-    width: 72,
-    height: 92,
-    cord: 56,
-    tilt: 0.5,
   },
   {
     slug: "model-design",
     name: "Outdone",
     short: "Outdone",
     image: "/outdone-preview.png",
-    width: 88,
-    height: 60,
-    cord: 36,
-    tilt: 0.8,
+    width: 124,
+    height: 150,
+    cord: 62,
+    tilt: 0.7,
   },
   {
     slug: "muesli",
     name: "Muesli",
     short: "Muesli",
     image: "/muesli-preview.jpg",
-    width: 80,
-    height: 80,
-    cord: 68,
-    tilt: -0.4,
+    width: 136,
+    height: 96,
+    cord: 40,
+    tilt: -0.35,
   },
 ];
+
+/** Everything else, pinned to a narrow strip below the gallery. */
+export const MORE_WORK = [
+  { slug: "ai-chat-journeys", name: "Agentic search" },
+  { slug: "conversational-agentic-ai", name: "Casey AI" },
+  { slug: "b2c", name: "Home lending" },
+  { slug: "service-design", name: "Service design" },
+  { slug: "exec-pitch", name: "Exec pitch" },
+];
+
+/** Kept for anything still importing the old name. */
+export const SELECTED_WORK = FEATURED;
 
 /* ── Sanjana ───────────────────────────────────────────────────────────── */
 

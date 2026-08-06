@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MuesliStudy, OutdoneStudy } from "./FeaturedCaseStudies";
 import { AISearchCaseStudy, B2CCaseStudy, IntentCaseStudy, ServiceDesignCaseStudy } from "./LegacyCaseStudies";
-import PortfolioCanvas from "./landing/PortfolioCanvas";
+import Scene from "./landing/Scene";
 
 const FIGMA_DECK_URL =
   "https://embed.figma.com/slides/rrAhQ5fBTULZu49L04zUZ8/jpmcpublic-slides?node-id=2-16488&embed-host=share";
@@ -750,7 +750,7 @@ export default function PortfolioHome() {
       {projectOpen === "marketing-tiles" && <FramerModal title="Intent-based Recommendations" url={MARKETING_TILES_URL} onClose={() => setProjectOpen(null)} />}
       {projectOpen === "apply-systems" && <FramerModal title="Designing Systems at Scale" url={APPLY_SYSTEMS_URL} onClose={() => setProjectOpen(null)} />}
 
-      <PortfolioCanvas
+      <Scene
         onOpenProject={openProjectTarget}
         chat={{
           active,
