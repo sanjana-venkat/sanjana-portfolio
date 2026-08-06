@@ -295,7 +295,26 @@ function MusicBox() {
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
       >
-        <img src="/scene/speaker.webp" alt="" decoding="async" />
+        {/* Drawn rather than generated: at this size it is four rectangles,
+            and the generator kept returning either a 3D render with a cast
+            shadow or a featureless beige block. Flat front elevation, solid
+            fills, matching the bottle and the book on her desk. */}
+        <svg viewBox="0 0 120 84" aria-hidden="true">
+          {/* Body and inset panel */}
+          <rect x="4" y="12" width="112" height="58" rx="9" fill="#d9c6a4" />
+          <rect x="11" y="18" width="98" height="34" rx="5" fill="#c5ad84" />
+
+          {/* Base strip: three controls and the indicator */}
+          <rect x="11" y="55" width="98" height="10" rx="3" fill="#bab1a2" />
+          <circle cx="26" cy="60" r="2" fill="#8d8577" />
+          <circle cx="34" cy="60" r="2" fill="#8d8577" />
+          <circle cx="42" cy="60" r="2" fill="#8d8577" />
+          <circle cx="96" cy="60" r="2.4" fill="var(--brass)" />
+
+          {/* Feet */}
+          <rect x="20" y="70" width="12" height="4" rx="2" fill="#c0ad8e" />
+          <rect x="88" y="70" width="12" height="4" rx="2" fill="#c0ad8e" />
+        </svg>
         <span className="rm-music-note" aria-hidden="true">
           <i />
           <i />

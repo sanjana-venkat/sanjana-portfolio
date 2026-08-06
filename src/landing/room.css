@@ -190,8 +190,8 @@
   position: absolute;
   left: -1.5%;
   top: 69%;
-  width: 21.2%;
-  height: 2%;
+  width: 26.5%;
+  height: 2.3%;
   background: var(--wood-lit);
   box-shadow: 0 0.6cqw 1.2cqw -0.5cqw rgba(34, 27, 22, 0.32);
 }
@@ -1129,9 +1129,9 @@
 
 .rm-music {
   position: absolute;
-  left: 4.5%;
-  top: 76.5%;
-  width: 7cqw;
+  left: 19.4%;
+  top: 62.3%;
+  width: 6cqw;
   z-index: 3;
 }
 
@@ -1142,11 +1142,11 @@
   padding: 0;
   background: none;
   cursor: pointer;
-  filter: drop-shadow(0 0.16cqw 0.36cqw rgba(34, 27, 22, 0.28));
+  filter: drop-shadow(0 0.14cqw 0.26cqw rgba(34, 27, 22, 0.22));
   transition: transform 300ms var(--in), filter 300ms var(--in);
 }
 
-.rm-music-box img { display: block; width: 100%; height: auto; }
+.rm-music-box svg { display: block; width: 100%; height: auto; }
 
 .rm-music-box:hover,
 .rm-music-box:focus-visible {
