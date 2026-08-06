@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import KolamMark from "./KolamMark";
-import { CornerOrnament, PaperGrain } from "./marks";
+import { CornerOrnament, HungFrame, Plaster } from "./marks";
 import { Sanjana, Snippets, Statements, Story } from "./sections";
 import { INTRO, SECTIONS, SELECTED_WORK, STORY_MOMENTS } from "./landingData";
 import { useMediaQuery, usePrefersReducedMotion } from "./useMediaQuery";
@@ -75,18 +75,24 @@ export default function PortfolioCanvas({ chat, onOpenProject }) {
   return (
     <div className={`pc-root${open ? " is-open" : ""}`}>
       <div className="pc-light" aria-hidden="true" />
-      <PaperGrain />
+      <Plaster />
 
       {/* Four corners at rest so the kolam is the framed object; a diagonal
           pair inside a section so the frame does not fight the text. */}
-      <CornerOrnament where="tl" />
-      <CornerOrnament where="tr" />
-      {!open && <CornerOrnament where="bl" />}
-      {!open && <CornerOrnament where="br" />}
+      <CornerOrnament where="tl" size={open ? 72 : 160} />
+      {!open && <CornerOrnament where="tr" size={160} />}
+      {!open && <CornerOrnament where="bl" size={160} />}
+      <CornerOrnament where="br" size={open ? 72 : 160} />
 
       <button type="button" className="pc-id" onClick={() => setOpen(null)}>
-        <span className="pc-id-portrait pc-framed">
-          <img src={INTRO.portrait} alt="" />
+        <span className="pc-id-portrait pc-hung">
+          <span className="pc-hook" aria-hidden="true" />
+          <span className="pc-cord" aria-hidden="true" />
+          <span className="pc-frame">
+            <span className="pc-mat">
+              <img src={INTRO.portrait} alt="" />
+            </span>
+          </span>
         </span>
         <span>
           <span className="pc-id-name">{INTRO.wordmark}</span>
@@ -105,19 +111,28 @@ export default function PortfolioCanvas({ chat, onOpenProject }) {
           Selected work {workOpen ? "−" : "+"}
         </button>
         <div className="list" hidden={isMobile && !workOpen}>
-          {SELECTED_WORK.map((p) => (
-            <a
-              key={p.slug}
-              href={`#work=${p.slug}`}
-              onClick={(e) => {
-                e.preventDefault();
-                onOpenProject(p.slug);
-              }}
-            >
-              {p.name}
-              <img src={p.image} alt="" loading="lazy" decoding="async" />
-            </a>
-          ))}
+          <div className="pc-rail" aria-hidden="true" />
+          <div className="pc-wall">
+            {SELECTED_WORK.map((p) => (
+              <HungFrame
+                key={p.slug}
+                src={p.image}
+                alt={p.name}
+                label={p.short}
+                width={p.width}
+                height={p.height}
+                cord={p.cord}
+                tilt={p.tilt}
+                onOpen={{
+                  href: `#work=${p.slug}`,
+                  onClick: (e) => {
+                    e.preventDefault();
+                    onOpenProject(p.slug);
+                  },
+                }}
+              />
+            ))}
+          </div>
         </div>
       </nav>
 

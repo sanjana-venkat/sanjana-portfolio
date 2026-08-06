@@ -29,7 +29,11 @@
   --brass-600: #a8823f;
 
   /* Vintage wood — corner ornament */
+  --wood-800: #57391f;
   --wood-700: #6e4b31;
+  --wood-400: #a08061;
+  --brass-200: #ddc9a0;
+  --shadow: rgba(33, 30, 26, 0.14);
 
   --jasmine: #fffdf8;
 
@@ -79,14 +83,15 @@
 
 
 
-/* Paper grain — present, but invisible when you look for it. */
-.pc-grain {
+/* Lime plaster. A tiled background, not a live filter: filters get
+   re-rasterised on colour-profile changes and can blow up mid-render. */
+.pc-plaster {
   position: fixed;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.03;
-  mix-blend-mode: multiply;
+  opacity: 0.045;
+  background-repeat: repeat;
 }
 
 /* The one permitted gradient: warm light behind the mark. */
@@ -122,7 +127,7 @@
 .km svg {
   width: 100%;
   height: 100%;
-  overflow: visible;
+  /* Deliberately not overflow:visible — see note above. */
 }
 
 .km-dot {
@@ -184,11 +189,8 @@
 .pc-corner {
   position: fixed;
   z-index: 2;
-  width: 76px;
-  height: 76px;
   pointer-events: none;
-  color: var(--wood-700);
-  opacity: 0.16;
+  opacity: 0.35;
 }
 
 .pc-corner svg {
@@ -198,25 +200,25 @@
 }
 
 .pc-corner.tl {
-  top: var(--s3);
-  left: var(--s3);
+  top: var(--s4);
+  left: var(--s4);
 }
 
 .pc-corner.tr {
-  top: var(--s3);
-  right: var(--s3);
+  top: var(--s4);
+  right: var(--s4);
   transform: scaleX(-1);
 }
 
 .pc-corner.bl {
-  bottom: var(--s3);
-  left: var(--s3);
+  bottom: var(--s4);
+  left: var(--s4);
   transform: scaleY(-1);
 }
 
 .pc-corner.br {
-  bottom: var(--s3);
-  right: var(--s3);
+  bottom: var(--s4);
+  right: var(--s4);
   transform: scale(-1);
 }
 
@@ -312,35 +314,9 @@
 }
 
 .pc-work .list {
-  display: grid;
-  gap: var(--s1);
-  justify-items: end;
-}
-
-.pc-work a {
-  display: flex;
-  align-items: center;
-  gap: var(--s2);
-  font-size: var(--t-small);
-  color: var(--ink-400);
-  text-decoration: none;
-  transition: color 240ms var(--in), transform 240ms var(--in);
-}
-
-.pc-work a img {
-  width: 44px;
-  height: 28px;
-  object-fit: cover;
-  object-position: center;
-  background: var(--cream-100);
   display: block;
-  order: 2;
-}
-
-.pc-work a:hover,
-.pc-work a:focus-visible {
-  color: var(--terracotta-600);
-  transform: translateX(-4px);
+  /* Narrow enough that the wall never reaches the Story label beside it. */
+  width: clamp(248px, 23vw, 320px);
 }
 
 .pc-work-toggle {
@@ -417,9 +393,9 @@
 }
 
 @media (min-width: 861px) {
-  /* Selected work owns the top of this column; content starts below it. */
+  /* The hung work owns the top of this column; content starts clear of it. */
   .pc-zones .pc-zone-r {
-    padding-top: var(--s7);
+    padding-top: 300px;
   }
 }
 
@@ -892,8 +868,16 @@
 
 .pc-chat-pills {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: var(--s2);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  padding-bottom: var(--s1);
+}
+
+.pc-chat-pills::-webkit-scrollbar {
+  display: none;
 }
 
 .pc-pill {
@@ -906,6 +890,8 @@
   border-radius: 0;
   padding: var(--s2) var(--s3);
   cursor: pointer;
+  flex: none;
+  white-space: nowrap;
   transition: color 240ms var(--in), border-color 240ms var(--in),
     background 240ms var(--in);
 }
@@ -925,14 +911,6 @@
 .pc-thread {
   display: grid;
   gap: var(--s3);
-  max-height: 30vh;
-  overflow-y: auto;
-  scrollbar-width: none;
-  padding-right: var(--s2);
-}
-
-.pc-thread::-webkit-scrollbar {
-  display: none;
 }
 
 /* The question, sent. */
@@ -1240,4 +1218,162 @@
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
+}
+
+/* ==========================================================================
+   The wall — §4.5. Selected work hangs from a picture rail on cords, tilted,
+   casting the site's only shadow. Light is upper-left of centre (§4.4), so
+   every shadow falls down and to the right.
+   ========================================================================== */
+
+.pc-rail {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background: var(--brass-600);
+  opacity: 0.4;
+  margin-bottom: 0;
+}
+
+.pc-wall {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s2);
+}
+
+.pc-hung {
+  position: relative;
+  display: block;
+  padding-top: var(--cord);
+  text-decoration: none;
+  flex: none;
+}
+
+.pc-hook {
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--brass-600);
+}
+
+.pc-cord {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: var(--cord);
+  background: var(--wood-700);
+  opacity: 0.55;
+}
+
+.pc-frame {
+  display: block;
+  width: var(--fw);
+  height: var(--fh);
+  border: 2px solid var(--brass-600);
+  background: var(--cream-50);
+  box-shadow: 0 8px 20px -6px var(--shadow);
+  /* Pivot from the hook above, not the frame's own centre. */
+  transform-origin: 50% calc(-1 * var(--cord));
+  transform: rotate(var(--tilt));
+  transition: box-shadow 240ms var(--in);
+}
+
+.pc-mat {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 8px 8px 10px; /* real mats are bottom-weighted */
+  box-sizing: border-box;
+}
+
+.pc-mat img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--cream-100);
+}
+
+.pc-caption {
+  display: block;
+  margin-top: var(--s2);
+  font-family: var(--font-label);
+  font-size: var(--t-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  text-align: center;
+  width: var(--fw);
+  line-height: 1.4;
+  transition: color 240ms var(--in);
+}
+
+.pc-hung:hover .pc-caption,
+.pc-hung:focus-visible .pc-caption {
+  color: var(--terracotta-600);
+}
+
+/* A damped pendulum: three diminishing swings, settling. */
+.pc-hung:hover .pc-frame,
+.pc-hung:focus-visible .pc-frame {
+  animation: pcSwing 900ms var(--out) both;
+  box-shadow: 0 12px 26px -6px var(--shadow);
+}
+
+@keyframes pcSwing {
+  0% { transform: rotate(var(--tilt)); }
+  22% { transform: rotate(calc(var(--tilt) + 1.6deg)); }
+  48% { transform: rotate(calc(var(--tilt) - 0.9deg)); }
+  72% { transform: rotate(calc(var(--tilt) + 0.4deg)); }
+  88% { transform: rotate(calc(var(--tilt) - 0.15deg)); }
+  100% { transform: rotate(var(--tilt)); }
+}
+
+/* The portrait hangs too — it teaches the interaction before the work does. */
+.pc-id-portrait {
+  --cord: 20px;
+  --tilt: 0.5deg;
+  --fw: 44px;
+  --fh: 44px;
+}
+
+/* In-section imagery is propped, not hung: frame and shadow, nothing else. */
+.pc-propped {
+  border: 2px solid var(--brass-600);
+  background: var(--cream-50);
+  box-shadow: 0 8px 20px -6px var(--shadow);
+  padding: 8px 8px 10px;
+  box-sizing: border-box;
+}
+
+.pc-propped img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--cream-100);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-hung:hover .pc-frame,
+  .pc-hung:focus-visible .pc-frame {
+    animation: none;
+    box-shadow: 0 10px 24px -6px var(--shadow);
+  }
+}
+
+@media (max-width: 860px) {
+  .pc-wall {
+    gap: var(--s3);
+  }
+
+  .pc-caption {
+    display: none;
+  }
 }

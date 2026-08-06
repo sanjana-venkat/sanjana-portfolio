@@ -125,7 +125,7 @@ export function Story() {
           <LocationLine there={index >= movedIndex} />
 
           <figure className="pc-moment">
-            <div className="shot pc-framed">
+            <div className="shot pc-propped">
               <img key={moment.image} src={moment.image} alt={moment.title} decoding="async" />
             </div>
             <figcaption aria-live="polite">
