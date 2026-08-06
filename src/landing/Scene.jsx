@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import KolamMark from "./KolamMark";
 import { Plaster } from "./marks";
+import RangoliCursor from "./RangoliCursor";
 import { Bulletin, CornerShelf, WallFrame, WindowWall } from "./room";
 import { Statements, Story } from "./sections";
 import { FEATURED, INTRO, STATEMENTS, STORY_MOMENTS } from "./landingData";
@@ -75,6 +76,8 @@ export default function Scene({ chat, onOpenProject }) {
 
   return (
     <div className={`sc${open ? " is-open" : ""}`}>
+      <RangoliCursor />
+
       <div className="sc-wall" aria-hidden="true" />
       <Plaster className="sc-grain" />
 

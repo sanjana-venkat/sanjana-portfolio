@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { MuesliStudy, OutdoneStudy } from "./FeaturedCaseStudies";
 import { AISearchCaseStudy, B2CCaseStudy, IntentCaseStudy, ServiceDesignCaseStudy } from "./LegacyCaseStudies";
 import Scene from "./landing/Scene";
@@ -494,7 +494,28 @@ function OutdoneCaseStudy() {
   );
 }
 
-function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
+function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
+  const stageRef = useRef(null);
+  const phase = origin ? "expanding" : "open";
+
+  // FLIP: put the stage where the frame was, then let it grow into place.
+  useLayoutEffect(() => {
+    if (!origin || !stageRef.current) return;
+    const el = stageRef.current;
+    // Measure the stage untransformed — on a re-run it may still be carrying
+    // the previous frame's transform, which would measure the frame instead.
+    el.style.setProperty("--ox", "0px");
+    el.style.setProperty("--oy", "0px");
+    el.style.setProperty("--osx", "1");
+    el.style.setProperty("--osy", "1");
+    const to = el.getBoundingClientRect();
+    if (!to.width || !to.height) return;
+    el.style.setProperty("--ox", `${origin.left - to.left}px`);
+    el.style.setProperty("--oy", `${origin.top - to.top}px`);
+    el.style.setProperty("--osx", `${origin.width / to.width}`);
+    el.style.setProperty("--osy", `${origin.height / to.height}`);
+    
+  }, [origin]);
   useEffect(() => {
     const previousBodyOverflow = document.body.style.overflow;
     const previousHtmlOverflow = document.documentElement.style.overflow;
@@ -520,7 +541,7 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
   };
 
   return (
-    <div className="work-shell">
+    <div className={`work-shell${phase === "expanding" ? " is-expanding" : ""}`}>
       <CornerOrnament where="tl" size={72} />
       <CornerOrnament where="br" size={72} />
       <div className="mx-auto w-full min-w-0 max-w-[1280px] overflow-hidden flex flex-col flex-1 min-h-0">
@@ -543,7 +564,10 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c" }) {
           ))}
         </div>
 
-        <div className="work-stage">
+        <div
+          ref={stageRef}
+          className={`work-stage${phase === "expanding" ? " is-expanding" : ""}`}
+        >
           {activeProject.slug === "muesli" && <MuesliStudy />}
           {activeProject.slug === "b2c" && <B2CCaseStudy />}
           {activeProject.slug === "ai-personalization" && <IntentCaseStudy />}
@@ -698,7 +722,10 @@ export default function PortfolioHome() {
     return () => clearTimeout(timer);
   }, [active]);
 
-  const openWorkProject = (slug) => {
+  const [workOrigin, setWorkOrigin] = useState(null);
+
+  const openWorkProject = (slug, origin) => {
+    setWorkOrigin(origin || null);
     setWorkProjectSlug(slug);
     window.history.pushState(null, "", `#work=${slug}`);
     setProjectOpen("work-browser");
@@ -711,7 +738,7 @@ export default function PortfolioHome() {
     }
   };
 
-  const openProjectTarget = (target) => {
+  const openProjectTarget = (target, origin) => {
     const slugByTarget = {
       "ai-framer": "ai-chat-journeys",
       "casey-ai": "conversational-agentic-ai",
@@ -731,13 +758,17 @@ export default function PortfolioHome() {
       return;
     }
 
-    openWorkProject(slugByTarget[target] || "b2c");
+    openWorkProject(slugByTarget[target] || "b2c", origin);
   };
 
   return (
     <main className={`bg-[#F7F4F2] text-[#221B16] ${BODY}`}>
       {projectOpen === "work-browser" && (
-        <WorkBrowserModal initialSlug={workProjectSlug} onClose={closeWorkProject} />
+        <WorkBrowserModal
+          initialSlug={workProjectSlug}
+          origin={workOrigin}
+          onClose={closeWorkProject}
+        />
       )}
       {projectOpen === "figma-deck" && <FigmaDeckModal onClose={() => setProjectOpen(null)} />}
       {projectOpen === "ai-framer" && <FramerModal title="AI Search Interfaces" url={AI_FRAMER_URL} onClose={() => setProjectOpen(null)} />}

@@ -478,3 +478,136 @@
     display: none;
   }
 }
+
+/* ==========================================================================
+   The rangoli cursor — a pulli with a drop drawn round it.
+   ========================================================================== */
+
+.has-rangoli-cursor,
+.has-rangoli-cursor .sc,
+.has-rangoli-cursor .sc *,
+.has-rangoli-cursor .work-shell,
+.has-rangoli-cursor .work-shell * {
+  cursor: none;
+}
+
+/* Text entry keeps a real caret — never take that away. */
+.has-rangoli-cursor input,
+.has-rangoli-cursor textarea {
+  cursor: text;
+}
+
+.rc-dot,
+.rc-loop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+  transition: opacity 200ms linear;
+}
+
+.rc-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--leaf-700);
+}
+
+.rc-loop {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+}
+
+.rc-loop svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.rc-loop path {
+  stroke: var(--terracotta-600);
+  stroke-width: 1.6;
+  fill: none;
+  transition: stroke-width 200ms var(--in), opacity 200ms var(--in);
+  opacity: 0.75;
+}
+
+/* Over something interactive the loop opens up and firms. */
+.rc-loop.is-hot path {
+  stroke-width: 2.2;
+  opacity: 1;
+}
+
+.rc-loop.is-hot {
+  transform-box: fill-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rc-loop path {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   A case study opens out of its frame.
+
+   The stage starts life sitting exactly where the frame was on the wall and
+   grows into place, so the page reads as that frame expanding rather than a
+   modal appearing over it.
+   ========================================================================== */
+
+/* The vars are written before paint, so the animation starts at the frame and
+   grows to identity. A keyframe rather than a state flip: no React timing to
+   get wrong, and StrictMode's double mount just restarts it. */
+.work-stage.is-expanding {
+  transform-origin: 0 0;
+  animation: workGrow 560ms var(--in) both;
+}
+
+@keyframes workGrow {
+  from {
+    transform: translate(var(--ox, 0px), var(--oy, 0px))
+      scale(var(--osx, 1), var(--osy, 1));
+  }
+  to {
+    transform: none;
+  }
+}
+
+.work-shell.is-expanding {
+  animation: workGround 460ms var(--in) both;
+}
+
+@keyframes workGround {
+  from { background-color: rgba(251, 248, 242, 0); }
+  to { background-color: var(--cream-50); }
+}
+
+/* The chrome arrives behind the growing frame rather than with it. */
+.work-shell.is-expanding .work-head,
+.work-shell.is-expanding .work-tabs,
+.work-shell.is-expanding .pc-corner {
+  animation: workChrome 380ms var(--in) 200ms both;
+}
+
+@keyframes workChrome {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-stage.is-expanding,
+  .work-shell.is-expanding,
+  .work-shell.is-expanding .work-head,
+  .work-shell.is-expanding .work-tabs,
+  .work-shell.is-expanding .pc-corner {
+    animation-duration: 120ms;
+    animation-delay: 0ms;
+  }
+}

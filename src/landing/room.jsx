@@ -124,7 +124,9 @@ export function WallFrame({ project, onOpen, size = "lg" }) {
       href={`#work=${project.slug}`}
       onClick={(e) => {
         e.preventDefault();
-        onOpen(project.slug);
+        // Hand over where the frame is, so the case study can grow out of it.
+        const body = e.currentTarget.querySelector(".rm-frame-body");
+        onOpen(project.slug, body?.getBoundingClientRect());
       }}
       style={{ "--tilt": `${project.tilt}deg`, "--cord": `${project.cord}px` }}
     >
