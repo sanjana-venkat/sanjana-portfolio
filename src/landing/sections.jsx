@@ -117,10 +117,7 @@ export function Story({ initialId }) {
     <>
       <div className="pc-zone pc-zone-l pc-fade">
         <div className="pc-stack" style={{ "--i": 0 }}>
-          <div>
-            <Eyebrow title="Story" />
-            <h2 className="pc-title">Story</h2>
-          </div>
+          <h2 className="pc-title">Story</h2>
 
           <LocationLine there={index >= movedIndex} />
 
@@ -380,12 +377,11 @@ export function Statements({ initialId }) {
 
   return (
     <>
+      {/* The title heads the whole section; the two columns sit beneath it. */}
+      <h2 className="pc-title pc-sheet-title">Statements</h2>
+
       <div className="pc-zone pc-zone-l pc-fade">
         <div className="pc-stack" style={{ "--i": 0 }}>
-          <div>
-            <Eyebrow title="Statements" />
-            <h2 className="pc-title">Statements</h2>
-          </div>
           <ul className="pc-index">
             {STATEMENTS.map((s) => (
               <li key={s.id}>

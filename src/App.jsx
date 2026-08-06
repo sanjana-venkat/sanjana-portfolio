@@ -2,7 +2,6 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { MuesliStudy, OutdoneStudy } from "./FeaturedCaseStudies";
 import { AISearchCaseStudy, B2CCaseStudy, IntentCaseStudy, ServiceDesignCaseStudy } from "./LegacyCaseStudies";
 import Scene from "./landing/Scene";
-import { CornerOrnament } from "./landing/marks";
 
 const FIGMA_DECK_URL =
   "https://embed.figma.com/slides/rrAhQ5fBTULZu49L04zUZ8/jpmcpublic-slides?node-id=2-16488&embed-host=share";
@@ -542,8 +541,6 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
 
   return (
     <div className={`work-shell${phase === "expanding" ? " is-expanding" : ""}`}>
-      <CornerOrnament where="tl" size={72} />
-      <CornerOrnament where="br" size={72} />
       <div className="mx-auto w-full min-w-0 max-w-[1280px] overflow-hidden flex flex-col flex-1 min-h-0">
         <div className="work-head">
           <button type="button" className="work-back" onClick={onClose} aria-label="Close work browser">

@@ -42,6 +42,20 @@
   --brass-200: #ddc9a0;
   --shadow: rgba(33, 30, 26, 0.14);
 
+  /* Carved wood — three values, no more. Light always from the upper left:
+     --wood-lit is the face catching it, --wood-deep is the relief channel.
+     Flat shapes only; never a gradient, a bevel or an inner shadow. */
+  --wood-lit: #a9663f;
+  --wood-mid: #8a4f30;
+  --wood-deep: #5e3220;
+
+  /* Brass — two values. Gold on the lit face, green-black in the groove. */
+  --brass: #c9a227;
+  --brass-deep: #3d3a22;
+
+  /* Every object in the room sits on or hangs from something. */
+  --contact: drop-shadow(3px 7px 10px rgba(34, 27, 22, 0.16));
+
   --jasmine: #fffdf8;
 
   /* Type */
