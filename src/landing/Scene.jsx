@@ -403,7 +403,6 @@ function Frame({ project, onOpen }) {
 function Board({ photos, letters, onPhoto, onLetter }) {
   return (
     <div className="rm-board">
-      <span className="rm-board-zari" />
       <div className="rm-board-inner">
         {photos.map((m, i) => (
           <button
@@ -552,8 +551,55 @@ function RoomColumn({ openWith, onOpenProject, ask }) {
           meet people where they are and take them where they want to be. Both
           users and stakeholders :)
         </p>
+        {/* The kolam and the two clusters share one band, so the clusters are
+            positioned against the mark rather than against text above them
+            whose height changes with the wrapping. */}
+        <div className="rc-band">
         <div className="rc-kolam">
           <KolamMark drawn={4} active={null} hovered={null} onHover={() => {}} />
+        </div>
+
+        {/* The wall either side of the kolam: photographs on a string creeping
+            in from the left, letters clustered in from the right. */}
+        <div className="rc-string">
+          <span className="rc-wire" aria-hidden="true" />
+          {BOARD_PHOTOS.slice(0, 3).map((m, i) => (
+            <button
+              key={m.id}
+              type="button"
+              className="rc-peg"
+              style={{ "--tilt": `${[-4, 3, -2.4, 4][i % 4]}deg`, "--drop": `${[0, 16, 6, 20][i % 4]}px` }}
+              aria-label={`Open the story around ${m.year}`}
+              onClick={() => openWith("story", m.id)}
+            >
+              <span className="rc-clip" aria-hidden="true" />
+              <span className="rc-peg-img">
+                <img src={m.image} alt="" loading="lazy" decoding="async" />
+              </span>
+              <span className="rc-peg-cap">{m.year}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="rc-post">
+          {BOARD_LETTERS.map((s2, i) => (
+            <button
+              key={s2.id}
+              type="button"
+              className="rc-card-letter"
+              style={{ "--tilt": `${[3, -3.4, 2][i % 3]}deg`, "--shift": `${[0, 18, 8][i % 3]}px` }}
+              aria-label={`Read what ${s2.attr} wrote`}
+              onClick={() => openWith("statements", s2.id)}
+            >
+              <span className="rc-stamp" aria-hidden="true" />
+              <span className="rc-rules" aria-hidden="true">
+                <i />
+                <i />
+              </span>
+              <span className="rc-letter-name">{s2.attr}</span>
+            </button>
+          ))}
+        </div>
         </div>
       </header>
 
@@ -588,54 +634,6 @@ function RoomColumn({ openWith, onOpenProject, ask }) {
                 <img src={p.image} alt="" loading="lazy" decoding="async" />
               </span>
               <span className="rc-card-cap">{p.name}</span>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* Photographs on a string, running off the left edge — the pin board
-          from the desktop wall, hung rather than pinned. */}
-      <section className="rc-section rc-bleed-l">
-        <h2 className="rc-h2">The story so far</h2>
-        <div className="rc-string">
-          <span className="rc-wire" aria-hidden="true" />
-          {BOARD_PHOTOS.map((m, i) => (
-            <button
-              key={m.id}
-              type="button"
-              className="rc-peg"
-              style={{ "--tilt": `${[-3.4, 2.2, -1.6, 3, -2.4, 1.8][i % 6]}deg`, "--drop": `${[0, 14, 4, 20, 8, 16][i % 6]}px` }}
-              onClick={() => openWith("story", m.id)}
-            >
-              <span className="rc-clip" aria-hidden="true" />
-              <span className="rc-peg-img">
-                <img src={m.image} alt="" loading="lazy" decoding="async" />
-              </span>
-              <span className="rc-peg-cap">{m.year}</span>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* Letters clustered off the right edge. */}
-      <section className="rc-section rc-bleed-r">
-        <h2 className="rc-h2">What people said</h2>
-        <div className="rc-post">
-          {BOARD_LETTERS.map((s, i) => (
-            <button
-              key={s.id}
-              type="button"
-              className="rc-card-letter"
-              style={{ "--tilt": `${[2.2, -2.6, 1.6][i % 3]}deg`, "--shift": `${[0, 26, 10][i % 3]}px` }}
-              onClick={() => openWith("statements", s.id)}
-            >
-              <span className="rc-stamp" aria-hidden="true" />
-              <span className="rc-rules" aria-hidden="true">
-                <i />
-                <i />
-                <i />
-              </span>
-              <span className="rc-letter-name">{s.attr}</span>
             </button>
           ))}
         </div>

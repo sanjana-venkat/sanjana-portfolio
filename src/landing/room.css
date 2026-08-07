@@ -408,17 +408,6 @@
   overflow: hidden;
 }
 
-/* The zari border — the only place blue appears on the whole site. */
-.rm-board-zari {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 0.9cqw;
-  background:
-    repeating-linear-gradient(90deg, var(--brass) 0 0.3cqw, transparent 0.3cqw 0.75cqw),
-    #2f4a63;
-}
 
 .rm-board-inner {
   position: absolute;
@@ -902,6 +891,10 @@
 .rc {
   position: relative;
   min-height: 100dvh;
+  /* The photographs and letters deliberately run past the gutter; clip that
+     at the page edge so it reads as bleeding off rather than as a sideways
+     scroll. `clip` rather than `hidden` so the string inside still scrolls. */
+  overflow-x: clip;
   padding: 40px 20px 64px;
   display: flex;
   flex-direction: column;
@@ -911,7 +904,11 @@
     var(--cream-50);
 }
 
-.rc-head { text-align: center; }
+.rc-head {
+  position: relative;
+  text-align: center;
+  padding-bottom: 8px;
+}
 
 .rc-name {
   margin: 0;
@@ -931,11 +928,20 @@
   color: var(--ink-400);
 }
 
+.rc-band {
+  position: relative;
+  min-height: 306px;
+  display: grid;
+  place-items: center;
+  margin: 30px 0 0;
+  padding: 6px 0 20px;
+}
+
 .rc-kolam {
   position: relative;
-  width: min(190px, 52vw);
-  height: min(190px, 52vw);
-  margin: 24px auto 0;
+  width: min(116px, 32vw);
+  height: min(116px, 32vw);
+  margin: 0 auto;
 }
 
 .rc-kolam .km {
@@ -1363,8 +1369,10 @@
     gap: 16px;
   }
 
+  /* Fixed, and tall enough for two lines of title and two of copy — the
+     previous height clipped the second line rather than showing it. */
   .rm-sheet .pc-moment figcaption {
-    height: 140px;
+    height: 172px;
     overflow: hidden;
   }
 
@@ -1373,12 +1381,25 @@
     overflow: hidden;
   }
 
-  /* Two lines, always — a third would move the block. */
+  /* Exactly two lines. line-clamp was being dropped — the browser resolved
+     display back to flow-root — so the height does the work instead. */
   .rm-sheet .pc-moment figcaption p {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    height: 3em;
+    max-width: none;
     overflow: hidden;
+  }
+
+  /* The photographs keep the polaroid border they wear on the wall. */
+  .pc-reel-slide {
+    box-sizing: border-box;
+    padding: 8px 8px 12px;
+    background: var(--jasmine);
+    border-radius: 3px;
+    box-shadow: 0 6px 18px -10px rgba(34, 27, 22, 0.4);
+  }
+
+  .pc-reel-slide img {
+    border-radius: 1px;
   }
 
   /* The head of the sheet holds still while the reel moves under it. */
@@ -1511,7 +1532,7 @@
 
 .rc-creed {
   margin: 12px auto 0;
-  max-width: 32ch;
+  max-width: 26ch;
   font-family: var(--font-body);
   font-size: 11px;
   font-weight: 600;
@@ -1680,68 +1701,57 @@
    they read as continuing beyond the screen rather than stopping at it.
    ══════════════════════════════════════════════════════════════════════════ */
 
-.rc-bleed-l { margin-left: -20px; }
-.rc-bleed-r { margin-right: -20px; }
-.rc-bleed-l .rc-h2 { padding-left: 20px; }
-.rc-bleed-r .rc-h2 { padding-right: 20px; text-align: right; }
-
-/* ── Photographs on a string ─────────────────────────────────────────── */
+/* ── Photographs on a string, creeping in from the left ──────────────── */
 
 .rc-string {
-  position: relative;
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 96px;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  gap: 14px;
-  padding: 22px 20px 24px 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  scroll-snap-type: x proximity;
+  gap: 6px;
+  padding-top: 0;
 }
 
-.rc-string::-webkit-scrollbar { display: none; }
-
-/* The wire the pegs hang from, dipping slightly as a real one would. */
+/* The wire they hang from, running down and off the edge. */
 .rc-wire {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 20px;
-  height: 12px;
-  border-top: 1.5px solid rgba(122, 96, 40, 0.5);
-  border-radius: 50% / 0 0 100% 100%;
+  left: 22px;
+  top: 0;
+  bottom: 8px;
+  width: 1.5px;
+  background: rgba(122, 96, 40, 0.45);
   pointer-events: none;
 }
 
 .rc-peg {
   position: relative;
-  flex: 0 0 auto;
-  margin-top: var(--drop, 0px);
+  margin-left: var(--drop, 0px);
   rotate: var(--tilt, 0deg);
   border: 0;
-  padding: 6px 6px 0;
+  padding: 4px 4px 0;
   background: var(--jasmine);
   cursor: pointer;
-  scroll-snap-align: center;
-  box-shadow: 0 6px 16px -8px rgba(34, 27, 22, 0.35);
+  box-shadow: 0 5px 14px -8px rgba(34, 27, 22, 0.35);
 }
 
-/* The clip over the wire. */
 .rc-clip {
   position: absolute;
-  left: 50%;
-  top: -13px;
-  width: 8px;
-  height: 16px;
-  translate: -50% 0;
+  left: 14px;
+  top: -7px;
+  width: 7px;
+  height: 12px;
   border-radius: 2px;
   background: var(--brass);
-  box-shadow: 0 1px 2px rgba(34, 27, 22, 0.35);
 }
 
 .rc-peg-img {
   display: block;
-  width: 122px;
-  height: 122px;
+  width: 50px;
+  height: 50px;
   overflow: hidden;
   background: var(--cream-100);
 }
@@ -1755,82 +1765,87 @@
 
 .rc-peg-cap {
   display: block;
-  padding: 7px 0 9px;
-  font-size: 10px;
+  padding: 4px 0 5px;
+  font-size: 8px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-400);
   text-align: center;
 }
 
-/* ── Letters, clustered off the right ────────────────────────────────── */
+/* ── Letters, clustered in from the right ────────────────────────────── */
 
 .rc-post {
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 96px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 12px;
-  padding: 4px 0 4px 20px;
+  gap: 7px;
 }
 
 .rc-card-letter {
   position: relative;
-  width: 78%;
-  margin-right: calc(var(--shift, 0px) * -1);
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: calc(var(--shift, 0px) * -0.22);
   rotate: var(--tilt, 0deg);
-  border: 0;
-  padding: 16px 16px 14px;
+  border: 2px solid transparent;
+  border-image: repeating-linear-gradient(
+      45deg,
+      var(--lotus-600) 0 4px,
+      var(--jasmine) 4px 8px,
+      #2f4a63 8px 12px,
+      var(--jasmine) 12px 16px
+    ) 4;
+  padding: 10px 9px 8px;
   background: var(--cream-50);
   cursor: pointer;
   text-align: left;
-  box-shadow: 0 6px 16px -8px rgba(34, 27, 22, 0.3);
-  /* The airmail edge from the desktop board. */
-  outline: 2px solid transparent;
-  border-image: repeating-linear-gradient(
-      45deg,
-      var(--lotus-600) 0 6px,
-      var(--jasmine) 6px 12px,
-      #2f4a63 12px 18px,
-      var(--jasmine) 18px 24px
-    ) 6;
-  border-width: 3px;
-  border-style: solid;
+  box-shadow: 0 5px 14px -8px rgba(34, 27, 22, 0.3);
 }
 
 .rc-stamp {
   position: absolute;
-  right: 14px;
-  top: 14px;
-  width: 20px;
-  height: 24px;
+  right: 8px;
+  top: 8px;
+  width: 12px;
+  height: 15px;
   background: var(--lotus-100);
   border: 1px dashed var(--lotus-600);
 }
 
 .rc-rules {
   display: block;
-  padding-right: 40px;
+  padding-right: 22px;
 }
 
 .rc-rules i {
   display: block;
   height: 1px;
-  margin-bottom: 7px;
+  margin-bottom: 5px;
   background: var(--cream-200);
 }
 
-.rc-rules i:nth-child(2) { width: 84%; }
-.rc-rules i:nth-child(3) { width: 62%; }
+.rc-rules i:nth-child(2) { width: 68%; }
 
 .rc-letter-name {
   display: block;
-  padding-top: 8px;
-  font-size: 11px;
+  padding-top: 5px;
+  font-size: 7.5px;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
   text-transform: uppercase;
   color: var(--ink-600);
+  overflow-wrap: anywhere;
 }
 
 /* ── Down to the work ────────────────────────────────────────────────── */
@@ -1867,4 +1882,71 @@
 
 @media (prefers-reduced-motion: reduce) {
   .rc-scroll svg { animation: none; opacity: 1; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   The rangoli cursor
+
+   These rules were lost with the file the rebuild deleted, so the cursor's
+   SVG sat in normal flow and stretched the page to 1440px — which is where
+   the desktop scroll came from. It is a cursor: it floats over everything
+   and takes no layout space at all.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.rc-dot,
+.rc-loop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+  transition: opacity 200ms linear;
+}
+
+.rc-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--leaf-700);
+}
+
+.rc-loop {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+}
+
+.rc-loop svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.rc-loop path {
+  stroke: var(--lotus-600);
+  stroke-width: 1.6;
+  fill: none;
+  opacity: 0.75;
+  transition: stroke-width 200ms var(--in), opacity 200ms var(--in);
+}
+
+.rc-loop.is-hot path {
+  stroke-width: 2.2;
+  opacity: 1;
+}
+
+/* The room fills the window and no more. */
+.rm { min-height: 100dvh; height: 100dvh; overflow: hidden; }
+
+@media (max-width: 900px) {
+  /* The phone is a document again. */
+  .rm { height: auto; min-height: 100dvh; overflow: visible; overflow-x: clip; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rc-loop path { transition: none; }
 }
