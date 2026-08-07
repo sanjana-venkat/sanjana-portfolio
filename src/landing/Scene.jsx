@@ -116,11 +116,15 @@ export default function Scene({ chat, onOpenProject }) {
 
       {isPhone ? <RoomColumn {...props} /> : <RoomCanvas {...props} />}
 
-      <Shade state={shade} onPull={() => setOpen("chat")} onDrop={close}>
-        {open === "chat" && <DeskChat chat={chat} />}
-      </Shade>
+      {isPhone ? (
+        <MobileChat open={open === "chat"} chat={chat} onClose={close} />
+      ) : (
+        <Shade state={shade} onPull={() => setOpen("chat")} onDrop={close}>
+          {open === "chat" && <DeskChat chat={chat} />}
+        </Shade>
+      )}
 
-      {(open === "story" || open === "statements") && (
+      {!isPhone && (open === "story" || open === "statements") && (
         <div className="rm-layer">
           <button type="button" className="rm-scrim" aria-label="Close" onClick={close} />
           <div className="rm-sheet" data-section={open}>
@@ -539,38 +543,87 @@ function Utils({ className }) {
    Phone — the same room, read top to bottom. A document, not a shrunk canvas.
    ══════════════════════════════════════════════════════════════════════════ */
 
-function RoomColumn({ openWith, onOpenProject, ask }) {
-  const work = useRef(null);
+/**
+ * The phone is a walk along the wall.
+ *
+ * You start in the room — her name, the kolam, and her working. Scrolling
+ * moves you along: the framed work, then the photographs on their string,
+ * then the letters. Nothing opens as a modal; everything opens in place,
+ * because a modal on a phone throws away the place you were standing.
+ *
+ * The conversation is the one exception, and she is not the one who starts
+ * it — the bracket in the corner is. It shakes now and then, and tapping it
+ * draws a panel across from the right.
+ */
+function RoomColumn({ onOpenProject, ask }) {
+  const [story, setStory] = useState(null);
+  const [letter, setLetter] = useState(null);
+  const reel = useRef(null);
+
+  const moment = STORY_MOMENTS.find((m) => m.id === story) || null;
 
   return (
     <div className="rc">
-      <header className="rc-head">
+      {/* ── The room ─────────────────────────────────────────────────── */}
+      <header className="rc-hero">
         <h1 className="rc-name">{INTRO.name}</h1>
         <p className="rc-tagline">{INTRO.tagline}</p>
         <p className="rc-creed">
           meet people where they are and take them where they want to be. Both
           users and stakeholders :)
         </p>
-        {/* The kolam and the two clusters share one band, so the clusters are
-            positioned against the mark rather than against text above them
-            whose height changes with the wrapping. */}
-        <div className="rc-band">
+
         <div className="rc-kolam">
           <KolamMark drawn={4} active={null} hovered={null} onHover={() => {}} />
         </div>
 
-        {/* The wall either side of the kolam: photographs on a string creeping
-            in from the left, letters clustered in from the right. */}
-        <div className="rc-string">
+        <div className="rc-girl">
+          <Sanjana />
+        </div>
+
+        <span className="rc-cue" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 4v15M5.5 12.5 12 19l6.5-6.5" />
+          </svg>
+        </span>
+      </header>
+
+      {/* ── The work, framed on the wall ─────────────────────────────── */}
+      <section className="rc-sec">
+        <h2 className="rc-h2">Selected work</h2>
+        <div className="rc-frames">
+          {FEATURED.filter((p) => p.slug !== "muesli").map((p, i) => (
+            <button
+              key={p.slug}
+              type="button"
+              className="rc-hang"
+              style={{ "--tilt": `${i % 2 ? 1.2 : -1.4}deg`, "--cord": `${18 + (i % 2) * 10}px` }}
+              onClick={(e) => onOpenProject(p.slug, e.currentTarget.getBoundingClientRect())}
+            >
+              <span className="rc-cord" aria-hidden="true" />
+              <span className="rc-hang-body">
+                <img src={p.image} alt="" loading="lazy" decoding="async" />
+              </span>
+              <span className="rc-hang-cap">{p.name}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {/* ── The photographs, on their string ─────────────────────────── */}
+      <section className="rc-sec">
+        <h2 className="rc-h2">The story so far</h2>
+
+        <div className="rc-string" ref={reel}>
           <span className="rc-wire" aria-hidden="true" />
-          {BOARD_PHOTOS.slice(0, 3).map((m, i) => (
+          {STORY_MOMENTS.map((m, i) => (
             <button
               key={m.id}
               type="button"
-              className="rc-peg"
-              style={{ "--tilt": `${[-4, 3, -2.4, 4][i % 4]}deg`, "--drop": `${[0, 16, 6, 20][i % 4]}px` }}
-              aria-label={`Open the story around ${m.year}`}
-              onClick={() => openWith("story", m.id)}
+              className={`rc-peg${m.id === story ? " is-on" : ""}`}
+              style={{ "--tilt": `${[-3.2, 2.4, -1.8, 3, -2.2, 1.6][i % 6]}deg`, "--drop": `${[0, 12, 4, 16, 6, 10][i % 6]}px` }}
+              aria-pressed={m.id === story}
+              onClick={() => setStory((v) => (v === m.id ? null : m.id))}
             >
               <span className="rc-clip" aria-hidden="true" />
               <span className="rc-peg-img">
@@ -581,61 +634,50 @@ function RoomColumn({ openWith, onOpenProject, ask }) {
           ))}
         </div>
 
+        {/* What that photograph was, in place rather than over the page. */}
+        <div className={`rc-told${moment ? " is-on" : ""}`} aria-live="polite">
+          {moment && (
+            <>
+              <p className="rc-told-year">{moment.year}</p>
+              <h3 className="rc-told-title">{moment.title}</h3>
+              <p className="rc-told-copy">{moment.copy}</p>
+            </>
+          )}
+          {!moment && <p className="rc-told-hint">Tap a photograph · swipe for more</p>}
+        </div>
+      </section>
+
+      {/* ── The letters ──────────────────────────────────────────────── */}
+      <section className="rc-sec">
+        <h2 className="rc-h2">What people said</h2>
         <div className="rc-post">
-          {BOARD_LETTERS.map((s2, i) => (
-            <button
-              key={s2.id}
-              type="button"
-              className="rc-card-letter"
-              style={{ "--tilt": `${[3, -3.4, 2][i % 3]}deg`, "--shift": `${[0, 18, 8][i % 3]}px` }}
-              aria-label={`Read what ${s2.attr} wrote`}
-              onClick={() => openWith("statements", s2.id)}
-            >
-              <span className="rc-stamp" aria-hidden="true" />
-              <span className="rc-rules" aria-hidden="true">
-                <i />
-                <i />
-              </span>
-              <span className="rc-letter-name">{s2.attr}</span>
-            </button>
-          ))}
-        </div>
-        </div>
-      </header>
+          {STATEMENTS.slice(0, 5).map((s2, i) => {
+            const on = s2.id === letter;
+            return (
+              <div
+                key={s2.id}
+                className={`rc-note${on ? " is-on" : ""}`}
+                style={{ "--tilt": `${[1.4, -1.6, 1, -1.2, 0.8][i % 5]}deg` }}
+              >
+                <button
+                  type="button"
+                  className="rc-note-head"
+                  aria-expanded={on}
+                  onClick={() => setLetter((v) => (v === s2.id ? null : s2.id))}
+                >
+                  <span className="rc-stamp" aria-hidden="true" />
+                  <span className="rc-note-name">{s2.attr}</span>
+                  <span className="rc-note-role">{s2.role}</span>
+                </button>
 
-      {/* The same loop she works in on the desktop. */}
-      <button type="button" className="rc-desk" onClick={ask}>
-        <Sanjana />
-      </button>
-
-      {/* Down to the work. */}
-      <button
-        type="button"
-        className="rc-scroll"
-        aria-label="See selected work"
-        onClick={() => work.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 4v15M5.5 12.5 12 19l6.5-6.5" />
-        </svg>
-      </button>
-
-      <section className="rc-section" ref={work}>
-        <h2 className="rc-h2">Selected work</h2>
-        <div className="rc-work">
-          {FEATURED.filter((p) => p.slug !== "muesli").map((p) => (
-            <button
-              key={p.slug}
-              type="button"
-              className="rc-card"
-              onClick={(e) => onOpenProject(p.slug, e.currentTarget.getBoundingClientRect())}
-            >
-              <span className="rc-card-img">
-                <img src={p.image} alt="" loading="lazy" decoding="async" />
-              </span>
-              <span className="rc-card-cap">{p.name}</span>
-            </button>
-          ))}
+                <div className="rc-note-body">
+                  <div className="rc-note-inner">
+                    <p>{s2.text}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -644,6 +686,69 @@ function RoomColumn({ openWith, onOpenProject, ask }) {
       </a>
 
       <Utils className="rc-utils" />
+
+      {/* ── The bracket, which is how you start a conversation ───────── */}
+      <button type="button" className="rc-elephant" aria-label="Ask me anything" onClick={ask}>
+        <img src="/scene/bracket-flat.webp" alt="" decoding="async" />
+      </button>
+    </div>
+  );
+}
+
+/**
+ * The conversation, drawn across from the right.
+ *
+ * It does not scroll. The answer sits in the space it is given and the
+ * questions sit under it, so the panel is always exactly one screen.
+ */
+function MobileChat({ open, chat, onClose }) {
+  useEffect(() => {
+    if (!open) return undefined;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
+  return (
+    <div className={`rc-chat${open ? " is-on" : ""}`} aria-hidden={!open}>
+      <div className="rc-chat-sheet">
+        <div className="rc-chat-head">
+          <h2 className="rc-chat-title">Ask me something</h2>
+          <button type="button" className="rc-chat-x" onClick={onClose} aria-label="Close">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="rc-chat-answer">
+          {chat.thinking ? (
+            <div className="rc-chat-typing" aria-label="Thinking">
+              <i />
+              <i />
+              <i />
+            </div>
+          ) : (
+            <p>{chat.answer}</p>
+          )}
+        </div>
+
+        <div className="rc-chat-pills">
+          {chat.questions.map((q) => (
+            <button
+              key={q}
+              type="button"
+              className={`rc-chat-pill${q === chat.active ? " is-on" : ""}`}
+              aria-pressed={q === chat.active}
+              onClick={() => chat.onAsk(q)}
+            >
+              {q}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
