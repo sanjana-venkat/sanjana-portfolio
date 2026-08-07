@@ -541,6 +541,8 @@ function Utils({ className }) {
    ══════════════════════════════════════════════════════════════════════════ */
 
 function RoomColumn({ openWith, onOpenProject, ask }) {
+  const work = useRef(null);
+
   return (
     <div className="rc">
       <header className="rc-head">
@@ -555,11 +557,24 @@ function RoomColumn({ openWith, onOpenProject, ask }) {
         </div>
       </header>
 
+      {/* The same loop she works in on the desktop. */}
       <button type="button" className="rc-desk" onClick={ask}>
-        <img src="/scene/sanjana-poster.webp" alt="Sanjana at her desk" decoding="async" />
+        <Sanjana />
       </button>
 
-      <section className="rc-section">
+      {/* Down to the work. */}
+      <button
+        type="button"
+        className="rc-scroll"
+        aria-label="See selected work"
+        onClick={() => work.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 4v15M5.5 12.5 12 19l6.5-6.5" />
+        </svg>
+      </button>
+
+      <section className="rc-section" ref={work}>
         <h2 className="rc-h2">Selected work</h2>
         <div className="rc-work">
           {FEATURED.filter((p) => p.slug !== "muesli").map((p) => (
@@ -578,35 +593,49 @@ function RoomColumn({ openWith, onOpenProject, ask }) {
         </div>
       </section>
 
-      <section className="rc-section">
+      {/* Photographs on a string, running off the left edge — the pin board
+          from the desktop wall, hung rather than pinned. */}
+      <section className="rc-section rc-bleed-l">
         <h2 className="rc-h2">The story so far</h2>
-        <div className="rc-photos">
-          {BOARD_PHOTOS.map((m) => (
+        <div className="rc-string">
+          <span className="rc-wire" aria-hidden="true" />
+          {BOARD_PHOTOS.map((m, i) => (
             <button
               key={m.id}
               type="button"
-              className="rc-photo"
+              className="rc-peg"
+              style={{ "--tilt": `${[-3.4, 2.2, -1.6, 3, -2.4, 1.8][i % 6]}deg`, "--drop": `${[0, 14, 4, 20, 8, 16][i % 6]}px` }}
               onClick={() => openWith("story", m.id)}
             >
-              <img src={m.image} alt="" loading="lazy" decoding="async" />
-              <span className="rc-photo-cap">{m.year}</span>
+              <span className="rc-clip" aria-hidden="true" />
+              <span className="rc-peg-img">
+                <img src={m.image} alt="" loading="lazy" decoding="async" />
+              </span>
+              <span className="rc-peg-cap">{m.year}</span>
             </button>
           ))}
         </div>
       </section>
 
-      <section className="rc-section">
+      {/* Letters clustered off the right edge. */}
+      <section className="rc-section rc-bleed-r">
         <h2 className="rc-h2">What people said</h2>
-        <div className="rc-letters">
-          {BOARD_LETTERS.map((s) => (
+        <div className="rc-post">
+          {BOARD_LETTERS.map((s, i) => (
             <button
               key={s.id}
               type="button"
-              className="rc-letter"
+              className="rc-card-letter"
+              style={{ "--tilt": `${[2.2, -2.6, 1.6][i % 3]}deg`, "--shift": `${[0, 26, 10][i % 3]}px` }}
               onClick={() => openWith("statements", s.id)}
             >
-              <span className="rc-letter-stamp" />
-              <span className="rc-letter-cap">{s.attr}</span>
+              <span className="rc-stamp" aria-hidden="true" />
+              <span className="rc-rules" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
+              <span className="rc-letter-name">{s.attr}</span>
             </button>
           ))}
         </div>

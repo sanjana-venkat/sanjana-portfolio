@@ -92,7 +92,7 @@ export const STORY_MOMENTS = [
     year: "2000s",
     title: "Childhood in India",
     copy: "Grew up close to my roots, culture, and community.",
-    image: "/Childhood.jpg",
+    image: "/childhood.jpg",
   },
   {
     id: "states",

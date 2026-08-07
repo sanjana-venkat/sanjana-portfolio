@@ -608,7 +608,12 @@
   pointer-events: auto;
   touch-action: none;
   background: linear-gradient(180deg, var(--wood-lit) 0%, var(--wood-mid) 55%, var(--wood-deep) 100%);
-  box-shadow: 0 10px 24px -8px rgba(34, 27, 22, 0.3);
+  box-shadow: none;
+}
+
+/* Only once it is down and the shadow has something to fall on. */
+.rm-shade.is-down .rm-hem {
+  box-shadow: 0 -10px 24px -8px rgba(34, 27, 22, 0.28);
 }
 
 .rm-shade.is-down .rm-hem { cursor: grab; }
@@ -999,33 +1004,10 @@
   color: var(--ink-900);
 }
 
-.rc-photos {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding-bottom: 4px;
-}
 
-.rc-photos::-webkit-scrollbar { display: none; }
 
-.rc-photo {
-  flex: 0 0 auto;
-  border: 0;
-  background: var(--jasmine);
-  padding: 6px 6px 0;
-  cursor: pointer;
-  box-shadow: 0 4px 12px -6px rgba(34, 27, 22, 0.3);
-}
 
-.rc-photo img {
-  display: block;
-  width: 108px;
-  height: 108px;
-  object-fit: cover;
-}
 
-.rc-photo-cap,
 .rc-letter-cap {
   display: block;
   padding: 8px 0;
@@ -1037,27 +1019,8 @@
   text-align: center;
 }
 
-.rc-letters { display: flex; flex-direction: column; gap: 10px; }
 
-.rc-letter {
-  position: relative;
-  border: 1px solid var(--cream-200);
-  border-radius: 14px;
-  background: var(--cream-50);
-  padding: 16px;
-  cursor: pointer;
-  text-align: left;
-}
 
-.rc-letter-stamp {
-  position: absolute;
-  right: 14px;
-  top: 14px;
-  width: 18px;
-  height: 22px;
-  background: var(--lotus-100);
-  border: 1px dashed var(--lotus-600);
-}
 
 .rc-letter-cap { text-align: left; color: var(--ink-600); }
 
@@ -1334,8 +1297,21 @@
 }
 
 @media (max-width: 900px) {
-  .work-shell { padding: 12px 20px 20px; }
-  .work-stage { border-radius: 16px; }
+  /* The embed runs edge to edge; only the header keeps a gutter. */
+  .work-shell { padding: 12px 0 0; }
+  .work-head { padding: 0 20px var(--s3); }
+  .work-tabs { padding: 0 20px var(--s3); }
+
+  /* No frame on a phone — every pixel of width belongs to the work. */
+  .work-stage {
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background: var(--jasmine);
+    box-shadow: none;
+  }
+
+  .work-shell > div { max-width: none; }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -1351,7 +1327,10 @@
   .rm-sheet {
     inset: 0;
     padding: 20px;
+    box-shadow: none;
   }
+
+  .rm-sheet-scroll { box-shadow: none; }
 
   .rm-sheet-scroll,
   .rm-sheet[data-section="story"] .rm-sheet-scroll,
@@ -1375,10 +1354,38 @@
     grid-row: auto;
   }
 
-  /* The photograph goes above its caption rather than beside it. */
+  /* The photograph goes above its caption rather than beside it, and both
+     the reel and the caption are fixed height — otherwise the title and the
+     text under it jump every time a longer story scrolls past. */
   .rm-sheet .pc-moment {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
     gap: 16px;
+  }
+
+  .rm-sheet .pc-moment figcaption {
+    height: 140px;
+    overflow: hidden;
+  }
+
+  .rm-sheet .pc-moment figcaption h3 {
+    height: 2.6em;
+    overflow: hidden;
+  }
+
+  /* Two lines, always — a third would move the block. */
+  .rm-sheet .pc-moment figcaption p {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* The head of the sheet holds still while the reel moves under it. */
+  .rm-sheet[data-section="story"] .pc-stack {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 14px;
   }
 
   .rm-sheet .pc-moment .shot {
@@ -1613,7 +1620,8 @@
   .pc-reel-slide img {
     display: block;
     width: 100%;
-    aspect-ratio: 4 / 5;
+    height: 46vh;
+    max-height: 400px;
     object-fit: cover;
     background: var(--cream-100);
   }
@@ -1661,4 +1669,202 @@
 .rm-sheet-x:focus-visible {
   color: var(--lotus-600);
   border-color: var(--lotus-600);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Phone: the wall, rehung
+
+   The desktop pins photographs and letters to a board. A phone has no wall to
+   speak of, so the photographs hang from a string that runs off the left edge
+   and the letters cluster off the right — both bleeding past the gutter so
+   they read as continuing beyond the screen rather than stopping at it.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.rc-bleed-l { margin-left: -20px; }
+.rc-bleed-r { margin-right: -20px; }
+.rc-bleed-l .rc-h2 { padding-left: 20px; }
+.rc-bleed-r .rc-h2 { padding-right: 20px; text-align: right; }
+
+/* ── Photographs on a string ─────────────────────────────────────────── */
+
+.rc-string {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 22px 20px 24px 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+
+.rc-string::-webkit-scrollbar { display: none; }
+
+/* The wire the pegs hang from, dipping slightly as a real one would. */
+.rc-wire {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 20px;
+  height: 12px;
+  border-top: 1.5px solid rgba(122, 96, 40, 0.5);
+  border-radius: 50% / 0 0 100% 100%;
+  pointer-events: none;
+}
+
+.rc-peg {
+  position: relative;
+  flex: 0 0 auto;
+  margin-top: var(--drop, 0px);
+  rotate: var(--tilt, 0deg);
+  border: 0;
+  padding: 6px 6px 0;
+  background: var(--jasmine);
+  cursor: pointer;
+  scroll-snap-align: center;
+  box-shadow: 0 6px 16px -8px rgba(34, 27, 22, 0.35);
+}
+
+/* The clip over the wire. */
+.rc-clip {
+  position: absolute;
+  left: 50%;
+  top: -13px;
+  width: 8px;
+  height: 16px;
+  translate: -50% 0;
+  border-radius: 2px;
+  background: var(--brass);
+  box-shadow: 0 1px 2px rgba(34, 27, 22, 0.35);
+}
+
+.rc-peg-img {
+  display: block;
+  width: 122px;
+  height: 122px;
+  overflow: hidden;
+  background: var(--cream-100);
+}
+
+.rc-peg-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rc-peg-cap {
+  display: block;
+  padding: 7px 0 9px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+  text-align: center;
+}
+
+/* ── Letters, clustered off the right ────────────────────────────────── */
+
+.rc-post {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 4px 0 4px 20px;
+}
+
+.rc-card-letter {
+  position: relative;
+  width: 78%;
+  margin-right: calc(var(--shift, 0px) * -1);
+  rotate: var(--tilt, 0deg);
+  border: 0;
+  padding: 16px 16px 14px;
+  background: var(--cream-50);
+  cursor: pointer;
+  text-align: left;
+  box-shadow: 0 6px 16px -8px rgba(34, 27, 22, 0.3);
+  /* The airmail edge from the desktop board. */
+  outline: 2px solid transparent;
+  border-image: repeating-linear-gradient(
+      45deg,
+      var(--lotus-600) 0 6px,
+      var(--jasmine) 6px 12px,
+      #2f4a63 12px 18px,
+      var(--jasmine) 18px 24px
+    ) 6;
+  border-width: 3px;
+  border-style: solid;
+}
+
+.rc-stamp {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 20px;
+  height: 24px;
+  background: var(--lotus-100);
+  border: 1px dashed var(--lotus-600);
+}
+
+.rc-rules {
+  display: block;
+  padding-right: 40px;
+}
+
+.rc-rules i {
+  display: block;
+  height: 1px;
+  margin-bottom: 7px;
+  background: var(--cream-200);
+}
+
+.rc-rules i:nth-child(2) { width: 84%; }
+.rc-rules i:nth-child(3) { width: 62%; }
+
+.rc-letter-name {
+  display: block;
+  padding-top: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-600);
+}
+
+/* ── Down to the work ────────────────────────────────────────────────── */
+
+.rc-scroll {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: -18px auto 0;
+  border: 1px solid var(--cream-200);
+  border-radius: 999px;
+  background: var(--cream-50);
+  color: var(--ink-400);
+  cursor: pointer;
+}
+
+.rc-scroll svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: rcNudge 1.9s ease-in-out infinite;
+}
+
+@keyframes rcNudge {
+  0%, 100% { transform: translateY(-2px); opacity: 0.55; }
+  50% { transform: translateY(2px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rc-scroll svg { animation: none; opacity: 1; }
 }
