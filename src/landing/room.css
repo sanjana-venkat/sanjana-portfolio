@@ -1430,61 +1430,6 @@
 
 }
 
-/* ══════════════════════════════════════════════════════════════════════════
-   The rangoli cursor
-
-   These rules were lost with the file the rebuild deleted, so the cursor's
-   SVG sat in normal flow and stretched the page to 1440px — which is where
-   the desktop scroll came from. It is a cursor: it floats over everything
-   and takes no layout space at all.
-   ══════════════════════════════════════════════════════════════════════════ */
-
-.rc-dot,
-.rc-loop {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0;
-  will-change: transform;
-  transition: opacity 200ms linear;
-}
-
-.rc-dot {
-  width: 6px;
-  height: 6px;
-  margin: -3px 0 0 -3px;
-  border-radius: 50%;
-  background: var(--leaf-700);
-}
-
-.rc-loop {
-  width: 34px;
-  height: 34px;
-  margin: -17px 0 0 -17px;
-}
-
-.rc-loop svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.rc-loop path {
-  stroke: var(--lotus-600);
-  stroke-width: 1.6;
-  fill: none;
-  opacity: 0.75;
-  transition: stroke-width 200ms var(--in), opacity 200ms var(--in);
-}
-
-.rc-loop.is-hot path {
-  stroke-width: 2.2;
-  opacity: 1;
-}
-
 /* The room fills the window and no more. */
 .rm { min-height: 100dvh; height: 100dvh; overflow: hidden; }
 
@@ -1494,7 +1439,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rc-loop path { transition: none; }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -1692,17 +1636,24 @@
 /* ── The photographs, on a string ─────────────────────────────────────── */
 
 .rc-string {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  padding: 26px 20px 22px;
   overflow-x: auto;
   scrollbar-width: none;
   scroll-snap-type: x proximity;
 }
 
 .rc-string::-webkit-scrollbar { display: none; }
+
+/* The track is as wide as the photographs, so the wire — which is measured
+   against it — runs the whole length of the string instead of stopping at
+   the edge of the screen. */
+.rc-track {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  width: max-content;
+  gap: 14px;
+  padding: 26px 20px 22px;
+}
 
 .rc-wire {
   position: absolute;
@@ -1802,13 +1753,6 @@
   font-size: 13.5px;
   line-height: 1.5;
   color: var(--ink-600);
-}
-
-.rc-told-hint {
-  margin: 0;
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  color: var(--ink-400);
 }
 
 /* ── The letters, which open where they are ───────────────────────────── */

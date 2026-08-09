@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import KolamMark from "./KolamMark";
-import RangoliCursor from "./RangoliCursor";
 import { Statements, Story } from "./sections";
 import { FEATURED, INTRO, STATEMENTS, STORY_MOMENTS } from "./landingData";
 import { useMediaQuery, usePrefersReducedMotion } from "./useMediaQuery";
@@ -112,8 +111,6 @@ export default function Scene({ chat, onOpenProject }) {
 
   return (
     <div className={`rm${open ? " is-open" : ""}`}>
-      {!isPhone && <RangoliCursor />}
-
       {isPhone ? <RoomColumn {...props} /> : <RoomCanvas {...props} />}
 
       {isPhone ? (
@@ -556,7 +553,7 @@ function Utils({ className }) {
  * draws a panel across from the right.
  */
 function RoomColumn({ onOpenProject, ask }) {
-  const [story, setStory] = useState(null);
+  const [story, setStory] = useState(STORY_MOMENTS[0].id);
   const [letter, setLetter] = useState(null);
   const reel = useRef(null);
 
@@ -615,6 +612,7 @@ function RoomColumn({ onOpenProject, ask }) {
         <h2 className="rc-h2">The story so far</h2>
 
         <div className="rc-string" ref={reel}>
+          <div className="rc-track">
           <span className="rc-wire" aria-hidden="true" />
           {STORY_MOMENTS.map((m, i) => (
             <button
@@ -623,7 +621,7 @@ function RoomColumn({ onOpenProject, ask }) {
               className={`rc-peg${m.id === story ? " is-on" : ""}`}
               style={{ "--tilt": `${[-3.2, 2.4, -1.8, 3, -2.2, 1.6][i % 6]}deg`, "--drop": `${[0, 12, 4, 16, 6, 10][i % 6]}px` }}
               aria-pressed={m.id === story}
-              onClick={() => setStory((v) => (v === m.id ? null : m.id))}
+              onClick={() => setStory(m.id)}
             >
               <span className="rc-clip" aria-hidden="true" />
               <span className="rc-peg-img">
@@ -632,6 +630,7 @@ function RoomColumn({ onOpenProject, ask }) {
               <span className="rc-peg-cap">{m.year}</span>
             </button>
           ))}
+          </div>
         </div>
 
         {/* What that photograph was, in place rather than over the page. */}
@@ -643,7 +642,6 @@ function RoomColumn({ onOpenProject, ask }) {
               <p className="rc-told-copy">{moment.copy}</p>
             </>
           )}
-          {!moment && <p className="rc-told-hint">Tap a photograph · swipe for more</p>}
         </div>
       </section>
 
