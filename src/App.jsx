@@ -26,6 +26,8 @@ const TRAVEL_DNA_URL =
 const OUTDONE_FRAMER_URL =
   "https://sanjanavenkat.framer.website/works/outdone-2";
 
+const FITCHECK_URL = "https://fit-check-coral.vercel.app/";
+
 const MUESLI_FIGMA_URL =
   "https://www.figma.com/design/QO5TcpLfxmcheMMjcMYg6C/Muesli?node-id=17-5";
 
@@ -180,6 +182,7 @@ const PROJECTS = [
   { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
   { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
+  { slug: "fitcheck", label: "Hackathon Winner", title: "FitCheck", url: FITCHECK_URL },
   { slug: "muesli", label: "Speech-to-Text", title: "Muesli — Local-first dictation, made approachable", type: "case-study" }
 ];
 
@@ -522,10 +525,14 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
     const previousHtmlOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
+    // The elephant is fixed to the corner of the phone and would otherwise
+    // hang over the last pill in the tab row.
+    document.body.classList.add("work-open");
 
     return () => {
       document.body.style.overflow = previousBodyOverflow;
       document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.classList.remove("work-open");
     };
   }, []);
 

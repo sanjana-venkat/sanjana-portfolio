@@ -1893,6 +1893,11 @@
   animation: rcShake 9s ease-in-out infinite;
 }
 
+/* While the work browser is open the room is behind it; the elephant is not. */
+body.work-open .rc-elephant {
+  display: none;
+}
+
 .rc-elephant img {
   display: block;
   width: 100%;
