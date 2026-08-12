@@ -183,7 +183,9 @@ const PROJECTS = [
   { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
   { slug: "fitcheck", label: "Hackathon Winner", title: "FitCheck", url: FITCHECK_URL },
-  { slug: "muesli", label: "Speech-to-Text", title: "Muesli — Local-first dictation, made approachable", type: "case-study" }
+  // Held back while the case study is being reworked. The study itself still
+  // renders (see the stage below) — put this line back to show the tab again.
+  // { slug: "muesli", label: "Speech-to-Text", title: "Muesli — Local-first dictation, made approachable", type: "case-study" },
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {

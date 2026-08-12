@@ -41,16 +41,17 @@ export const FEATURED = [
     cord: 62,
     tilt: 0.7,
   },
-  {
-    slug: "muesli",
-    name: "Muesli",
-    short: "Muesli",
-    image: "/muesli-preview.jpg",
-    width: 136,
-    height: 96,
-    cord: 40,
-    tilt: -0.35,
-  },
+  // Muesli is held back while the case study is being reworked.
+  // {
+  //   slug: "muesli",
+  //   name: "Muesli",
+  //   short: "Muesli",
+  //   image: "/muesli-preview.jpg",
+  //   width: 136,
+  //   height: 96,
+  //   cord: 40,
+  //   tilt: -0.35,
+  // },
 ];
 
 /** Everything else, pinned to a narrow strip below the gallery. */
@@ -214,14 +215,15 @@ export const SNIPPETS = {
           "Personalization leans too hard on historical data and forgets what someone might want today. Outdone starts from mood instead of category, and shows its working in the loading state so people can see how the AI is reasoning.",
         metric: "9 archetypes classified by Gemini, APIs wired myself",
       },
-      {
-        id: "muesli",
-        name: "Muesli",
-        slug: "muesli",
-        summary:
-          "A private, local-first Mac dictation app with a lot going on under the hood. I redesigned onboarding and navigation so the first dictation felt easy, then translated the system into SwiftUI.",
-        metric: "Shipped as an open-source pull request",
-      },
+      // Held back while the case study is being reworked.
+      // {
+      //   id: "muesli",
+      //   name: "Muesli",
+      //   slug: "muesli",
+      //   summary:
+      //     "A private, local-first Mac dictation app with a lot going on under the hood. I redesigned onboarding and navigation so the first dictation felt easy, then translated the system into SwiftUI.",
+      //   metric: "Shipped as an open-source pull request",
+      // },
       {
         id: "portfolio",
         name: "This portfolio",
