@@ -234,8 +234,8 @@
   left: 44%;
   top: 36.5%;
   translate: -50% -50%;
-  width: 12.4cqw;
-  height: 12.4cqw;
+  width: 10.8cqw;
+  height: 10.8cqw;
 }
 
 .rm-kolam .km {
@@ -774,6 +774,49 @@
 }
 
 .rm-sheet-scroll > * { pointer-events: auto; }
+
+/* The way out. It sits above the sheet's own scroll so it stays put while the
+   content moves under it. */
+.rm-sheet-x {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid var(--cream-200);
+  border-radius: 50%;
+  background: var(--cream-50);
+  color: var(--ink-500, #6b625c);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color 180ms var(--in), border-color 180ms var(--in);
+  animation: rmFade 520ms var(--in) both 160ms;
+}
+
+.rm-sheet-x:hover {
+  color: var(--lotus-600);
+  border-color: var(--lotus-600);
+}
+
+.rm-sheet-x svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+@media (max-width: 900px) {
+  .rm-sheet-x {
+    top: 6px;
+    right: 6px;
+  }
+}
 
 .rm-sheet-scroll {
   flex: 1;
@@ -1327,6 +1370,19 @@
   height: 100%;
 }
 
+/* Some embedded sites are composed against the window rather than reflowing to
+   it, so inside a stage this size they crop. Give the frame a bigger window and
+   scale the whole thing back down: the page believes it is on a desktop, and
+   the stage does not change size. Phones get the site's own layout instead. */
+@media (min-width: 901px) {
+  .work-frame.is-zoomed {
+    width: calc(100% / var(--z));
+    height: calc(100% / var(--z));
+    transform: scale(var(--z));
+    transform-origin: 0 0;
+  }
+}
+
 .work-stage {
   -webkit-overflow-scrolling: touch;
 }
@@ -1355,9 +1411,9 @@
   top: 19%;
   translate: -50% 0;
   margin: 0;
-  width: 25%;
+  width: 27%;
   font-family: var(--font-body);
-  font-size: 0.68cqw;
+  font-size: 0.84cqw;
   font-weight: 600;
   letter-spacing: 0.1em;
   line-height: 1.7;
@@ -1492,8 +1548,8 @@
 
 .rc-creed {
   margin: 12px auto 0;
-  max-width: 28ch;
-  font-size: 11px;
+  max-width: 30ch;
+  font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.08em;
   line-height: 1.7;
@@ -1502,8 +1558,8 @@
 
 .rc-kolam {
   position: relative;
-  width: min(160px, 44vw);
-  height: min(160px, 44vw);
+  width: min(132px, 37vw);
+  height: min(132px, 37vw);
   margin: 26px auto 0;
 }
 

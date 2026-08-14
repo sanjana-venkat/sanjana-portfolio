@@ -6,6 +6,7 @@ import {
   INTRO,
   LINKS,
   MOVED_MOMENT,
+  STATES_MOMENT,
   SNIPPETS,
   STATEMENTS,
   STORY_MOMENTS,
@@ -71,13 +72,26 @@ const TL_W = 232;
 const TL_H = 560;
 
 /**
- * Frisco, Texas becomes San Francisco, California — but only when the timeline
- * gets there. "San" slides in, "anc" opens up inside "Frisco", and the state
- * swaps underneath. The word is never retyped; it grows.
+ * The line tracks where she is as the timeline moves: Chennai, then Frisco,
+ * then San Francisco.
+ *
+ * The last step is a growth rather than a swap — "San" slides in, "anc" opens
+ * up inside "Frisco", and the state changes underneath, so the word is never
+ * retyped. Chennai to Frisco was an actual move across the world, so it gets
+ * a cut instead: the two keys remount the line and it fades back in.
  */
-function LocationLine({ there }) {
+function LocationLine({ stage }) {
+  if (stage === "india") {
+    return (
+      <p className="pc-loc" key="india">
+        <span>Chennai</span>
+        <span className="region">India</span>
+      </p>
+    );
+  }
+
   return (
-    <p className={`pc-loc${there ? " is-there" : ""}`}>
+    <p className={`pc-loc${stage === "california" ? " is-there" : ""}`} key="us">
       <span>
         <span className="grow">San&nbsp;</span>
         Fr
@@ -88,7 +102,7 @@ function LocationLine({ there }) {
         <span className="tx">Texas</span>
         <span className="ca">California</span>
       </span>
-      <span className="pc-sr">{there ? "California" : "Texas"}</span>
+      <span className="pc-sr">{stage === "california" ? "California" : "Texas"}</span>
     </p>
   );
 }
@@ -132,6 +146,9 @@ export function Story({ initialId }) {
 
   const moment = STORY_MOMENTS[index];
   const movedIndex = STORY_MOMENTS.findIndex((m) => m.id === MOVED_MOMENT);
+  const statesIndex = STORY_MOMENTS.findIndex((m) => m.id === STATES_MOMENT);
+  const stage =
+    index >= movedIndex ? "california" : index >= statesIndex ? "texas" : "india";
 
   return (
     <>
@@ -139,7 +156,7 @@ export function Story({ initialId }) {
         <div className="pc-stack" style={{ "--i": 0 }}>
           <h2 className="pc-title">Story</h2>
 
-          <LocationLine there={index >= movedIndex} />
+          <LocationLine stage={stage} />
 
           <figure className="pc-moment">
             {isPhone ? (

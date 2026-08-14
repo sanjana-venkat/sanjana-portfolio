@@ -167,7 +167,8 @@ export const STORY_MOMENTS = [
   },
 ];
 
-/** The location line resolves when the timeline reaches this moment. */
+/** The location line changes country at this moment, and state at the next. */
+export const STATES_MOMENT = "states";
 export const MOVED_MOMENT = "bay";
 
 /* ── Snippets ──────────────────────────────────────────────────────────── */

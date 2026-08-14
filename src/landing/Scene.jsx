@@ -125,15 +125,13 @@ export default function Scene({ chat, onOpenProject }) {
         <div className="rm-layer">
           <button type="button" className="rm-scrim" aria-label="Close" onClick={close} />
           <div className="rm-sheet" data-section={open}>
-            {/* On a phone there is no room off the sheet to tap, so it needs
-                a way out of its own. */}
-            {isPhone && (
-              <button type="button" className="rm-sheet-x" onClick={close} aria-label="Close">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M18 6 6 18M6 6l12 12" />
-                </svg>
-              </button>
-            )}
+            {/* Tapping off the sheet closes it, but that is not a thing you
+                can see. The X is. */}
+            <button type="button" className="rm-sheet-x" onClick={close} aria-label="Close">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+            </button>
 
             <div className="rm-sheet-scroll">
               {open === "story" && <Story initialId={focusId} />}

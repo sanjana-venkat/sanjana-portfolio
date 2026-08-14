@@ -182,7 +182,9 @@ const PROJECTS = [
   { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
   { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
-  { slug: "fitcheck", label: "Hackathon Winner", title: "FitCheck", url: FITCHECK_URL },
+  // frameHeight: the window height this embed is composed for. See the fitting
+  // effect in WorkBrowserModal.
+  { slug: "fitcheck", label: "Hackathon Winner", title: "FitCheck", url: FITCHECK_URL, frameHeight: 1000 },
   // Held back while the case study is being reworked. The study itself still
   // renders (see the stage below) — put this line back to show the tab again.
   // { slug: "muesli", label: "Speech-to-Text", title: "Muesli — Local-first dictation, made approachable", type: "case-study" },
@@ -550,6 +552,30 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
     window.history.replaceState(null, "", `#work=${project.slug}`);
   };
 
+  // Some embeds are composed against the window rather than reflowing to it, so
+  // in a stage this short they crop — a phone mockup loses its bottom edge. For
+  // those, hand the frame the window height it was designed for and scale the
+  // whole thing down to fit, so it looks the way it does on a full desktop.
+  // Measured rather than guessed, because the stage is as tall as the browser.
+  const wantsHeight = activeProject.frameHeight || 0;
+  const [frameZoom, setFrameZoom] = useState(1);
+
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el || !wantsHeight) {
+      setFrameZoom(1);
+      return;
+    }
+    const fit = () => {
+      const h = el.clientHeight - 20; // less the stage's own padding
+      setFrameZoom(h > 0 ? Math.min(1, Math.max(0.6, h / wantsHeight)) : 1);
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [wantsHeight]);
+
   return (
     <div className={`work-shell${phase === "expanding" ? " is-expanding" : ""}`}>
       <div className="mx-auto w-full min-w-0 max-w-[1280px] overflow-hidden flex flex-col flex-1 min-h-0">
@@ -581,7 +607,8 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
               key={activeProject.url}
               src={activeProject.url}
               title={activeProject.title}
-              className="work-frame border-0 bg-white"
+              className={`work-frame border-0 bg-white${wantsHeight ? " is-zoomed" : ""}`}
+              style={wantsHeight ? { "--z": frameZoom } : undefined}
               scrolling="yes"
               allowFullScreen
             />
