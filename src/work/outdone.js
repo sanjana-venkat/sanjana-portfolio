@@ -29,7 +29,9 @@ export const OUTDONE = {
       eyebrow: "Context",
       title: "From one bad recommendation to a bigger product question",
       film: "outdone",
-      still: { src: "/work/outdone/plan.jpg", alt: "Outdone's opening screen — plan in seconds" },
+      assets: [
+        { src: "/work/outdone/plan.jpg", alt: "Outdone's opening screen — plan in seconds", wide: true },
+      ],
       body: [
         "I approached Abishek, a research engineer in Deepmind, with a problem I faced in Gemini. The idea came from a simple frustration: when I asked Gemini what to do in Las Vegas, it suggested an art museum because I'm a designer. It was not wrong, but it missed what I actually wanted in that moment.",
         "That became the core insight behind Outdone: people are not always looking for what fits their profile. They are looking for what fits how they want to feel today.",
@@ -56,7 +58,10 @@ export const OUTDONE = {
       eyebrow: "Signals",
       title: "Context engineering the mood system",
       film: "outdone",
-      still: { src: "/work/outdone/moods.jpg", alt: "The mood picker — what's the vibe today?" },
+      assets: [
+        { src: "/work/outdone/moods.jpg", alt: "The mood picker — what's the vibe today?", wide: true },
+        { src: "/work/outdone/signals.jpg", alt: "Each mood, and the rules behind it", wide: true },
+      ],
       body: [
         "People know they want to get out, slow down or do something adventurous, but may not know what activity to search for. Recommendations often rely on past behavior and broadly popular places. Travel also requires reasoning across time, distance, opening hours and transportation.",
         "My psychology background and extensive research helped me think through how moods can be categorized in different categories relevant to most travel interest.",
@@ -81,11 +86,9 @@ export const OUTDONE = {
       eyebrow: "Systems thinking",
       title: "Model design architecture",
       film: "outdone",
-      still: {
-        src: "/work/outdone/architecture.jpg",
-        alt: "The pipeline — collect, translate, ground, organise, deliver",
-        wide: true,
-      },
+      assets: [
+        { src: "/work/outdone/architecture.jpg", alt: "The pipeline — collect, translate, ground, organize, deliver", wide: true },
+      ],
       body: [
         "Deterministic rules: Gemini handles research, preference matching and qualitative judgment. Product logic handles hours, timing, routing and sequencing.",
       ],
@@ -114,7 +117,10 @@ export const OUTDONE = {
       eyebrow: "Design",
       title: "Making API wait time fun",
       film: "outdone",
-      still: { src: "/work/outdone/waiting-game.jpg", alt: "The ring-flying game that plays while the itinerary is built" },
+      assets: [
+        { src: "/work/outdone/waiting-game.jpg", alt: "The ring-flying game that plays while the itinerary is built", wide: true },
+        { src: "/work/outdone/itinerary.jpg", alt: "A finished Outdone itinerary", wide: true },
+      ],
       body: [
         "I used large imagery and parallax motion because travel decisions are emotional. The destination stays present while recommendations and plans move around it. The imagery helps users imagine the experience and makes each mood feel different.",
         "Gemini and Places calls could take a few seconds, so I used that time for a lightweight game instead of showing a loading spinner. It kept the experience active while the next set of recommendations was being researched. If you miss rings, you answer a quiz question about the place you're traveling to!",
@@ -127,7 +133,9 @@ export const OUTDONE = {
     eyebrow: "Next",
     title: "Next steps and feedback to incorporate",
     body: "I'd make this more social so friends can see and build on each other's itineraries. Improving the model alone may be hard to sell as a full product, but this could be a strong feature inside Ask Maps.",
-    still: { src: "/work/outdone/itinerary.jpg", alt: "A finished Outdone itinerary" },
+    assets: [
+      { src: "/work/outdone/team.jpg", alt: "At the hackathon" },
+    ],
     points: [
       {
         name: "Make it social",

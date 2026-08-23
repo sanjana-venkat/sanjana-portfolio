@@ -4,34 +4,22 @@
  * The writing is Sanjana's, from the case study, unedited. The four sections
  * group her sections; they do not replace them, and nothing is dropped.
  *
- * No prototype recording exists for this one, so the left panel holds stills —
- * and because they are stills, they can change with the argument. The diagram
- * beside you is the one being described.
+ * No prototype recording exists for this one, so the panel holds the finished
+ * screens and stays on them. The diagrams belong in the writing, beside the
+ * paragraphs that explain them, rather than flicking past on the left.
  */
 
 export const RECSYS = {
   slug: "ai-personalization",
-  shape: "plate",
+  shape: "phones",
   kicker: "Lead designer · Chase MyHome · Native mobile, product strategy, data science and research",
   title: "Intent-based recommendations",
   lede: "Years of customer data, but data alone couldn't answer “what does this customer actually need right now?” I led the strategy behind a need-based recommendation framework that helped AI infer user intent before deciding what experience to show.",
 
   films: {
-    today: {
-      image: "/work/recsys/tiles.jpg",
-      label: "Chase MyHome today — the same tile for everyone",
-    },
-    current: {
-      image: "/work/recsys/current.jpg",
-      label: "Current state — every customer routed through every product",
-    },
-    proposal: {
-      image: "/work/recsys/proposal.jpg",
-      label: "The proposal — one customer, the product that fits the goal",
-    },
-    sonar: {
-      image: "/work/recsys/sonar.jpg",
-      label: "The SONAR model — signals in, a classified need out",
+    final: {
+      image: "/work/recsys/hero.jpg",
+      label: "The intent-based experience",
     },
   },
 
@@ -40,12 +28,11 @@ export const RECSYS = {
       id: "problem",
       eyebrow: "Business problem",
       title: "One-size fits all",
-      film: "today",
-      still: {
-        src: "/work/recsys/generic.jpg",
-        alt: "Basic data going in, a generic message coming out",
-        wide: true,
-      },
+      film: "final",
+      assets: [
+        { src: "/work/recsys/generic.jpg", alt: "Basic data going in, a generic message coming out", wide: true },
+        { src: "/work/recsys/tiles.jpg", alt: "Chase MyHome today — the same tile for everyone" },
+      ],
       body: [
         "We had millions of customer data points, but every customer still saw essentially the same experience.",
         "CTR and Engagement on Chase MyHome was much lower than other tiles because we were recommending products instead of understanding customer intent.",
@@ -77,12 +64,11 @@ export const RECSYS = {
       id: "intent",
       eyebrow: "Research",
       title: "Why does intent matter?",
-      film: "current",
-      still: {
-        src: "/work/recsys/assumptions.jpg",
-        alt: "Assumption mapping across desirability, feasibility and viability",
-        wide: true,
-      },
+      film: "final",
+      assets: [
+        { src: "/work/recsys/assumptions.jpg", alt: "Assumption mapping — feasibility", wide: true },
+        { src: "/work/recsys/desirability.jpg", alt: "Assumption mapping — desirability", wide: true },
+      ],
       body: [
         "Before recommendations, we wanted to understand how customers perceived personalization. The theme: people weren't asking for more marketing, they want us to understand their situation.",
       ],
@@ -114,13 +100,12 @@ export const RECSYS = {
       id: "framework",
       eyebrow: "Framework",
       title: "Response framework",
-      film: "proposal",
-      still: {
-        src: "/work/recsys/framework.jpg",
-        alt: "The response framework — raw customer data, enough or not enough, generate message",
-        wide: true,
-        bare: true,
-      },
+      film: "final",
+      assets: [
+        { src: "/work/recsys/framework.jpg", alt: "The response framework — raw customer data, enough or not enough, generate message", wide: true, bare: true },
+        { src: "/work/recsys/current.jpg", alt: "Current state — every customer routed through every product", wide: true },
+        { src: "/work/recsys/proposal.jpg", alt: "The proposal — one customer, the product that fits the goal", wide: true },
+      ],
       body: [
         "At first, our thinking looked something like this. But two customers could look almost identical on paper while trying to accomplish completely different things.",
       ],
@@ -148,11 +133,11 @@ export const RECSYS = {
       id: "reasoning",
       eyebrow: "Reasoning layer",
       title: "Intent Classification Framework",
-      film: "sonar",
-      still: {
-        src: "/work/recsys/offer.jpg",
-        alt: "A timely and relevant offer — an estimated home purchase price, and low down payment options",
-      },
+      film: "final",
+      assets: [
+        { src: "/work/recsys/sonar.jpg", alt: "The SONAR model — signals in, a classified need out" },
+        { src: "/work/recsys/offer.jpg", alt: "A timely and relevant offer — an estimated home purchase price, and low down payment options" },
+      ],
       body: [
         "The model shouldn't ask “who is John?” and gather all the data. The model should ask, “what is John trying to accomplish today?”",
         "Rather than organizing recommendations around products, I organized them around customer needs. Each need mapped to readiness signals, available data and an appropriate messaging strategy.",
@@ -174,11 +159,10 @@ export const RECSYS = {
     eyebrow: "Validation",
     title: "Validating decision framework",
     body: "Utility score analysis: When it comes to how much customers care about their choice, images stand out. Customers don't just pick these two more often, they feel much more strongly about their preference for them compared to the rest. The higher utility scores (1.7 and 1.36) show that these images spark real enthusiasm, while others lag behind or even get negative reactions.",
-    still: {
-      src: "/work/recsys/ctr.jpg",
-      alt: "The selection of images that reaches the most customers — 75.3% cumulative",
-      wide: true,
-    },
+    assets: [
+      { src: "/work/recsys/ctr.jpg", alt: "The selection of images that reaches the most customers — 75.3% cumulative", wide: true },
+      { src: "/work/recsys/utility.jpg", alt: "Utility scores across the tested images", wide: true },
+    ],
     points: [
       {
         name: "It's all about picking the best mix.",

@@ -168,13 +168,13 @@
   overflow: hidden;
 }
 
-/* A study with no recording puts stills in the panel instead, and they are not
-   all one shape — so the box is squarish and everything is contained inside it
-   rather than cropped to fit. */
-.cs-film.is-plate .cs-screen {
+/* A study with no recording puts a still in the panel instead. This one is a
+   set of finished screens photographed together, so it is squarish. */
+.cs-film.is-plate .cs-screen,
+.cs-film.is-phones .cs-screen {
   width: 100%;
   height: auto;
-  aspect-ratio: 1 / 1.24;
+  aspect-ratio: 1 / 1.02;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -182,7 +182,8 @@
 /* Every study gets the same column, so the page does not resize itself as you
    move between them. A wide film is simply a short thing inside a tall panel. */
 .cs.is-wide .cs-film,
-.cs.is-plate .cs-film {
+.cs.is-plate .cs-film,
+.cs.is-phones .cs-film {
   width: 100%;
 }
 
@@ -323,8 +324,14 @@
 
 /* ── Stills ───────────────────────────────────────────────────────────── */
 
+.cs-assets {
+  display: grid;
+  gap: 22px;
+  margin: 32px 0 0;
+}
+
 .cs-still {
-  margin: 0 0 30px;
+  margin: 0;
   overflow: hidden;
   border-radius: 4px;
   background: var(--cream-100);
@@ -533,13 +540,15 @@
      shrink-to-fit flex item, width:100% resolves against nothing and the film
      collapses. */
   .cs.is-wide .cs-film-col,
-  .cs.is-plate .cs-film-col {
+  .cs.is-plate .cs-film-col,
+  .cs.is-phones .cs-film-col {
     flex: 1 1 auto;
     min-width: 0;
   }
 
   .cs.is-wide .cs-screen,
-  .cs.is-plate .cs-screen {
+  .cs.is-plate .cs-screen,
+  .cs.is-phones .cs-screen {
     height: auto;
   }
 

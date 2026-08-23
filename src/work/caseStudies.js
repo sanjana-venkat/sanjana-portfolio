@@ -41,10 +41,9 @@ export const AI_SEARCH = {
       eyebrow: "Problem",
       title: "The shift",
       film: "chatgpt",
-      still: {
-        src: "/work/ai-search/hero-phones.jpg",
-        alt: "Three phones: the Chase assistant, a Gemini conversation, and a ChatGPT offer summary",
-      },
+      assets: [
+        { src: "/work/ai-search/hero-phones.jpg", alt: "Three phones: the Chase assistant, a Gemini conversation, and a ChatGPT offer summary" },
+      ],
       body: [
         "Customers aren't starting financial journeys in banking apps anymore. They're asking ChatGPT and Gemini first. So instead of asking “How do we build another AI assistant?”",
         "I started asking: What should the model answer? What information should it gather? When should it recommend? When should it ask another question? When should it hand off to Chase?",
@@ -86,11 +85,9 @@ export const AI_SEARCH = {
           ],
         },
       ],
-      still: {
-        src: "/work/ai-search/workshop-board.jpg",
-        alt: "Workshop boards sorting tasks into what humans should do and what AI should do",
-        wide: true,
-      },
+      assets: [
+        { src: "/work/ai-search/workshop-board.jpg", alt: "Workshop boards sorting tasks into what humans should do and what AI should do", wide: true },
+      ],
       questions: {
         label: "Questions we kept asking",
         items: [
@@ -134,12 +131,9 @@ export const AI_SEARCH = {
       body: [
         "Gemini supports exploration; Chase owns execution. Together, they show how AI search can safely evolve into real financial action. So the handoff is a trust decision.",
       ],
-      still: {
-        src: "/work/ai-search/handoff.png",
-        alt: "ChatGPT and Gemini explore, Chase executes, and the loan advisor takes the edge cases",
-        wide: true,
-        bare: true,
-      },
+      assets: [
+        { src: "/work/ai-search/handoff.png", alt: "ChatGPT and Gemini explore, Chase executes, and the loan advisor takes the edge cases", wide: true, bare: true },
+      ],
       beats: [
         {
           name: "Starting with curiosity",
@@ -161,10 +155,9 @@ export const AI_SEARCH = {
     eyebrow: "Reflection",
     title: "What did I learn?",
     body: "This wasn't an exercise in redesigning ChatGPT. It was a strategy sprint to answer a much harder question: what role should AI play in one of the biggest financial decisions of someone's life?",
-    still: {
-      src: "/work/ai-search/team.jpg",
-      alt: "The team in front of a whiteboard covered in conversational UX notes",
-    },
+    assets: [
+      { src: "/work/ai-search/team.jpg", alt: "The team in front of a whiteboard covered in conversational UX notes" },
+    ],
     points: [
       {
         name: "AI is very valuable when it removes timing gaps.",

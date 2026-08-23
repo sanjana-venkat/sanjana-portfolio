@@ -120,8 +120,6 @@ export default function CaseStudy({ study }) {
               key={section.id}
               ref={(el) => (marks.current[i] = el)}
             >
-              {section.still && <Still still={section.still} />}
-
               <p className="cs-eyebrow">{section.eyebrow}</p>
               <h2 className="cs-h2">{section.title}</h2>
 
@@ -173,6 +171,8 @@ export default function CaseStudy({ study }) {
 
               {section.pull && <p className="cs-pull">{section.pull}</p>}
 
+              <Assets of={section} />
+
               {section.questions && (
                 <div className="cs-qs">
                   <p className="cs-qs-label">{section.questions.label}</p>
@@ -188,7 +188,6 @@ export default function CaseStudy({ study }) {
 
           {study.reflection && (
             <section className="cs-sec cs-sec-end">
-              {study.reflection.still && <Still still={study.reflection.still} />}
               <p className="cs-eyebrow">{study.reflection.eyebrow}</p>
               <h2 className="cs-h2">{study.reflection.title}</h2>
               {study.reflection.body && (
@@ -202,10 +201,26 @@ export default function CaseStudy({ study }) {
                   </div>
                 ))}
               </div>
+              <Assets of={study.reflection} />
             </section>
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+/* A section shows as many things as it needs to, and it shows them after the
+   writing that introduces them. Above the heading they read as belonging to
+   the section before. */
+function Assets({ of }) {
+  const list = of.assets || (of.still ? [of.still] : []);
+  if (!list.length) return null;
+  return (
+    <div className="cs-assets">
+      {list.map((a, i) => (
+        <Still key={i} still={a} />
+      ))}
     </div>
   );
 }

@@ -25,11 +25,9 @@ export const SERVICE = {
       eyebrow: "Problem framing",
       title: "Two sides of the story",
       film: "apply",
-      still: {
-        src: "/work/service/journey.jpg",
-        alt: "The journey from shop through preliminary offer, choosing Chase, approval and closing",
-        wide: true,
-      },
+      assets: [
+        { src: "/work/service/journey.jpg", alt: "The journey from shop through preliminary offer, choosing Chase, approval and closing", wide: true },
+      ],
       body: [
         "When we considered both sides of the problem, we were able to bridge the needs into an optimal solution for both the business and customers so it doesn't feel like a bank selling loans.",
       ],
@@ -76,11 +74,10 @@ export const SERVICE = {
       eyebrow: "Research",
       title: "Into the customer's mind",
       film: "apply",
-      still: {
-        src: "/work/service/voices.jpg",
-        alt: "Customer research quotes",
-        wide: true,
-      },
+      assets: [
+        { src: "/work/service/voices.jpg", alt: "Customer research quotes", wide: true },
+        { src: "/work/service/workshop.jpg", alt: "The discovery workshop" },
+      ],
       body: [
         "We conducted a 1-week discovery workshop to deeply understand the problem with empathy mapping, prioritization matrix and assumption mapping ending with high level design concepts.",
         "Through customer research, we dived deep into these habits and anxieties such as credit concerns, need education before decision and importance of value before commitment.",
@@ -101,11 +98,11 @@ export const SERVICE = {
       eyebrow: "Service design",
       title: "What runs behind the scenes?",
       film: "apply",
-      still: {
-        src: "/work/service/blueprint.jpg",
-        alt: "The service design blueprint",
-        wide: true,
-      },
+      assets: [
+        { src: "/work/service/blueprint.jpg", alt: "The service design blueprint", wide: true },
+        { src: "/work/service/journey-map.jpg", alt: "The self-service journey map", wide: true },
+        { src: "/work/service/tailored.jpg", alt: "You deserve a loan tailored to you" },
+      ],
       body: [
         "I kept hearing “that's not feasible” so I took time to create a service design blueprint to map all the backend implementations, services, HLA side and data downstream implication. This now became a living breathing document to find opportunities and close gaps.",
         "Now that I understood the backend, I created a journey for a self-service experience. Considering both business and customers, I proposed self-service (for the business) but with guardrails for support IF and WHEN they need (for the customers).",
@@ -121,10 +118,14 @@ export const SERVICE = {
       eyebrow: "0-to-1 solution",
       title: "Empowering with ease of application",
       film: "apply",
-      still: {
-        video: "/work/service/refinance.mp4",
-        alt: "The employment step, reduced to status and optional details",
-      },
+      assets: [
+        { video: "/work/service/refinance.mp4", alt: "The employment step, reduced to status and optional details" },
+        { src: "/work/service/apply-screens.jpg", alt: "Buying a home, and sharing what you can", wide: true },
+        { src: "/work/service/credit.jpg", alt: "The soft credit check, and SSN asked only when it is needed", wide: true },
+        { src: "/work/service/heloc.jpg", alt: "The HELOC rate tool", wide: true },
+        { src: "/work/service/final-check.jpg", alt: "The final check before submitting", wide: true },
+        { src: "/work/service/progress.jpg", alt: "Progress and fulfilment across devices" },
+      ],
       body: [
         "All the granular changes that led to improve in submit rate, reduced drop-offs and alleviated customer fears.",
       ],
@@ -181,10 +182,10 @@ export const SERVICE = {
   reflection: {
     eyebrow: "Impact",
     title: "What moved",
-    still: {
-      src: "/work/service/team.jpg",
-      alt: "The team",
-    },
+    assets: [
+      { src: "/work/service/myhome.jpg", alt: "Chase MyHome, ready to start", wide: true },
+      { src: "/work/service/team.jpg", alt: "The team" },
+    ],
     points: [
       {
         name: "5.5%",

@@ -26,11 +26,11 @@ export const B2C = {
       eyebrow: "Data discovery",
       title: "High traffic — low conversion",
       film: "search",
-      still: {
-        src: "/work/b2c/funnel.jpg",
-        alt: "8M potential customers, 300k getting started, 1k applications initiated",
-        wide: true,
-      },
+      assets: [
+        { src: "/work/b2c/funnel.jpg", alt: "8M potential customers, 300k getting started, 1k applications initiated", wide: true },
+        { src: "/work/b2c/clicks.jpg", alt: "Where the clicks actually went", wide: true },
+        { src: "/work/b2c/old-page.jpg", alt: "The old public page, annotated" },
+      ],
       body: [
         "We were given raw data showing conversion rates at different touch points. What story does this tell? People visit but don't convert.",
         "I created this simple visualization to show the market we are missing. This helped illustrate the conversion bottleneck impact up to leadership and secured over $10,000 in investment for Home Lending Public experience re-design.",
@@ -56,11 +56,10 @@ export const B2C = {
       eyebrow: "Research",
       title: "Behind the numbers",
       film: "search",
-      still: {
-        src: "/work/b2c/clicks.jpg",
-        alt: "Click analysis across the public pages",
-        wide: true,
-      },
+      assets: [
+        { src: "/work/b2c/voices.jpg", alt: "What customers said in research", wide: true },
+        { src: "/work/b2c/workshop-room.jpg", alt: "The design workshop" },
+      ],
       body: [
         "Now to understand the customer perspective of this story, why do they drop, and more importantly — what are their needs?",
         "Applying the four forces model, we tried to understand what would push customers out of renting and pull them into the attractive new home. However, habits and anxieties can outweigh this.",
@@ -89,11 +88,9 @@ export const B2C = {
       eyebrow: "Principles",
       title: "Design values",
       film: "search",
-      still: {
-        src: "/work/b2c/workshop.jpg",
-        alt: "The design workshop boards",
-        wide: true,
-      },
+      assets: [
+        { src: "/work/b2c/workshop.jpg", alt: "The design workshop boards", wide: true },
+      ],
       body: [
         "We set the values for our new design grounding in customer's thoughts, feelings and actions to understand both what we want and what we don't want.",
       ],
@@ -135,11 +132,13 @@ export const B2C = {
       eyebrow: "Strategy",
       title: "Need-based segmentation",
       film: "search",
-      still: {
-        src: "/work/b2c/segments.jpg",
-        alt: "Early explorer, shopping and ready to apply segments",
-        wide: true,
-      },
+      assets: [
+        { src: "/work/b2c/segments.jpg", alt: "Early explorer, shopping and ready to apply segments", wide: true, bare: true },
+        { src: "/work/b2c/ready.jpg", alt: "The ready-to-apply segment", wide: true },
+        { src: "/work/b2c/shopping.jpg", alt: "The shopping segment", wide: true },
+        { src: "/work/b2c/calculators.jpg", alt: "Calculators and the advisor guide", wide: true },
+        { src: "/work/b2c/explorer.jpg", alt: "The early explorer segment", wide: true },
+      ],
       body: [
         "This led us to create three customer segments based on needs and trust. We need to earn trust with early explorers, establish trust with rate shoppers, and keep trust with those ready to apply.",
       ],
@@ -168,11 +167,10 @@ export const B2C = {
     eyebrow: "Impact",
     title: "What happens after results?",
     body: "Based on data, we continued to make enhancements because we know that fixing the page doesn't fix the experience, so we continued momentum with more initiatives.",
-    still: {
-      src: "/work/b2c/before-after.jpg",
-      alt: "The old page and the new one",
-      wide: true,
-    },
+    assets: [
+      { src: "/work/b2c/before-after.jpg", alt: "The old page and the new one", wide: true },
+      { src: "/work/b2c/hero.jpg", alt: "The redesigned public experience across desktop and phone" },
+    ],
     points: [
       {
         name: "38%",
