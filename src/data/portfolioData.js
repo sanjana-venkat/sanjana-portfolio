@@ -244,7 +244,7 @@ export const TESTIMONIALS = [
   [
     "A very special call out and thank you to Sanjana for being such an amazing partner and consistently going above and beyond when it comes to projects we are working on. Sanjana has been instrumental in the Encompass build UX, providing solutions and quickly adjusting to our changing needs.",
     "Sonia Zacheo",
-    "CMH Product VP"
+    "Product VP"
   ],
   [
     "I wanted to send a special thanks for all your hard work, patience and collaboration this year! You jumped into the Apply world with both feet and I've loved exploring ways to improve our customers' experience. You approach every challenge or change in direction with a smile and you're open to everyone's feedback. Thank you for always being there and for being a wonderful teammate.",
