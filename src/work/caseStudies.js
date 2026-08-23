@@ -26,12 +26,14 @@ export const AI_SEARCH = {
     chatgpt: {
       src: "/work/ai-search/chatgpt.mp4",
       poster: "/work/ai-search/chatgpt-poster.webp",
-      label: "ChatGPT prototype — lowering a pre-approval mid-negotiation",
+      aspect: "698 / 1418",
+      label: "ChatGPT prototype",
     },
     gemini: {
       src: "/work/ai-search/gemini.mp4",
       poster: "/work/ai-search/gemini-poster.webp",
-      label: "Gemini prototype — exploring a home, then handing off to Chase",
+      aspect: "698 / 1418",
+      label: "Gemini prototype",
     },
   },
 
@@ -41,15 +43,13 @@ export const AI_SEARCH = {
       eyebrow: "Problem",
       title: "The shift",
       film: "chatgpt",
-      assets: [
-        { src: "/work/ai-search/hero-phones.jpg", alt: "Three phones: the Chase assistant, a Gemini conversation, and a ChatGPT offer summary" },
+      blocks: [
+        { p: "Customers aren't starting financial journeys in banking apps anymore. They're asking ChatGPT and Gemini first. So instead of asking \u201cHow do we build another AI assistant?\u201d" },
+        { p: "I started asking: What should the model answer? What information should it gather? When should it recommend? When should it ask another question? When should it hand off to Chase?" },
+        { p: "That became the framework for every concept." },
+        { img: "/work/ai-search/hero-phones.jpg", alt: "The Chase assistant, a Gemini conversation, and a ChatGPT offer summary", photo: true },
+        { pull: "How might we define the right role for AI in high-trust financial decisions without interrupting the conversation?" },
       ],
-      body: [
-        "Customers aren't starting financial journeys in banking apps anymore. They're asking ChatGPT and Gemini first. So instead of asking “How do we build another AI assistant?”",
-        "I started asking: What should the model answer? What information should it gather? When should it recommend? When should it ask another question? When should it hand off to Chase?",
-        "That became the framework for every concept.",
-      ],
-      pull: "How might we define the right role for AI in high-trust financial decisions without interrupting the conversation?",
     },
 
     {
@@ -57,46 +57,30 @@ export const AI_SEARCH = {
       eyebrow: "Principles",
       title: "Search should be action-oriented",
       film: "chatgpt",
-      body: [
-        "Users aren't just looking for information, they also want to do something with it. AI changes search from navigation to execution.",
-        "Experiences should feel like a natural extension of AI interfaces, fitting seamlessly into the conversation flow and UI.",
-        "It should be aware of context, supporting and anticipating user intent. Responses and UI should feel individually relevant.",
-      ],
-      cards: [
+      blocks: [
+        { p: "Users aren't just looking for information, they also want to do something with it. AI changes search from navigation to execution." },
+        { p: "Experiences should feel like a natural extension of AI interfaces, fitting seamlessly into the conversation flow and UI." },
+        { p: "It should be aware of context, supporting and anticipating user intent. Responses and UI should feel individually relevant." },
         {
-          name: "Intent",
-          lines: [
-            "Model shouldn't immediately answer.",
-            "First understand what the customer is trying to accomplish.",
+          cards: [
+            { name: "Intent", lines: ["Model shouldn't immediately answer.", "First understand what the customer is trying to accomplish."] },
+            { name: "AI's boundaries", lines: ["AI shouldn't do everything.", "The goal is knowing when AI should answer and when trusted banking systems should take over."] },
+            { name: "Closer to action", lines: ["Each interaction should focus on a single action or outcome.", "Recommendations are only useful to take users to the next step."] },
           ],
         },
+        { img: "/work/ai-search/workshop-board.jpg", alt: "Sorting tasks into what humans should do and what AI should do", wide: true },
         {
-          name: "AI's boundaries",
-          lines: [
-            "AI shouldn't do everything.",
-            "The goal is knowing when AI should answer and when trusted banking systems should take over.",
-          ],
-        },
-        {
-          name: "Closer to action",
-          lines: [
-            "Each interaction should focus on a single action or outcome.",
-            "Recommendations are only useful to take users to the next step.",
-          ],
+          list: {
+            label: "Questions we kept asking",
+            items: [
+              "When should AI answer versus ask another question?",
+              "When should AI continue the conversation versus hand off?",
+              "What information is enough before recommending an action?",
+              "How do we keep trust while reducing friction?",
+            ],
+          },
         },
       ],
-      assets: [
-        { src: "/work/ai-search/workshop-board.jpg", alt: "Workshop boards sorting tasks into what humans should do and what AI should do", wide: true },
-      ],
-      questions: {
-        label: "Questions we kept asking",
-        items: [
-          "When should AI answer versus ask another question?",
-          "When should AI continue the conversation versus hand off?",
-          "What information is enough before recommending an action?",
-          "How do we keep trust while reducing friction?",
-        ],
-      },
     },
 
     {
@@ -104,22 +88,11 @@ export const AI_SEARCH = {
       eyebrow: "Model behavior",
       title: "Why ChatGPT?",
       film: "chatgpt",
-      body: [
-        "The entire flow relies on user-owned documents, public data, and existing relationships, making it both realistic and low-risk to complete inside an AI interface.",
-      ],
-      beats: [
-        {
-          name: "Fixing a real, time-sensitive gap",
-          copy: "When buyers need a lower pre-approval letter while actively house shopping (often on weekends), ChatGPT updates the letter instantly which is a task HLAs can't handle in real time and current Chase app doesn't support digitally.",
-        },
-        {
-          name: "Making the offer smarter",
-          copy: "Using public neighborhood and market data, ChatGPT explains why lowering the pre-approval can improve offer strength, then evaluates the likelihood of acceptance and recommends tactics like an escalation clause.",
-        },
-        {
-          name: "Executing without friction",
-          copy: "ChatGPT drafts the escalation clause and offer letter and sends it to the HLA or realtor using existing contacts, turning search-time intent into immediate action without leaving ChatGPT.",
-        },
+      blocks: [
+        { p: "The entire flow relies on user-owned documents, public data, and existing relationships, making it both realistic and low-risk to complete inside an AI interface." },
+        { h: "Fixing a real, time-sensitive gap", p: "When buyers need a lower pre-approval letter while actively house shopping (often on weekends), ChatGPT updates the letter instantly which is a task HLAs can't handle in real time and current Chase app doesn't support digitally" },
+        { h: "Making the offer smarter", p: "Using public neighborhood and market data, ChatGPT explains why lowering the pre-approval can improve offer strength, then evaluates the likelihood of acceptance and recommends tactics like an escalation clause" },
+        { h: "Executing without friction", p: "ChatGPT drafts the escalation clause and offer letter and sends it to the HLA or realtor using existing contacts, turning search-time intent into immediate action without leaving ChatGPT." },
       ],
     },
 
@@ -128,53 +101,27 @@ export const AI_SEARCH = {
       eyebrow: "Model behavior",
       title: "Why Gemini?",
       film: "gemini",
-      body: [
-        "Gemini supports exploration; Chase owns execution. Together, they show how AI search can safely evolve into real financial action. So the handoff is a trust decision.",
-      ],
-      assets: [
-        { src: "/work/ai-search/handoff.png", alt: "ChatGPT and Gemini explore, Chase executes, and the loan advisor takes the edge cases", wide: true, bare: true },
-      ],
-      beats: [
-        {
-          name: "Starting with curiosity",
-          copy: "Gemini is good at helping people explore. Someone can upload a photo of a home, ask questions naturally, and connect that conversation to broader financial goals before deciding to take action.",
-        },
-        {
-          name: "A deliberate shift to a trusted system",
-          copy: "When the task requires private financial data, Gemini hands off to the Chase app, which we reimagined as a conversational AI experience for all banking needs.",
-        },
-        {
-          name: "Chase proactively turns interest into action",
-          copy: "Chase AI analyzes down payment readiness, suggests concrete actions to increase buying power, checks credit eligibility, prepares required documents, and schedules an advisor, all through conversation.",
-        },
+      blocks: [
+        { p: "Gemini supports exploration; Chase owns execution. Together, they show how AI search can safely evolve into real financial action. So the handoff is a trust decision." },
+        { img: "/work/ai-search/handoff.png", alt: "Explore, execute, and the edge cases", wide: true, bare: true },
+        { h: "Starting with curiosity", p: "Gemini is good at helping people explore. Someone can upload a photo of a home, ask questions naturally, and connect that conversation to broader financial goals before deciding to take action." },
+        { h: "A deliberate shift to a trusted system", p: "When the task requires private financial data, Gemini hands off to the Chase app, which we reimagined as a conversational AI experience for all banking needs." },
+        { h: "Chase proactively turns interest into action", p: "Chase AI analyzes down payment readiness, suggests concrete actions to increase buying power, checks credit eligibility, prepares required documents, and schedules an advisor, all through conversation." },
       ],
     },
   ],
 
   reflection: {
+    id: "reflection",
     eyebrow: "Reflection",
     title: "What did I learn?",
-    body: "This wasn't an exercise in redesigning ChatGPT. It was a strategy sprint to answer a much harder question: what role should AI play in one of the biggest financial decisions of someone's life?",
-    assets: [
-      { src: "/work/ai-search/team.jpg", alt: "The team in front of a whiteboard covered in conversational UX notes" },
-    ],
-    points: [
-      {
-        name: "AI is very valuable when it removes timing gaps.",
-        copy: "The biggest unlock wasn't smarter answers, but eliminating real-world delays (like weekend availability or manual processes).",
-      },
-      {
-        name: "The future of search is accountable action.",
-        copy: "AI search only earns trust when it leads to clear next steps, ownership, and outcomes, not just recommendations.",
-      },
-      {
-        name: "Trust is a design boundary.",
-        copy: "Deciding when to stay inside an AI interface versus handing off to a secure system was a core UX decision.",
-      },
-      {
-        name: "Intent matters more than interface.",
-        copy: "Designing around what users are trying to accomplish. This creates more natural, scalable interaction patterns.",
-      },
+    blocks: [
+      { p: "This wasn't an exercise in redesigning ChatGPT. It was a strategy sprint to answer a much harder question: what role should AI play in one of the biggest financial decisions of someone's life?" },
+      { h: "AI is very valuable when it removes timing gaps.", p: "The biggest unlock wasn't smarter answers, but eliminating real-world delays (like weekend availability or manual processes)." },
+      { h: "The future of search is accountable action.", p: "AI search only earns trust when it leads to clear next steps, ownership, and outcomes, not just recommendations." },
+      { h: "Trust is a design boundary.", p: "Deciding when to stay inside an AI interface versus handing off to a secure system was a core UX decision." },
+      { h: "Intent matters more than interface.", p: "Designing around what users are trying to accomplish. This creates more natural, scalable interaction patterns." },
+      { img: "/work/ai-search/team.jpg", alt: "The team", photo: true },
     ],
   },
 };

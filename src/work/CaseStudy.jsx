@@ -15,8 +15,25 @@ import "./case.css";
  * that name the same film leave it alone, so ChatGPT holds for three sections
  * and the cut to Gemini lands on the sentence that introduces it.
  *
+ * ── How a section is written ──────────────────────────────────────────────
+ *
+ * A section is an ordered list of blocks, and it renders them in the order
+ * they are written. That ordering is the whole point: a picture belongs to the
+ * paragraph it illustrates, immediately under it, not gathered with the other
+ * pictures at the bottom of the section. Grouping the prose and then grouping
+ * the images reads as a gallery; interleaving them reads as an argument.
+ *
+ *   { p }                        a paragraph
+ *   { h, p }                     a headed beat
+ *   { img | video, alt, ... }    something to look at
+ *   { quote }                    someone else's words
+ *   { cards, dense }             a set of short parallel points
+ *   { list: { label, items } }   a run of questions
+ *   { pull }                     the sentence that carries the section
+ *   { stat, p }                  a number worth stopping on
+ *
  * On a phone the columns become one column: the film sticks to the top, the
- * kolam becomes a rule under it, and the writing runs beneath.
+ * kolam sits beside it, and the writing runs beneath.
  */
 export default function CaseStudy({ study }) {
   const scroller = useRef(null);
@@ -41,10 +58,16 @@ export default function CaseStudy({ study }) {
 
   useEffect(() => {
     measure();
+    // The first pass can land before the stage has a height, which leaves the
+    // sticky columns sized to nothing. Measure again on the next frame.
+    const id = requestAnimationFrame(measure);
+    return () => cancelAnimationFrame(id);
   }, [measure, study]);
 
-  const film = study.films[study.sections[active]?.film] || Object.values(study.films)[0];
+  const film =
+    study.films[study.sections[active]?.film] || Object.values(study.films)[0];
   const filmKeys = Object.keys(study.films);
+  const all = [...study.sections, ...(study.reflection ? [study.reflection] : [])];
 
   return (
     <div
@@ -73,155 +96,132 @@ export default function CaseStudy({ study }) {
             wrapper is display:contents there. On a phone there is only one
             column, and it becomes the single sticky band holding both. */}
         <div className="cs-stick">
-        {/* ── The prototype, held still ─────────────────────────────── */}
-        <div className="cs-film-col">
-          <div className={`cs-film is-${study.shape || "phone"}`}>
-            <div className="cs-screen">
-              {filmKeys.map((key) => {
-                const f = study.films[key];
-                const on = f === film;
-                return f.src ? (
-                  <Film key={key} film={f} on={on} />
-                ) : (
-                  <img
-                    key={key}
-                    className={`cs-video${on ? " is-on" : ""}`}
-                    src={f.image}
-                    alt={f.label}
-                    decoding="async"
-                  />
-                );
-              })}
+          {/* ── The prototype, held still ───────────────────────────── */}
+          <div className="cs-film-col">
+            <div className={`cs-film is-${study.shape || "phone"}`}>
+              {/* Each film carries its own aspect. Sharing one across a study
+                  letterboxes some and crops others. */}
+              <div className="cs-screen" style={{ "--ar": film.aspect || "698 / 1418" }}>
+                {filmKeys.map((key) => {
+                  const f = study.films[key];
+                  const on = f === film;
+                  return f.src ? (
+                    <Film key={key} film={f} on={on} />
+                  ) : (
+                    <img
+                      key={key}
+                      className={`cs-video${on ? " is-on" : ""}`}
+                      src={f.image}
+                      alt={f.label}
+                      decoding="async"
+                    />
+                  );
+                })}
+              </div>
+              <p className="cs-film-cap">{film.label}</p>
             </div>
-            <p className="cs-film-cap">{film.label}</p>
+          </div>
+
+          {/* ── The kolam, drawn a stroke at a time ─────────────────── */}
+          <div className="cs-rail">
+            <div className="cs-rail-inner">
+              <div className="cs-kolam">
+                {/* Four strokes over however many sections there are, so the
+                    mark still finishes exactly when the study does. */}
+                <KolamMark
+                  drawn={Math.min(4, Math.floor((active / Math.max(1, all.length - 1)) * 4) + 1)}
+                  active={null}
+                  hovered={null}
+                  onHover={() => {}}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* ── The kolam, drawn a stroke at a time ───────────────────── */}
-        <div className="cs-rail">
-          <div className="cs-rail-inner">
-            <div className="cs-kolam">
-              <KolamMark
-                drawn={active + 1}
-                active={null}
-                hovered={null}
-                onHover={() => {}}
-              />
-            </div>
-          </div>
-        </div>
-        </div>
-
-        {/* ── The writing ──────────────────────────────────────────── */}
+        {/* ── The writing ────────────────────────────────────────────── */}
         <div className="cs-read">
-          {study.sections.map((section, i) => (
+          {all.map((section, i) => (
             <section
-              className="cs-sec"
-              key={section.id}
+              className={`cs-sec${i === all.length - 1 ? " cs-sec-end" : ""}`}
+              key={section.id || section.eyebrow}
               ref={(el) => (marks.current[i] = el)}
             >
               <p className="cs-eyebrow">{section.eyebrow}</p>
               <h2 className="cs-h2">{section.title}</h2>
-
-              {section.body?.map((p, k) => (
-                <p className="cs-p" key={k}>
-                  {p}
-                </p>
+              {section.blocks.map((block, k) => (
+                <Block key={k} b={block} />
               ))}
-
-              {section.quotes && (
-                <div className="cs-quotes">
-                  {section.quotes.map((q, k) => (
-                    <blockquote key={k}>{q}</blockquote>
-                  ))}
-                </div>
-              )}
-
-              {section.cards && (
-                <div className={`cs-cards${section.cardsDense ? " is-dense" : ""}`}>
-                  {section.cards.map((c) => (
-                    <div className="cs-card" key={c.name}>
-                      <p className="cs-card-name">{c.name}</p>
-                      {c.lines.map((l, k) => (
-                        <p className="cs-card-line" key={k}>
-                          {l}
-                        </p>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {section.beats && (
-                <div className="cs-beats">
-                  {section.beats.map((b) => (
-                    <div className="cs-beat" key={b.name}>
-                      <h3>{b.name}</h3>
-                      <p>{b.copy}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {section.body2?.map((p, k) => (
-                <p className="cs-p cs-p-after" key={k}>
-                  {p}
-                </p>
-              ))}
-
-              {section.pull && <p className="cs-pull">{section.pull}</p>}
-
-              <Assets of={section} />
-
-              {section.questions && (
-                <div className="cs-qs">
-                  <p className="cs-qs-label">{section.questions.label}</p>
-                  <ul>
-                    {section.questions.items.map((q) => (
-                      <li key={q}>{q}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </section>
           ))}
-
-          {study.reflection && (
-            <section className="cs-sec cs-sec-end">
-              <p className="cs-eyebrow">{study.reflection.eyebrow}</p>
-              <h2 className="cs-h2">{study.reflection.title}</h2>
-              {study.reflection.body && (
-                <p className="cs-p">{study.reflection.body}</p>
-              )}
-              <div className="cs-beats">
-                {study.reflection.points.map((p) => (
-                  <div className="cs-beat" key={p.name}>
-                    <h3>{p.name}</h3>
-                    <p>{p.copy}</p>
-                  </div>
-                ))}
-              </div>
-              <Assets of={study.reflection} />
-            </section>
-          )}
         </div>
       </div>
     </div>
   );
 }
 
-/* A section shows as many things as it needs to, and it shows them after the
-   writing that introduces them. Above the heading they read as belonging to
-   the section before. */
-function Assets({ of }) {
-  const list = of.assets || (of.still ? [of.still] : []);
-  if (!list.length) return null;
+function Block({ b }) {
+  if (b.img || b.video) return <Shot b={b} />;
+  if (b.quote) return <blockquote className="cs-quote">{b.quote}</blockquote>;
+  if (b.pull) return <p className="cs-pull">{b.pull}</p>;
+  if (b.stat)
+    return (
+      <div className="cs-stat">
+        <p className="cs-stat-n">{b.stat}</p>
+        <p className="cs-stat-p">{b.p}</p>
+      </div>
+    );
+  if (b.cards)
+    return (
+      <div className={`cs-cards${b.dense ? " is-dense" : ""}`}>
+        {b.cards.map((c) => (
+          <div className="cs-card" key={c.name}>
+            <p className="cs-card-name">{c.name}</p>
+            {c.lines.map((l, k) => (
+              <p className="cs-card-line" key={k}>
+                {l}
+              </p>
+            ))}
+          </div>
+        ))}
+      </div>
+    );
+  if (b.list)
+    return (
+      <div className="cs-qs">
+        {b.list.label && <p className="cs-qs-label">{b.list.label}</p>}
+        <ul>
+          {b.list.items.map((q) => (
+            <li key={q}>{q}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  if (b.h)
+    return (
+      <div className="cs-beat">
+        <h3>{b.h}</h3>
+        {b.p && <p>{b.p}</p>}
+      </div>
+    );
+  return <p className="cs-p">{b.p}</p>;
+}
+
+/* Most of these are flat diagrams drawn on white. Left on the cream they read
+   as a rectangle someone pasted in, so they get a white plate with a hairline
+   edge and the white becomes deliberate. Photographs and screens that already
+   fill their own frame set `photo` and skip the plate. */
+function Shot({ b }) {
+  const kind = b.photo ? " is-photo" : b.bare ? " is-bare" : " is-plate";
   return (
-    <div className="cs-assets">
-      {list.map((a, i) => (
-        <Still key={i} still={a} />
-      ))}
-    </div>
+    <figure className={`cs-shot${kind}${b.wide ? " is-wide" : ""}`}>
+      {b.video ? (
+        <video src={b.video} aria-label={b.alt} autoPlay muted loop playsInline preload="metadata" />
+      ) : (
+        <img src={b.img} alt={b.alt} loading="lazy" decoding="async" />
+      )}
+      {b.cap && <figcaption>{b.cap}</figcaption>}
+    </figure>
   );
 }
 
@@ -253,30 +253,5 @@ function Film({ film, on }) {
       preload="auto"
       aria-label={film.label}
     />
-  );
-}
-
-/* A still is usually a picture and sometimes a short loop. Either way it sits
-   in the writing, where it is being talked about, rather than taking over the
-   panel — the panel belongs to the prototype. */
-function Still({ still }) {
-  return (
-    <figure
-      className={`cs-still${still.wide ? " is-wide" : ""}${still.bare ? " is-bare" : ""}`}
-    >
-      {still.video ? (
-        <video
-          src={still.video}
-          aria-label={still.alt}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        />
-      ) : (
-        <img src={still.src} alt={still.alt} loading="lazy" decoding="async" />
-      )}
-    </figure>
   );
 }
