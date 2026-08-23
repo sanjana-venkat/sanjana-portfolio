@@ -179,7 +179,9 @@ Today, the experience is live and evolving with AI.`;
 const PROJECTS = [
   { slug: "b2c", label: "B2C", title: "Uncover User Needs", url: USER_NEEDS_FRAMER_URL },
   { slug: "ai-personalization", label: "RecSys", title: "Intent-based Recommendations", url: MARKETING_TILES_URL },
-  { slug: "model-design", label: "Personalized Travel", title: "Outdone, Context-Aware Personalization", url: OUTDONE_FRAMER_URL },
+  // Rebuilt natively — see src/work/. Add `url: OUTDONE_FRAMER_URL` back to
+  // return to the Framer page.
+  { slug: "model-design", label: "Personalized Travel", title: "Outdone, Context-Aware Personalization", study: "model-design" },
   { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
   // Rebuilt natively — see src/work/. To go back to the Framer page, add
   // `url: AI_FRAMER_URL` to this line; the embed path is untouched.

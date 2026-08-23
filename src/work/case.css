@@ -48,6 +48,27 @@
   color: var(--ink-900);
 }
 
+.cs-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px 18px;
+  margin: 16px 0 0;
+  font-family: var(--font-label);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+}
+
+.cs-meta a {
+  color: var(--lotus-600);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+}
+
 .cs-lede {
   margin: 20px auto 0;
   max-width: 62ch;
@@ -104,7 +125,11 @@
   max-width: 100%;
   max-height: 100%;
   border-radius: 10px;
-  background: #16120f;
+  /* Every prototype sits on this same ground, whichever study it belongs to.
+     Some recordings carry their own background and some are a bare device, so
+     the panel has to read as one surface either way — hence a gradient rather
+     than a flat fill, which gives the screen somewhere to sit. */
+  background: linear-gradient(168deg, #221c17 0%, #16120f 46%, #0f0c0a 100%);
   padding: 22px 20px 18px;
   box-shadow: 0 20px 46px -22px rgba(20, 16, 12, 0.5);
 }
@@ -114,9 +139,9 @@
 
    It asks for as much height as the panel will give it and is clamped by both
    edges of that panel. Height alone is not enough: on a tall window a
-   height-driven phone grows wider than its column, spills out of the panel,
+   height-driven screen grows wider than its column, spills out of the panel,
    and puts a scrollbar on the stage. */
-.cs-phone {
+.cs-screen {
   position: relative;
   flex: 0 1 auto;
   height: 760px;
@@ -126,6 +151,28 @@
   max-width: 100%;
   aspect-ratio: 698 / 1418;
   border-radius: 42px;
+}
+
+/* Not every prototype is a phone. A browser recording is wide, so it is sized
+   by width and the panel shrinks to fit it — a tall panel holding a short film
+   is mostly empty black. Sizing it by height instead would clamp both edges
+   independently and quietly break the aspect. */
+.cs-film.is-wide .cs-screen {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1453 / 867;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+/* A wide film earns a wider column; the reading column gives up the
+   difference. */
+.cs.is-wide .cs-body {
+  grid-template-columns: minmax(320px, 540px) 150px minmax(0, 1fr);
+}
+
+.cs.is-wide .cs-film {
+  width: 100%;
 }
 
 .cs-video {
@@ -307,6 +354,26 @@
   margin: 26px 0 0;
 }
 
+/* Nine of anything does not want to be a stack. Two columns keeps a long set
+   from swallowing the section it belongs to. */
+.cs-cards.is-dense {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.cs-cards.is-dense .cs-card {
+  padding: 14px 15px 15px;
+}
+
+.cs-cards.is-dense .cs-card-name {
+  margin-bottom: 7px;
+}
+
+.cs-cards.is-dense .cs-card-line {
+  font-size: 13px;
+  line-height: 1.55;
+}
+
 .cs-card {
   padding: 18px 20px 20px;
   border: 1px solid var(--cream-200);
@@ -446,7 +513,7 @@
 
   /* Height-driven like the desktop rule, so the aspect holds: about two fifths
      of the screen for the film, the rest for reading. */
-  .cs-phone {
+  .cs-screen {
     height: min(calc(var(--port, 640px) * 0.44), 340px);
     width: auto;
     border-radius: 26px;
@@ -454,6 +521,18 @@
 
   .cs-film-col {
     padding: 0;
+  }
+
+  /* A wide film is sized from its width, so its column needs a real one. In a
+     shrink-to-fit flex item, width:100% resolves against nothing and the film
+     collapses. */
+  .cs.is-wide .cs-film-col {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .cs.is-wide .cs-screen {
+    height: auto;
   }
 
   /* The dark ground comes with it, tighter and squarer at this size. */
@@ -491,6 +570,14 @@
 
   .cs-still.is-wide {
     width: 100%;
+  }
+
+  .cs-cards.is-dense {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cs-meta {
+    justify-content: flex-start;
   }
 
   .cs-pull {

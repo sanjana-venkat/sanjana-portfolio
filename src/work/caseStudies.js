@@ -11,6 +11,8 @@
  * prose.
  */
 
+import { OUTDONE } from "./outdone";
+
 export const AI_SEARCH = {
   slug: "ai-chat-journeys",
   kicker: "Visionary concepts · Executive leadership pitch",
@@ -180,4 +182,7 @@ export const AI_SEARCH = {
   },
 };
 
-export const CASE_STUDIES = { [AI_SEARCH.slug]: AI_SEARCH };
+export const CASE_STUDIES = {
+  [AI_SEARCH.slug]: AI_SEARCH,
+  [OUTDONE.slug]: OUTDONE,
+};

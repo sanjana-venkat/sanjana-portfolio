@@ -49,11 +49,25 @@ export default function CaseStudy({ study }) {
   const filmKeys = Object.keys(study.films);
 
   return (
-    <div className="cs" ref={scroller} onScroll={measure}>
+    <div
+      className={`cs${study.shape === "wide" ? " is-wide" : ""}`}
+      ref={scroller}
+      onScroll={measure}
+    >
       <header className="cs-head">
         <p className="cs-kicker">{study.kicker}</p>
         <h1 className="cs-title">{study.title}</h1>
         <p className="cs-lede">{study.lede}</p>
+        {(study.note || study.link) && (
+          <p className="cs-meta">
+            {study.note}
+            {study.link && (
+              <a href={study.link.href} target="_blank" rel="noreferrer">
+                {study.link.label}
+              </a>
+            )}
+          </p>
+        )}
       </header>
 
       <div className="cs-body">
@@ -63,15 +77,23 @@ export default function CaseStudy({ study }) {
         <div className="cs-stick">
         {/* ── The prototype, held still ─────────────────────────────── */}
         <div className="cs-film-col">
-          <div className="cs-film">
-            <div className="cs-phone">
-              {filmKeys.map((key) => (
-                <Film
-                  key={key}
-                  film={study.films[key]}
-                  on={study.films[key] === film}
-                />
-              ))}
+          <div className={`cs-film is-${study.shape || "phone"}`}>
+            <div className="cs-screen">
+              {filmKeys.map((key) => {
+                const f = study.films[key];
+                const on = f === film;
+                return f.src ? (
+                  <Film key={key} film={f} on={on} />
+                ) : (
+                  <img
+                    key={key}
+                    className={`cs-video${on ? " is-on" : ""}`}
+                    src={f.image}
+                    alt={f.label}
+                    decoding="async"
+                  />
+                );
+              })}
             </div>
             <p className="cs-film-cap">{film.label}</p>
           </div>
@@ -124,7 +146,7 @@ export default function CaseStudy({ study }) {
               {section.pull && <p className="cs-pull">{section.pull}</p>}
 
               {section.cards && (
-                <div className="cs-cards">
+                <div className={`cs-cards${section.cardsDense ? " is-dense" : ""}`}>
                   {section.cards.map((c) => (
                     <div className="cs-card" key={c.name}>
                       <p className="cs-card-name">{c.name}</p>
