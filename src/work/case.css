@@ -62,7 +62,7 @@
   display: grid;
   /* The film column is only as wide as the phone; the reading column gets the
      rest, because it is the one doing the talking. */
-  grid-template-columns: minmax(230px, 340px) 170px minmax(0, 1fr);
+  grid-template-columns: minmax(270px, 412px) 164px minmax(0, 1fr);
   gap: clamp(18px, 2.4vw, 44px);
   align-items: start;
   max-width: 1320px;
@@ -82,30 +82,50 @@
   position: sticky;
   top: 0;
   align-self: start;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /* Exactly the height of the scrollport, measured in JS as --port. A sticky
      column taller than the port cannot stick, and the port here is the stage
      inside the work browser, not the window — so no viewport unit knows it. */
   height: var(--port, 640px);
+  padding: 16px 0;
 }
 
+/* The prototypes sit on their own dark ground. A black-bezelled phone on cream
+   reads as a cut-out; on black the bezel disappears and what is left is the
+   screen, which is the part worth looking at. The panel is warm rather than
+   pure black so it belongs to the same room as everything else. */
 .cs-film {
-  display: grid;
-  justify-items: center;
-  gap: 16px;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
+  background: #16120f;
+  padding: 22px 20px 18px;
+  box-shadow: 0 20px 46px -22px rgba(20, 16, 12, 0.5);
 }
 
 /* The recordings carry their own device frame, so the shell only has to hold
-   the aspect and cast the shadow. */
+   the aspect.
+
+   It asks for as much height as the panel will give it and is clamped by both
+   edges of that panel. Height alone is not enough: on a tall window a
+   height-driven phone grows wider than its column, spills out of the panel,
+   and puts a scrollbar on the stage. */
 .cs-phone {
   position: relative;
-  height: min(calc(var(--port, 640px) * 0.74), 620px);
+  flex: 0 1 auto;
+  height: 760px;
   width: auto;
+  min-height: 0;
+  max-height: 100%;
+  max-width: 100%;
   aspect-ratio: 698 / 1418;
   border-radius: 42px;
-  filter: drop-shadow(0 26px 44px rgba(34, 27, 22, 0.2));
 }
 
 .cs-video {
@@ -124,13 +144,14 @@
 
 .cs-film-cap {
   margin: 0;
+  flex: none;
   max-width: 30ch;
   font-family: var(--font-label);
   font-size: 10.5px;
   line-height: 1.7;
   letter-spacing: 0.06em;
   text-align: center;
-  color: var(--ink-400);
+  color: rgba(251, 248, 242, 0.62);
 }
 
 /* ── Middle: the kolam rail ───────────────────────────────────────────── */
@@ -426,10 +447,21 @@
   /* Height-driven like the desktop rule, so the aspect holds: about two fifths
      of the screen for the film, the rest for reading. */
   .cs-phone {
-    height: min(calc(var(--port, 640px) * 0.42), 330px);
+    height: min(calc(var(--port, 640px) * 0.44), 340px);
     width: auto;
     border-radius: 26px;
-    filter: drop-shadow(0 12px 22px rgba(34, 27, 22, 0.18));
+  }
+
+  .cs-film-col {
+    padding: 0;
+  }
+
+  /* The dark ground comes with it, tighter and squarer at this size. */
+  .cs-film {
+    width: auto;
+    padding: 12px 12px 10px;
+    border-radius: 8px;
+    box-shadow: 0 10px 22px -12px rgba(20, 16, 12, 0.45);
   }
 
   .cs-film-cap {
