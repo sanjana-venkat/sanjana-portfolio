@@ -239,7 +239,7 @@ export const TESTIMONIALS = [
   [
     " She really knows how to rally the team, push for excellence, and make sure we never lose sight of the bigger picture. Thank you for being such a force of positivity and progress. We’re lucky to have you!",
     "Williams Cavalcante",
-    "CMH Design Lead"
+    "Manager"
   ],
   [
     "A very special call out and thank you to Sanjana for being such an amazing partner and consistently going above and beyond when it comes to projects we are working on. Sanjana has been instrumental in the Encompass build UX, providing solutions and quickly adjusting to our changing needs.",
