@@ -50,7 +50,7 @@ export default function CaseStudy({ study }) {
 
   return (
     <div
-      className={`cs${study.shape === "wide" ? " is-wide" : ""}`}
+      className={`cs${study.shape ? ` is-${study.shape}` : ""}`}
       ref={scroller}
       onScroll={measure}
     >
@@ -237,12 +237,27 @@ function Film({ film, on }) {
   );
 }
 
+/* A still is usually a picture and sometimes a short loop. Either way it sits
+   in the writing, where it is being talked about, rather than taking over the
+   panel — the panel belongs to the prototype. */
 function Still({ still }) {
   return (
     <figure
       className={`cs-still${still.wide ? " is-wide" : ""}${still.bare ? " is-bare" : ""}`}
     >
-      <img src={still.src} alt={still.alt} loading="lazy" decoding="async" />
+      {still.video ? (
+        <video
+          src={still.video}
+          aria-label={still.alt}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        />
+      ) : (
+        <img src={still.src} alt={still.alt} loading="lazy" decoding="async" />
+      )}
     </figure>
   );
 }

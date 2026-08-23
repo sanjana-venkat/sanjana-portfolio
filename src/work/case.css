@@ -88,7 +88,7 @@
   align-items: start;
   max-width: 1320px;
   margin: 0 auto;
-  padding: 0 32px 22vh;
+  padding: 0 32px;
 }
 
 /* The wrapper is invisible to the desktop grid — the film and the rail are
@@ -121,9 +121,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 14px;
   max-width: 100%;
   max-height: 100%;
+  /* The panel is the same size whatever it holds. */
+  min-height: min(calc(var(--port, 640px) * 0.9), 700px);
   border-radius: 10px;
   /* Every prototype sits on this same ground, whichever study it belongs to.
      Some recordings carry their own background and some are a bare device, so
@@ -165,13 +168,21 @@
   overflow: hidden;
 }
 
-/* A wide film earns a wider column; the reading column gives up the
-   difference. */
-.cs.is-wide .cs-body {
-  grid-template-columns: minmax(320px, 540px) 150px minmax(0, 1fr);
+/* A study with no recording puts stills in the panel instead, and they are not
+   all one shape — so the box is squarish and everything is contained inside it
+   rather than cropped to fit. */
+.cs-film.is-plate .cs-screen {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1.24;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-.cs.is-wide .cs-film {
+/* Every study gets the same column, so the page does not resize itself as you
+   move between them. A wide film is simply a short thing inside a tall panel. */
+.cs.is-wide .cs-film,
+.cs.is-plate .cs-film {
   width: 100%;
 }
 
@@ -264,9 +275,14 @@
 
 /* ── Right: the writing ───────────────────────────────────────────────── */
 
+/* Every bit of trailing space belongs to the reading column. Put it on the
+   grid container instead and the row ends early — the film and the kolam come
+   unstuck and scroll away while there is still page left. Only the right side
+   should ever move. */
 .cs-read {
   min-width: 0;
   padding-top: 6vh;
+  padding-bottom: 12vh;
 }
 
 .cs-sec {
@@ -326,7 +342,8 @@
   box-shadow: 0 12px 30px -18px rgba(34, 27, 22, 0.34);
 }
 
-.cs-still img {
+.cs-still img,
+.cs-still video {
   display: block;
   width: 100%;
   height: auto;
@@ -526,18 +543,23 @@
   /* A wide film is sized from its width, so its column needs a real one. In a
      shrink-to-fit flex item, width:100% resolves against nothing and the film
      collapses. */
-  .cs.is-wide .cs-film-col {
+  .cs.is-wide .cs-film-col,
+  .cs.is-plate .cs-film-col {
     flex: 1 1 auto;
     min-width: 0;
   }
 
-  .cs.is-wide .cs-screen {
+  .cs.is-wide .cs-screen,
+  .cs.is-plate .cs-screen {
     height: auto;
   }
 
-  /* The dark ground comes with it, tighter and squarer at this size. */
+  /* The dark ground comes with it, tighter and squarer at this size. The
+     desktop panel keeps a minimum height so every study matches; on a phone
+     that would eat the whole screen and leave nothing to read. */
   .cs-film {
     width: auto;
+    min-height: 0;
     padding: 12px 12px 10px;
     border-radius: 8px;
     box-shadow: 0 10px 22px -12px rgba(20, 16, 12, 0.45);
