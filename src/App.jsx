@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { MuesliStudy, OutdoneStudy } from "./FeaturedCaseStudies";
 import Scene from "./landing/Scene";
+import CaseStudy from "./work/CaseStudy";
+import { CASE_STUDIES } from "./work/caseStudies";
 
 const FIGMA_DECK_URL =
   "https://embed.figma.com/slides/rrAhQ5fBTULZu49L04zUZ8/jpmcpublic-slides?node-id=2-16488&embed-host=share";
@@ -179,7 +181,9 @@ const PROJECTS = [
   { slug: "ai-personalization", label: "RecSys", title: "Intent-based Recommendations", url: MARKETING_TILES_URL },
   { slug: "model-design", label: "Personalized Travel", title: "Outdone, Context-Aware Personalization", url: OUTDONE_FRAMER_URL },
   { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", url: APPLY_SYSTEMS_URL },
-  { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", url: AI_FRAMER_URL },
+  // Rebuilt natively — see src/work/. To go back to the Framer page, add
+  // `url: AI_FRAMER_URL` to this line; the embed path is untouched.
+  { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", study: "ai-chat-journeys" },
   { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
   // frameHeight: the window height this embed is composed for. See the fitting
@@ -612,6 +616,8 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
               scrolling="yes"
               allowFullScreen
             />
+          ) : activeProject.study ? (
+            <CaseStudy key={activeProject.study} study={CASE_STUDIES[activeProject.study]} />
           ) : (
             <>
               {activeProject.slug === "muesli" && <MuesliStudy />}

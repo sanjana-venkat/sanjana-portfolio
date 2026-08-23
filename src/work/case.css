@@ -1,0 +1,467 @@
+/* ==========================================================================
+   Case study — the scrolling study inside the work browser.
+
+   One prefix: cs-. The layout is three columns; the middle one is a rail two
+   hundred pixels wide holding the kolam and the four section names, and it is
+   sticky along with the film. Only the right column has any height.
+
+   The scroll container is .cs itself, so the sticky columns stick against the
+   stage rather than the window — the tab row stays put above it.
+   ========================================================================== */
+
+.cs {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--cream-50);
+  color: var(--ink-900);
+  font-family: var(--font-body);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+/* ── The masthead ─────────────────────────────────────────────────────── */
+
+.cs-head {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(40px, 6vw, 88px) 32px clamp(28px, 4vw, 56px);
+  text-align: center;
+}
+
+.cs-kicker {
+  margin: 0 0 18px;
+  font-family: var(--font-label);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+}
+
+.cs-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(38px, 5.6vw, 68px);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--ink-900);
+}
+
+.cs-lede {
+  margin: 20px auto 0;
+  max-width: 62ch;
+  font-size: clamp(15px, 1.3vw, 17px);
+  line-height: 1.62;
+  color: var(--ink-500, #5d554f);
+}
+
+/* ── The three columns ────────────────────────────────────────────────── */
+
+.cs-body {
+  display: grid;
+  /* The film column is only as wide as the phone; the reading column gets the
+     rest, because it is the one doing the talking. */
+  grid-template-columns: minmax(230px, 340px) 170px minmax(0, 1fr);
+  gap: clamp(18px, 2.4vw, 44px);
+  align-items: start;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 32px 22vh;
+}
+
+/* The wrapper is invisible to the desktop grid — the film and the rail are
+   still two of its three columns. */
+.cs-stick {
+  display: contents;
+}
+
+/* ── Left: the prototype ──────────────────────────────────────────────── */
+
+.cs-film-col {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  display: grid;
+  place-items: center;
+  /* Exactly the height of the scrollport, measured in JS as --port. A sticky
+     column taller than the port cannot stick, and the port here is the stage
+     inside the work browser, not the window — so no viewport unit knows it. */
+  height: var(--port, 640px);
+}
+
+.cs-film {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+/* The recordings carry their own device frame, so the shell only has to hold
+   the aspect and cast the shadow. */
+.cs-phone {
+  position: relative;
+  height: min(calc(var(--port, 640px) * 0.74), 620px);
+  width: auto;
+  aspect-ratio: 698 / 1418;
+  border-radius: 42px;
+  filter: drop-shadow(0 26px 44px rgba(34, 27, 22, 0.2));
+}
+
+.cs-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 620ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.cs-video.is-on {
+  opacity: 1;
+}
+
+.cs-film-cap {
+  margin: 0;
+  max-width: 30ch;
+  font-family: var(--font-label);
+  font-size: 10.5px;
+  line-height: 1.7;
+  letter-spacing: 0.06em;
+  text-align: center;
+  color: var(--ink-400);
+}
+
+/* ── Middle: the kolam rail ───────────────────────────────────────────── */
+
+.cs-rail {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  display: grid;
+  place-items: center;
+  height: var(--port, 640px);
+}
+
+.cs-rail-inner {
+  display: grid;
+  justify-items: center;
+  gap: 26px;
+}
+
+.cs-kolam {
+  position: relative;
+  width: 108px;
+  height: 108px;
+}
+
+.cs-kolam .km {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+}
+
+.cs-steps {
+  display: grid;
+  gap: 13px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+}
+
+.cs-steps li {
+  display: grid;
+  grid-template-columns: 15px 1fr;
+  gap: 9px;
+  align-items: baseline;
+  font-family: var(--font-label);
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  color: var(--ink-300, #a49a92);
+  transition: color 340ms ease;
+}
+
+.cs-steps li.is-on {
+  color: var(--lotus-600);
+}
+
+.cs-step-n {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Right: the writing ───────────────────────────────────────────────── */
+
+.cs-read {
+  min-width: 0;
+  padding-top: 6vh;
+}
+
+.cs-sec {
+  /* Long enough that a section owns the screen while you read it, which is
+     what keeps the film and the kolam in step with the prose. */
+  padding: 0 0 clamp(90px, 16vh, 190px);
+  max-width: 62ch;
+}
+
+.cs-sec-end {
+  padding-bottom: 0;
+}
+
+.cs-eyebrow {
+  margin: 0 0 10px;
+  font-family: var(--font-label);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lotus-600);
+}
+
+.cs-h2 {
+  margin: 0 0 20px;
+  font-family: var(--font-display);
+  font-size: clamp(26px, 2.7vw, 36px);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.015em;
+  color: var(--ink-900);
+}
+
+.cs-p {
+  margin: 0 0 16px;
+  font-size: 15.5px;
+  line-height: 1.72;
+  color: var(--ink-600, #4b443f);
+}
+
+.cs-pull {
+  margin: 26px 0 0;
+  padding: 20px 0 20px 22px;
+  border-left: 2px solid var(--brass);
+  font-family: var(--font-display);
+  font-size: clamp(17px, 1.6vw, 21px);
+  line-height: 1.44;
+  color: var(--ink-900);
+}
+
+/* ── Stills ───────────────────────────────────────────────────────────── */
+
+.cs-still {
+  margin: 0 0 30px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--cream-100);
+  box-shadow: 0 12px 30px -18px rgba(34, 27, 22, 0.34);
+}
+
+.cs-still img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Wide diagrams get to break the measure a little, since the column is set for
+   prose and they are not prose. */
+.cs-still.is-wide {
+  width: min(100%, 118%);
+}
+
+/* A line drawing on paper needs no card under it. */
+.cs-still.is-bare {
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 14px 0;
+}
+
+/* ── Principle cards ──────────────────────────────────────────────────── */
+
+.cs-cards {
+  display: grid;
+  gap: 12px;
+  margin: 26px 0 0;
+}
+
+.cs-card {
+  padding: 18px 20px 20px;
+  border: 1px solid var(--cream-200);
+  border-radius: 3px;
+  background: var(--jasmine);
+}
+
+.cs-card-name {
+  margin: 0 0 10px;
+  font-family: var(--font-label);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lotus-600);
+}
+
+.cs-card-line {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-600, #4b443f);
+}
+
+.cs-card-line:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Beats ────────────────────────────────────────────────────────────── */
+
+.cs-beats {
+  display: grid;
+  gap: 26px;
+  margin: 30px 0 0;
+}
+
+.cs-beat h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink-900);
+}
+
+.cs-beat p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.68;
+  color: var(--ink-600, #4b443f);
+}
+
+/* ── The open questions ───────────────────────────────────────────────── */
+
+.cs-qs {
+  margin: 34px 0 0;
+  padding: 22px 24px 24px;
+  border-top: 1px solid var(--cream-200);
+  border-bottom: 1px solid var(--cream-200);
+}
+
+.cs-qs-label {
+  margin: 0 0 14px;
+  font-family: var(--font-label);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+}
+
+.cs-qs ul {
+  display: grid;
+  gap: 11px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cs-qs li {
+  padding-left: 18px;
+  position: relative;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-600, #4b443f);
+}
+
+.cs-qs li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lotus-600);
+  opacity: 0.55;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Phone: one column. The film stays at the top and the writing runs under it,
+   so the prototype is still on screen while you read about it.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .cs-head {
+    padding: 30px 22px 24px;
+    text-align: left;
+  }
+
+  .cs-lede {
+    margin-left: 0;
+  }
+
+  .cs-body {
+    display: block;
+    padding: 0 22px 14vh;
+  }
+
+  /* One sticky band: the film, with the kolam beside it. */
+  .cs-stick {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 8px 0 12px;
+    /* The writing must not show through the band as it passes behind it. */
+    background: linear-gradient(var(--cream-50) 84%, transparent);
+  }
+
+  .cs-film-col {
+    position: static;
+    height: auto;
+    min-height: 0;
+  }
+
+  /* Height-driven like the desktop rule, so the aspect holds: about two fifths
+     of the screen for the film, the rest for reading. */
+  .cs-phone {
+    height: min(calc(var(--port, 640px) * 0.42), 330px);
+    width: auto;
+    border-radius: 26px;
+    filter: drop-shadow(0 12px 22px rgba(34, 27, 22, 0.18));
+  }
+
+  .cs-film-cap {
+    display: none;
+  }
+
+  /* The rail loses its list and becomes a small mark beside the film. */
+  .cs-rail {
+    position: static;
+    height: auto;
+    min-height: 0;
+  }
+
+  .cs-kolam {
+    width: 52px;
+    height: 52px;
+  }
+
+  .cs-read {
+    padding-top: 20px;
+  }
+
+  .cs-sec {
+    max-width: none;
+    padding-bottom: 82px;
+  }
+
+  .cs-still.is-wide {
+    width: 100%;
+  }
+
+  .cs-pull {
+    font-size: 17px;
+  }
+}
