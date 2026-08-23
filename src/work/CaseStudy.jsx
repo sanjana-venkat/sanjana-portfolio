@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import KolamMark from "../landing/KolamMark";
-import { useMediaQuery } from "../landing/useMediaQuery";
 import "./case.css";
 
 /**
@@ -23,7 +22,6 @@ export default function CaseStudy({ study }) {
   const scroller = useRef(null);
   const marks = useRef([]);
   const [active, setActive] = useState(0);
-  const isPhone = useMediaQuery("(max-width: 900px)");
 
   // Which section owns the reading line — a third of the way down, where the
   // eye actually is, rather than the top edge of the container.
@@ -110,16 +108,6 @@ export default function CaseStudy({ study }) {
                 onHover={() => {}}
               />
             </div>
-            {!isPhone && (
-              <ol className="cs-steps">
-                {study.sections.map((s, i) => (
-                  <li key={s.id} className={i <= active ? "is-on" : ""}>
-                    <span className="cs-step-n">{i + 1}</span>
-                    <span className="cs-step-t">{s.title}</span>
-                  </li>
-                ))}
-              </ol>
-            )}
           </div>
         </div>
         </div>
@@ -143,7 +131,13 @@ export default function CaseStudy({ study }) {
                 </p>
               ))}
 
-              {section.pull && <p className="cs-pull">{section.pull}</p>}
+              {section.quotes && (
+                <div className="cs-quotes">
+                  {section.quotes.map((q, k) => (
+                    <blockquote key={k}>{q}</blockquote>
+                  ))}
+                </div>
+              )}
 
               {section.cards && (
                 <div className={`cs-cards${section.cardsDense ? " is-dense" : ""}`}>
@@ -171,6 +165,14 @@ export default function CaseStudy({ study }) {
                 </div>
               )}
 
+              {section.body2?.map((p, k) => (
+                <p className="cs-p cs-p-after" key={k}>
+                  {p}
+                </p>
+              ))}
+
+              {section.pull && <p className="cs-pull">{section.pull}</p>}
+
               {section.questions && (
                 <div className="cs-qs">
                   <p className="cs-qs-label">{section.questions.label}</p>
@@ -189,7 +191,9 @@ export default function CaseStudy({ study }) {
               {study.reflection.still && <Still still={study.reflection.still} />}
               <p className="cs-eyebrow">{study.reflection.eyebrow}</p>
               <h2 className="cs-h2">{study.reflection.title}</h2>
-              <p className="cs-p">{study.reflection.body}</p>
+              {study.reflection.body && (
+                <p className="cs-p">{study.reflection.body}</p>
+              )}
               <div className="cs-beats">
                 {study.reflection.points.map((p) => (
                   <div className="cs-beat" key={p.name}>

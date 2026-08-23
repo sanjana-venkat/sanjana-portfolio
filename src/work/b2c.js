@@ -1,8 +1,8 @@
 /**
- * Home Lending Public Experience — the chase.com side of the story.
+ * Home Lending Public Experience.
  *
- * One film, a recording of the public search experience, running the whole way
- * through. The argument is about one surface, so there is nothing to cut to.
+ * The writing is Sanjana's, from the case study, unedited. The four sections
+ * group her sections; they do not replace them.
  */
 
 export const B2C = {
@@ -10,8 +10,7 @@ export const B2C = {
   shape: "wide",
   kicker: "Lead designer · Chase.com · Product strategy, data-driven design",
   title: "Home Lending Public Experience",
-  lede: "Millions of people arrived and almost none of them converted. I led the redesign around what customers actually needed at each stage, rather than around the products we wanted to sell.",
-  note: "38% increase in lead initiate",
+  lede: "Driving a 38% boost in conversions with need based segmentation.",
 
   films: {
     search: {
@@ -25,29 +24,29 @@ export const B2C = {
     {
       id: "data",
       eyebrow: "Data discovery",
-      title: "High traffic, low conversion",
+      title: "High traffic — low conversion",
       film: "search",
       still: {
         src: "/work/b2c/funnel.jpg",
-        alt: "Eight million potential customers narrowing to three hundred thousand and then to one thousand applications",
+        alt: "8M potential customers, 300k getting started, 1k applications initiated",
         wide: true,
       },
       body: [
-        "We were handed raw conversion numbers at different touch points and asked what to do about them. The more useful question was what story they told. People were visiting in enormous numbers and not converting.",
-        "I made one simple visualisation of the market we were missing. That single artefact carried the bottleneck up to leadership and secured over $10,000 of investment for the redesign.",
+        "We were given raw data showing conversion rates at different touch points. What story does this tell? People visit but don't convert.",
+        "I created this simple visualization to show the market we are missing. This helped illustrate the conversion bottleneck impact up to leadership and secured over $10,000 in investment for Home Lending Public experience re-design.",
       ],
       beats: [
         {
-          name: "The KYC wall",
-          copy: "“Start online” dropped customers into an account-creation flow with sensitive questions like SSN — before they had any reason to trust us with them.",
+          name: "KYC Flow",
+          copy: "“Start online” takes customers through an account creation flow with sensitive questions like SSN",
         },
         {
-          name: "Eight hundred pages, twenty-plus CTAs",
-          copy: "The public experience had grown without branding or a clear pathway through it. Everything was available and nothing was obvious.",
+          name: "Outdated design",
+          copy: "Over 800 public pages, lack of branding and 20+ CTAs with unclear pathways",
         },
         {
-          name: "The thing they wanted was buried",
-          copy: "Top clicks were the hamburger menu and sign-in. Rates — what people actually came for — was the fourth click, three scrolls down.",
+          name: "Clicks",
+          copy: "Top clicks were for miscellaneous actions like hamburger menu, sign-in. The most desired (rates) was 4th click which is 3 scrolls below",
         },
       ],
     },
@@ -58,62 +57,77 @@ export const B2C = {
       title: "Behind the numbers",
       film: "search",
       still: {
-        src: "/work/b2c/voices.jpg",
-        alt: "Research quotes from customers about needing to learn before deciding",
+        src: "/work/b2c/clicks.jpg",
+        alt: "Click analysis across the public pages",
         wide: true,
       },
       body: [
-        "Applying the four forces model, we looked at what pushes customers out of renting and pulls them toward a new home — and found that habits and anxieties routinely outweigh both.",
-        "Through customer research we went into those anxieties: credit concerns, the need to be educated before deciding, and the importance of seeing value before making any commitment.",
+        "Now to understand the customer perspective of this story, why do they drop, and more importantly — what are their needs?",
+        "Applying the four forces model, we tried to understand what would push customers out of renting and pull them into the attractive new home. However, habits and anxieties can outweigh this.",
+        "Customers might not see the value of buying a new home if they're comfortable renting. Even if they do want to buy a new home, they might be anxious about certain factors.",
+        "Through customer research, we dived deep into these habits and anxieties such as credit concerns, need education before decision and importance of value before commitment.",
       ],
-      pull: "“I notice the apply button, but I would definitely be spending more time in the learn-before-deciding to understand everything first.”",
-      questions: {
-        label: "What competitors were already doing",
-        items: [
-          "Tailored resources for each stage of the home buying journey",
-          "Prominent, unembarrassed contact options at every step",
-          "Language that persuades rather than merely informs",
-        ],
-      },
+      quotes: [
+        "“I notice the apply button but I would definitely be spending more time in the learn before deciding to understand everything first”",
+        "“Just to understand the steps before I commit to clicking on the apply to buy button”",
+        "“I don't [feel ready] because I would want to consider my husband's finances as part of the loan and, um, we're still working over the next couple of months to get his credit to a better place”",
+      ],
+      beats: [
+        {
+          name: "Competitor Analysis",
+          copy: "Competitors offered tailored resources and clear support for customers at every stage of the home buying journey, including prominent contact options. Rocket Mortgage stands out with more engaging and persuasive language.",
+        },
+        {
+          name: "3-Day Design Workshop",
+          copy: "The design team led a workshop starting with blue sky thinking to get the group to step out of tech constraints, devise a clear vision to share with stakeholders and create a few designs to see our ideas live and plan the roadmap.",
+        },
+      ],
     },
 
     {
       id: "principles",
       eyebrow: "Principles",
-      title: "What we wanted people to think, feel and do",
+      title: "Design values",
       film: "search",
       still: {
         src: "/work/b2c/workshop.jpg",
-        alt: "The three-day design workshop boards",
+        alt: "The design workshop boards",
         wide: true,
       },
       body: [
-        "We ran a three-day workshop, starting with blue-sky thinking to get the group out of the tech constraints, then narrowing to a vision we could take to stakeholders.",
-        "The design values came out of it grounded in the customer's own thoughts, feelings and actions — stated as what we wanted, and just as explicitly as what we didn't.",
+        "We set the values for our new design grounding in customer's thoughts, feelings and actions to understand both what we want and what we don't want.",
       ],
       cards: [
         {
           name: "Think",
           lines: [
-            "Chase is reliable and offers clear options that fit my needs. I can make an informed decision if I'm ready.",
-            "Not: I don't know where to look, I'm confused and distracted, this is complicated.",
+            "Chase is reliable and offers clear options that fit my needs. I can make an informed decision if I am ready.",
+            "Not: I don't know where to look, I am confused and distracted. This is complicated.",
           ],
         },
         {
           name: "Feel",
           lines: [
-            "Confident, reassured and supported. Empowered to step into home ownership.",
-            "Not: overwhelmed, anxious or skeptical, losing trust that Chase can help.",
+            "Confident, reassured, and supported. Empowered to step into home ownership.",
+            "Not: overwhelmed, anxious, or skeptical. Lose trust in Chase to help achieve home goals.",
+          ],
+        },
+        {
+          name: "Say",
+          lines: [
+            "“I know what to do, this looks easy to start”",
+            "Not: “This is too complicated.” “I'm not sure what to do.”",
           ],
         },
         {
           name: "Do",
           lines: [
-            "Use the tools, start an application, reach out for help.",
+            "Use tools, start an application, reach out for help.",
             "Not: leave the page, give up, or look elsewhere.",
           ],
         },
       ],
+      cardsDense: true,
     },
 
     {
@@ -123,24 +137,28 @@ export const B2C = {
       film: "search",
       still: {
         src: "/work/b2c/segments.jpg",
-        alt: "Three segments: early explorer, shopping, ready to apply",
+        alt: "Early explorer, shopping and ready to apply segments",
         wide: true,
       },
       body: [
-        "Three segments, defined by need and by how much trust we had already earned. We had to earn trust with early explorers, establish it with rate shoppers, and keep it with the people ready to apply.",
+        "This led us to create three customer segments based on needs and trust. We need to earn trust with early explorers, establish trust with rate shoppers, and keep trust with those ready to apply.",
       ],
       beats: [
         {
-          name: "Ready to apply",
-          copy: "“Start online” gets clicks, but people who are genuinely ready click “Apply to buy.” The value proposition — our priority is you — leads with discounts and benefits rather than with a form.",
+          name: "Ready to apply segment",
+          copy: "“Start online” might get clicks, but customers who are actually ready to apply will click “Apply to buy”. Value proposition “Our priority is you” with discounts and benefits to trust Chase.",
         },
         {
-          name: "Shopping",
-          copy: "CTA overload cut down to a few purposeful ones. The mortgage and affordability calculators promoted, with an advisor guide alongside them. Rates moved from three scrolls down into the first screen, personalised.",
+          name: "Rates as decision point",
+          copy: "Rates was 4 scrolls below in the old page. New page has value (personalized) and rates in 1st scroll. Clear branding (colors, warm tone images, no illustrations) and powerful content to imbibe trust in Chase.",
         },
         {
-          name: "Early explorer",
-          copy: "Three action-oriented articles instead of seven hyperlinks, and no sticky footer pushing people to start an application they aren't ready for.",
+          name: "Shopping segment",
+          copy: "Reduce CTA overload in new design with clear purposeful CTAs. Mortgage calculator and affordability calculator highlighted with HLA guide section.",
+        },
+        {
+          name: "Early explorer segment",
+          copy: "Top 3 action oriented educational articles rather than 7 hyperlinks. No sticky footer forcing customers to “Start online” and apply.",
         },
       ],
     },
@@ -148,21 +166,25 @@ export const B2C = {
 
   reflection: {
     eyebrow: "Impact",
-    title: "38%, and what came after",
-    body: "A 38% increase in lead initiate for the variant against control. Mobile went the other way by half a percent — a split-flag issue we kept investigating rather than quietly rounding away.",
+    title: "What happens after results?",
+    body: "Based on data, we continued to make enhancements because we know that fixing the page doesn't fix the experience, so we continued momentum with more initiatives.",
     still: {
       src: "/work/b2c/before-after.jpg",
-      alt: "The old page and the new one side by side",
+      alt: "The old page and the new one",
       wide: true,
     },
     points: [
       {
-        name: "Fixing the page doesn't fix the experience.",
-        copy: "We kept going: cookie optimisation for existing-customer sign-in, a unified calculator replacing an inaccessible iframe, and a public design system for Home Lending in the new stack.",
+        name: "38%",
+        copy: "Increase in lead initiate for variant CTA compared to control. Mobile went the other way by 0.5% — split flag issues, and further investigation.",
       },
       {
-        name: "Then we took out the rest.",
-        copy: "Multi-variant testing on the L2 navigation, roughly a hundred old public pages decommissioned, and a better strategy for paid search, paid media and external aggregators.",
+        name: "Within a few sprints, we did it all",
+        copy: "ECI cookie optimization for simple sign in for existing customers. Unified calculator to replace an outdated iFrame, inaccessible by AI crawlers and poor on usability. A public design system for Home Lending in the new tech stack.",
+      },
+      {
+        name: "And kept going",
+        copy: "Multi-variant testing for L2 navigation and decommission of old HL public pages (~100), and an improved strategy for Paid Search, Paid Media and external aggregators. With AI, we continue to evolve now building a search-optimized experience.",
       },
     ],
   },

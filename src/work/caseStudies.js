@@ -18,9 +18,9 @@ import { SERVICE } from "./service";
 
 export const AI_SEARCH = {
   slug: "ai-chat-journeys",
-  kicker: "Visionary concepts · Executive leadership pitch",
+  kicker: "Designer · Visionary concepts, executive leadership pitch",
   title: "AI Search Interfaces",
-  lede: "As ChatGPT and Gemini become the first place people ask financial questions, I explored what the model should do, how to move people to action, and what should stay inside trusted banking systems.",
+  lede: "As ChatGPT and Gemini become the first place people ask financial questions, I explored what the model should do, how to move people to action, what should stay inside trusted banking systems.",
 
   films: {
     chatgpt: {
@@ -46,8 +46,8 @@ export const AI_SEARCH = {
         alt: "Three phones: the Chase assistant, a Gemini conversation, and a ChatGPT offer summary",
       },
       body: [
-        "Customers aren't starting financial journeys in banking apps anymore. They're asking ChatGPT and Gemini first. So instead of asking “How do we build another AI assistant?” I started asking a different set of questions.",
-        "What should the model answer? What information should it gather? When should it recommend, and when should it ask another question? When should it hand off to Chase?",
+        "Customers aren't starting financial journeys in banking apps anymore. They're asking ChatGPT and Gemini first. So instead of asking “How do we build another AI assistant?”",
+        "I started asking: What should the model answer? What information should it gather? When should it recommend? When should it ask another question? When should it hand off to Chase?",
         "That became the framework for every concept.",
       ],
       pull: "How might we define the right role for AI in high-trust financial decisions without interrupting the conversation?",
@@ -60,7 +60,8 @@ export const AI_SEARCH = {
       film: "chatgpt",
       body: [
         "Users aren't just looking for information, they also want to do something with it. AI changes search from navigation to execution.",
-        "Experiences should feel like a natural extension of AI interfaces, fitting into the conversation flow rather than interrupting it — aware of context, anticipating intent, individually relevant.",
+        "Experiences should feel like a natural extension of AI interfaces, fitting seamlessly into the conversation flow and UI.",
+        "It should be aware of context, supporting and anticipating user intent. Responses and UI should feel individually relevant.",
       ],
       cards: [
         {
@@ -112,7 +113,7 @@ export const AI_SEARCH = {
       beats: [
         {
           name: "Fixing a real, time-sensitive gap",
-          copy: "When buyers need a lower pre-approval letter while actively house shopping — often on weekends — ChatGPT updates the letter instantly. That is a task advisors can't handle in real time, and the Chase app doesn't support digitally.",
+          copy: "When buyers need a lower pre-approval letter while actively house shopping (often on weekends), ChatGPT updates the letter instantly which is a task HLAs can't handle in real time and current Chase app doesn't support digitally.",
         },
         {
           name: "Making the offer smarter",
@@ -120,7 +121,7 @@ export const AI_SEARCH = {
         },
         {
           name: "Executing without friction",
-          copy: "ChatGPT drafts the escalation clause and offer letter and sends it to the advisor or realtor using existing contacts, turning search-time intent into immediate action without leaving ChatGPT.",
+          copy: "ChatGPT drafts the escalation clause and offer letter and sends it to the HLA or realtor using existing contacts, turning search-time intent into immediate action without leaving ChatGPT.",
         },
       ],
     },
@@ -131,7 +132,7 @@ export const AI_SEARCH = {
       title: "Why Gemini?",
       film: "gemini",
       body: [
-        "Gemini supports exploration; Chase owns execution. Together they show how AI search can safely evolve into real financial action. The handoff is a trust decision.",
+        "Gemini supports exploration; Chase owns execution. Together, they show how AI search can safely evolve into real financial action. So the handoff is a trust decision.",
       ],
       still: {
         src: "/work/ai-search/handoff.png",
@@ -149,8 +150,8 @@ export const AI_SEARCH = {
           copy: "When the task requires private financial data, Gemini hands off to the Chase app, which we reimagined as a conversational AI experience for all banking needs.",
         },
         {
-          name: "Chase turns interest into action",
-          copy: "Chase AI analyzes down payment readiness, suggests concrete actions to increase buying power, checks credit eligibility, prepares required documents, and schedules an advisor — all through conversation.",
+          name: "Chase proactively turns interest into action",
+          copy: "Chase AI analyzes down payment readiness, suggests concrete actions to increase buying power, checks credit eligibility, prepares required documents, and schedules an advisor, all through conversation.",
         },
       ],
     },
@@ -166,12 +167,12 @@ export const AI_SEARCH = {
     },
     points: [
       {
-        name: "AI is most valuable when it removes timing gaps.",
-        copy: "The biggest unlock wasn't smarter answers, but eliminating real-world delays like weekend availability or manual processes.",
+        name: "AI is very valuable when it removes timing gaps.",
+        copy: "The biggest unlock wasn't smarter answers, but eliminating real-world delays (like weekend availability or manual processes).",
       },
       {
         name: "The future of search is accountable action.",
-        copy: "AI search only earns trust when it leads to clear next steps, ownership, and outcomes — not just recommendations.",
+        copy: "AI search only earns trust when it leads to clear next steps, ownership, and outcomes, not just recommendations.",
       },
       {
         name: "Trust is a design boundary.",
@@ -179,7 +180,7 @@ export const AI_SEARCH = {
       },
       {
         name: "Intent matters more than interface.",
-        copy: "Designing around what users are trying to accomplish creates more natural, scalable interaction patterns.",
+        copy: "Designing around what users are trying to accomplish. This creates more natural, scalable interaction patterns.",
       },
     ],
   },

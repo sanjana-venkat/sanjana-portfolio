@@ -243,36 +243,6 @@
   transform: none;
 }
 
-.cs-steps {
-  display: grid;
-  gap: 13px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  width: 100%;
-}
-
-.cs-steps li {
-  display: grid;
-  grid-template-columns: 15px 1fr;
-  gap: 9px;
-  align-items: baseline;
-  font-family: var(--font-label);
-  font-size: 10px;
-  line-height: 1.5;
-  letter-spacing: 0.05em;
-  color: var(--ink-300, #a49a92);
-  transition: color 340ms ease;
-}
-
-.cs-steps li.is-on {
-  color: var(--lotus-600);
-}
-
-.cs-step-n {
-  font-variant-numeric: tabular-nums;
-}
-
 /* ── Right: the writing ───────────────────────────────────────────────── */
 
 /* Every bit of trailing space belongs to the reading column. Put it on the
@@ -320,6 +290,25 @@
   font-size: 15.5px;
   line-height: 1.72;
   color: var(--ink-600, #4b443f);
+}
+
+.cs-quotes {
+  display: grid;
+  gap: 16px;
+  margin: 26px 0 0;
+}
+
+.cs-quotes blockquote {
+  margin: 0;
+  padding: 0 0 0 20px;
+  border-left: 1px solid var(--cream-200);
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--ink-500, #5d554f);
+}
+
+.cs-p-after {
+  margin-top: 26px;
 }
 
 .cs-pull {
@@ -602,7 +591,26 @@
     justify-content: flex-start;
   }
 
-  .cs-pull {
+  .cs-quotes {
+  display: grid;
+  gap: 16px;
+  margin: 26px 0 0;
+}
+
+.cs-quotes blockquote {
+  margin: 0;
+  padding: 0 0 0 20px;
+  border-left: 1px solid var(--cream-200);
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--ink-500, #5d554f);
+}
+
+.cs-p-after {
+  margin-top: 26px;
+}
+
+.cs-pull {
     font-size: 17px;
   }
 }
