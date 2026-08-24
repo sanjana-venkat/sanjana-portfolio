@@ -1,86 +1,97 @@
 /**
  * Muesli — local-first dictation.
  *
- * The short version of a long project. The prototype on the left does the
- * demonstrating, so the writing only has to say why each move was made.
+ * Short on purpose. The prototype on the left does the demonstrating, so the
+ * writing only has to say what each decision was for.
  */
 
 export const MUESLI = {
   slug: "muesli",
   shape: "wide",
   kicker: "Product designer · Muesli · Product design + SwiftUI",
-  title: "Local-first dictation, made approachable",
-  lede: "Muesli runs dictation entirely on your Mac. The technology was already strong — the experience asked people to understand the system before they felt the value.",
-  note: "Open-source contribution, PR under review. ",
-  link: { href: "https://github.com/Muesli-HQ/muesli/pull/329", label: "View the PR" },
+  title: "Making local-first dictation easier to understand",
+  lede: "Muesli already had a lot under the hood: local transcription, meeting summaries, custom dictionaries, multiple models, shortcuts, and privacy controls. I focused on making those capabilities easier to understand, set up, and navigate without making the product feel heavier.",
+  note: "Open-source contribution, PR under review.",
+  links: [
+    { href: "https://github.com/Muesli-HQ/muesli/pull/329", label: "Implementation PR" },
+    { href: "https://www.figma.com/design/QO5TcpLfxmcheMMjcMYg6C/Muesli?node-id=17-5", label: "V1 → V2" },
+  ],
 
   films: {
     app: {
       src: "/work/muesli/app.mp4",
       poster: "/work/muesli/app-poster.webp",
-      aspect: "1250 / 974",
+      aspect: "1400 / 992",
       label: "The redesigned Muesli app, built in SwiftUI",
     },
   },
 
   sections: [
     {
-      id: "problem",
-      eyebrow: "Problem",
-      title: "The product was doing a lot. The experience showed all of it at once.",
+      id: "setup",
+      eyebrow: "01",
+      title: "Make setup explain the why",
       film: "app",
       blocks: [
-        { p: "Muesli handles live dictation, meetings, model downloads, custom words, shortcuts and insights. All of it was true on the first run, and all of it carried the same visual weight." },
-        { p: "Setup asked people to make decisions about permissions, microphones and shortcuts before they had dictated a single sentence." },
-        { pull: "The experience needed to get someone to the value quickly, then let them discover the depth over time." },
-        { img: "/muesli-v1-product.png", alt: "Muesli V1, where every area competed for attention", wide: true },
+        { p: "The original onboarding was technical. It moved through permissions like microphone access and system settings, and mostly showed states like “granted” without explaining why each permission mattered or how it connected to using Muesli." },
+        { p: "I redesigned setup around what the user is trying to do. Each step says what a permission is for before it asks for it." },
+        { p: "Muesli can open the right Mac settings window on its own, so I added visual instructions showing where to look and what to toggle once it does." },
+        { img: "/muesli-v1-onboarding.png", alt: "V1 setup, moving through model, accessibility and shortcut permissions", wide: true },
+        { p: "Permissions also carry the local-first story. Microphone access reads as something Muesli needs to transcribe on your Mac, instead of a system requirement to get past." },
+        { pull: "Turn permissions from a technical checklist into guided product setup." },
       ],
     },
 
     {
-      id: "onboarding",
-      eyebrow: "Onboarding",
-      title: "The first goal was one successful dictation",
+      id: "test",
+      eyebrow: "02",
+      title: "Let people try it before the app opens",
       film: "app",
       blocks: [
-        { p: "I rebuilt setup around what a new user is actually wondering — why this permission, whether audio leaves the Mac, which microphone, what shortcut to press, and did it work." },
-        { p: "Each step explains one decision and immediately lets someone act on it. The final step brings shortcut, microphone and a live dictation test together, so people arrive in the app already knowing it works." },
-        { img: "/muesli-v2-onboarding.png", alt: "Permissions as a guided sequence ending in a live dictation test", wide: true },
+        { p: "Muesli asked for microphone access and then sent people into the product. There was no moment to confirm transcription was working, or to find out what using Muesli would feel like." },
+        { p: "I put a microphone test inside onboarding, with live transcription running as you speak." },
+        { p: "It confirms setup worked, and it gives people their first successful dictation before onboarding ends." },
+        { img: "/muesli-v2-onboarding.png", alt: "Permissions as a guided sequence, ending in a live microphone test", wide: true },
       ],
     },
 
     {
       id: "structure",
-      eyebrow: "Structure",
-      title: "The core action needed to stay visible",
+      eyebrow: "03",
+      title: "Dictation is the content. Summarization is what you choose to do with it.",
       film: "app",
       blocks: [
-        { p: "Dictations, Meetings, Insights, Dictionary, Models, Shortcuts and Settings were all competing inside one flat structure." },
-        { p: "Record became a persistent action, the keyboard shortcut is taught in context, and the navigation collapses so the writing stays in focus. The full product is still there — it just no longer has to be understood all at once." },
-        { img: "/muesli-final-insights.png", alt: "Insights in the final visual system", wide: true },
+        { p: "The original product treated Meetings almost like a separate area from dictation. But a meeting is still captured speech. What changes is what you want Muesli to do with it afterward." },
+        { p: "Some people want plain local dictation. Others want AI meeting summaries. Every dictation should not automatically become a summary, and that does not require meetings to sit in their own system." },
+        { p: "I reorganized around the content. Dictations get clearer hierarchy with folders and categories, and summarization is something you apply when it is relevant." },
+        { img: "/muesli-v1-product.png", alt: "V1, where each area competed for attention", wide: true },
       ],
     },
 
     {
-      id: "build",
-      eyebrow: "Designing with the build",
-      title: "I didn't stop at the Figma file",
+      id: "depth",
+      eyebrow: "04",
+      title: "Give the depth of the product a place to live",
       film: "app",
       blocks: [
-        { p: "I translated the direction into SwiftUI against Muesli's existing architecture — onboarding, navigation, Dictations, Meetings, Insights, Dictionary, Models, Shortcuts, Settings and the floating dictation indicator." },
-        { p: "The build exposed what a static frame hides: window resizing, collapsed navigation, long histories, active recording, empty states and permission behaviour." },
-        { pull: "A screen can look good at one size. A product has to keep working when everything changes." },
+        { p: "Insights moved out of the top of the dashboard into its own area, so it can grow without competing with recording." },
+        { p: "Dictionary became a clear place to manage words and vocabulary, which matters when the model has to get names right." },
+        { p: "I reorganized Settings, because settings do more work in a local-first product. People need to see and control how it behaves instead of reading a dense technical screen." },
+        { p: "The model system now shows which local model is running, what else is available, and enough context to pick one." },
+        { img: "/muesli-final-insights.png", alt: "Insights in the final visual system", wide: true },
+        { pull: "The goal was to give complexity the right place in the product." },
       ],
     },
   ],
 
   reflection: {
-    id: "reflection",
-    eyebrow: "Reflection",
-    title: "Local-first is a technical advantage. Trust still comes from the experience.",
+    id: "build",
+    eyebrow: "Build",
+    title: "I didn't stop at the Figma file",
     blocks: [
-      { p: "People shouldn't have to understand models, permissions and storage before they understand the product." },
-      { p: "The better version lets them feel the speed first, says plainly what stays on their Mac, and reveals the deeper system when they need it." },
+      { p: "I translated the direction into SwiftUI against Muesli's existing architecture: onboarding, navigation, Dictations, Meetings, Insights, Dictionary, Models, Shortcuts, Settings and the floating dictation indicator." },
+      { p: "Building it surfaced what a static frame hides. Window resizing, collapsed navigation, long histories, active recording, empty states and permission behaviour all had to hold up." },
+      { p: "Local-first is a real advantage for Muesli. The interface should make that control feel useful and legible instead of showing it as configuration." },
     ],
   },
 };

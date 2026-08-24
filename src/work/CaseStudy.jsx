@@ -79,14 +79,14 @@ export default function CaseStudy({ study }) {
         <p className="cs-kicker">{study.kicker}</p>
         <h1 className="cs-title">{study.title}</h1>
         <p className="cs-lede">{study.lede}</p>
-        {(study.note || study.link) && (
+        {(study.note || study.link || study.links) && (
           <p className="cs-meta">
             {study.note}
-            {study.link && (
-              <a href={study.link.href} target="_blank" rel="noreferrer">
-                {study.link.label}
+            {[...(study.links || []), ...(study.link ? [study.link] : [])].map((l) => (
+              <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
+                {l.label}
               </a>
-            )}
+            ))}
           </p>
         )}
       </header>
