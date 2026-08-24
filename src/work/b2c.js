@@ -16,7 +16,7 @@ export const B2C = {
     search: {
       src: "/work/b2c/search.mp4",
       poster: "/work/b2c/search-poster.webp",
-      aspect: "1452 / 968",
+      aspect: "1448 / 890",
       label: "The public home lending experience",
     },
   },
