@@ -83,10 +83,10 @@
   display: grid;
   /* The film column is only as wide as the phone; the reading column gets the
      rest, because it is the one doing the talking. */
-  grid-template-columns: minmax(270px, 412px) 164px minmax(0, 1fr);
-  gap: clamp(18px, 2.4vw, 44px);
+  grid-template-columns: minmax(270px, 430px) 168px minmax(0, 1fr);
+  gap: clamp(18px, 2.6vw, 52px);
   align-items: start;
-  max-width: 1320px;
+  max-width: 1460px;
   margin: 0 auto;
   padding: 0 32px;
 }
@@ -249,7 +249,7 @@
   /* Long enough that a section owns the screen while you read it, which is
      what keeps the film and the kolam in step with the prose. */
   padding: 0 0 clamp(90px, 16vh, 190px);
-  max-width: 62ch;
+  max-width: 72ch;
 }
 
 .cs-sec-end {

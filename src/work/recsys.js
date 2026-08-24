@@ -29,7 +29,6 @@ export const RECSYS = {
       blocks: [
         { p: "We had millions of customer data points, but every customer still saw essentially the same experience." },
         { p: "CTR and Engagement on Chase MyHome was much lower than other tiles because we were recommending products instead of understanding customer intent." },
-        { img: "/work/recsys/generic.jpg", alt: "Basic data going in, a generic message coming out", wide: true },
         {
           dense: true,
           cards: [
@@ -86,6 +85,7 @@ export const RECSYS = {
       blocks: [
         { p: "At first, our thinking looked something like this. But two customers could look almost identical on paper while trying to accomplish completely different things." },
         { img: "/work/recsys/framework.jpg", alt: "Raw customer data — enough, or not enough, then generate a message", wide: true, bare: true },
+        { img: "/work/recsys/generic.jpg", alt: "Basic data going in, a generic message coming out", wide: true },
         {
           h: "Currently, generic",
           p: "Let's say, John has a home and mortgage with Bank of America. But regardless of what we might know about John's home, we show one tile for all",
@@ -112,9 +112,9 @@ export const RECSYS = {
       film: "final",
       blocks: [
         { p: "The model shouldn't ask “who is John?” and gather all the data. The model should ask, “what is John trying to accomplish today?”" },
-        { img: "/work/recsys/sonar.jpg", alt: "The SONAR model — signals in, a classified need out" },
+        { img: "/work/recsys/needs.jpg", alt: "What John is trying to accomplish, rather than who John is", wide: true },
         { p: "Rather than organizing recommendations around products, I organized them around customer needs. Each need mapped to readiness signals, available data and an appropriate messaging strategy." },
-        { img: "/work/recsys/offer.jpg", alt: "Timely and relevant — an estimated home purchase price, and low down payment options" },
+        { img: "/work/recsys/classification.jpg", alt: "Each need mapped to readiness signals, available data and a messaging strategy", wide: true },
       ],
     },
 

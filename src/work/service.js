@@ -54,7 +54,6 @@ export const SERVICE = {
         { h: "Rates before apply", p: "See numbers, offers, and the best rate they can be financially confident" },
         { h: "Applying = commitment", p: "Customers don't want a hard credit pull. Purchase customers are looking for preapproval" },
         { h: "Too much info & SSN", p: "The process of loan fulfillment is unclear and customers don't get why things are asked" },
-        { img: "/work/service/journey.jpg", alt: "Shop, preliminary offer, choose Chase, approval, closing — and where the advisor steps in", wide: true },
       ],
     },
 
@@ -68,6 +67,7 @@ export const SERVICE = {
         { img: "/work/service/workshop.jpg", alt: "The discovery workshop", photo: true },
         { p: "Through customer research, we dived deep into these habits and anxieties such as credit concerns, need education before decision and importance of value before commitment." },
         { img: "/work/service/voices.jpg", alt: "What customers told us about rates, credit and commitment", wide: true },
+        { img: "/work/service/journey-map.jpg", alt: "What customers said, mapped across the journey", wide: true },
         { h: "Only ask for info after customer has experienced real value", p: "Customers expect Chase to have their data and know about them to give the best pricing and pre-fill details so they know what they're getting into before applying." },
         {
           list: {
@@ -90,7 +90,7 @@ export const SERVICE = {
         { p: "I kept hearing “that's not feasible” so I took time to create a service design blueprint to map all the backend implementations, services, HLA side and data downstream implication. This now became a living breathing document to find opportunities and close gaps." },
         { img: "/work/service/blueprint.jpg", alt: "The service design blueprint", wide: true },
         { h: "Journey mapping", p: "Now that I understood the backend, I created a journey for a self-service experience. Considering both business and customers, I proposed self-service (for the business) but with guardrails for support IF and WHEN they need (for the customers)." },
-        { img: "/work/service/journey-map.jpg", alt: "The self-service journey map", wide: true },
+        { img: "/work/service/journey.jpg", alt: "Shop, preliminary offer, choose Chase, approval, closing — and where the advisor steps in", wide: true },
       ],
     },
 

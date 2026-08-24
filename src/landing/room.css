@@ -1158,15 +1158,16 @@
 
 /* The same frame a Story photograph wears: a thin gold rule around a cream
    mat. Quiet enough to sit behind a page of work. */
+/* No frame around the work. A gilt border suits a photograph on a wall; around
+   a case study it just makes the reading column narrower for no reason. */
 .work-stage {
   flex: 1;
   min-height: 0;
   overflow: auto;
-  border: 2px solid rgba(168, 130, 63, 0.45);
-  border-radius: 2px;
+  border: 0;
+  border-radius: 0;
   background: var(--cream-50);
-  padding: 10px;
-  box-shadow: 0 10px 26px -14px rgba(34, 27, 22, 0.22);
+  padding: 0;
 }
 
 .work-stage > * {

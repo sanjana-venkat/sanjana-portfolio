@@ -584,7 +584,7 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
 
   return (
     <div className={`work-shell${phase === "expanding" ? " is-expanding" : ""}`}>
-      <div className="mx-auto w-full min-w-0 max-w-[1280px] overflow-hidden flex flex-col flex-1 min-h-0">
+      <div className="mx-auto w-full min-w-0 max-w-[1560px] overflow-hidden flex flex-col flex-1 min-h-0">
         <div className="work-head">
           <button type="button" className="work-back" onClick={onClose} aria-label="Close work browser">
             <ChevronLeftIcon className="h-[18px] w-[18px]" />
