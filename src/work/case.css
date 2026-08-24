@@ -41,7 +41,7 @@
 .cs-title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(38px, 5.6vw, 68px);
+  font-size: clamp(40px, 5.8vw, 74px);
   font-weight: 600;
   line-height: 1.02;
   letter-spacing: -0.02em;
@@ -70,10 +70,10 @@
 }
 
 .cs-lede {
-  margin: 20px auto 0;
-  max-width: 62ch;
-  font-size: clamp(15px, 1.3vw, 17px);
-  line-height: 1.62;
+  margin: 22px auto 0;
+  max-width: 64ch;
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.6;
   color: var(--ink-500, #5d554f);
 }
 
@@ -249,7 +249,7 @@
   /* Long enough that a section owns the screen while you read it, which is
      what keeps the film and the kolam in step with the prose. */
   padding: 0 0 clamp(90px, 16vh, 190px);
-  max-width: 72ch;
+  max-width: 66ch;
 }
 
 .cs-sec-end {
@@ -257,9 +257,9 @@
 }
 
 .cs-eyebrow {
-  margin: 0 0 10px;
+  margin: 0 0 11px;
   font-family: var(--font-label);
-  font-size: 10.5px;
+  font-size: 11.5px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--lotus-600);
@@ -268,28 +268,28 @@
 .cs-h2 {
   margin: 0 0 20px;
   font-family: var(--font-display);
-  font-size: clamp(26px, 2.7vw, 36px);
+  font-size: clamp(30px, 3vw, 42px);
   font-weight: 600;
-  line-height: 1.14;
+  line-height: 1.12;
   letter-spacing: -0.015em;
   color: var(--ink-900);
 }
 
 .cs-p {
-  margin: 0 0 16px;
-  font-size: 15.5px;
-  line-height: 1.72;
+  margin: 0 0 18px;
+  font-size: 17px;
+  line-height: 1.7;
   color: var(--ink-600, #4b443f);
 }
 
 .cs-quote {
   position: relative;
-  margin: 24px 0 0;
-  padding: 20px 22px 20px 26px;
+  margin: 26px 0 0;
+  padding: 22px 24px 22px 28px;
   border-radius: 4px;
   background: rgba(184, 92, 114, 0.06);
-  font-size: 14.5px;
-  line-height: 1.68;
+  font-size: 16px;
+  line-height: 1.66;
   color: var(--ink-600, #4b443f);
 }
 
@@ -329,8 +329,8 @@
 
 .cs-stat-p {
   margin: 0;
-  font-size: 14.5px;
-  line-height: 1.62;
+  font-size: 16px;
+  line-height: 1.6;
   color: var(--ink-600, #4b443f);
 }
 
@@ -343,8 +343,8 @@
   padding: 20px 0 20px 22px;
   border-left: 2px solid var(--brass);
   font-family: var(--font-display);
-  font-size: clamp(17px, 1.6vw, 21px);
-  line-height: 1.44;
+  font-size: clamp(20px, 1.9vw, 26px);
+  line-height: 1.4;
   color: var(--ink-900);
 }
 
@@ -445,16 +445,16 @@
 .cs-card-name {
   margin: 0 0 10px;
   font-family: var(--font-label);
-  font-size: 10.5px;
+  font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--lotus-600);
 }
 
 .cs-card-line {
-  margin: 0 0 8px;
-  font-size: 14px;
-  line-height: 1.6;
+  margin: 0 0 9px;
+  font-size: 15.5px;
+  line-height: 1.58;
   color: var(--ink-600, #4b443f);
 }
 
@@ -469,9 +469,9 @@
 }
 
 .cs-beat h3 {
-  margin: 0 0 8px;
+  margin: 0 0 9px;
   font-family: var(--font-display);
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 600;
   line-height: 1.3;
   color: var(--ink-900);
@@ -479,8 +479,8 @@
 
 .cs-beat p {
   margin: 0;
-  font-size: 14.5px;
-  line-height: 1.68;
+  font-size: 16px;
+  line-height: 1.66;
   color: var(--ink-600, #4b443f);
 }
 
@@ -496,7 +496,7 @@
 .cs-qs-label {
   margin: 0 0 14px;
   font-family: var(--font-label);
-  font-size: 10.5px;
+  font-size: 11.5px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-400);
@@ -511,9 +511,9 @@
 }
 
 .cs-qs li {
-  padding-left: 18px;
+  padding-left: 20px;
   position: relative;
-  font-size: 14.5px;
+  font-size: 16px;
   line-height: 1.6;
   color: var(--ink-600, #4b443f);
 }
@@ -648,12 +648,12 @@
 
   .cs-quote {
   position: relative;
-  margin: 24px 0 0;
-  padding: 20px 22px 20px 26px;
+  margin: 26px 0 0;
+  padding: 22px 24px 22px 28px;
   border-radius: 4px;
   background: rgba(184, 92, 114, 0.06);
-  font-size: 14.5px;
-  line-height: 1.68;
+  font-size: 16px;
+  line-height: 1.66;
   color: var(--ink-600, #4b443f);
 }
 
@@ -693,8 +693,8 @@
 
 .cs-stat-p {
   margin: 0;
-  font-size: 14.5px;
-  line-height: 1.62;
+  font-size: 16px;
+  line-height: 1.6;
   color: var(--ink-600, #4b443f);
 }
 
