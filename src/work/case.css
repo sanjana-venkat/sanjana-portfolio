@@ -190,6 +190,15 @@
   opacity: 1;
 }
 
+/* The Vimeo films are iframes rather than <video>. They need the border gone,
+   and they must not swallow the wheel: the film column is sticky beside the
+   writing, so an iframe that eats scroll events strands the reader whenever
+   the cursor drifts left. Background mode has no controls to click anyway. */
+iframe.cs-video {
+  border: 0;
+  pointer-events: none;
+}
+
 .cs-film-cap {
   margin: 0;
   flex: none;

@@ -84,7 +84,7 @@ export const RECSYS = {
       film: "final",
       blocks: [
         { p: "At first, our thinking looked something like this. But two customers could look almost identical on paper while trying to accomplish completely different things." },
-        { img: "/work/recsys/framework.jpg", alt: "Raw customer data — enough, or not enough, then generate a message", wide: true, bare: true },
+        { img: "/work/recsys/framework.png", alt: "Raw customer data — enough, or not enough, then generate a message", wide: true, bare: true },
         { img: "/work/recsys/generic.jpg", alt: "Basic data going in, a generic message coming out", wide: true },
         {
           h: "Currently, generic",

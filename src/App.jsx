@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { MuesliStudy, OutdoneStudy } from "./FeaturedCaseStudies";
+import { OutdoneStudy } from "./FeaturedCaseStudies";
 import Scene from "./landing/Scene";
 import CaseStudy from "./work/CaseStudy";
 import { CASE_STUDIES } from "./work/caseStudies";
@@ -191,9 +191,7 @@ const PROJECTS = [
   // frameHeight: the window height this embed is composed for. See the fitting
   // effect in WorkBrowserModal.
   { slug: "fitcheck", label: "Hackathon Winner", title: "FitCheck", url: FITCHECK_URL, frameHeight: 1000 },
-  // Held back while the case study is being reworked. The study itself still
-  // renders (see the stage below) — put this line back to show the tab again.
-  // { slug: "muesli", label: "Speech-to-Text", title: "Muesli — Local-first dictation, made approachable", type: "case-study" },
+  { slug: "muesli", label: "Speech-to-Text", title: "Muesli — Local-first dictation, made approachable", study: "muesli" },
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
@@ -622,7 +620,6 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
             <CaseStudy key={activeProject.study} study={CASE_STUDIES[activeProject.study]} />
           ) : (
             <>
-              {activeProject.slug === "muesli" && <MuesliStudy />}
               {activeProject.slug === "model-design" && <OutdoneStudy />}
             </>
           )}

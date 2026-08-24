@@ -14,8 +14,7 @@ export const B2C = {
 
   films: {
     search: {
-      src: "/work/b2c/search.mp4",
-      poster: "/work/b2c/search-poster.webp",
+      vimeo: "1220715431",
       aspect: "1452 / 968",
       label: "The public home lending experience",
     },
@@ -87,7 +86,7 @@ export const B2C = {
       film: "search",
       blocks: [
         { p: "This led us to create three customer segments based on needs and trust. We need to earn trust with early explorers, establish trust with rate shoppers, and keep trust with those ready to apply." },
-        { img: "/work/b2c/segments.jpg", alt: "Early explorer, shopping and ready to apply", wide: true, bare: true },
+        { img: "/work/b2c/segments.png", alt: "Early explorer, shopping and ready to apply", wide: true, bare: true },
         { h: "Ready to apply segment", p: "“Start online” might get clicks, but customers who are actually ready to apply will click “Apply to buy”. Value proposition “Our priority is you” with discounts and benefits to trust Chase." },
         { img: "/work/b2c/ready.jpg", alt: "The ready-to-apply experience", wide: true },
         { h: "Rates as decision point", p: "Rates was 4 scrolls below in the old page. New page has value (personalized) and rates in 1st scroll. Clear branding (colors, warm tone images, no illustrations) and powerful content to imbibe trust in Chase." },

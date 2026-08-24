@@ -105,7 +105,9 @@ export default function CaseStudy({ study }) {
                 {filmKeys.map((key) => {
                   const f = study.films[key];
                   const on = f === film;
-                  return f.src ? (
+                  return f.vimeo ? (
+                    <VimeoFilm key={key} film={f} on={on} />
+                  ) : f.src ? (
                     <Film key={key} film={f} on={on} />
                   ) : (
                     <img
@@ -296,6 +298,38 @@ function Film({ film, on }) {
       playsInline
       preload="auto"
       aria-label={film.label}
+    />
+  );
+}
+
+/* Some films are too heavy to ship out of /public, so they live on Vimeo. Same
+   contract as <Film>: every one is mounted and running, and only the one that
+   belongs to the current section is opaque, so the cut still lands on a moving
+   frame rather than a cold first frame.
+
+   `background=1` is Vimeo's chromeless mode — muted, looping, autoplaying, no
+   controls and no title card — which is exactly what a silent prototype
+   recording wants. `autopause=0` stops Vimeo pausing the other films the
+   moment this one starts. Unlisted videos also need their privacy hash, which
+   the film carries as `hash`. */
+function VimeoFilm({ film, on }) {
+  const params = new URLSearchParams({
+    background: "1",
+    autoplay: "1",
+    loop: "1",
+    muted: "1",
+    autopause: "0",
+    dnt: "1",
+  });
+  if (film.hash) params.set("h", film.hash);
+
+  return (
+    <iframe
+      className={`cs-video${on ? " is-on" : ""}`}
+      src={`https://player.vimeo.com/video/${film.vimeo}?${params}`}
+      title={film.label}
+      allow="autoplay; fullscreen; picture-in-picture"
+      referrerPolicy="strict-origin-when-cross-origin"
     />
   );
 }
