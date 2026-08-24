@@ -16,7 +16,8 @@ export const MUESLI = {
 
   films: {
     app: {
-      vimeo: "1220715276",
+      src: "/work/muesli/app.mp4",
+      poster: "/work/muesli/app-poster.webp",
       aspect: "1250 / 974",
       label: "The redesigned Muesli app, built in SwiftUI",
     },

@@ -14,7 +14,8 @@ export const B2C = {
 
   films: {
     search: {
-      vimeo: "1220715431",
+      src: "/work/b2c/search.mp4",
+      poster: "/work/b2c/search-poster.webp",
       aspect: "1452 / 968",
       label: "The public home lending experience",
     },
