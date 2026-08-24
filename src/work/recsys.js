@@ -129,6 +129,23 @@ export const RECSYS = {
         { p: "For the top decile customers (ready to apply), we had most data on as they had a mortgage and were buying their second home (common use case) or refinancing. The last two use cases were for nurturing our low decile customers (explorers) to improve return rate and engagement." },
       ],
     },
+
+    {
+      id: "validation",
+      eyebrow: "Validation",
+      title: "Validating decision framework",
+      film: "final",
+      blocks: [
+      { p: "Utility score analysis: When it comes to how much customers care about their choice, images stand out. Customers don't just pick these two more often, they feel much more strongly about their preference for them compared to the rest. The higher utility scores (1.7 and 1.36) show that these images spark real enthusiasm, while others lag behind or even get negative reactions." },
+      { img: "/work/recsys/utility.jpg", alt: "Image ranking by utility scores", wide: true },
+      { p: "It's all about picking the best mix. If we just use images 5 and 7, we reach about 42% of customers. But when we add Images 10 and 6 to the lineup, our reach jumps to 74%. By optimizing the image selection based on customers' first choice, we can connect with as many people as possible." },
+      { img: "/work/recsys/ctr.jpg", alt: "The selection of images that reaches the most customers — 75.3% cumulative", wide: true },
+      { h: "Family and togetherness", p: "“They center the family and they reflect myself and when I think of the driving factor to own a home I think of my family eating in the kitchen, running in the yard, and creating memories.”" },
+      { h: "Relatability and life stage", p: "“I relate to images as they portray my personal life. For example, I am married so I liked the beautiful couple.” And against it: “I don't have children so I can't really connect to any pictures with them.”" },
+      { h: "Stock photography reads as false", p: "“Least preferred the images that felt posed and had a stock photography nature. These felt inauthentic and like models on a set rather than a real family I could relate to.”" },
+    ]
+    },
+
     {
       id: "experimentation",
       eyebrow: "Experimentation model",
@@ -140,32 +157,18 @@ export const RECSYS = {
       ],
     },
 
-    {
-      id: "impact",
-      eyebrow: "Impact",
-      title: "Understanding intent increased engagement",
-      film: "final",
-      blocks: [
-        { p: "This project completely changed how I think about personalization. I realized the hardest problem wasn't generating content. It was deciding what should be generated in the first place." },
-        { stat: "17%", p: "Increase in CTR for the first variant with house imagery" },
-        { h: "Lead submit rate", p: "Not mature data yet about lead submit rate and lead initiate rate" },
-        { p: "We conducted user interviews and testing to find the right combination of images and content that resonates with customers" },
-      ],
-    },
   ],
 
   reflection: {
-    id: "validation",
-    eyebrow: "Validation",
-    title: "Validating decision framework",
+      id: "impact",
+    eyebrow: "Impact",
+    title: "Understanding intent increased engagement",
+    film: "final",
     blocks: [
-      { p: "Utility score analysis: When it comes to how much customers care about their choice, images stand out. Customers don't just pick these two more often, they feel much more strongly about their preference for them compared to the rest. The higher utility scores (1.7 and 1.36) show that these images spark real enthusiasm, while others lag behind or even get negative reactions." },
-      { img: "/work/recsys/utility.jpg", alt: "Image ranking by utility scores", wide: true },
-      { p: "It's all about picking the best mix. If we just use images 5 and 7, we reach about 42% of customers. But when we add Images 10 and 6 to the lineup, our reach jumps to 74%. By optimizing the image selection based on customers' first choice, we can connect with as many people as possible." },
-      { img: "/work/recsys/ctr.jpg", alt: "The selection of images that reaches the most customers — 75.3% cumulative", wide: true },
-      { h: "Family and togetherness", p: "“They center the family and they reflect myself and when I think of the driving factor to own a home I think of my family eating in the kitchen, running in the yard, and creating memories.”" },
-      { h: "Relatability and life stage", p: "“I relate to images as they portray my personal life. For example, I am married so I liked the beautiful couple.” And against it: “I don't have children so I can't really connect to any pictures with them.”" },
-      { h: "Stock photography reads as false", p: "“Least preferred the images that felt posed and had a stock photography nature. These felt inauthentic and like models on a set rather than a real family I could relate to.”" },
+      { p: "This project completely changed how I think about personalization. I realized the hardest problem wasn't generating content. It was deciding what should be generated in the first place." },
+      { stat: "17%", p: "Increase in CTR for the first variant with house imagery" },
+      { h: "Lead submit rate", p: "Not mature data yet about lead submit rate and lead initiate rate" },
+      { p: "We conducted user interviews and testing to find the right combination of images and content that resonates with customers" },
     ],
   },
 };

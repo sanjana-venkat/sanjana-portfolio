@@ -32,7 +32,7 @@ export const OUTDONE = {
       film: "outdone",
       blocks: [
         { p: "I approached Abishek, a research engineer in Deepmind, with a problem I faced in Gemini. The idea came from a simple frustration: when I asked Gemini what to do in Las Vegas, it suggested an art museum because I'm a designer. It was not wrong, but it missed what I actually wanted in that moment." },
-        { img: "/work/outdone/sketch.jpg", alt: "The first sketch of Outdone", photo: true },
+        { img: "/work/outdone/team.jpg", alt: "Working the idea out on a whiteboard", photo: true },
         { p: "That became the core insight behind Outdone: people are not always looking for what fits their profile. They are looking for what fits how they want to feel today." },
         { pull: "How might we turn someone's mood and real-world constraints into a trusted, bookable trip plan?" },
       ],
