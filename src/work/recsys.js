@@ -129,6 +129,29 @@ export const RECSYS = {
         { p: "For the top decile customers (ready to apply), we had most data on as they had a mortgage and were buying their second home (common use case) or refinancing. The last two use cases were for nurturing our low decile customers (explorers) to improve return rate and engagement." },
       ],
     },
+    {
+      id: "experimentation",
+      eyebrow: "Experimentation model",
+      title: "Framework to production",
+      film: "final",
+      blocks: [
+        { p: "I implemented the latest atomic design composable library with my devs on native IOS, android and web. Engineering translated the framework into a reusable experimentation model where different signals could trigger different recommendation strategies while remaining easy to scale." },
+        { img: "/work/recsys/experimentation.jpg", alt: "On-us mortgage customer, decile, split flag — and the tile each path produces", wide: true },
+      ],
+    },
+
+    {
+      id: "impact",
+      eyebrow: "Impact",
+      title: "Understanding intent increased engagement",
+      film: "final",
+      blocks: [
+        { p: "This project completely changed how I think about personalization. I realized the hardest problem wasn't generating content. It was deciding what should be generated in the first place." },
+        { stat: "17%", p: "Increase in CTR for the first variant with house imagery" },
+        { h: "Lead submit rate", p: "Not mature data yet about lead submit rate and lead initiate rate" },
+        { p: "We conducted user interviews and testing to find the right combination of images and content that resonates with customers" },
+      ],
+    },
   ],
 
   reflection: {

@@ -216,7 +216,7 @@ function Shot({ b }) {
   return (
     <figure className={`cs-shot${kind}${b.wide ? " is-wide" : ""}`}>
       {b.video ? (
-        <video src={b.video} aria-label={b.alt} autoPlay muted loop playsInline preload="metadata" />
+        <Clip src={b.video} alt={b.alt} />
       ) : (
         <img src={b.img} alt={b.alt} loading="lazy" decoding="async" />
       )}
@@ -227,18 +227,62 @@ function Shot({ b }) {
 
 /* The films are all mounted and all playing; only one is opaque. Cutting by
    opacity rather than by src means the switch has no black frame and no
-   reload — the other prototype is already running when you reach it. */
+   reload — the other prototype is already running when you reach it.
+
+   The muted attribute has to be set on the element itself. React assigns
+   `muted` as a property and never writes the attribute, and the browser's
+   autoplay gate reads the attribute — so a video that reports muted:true still
+   gets refused, silently, and sits on its poster forever. That is why these
+   only ever played when something called play() by hand. */
+/* Same autoplay gate as the panel films. */
+function Clip({ src, alt }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    v.muted = true;
+    v.setAttribute("muted", "");
+    const go = () => {
+      if (v.paused) v.play().catch(() => {});
+    };
+    go();
+    v.addEventListener("canplay", go);
+    return () => v.removeEventListener("canplay", go);
+  }, []);
+  return (
+    <video ref={ref} src={src} aria-label={alt} autoPlay muted loop playsInline preload="metadata" />
+  );
+}
+
 function Film({ film, on }) {
   const ref = useRef(null);
 
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
-    const go = () => v.play().catch(() => {});
+    v.muted = true;
+    v.setAttribute("muted", "");
+    v.playsInline = true;
+
+    const go = () => {
+      if (v.paused) v.play().catch(() => {});
+    };
     go();
-    v.addEventListener("canplay", go);
-    return () => v.removeEventListener("canplay", go);
+    const events = ["loadedmetadata", "loadeddata", "canplay"];
+    events.forEach((e) => v.addEventListener(e, go));
+    // A last resort: the first thing the reader does un-gates playback.
+    document.addEventListener("pointerdown", go, { once: true });
+    return () => {
+      events.forEach((e) => v.removeEventListener(e, go));
+      document.removeEventListener("pointerdown", go);
+    };
   }, []);
+
+  // And again whenever this is the one being shown.
+  useEffect(() => {
+    const v = ref.current;
+    if (on && v && v.paused) v.play().catch(() => {});
+  }, [on]);
 
   return (
     <video
