@@ -559,18 +559,15 @@ iframe.cs-video {
     padding: 0 22px 14vh;
   }
 
-  /* One sticky band: the film, with the kolam beside it. */
+  /* The film scrolls with the writing on a phone. Pinning it costs a third of
+     a small screen for the whole study, and tapping opens it full size
+     anyway. */
   .cs-stick {
-    position: sticky;
-    top: 0;
-    z-index: 2;
+    position: static;
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 16px;
-    padding: 8px 0 12px;
-    /* The writing must not show through the band as it passes behind it. */
-    background: linear-gradient(var(--cream-50) 84%, transparent);
+    padding: 0 0 18px;
+    background: none;
   }
 
   .cs-film-col {
@@ -622,17 +619,7 @@ iframe.cs-video {
     display: none;
   }
 
-  /* The rail loses its list and becomes a small mark beside the film. */
-  .cs-rail {
-    position: static;
-    height: auto;
-    min-height: 0;
-  }
-
-  .cs-kolam {
-    width: 52px;
-    height: 52px;
-  }
+  /* The kolam is desktop only; the component does not render the rail here. */
 
   .cs-read {
     padding-top: 20px;
@@ -714,4 +701,111 @@ iframe.cs-video {
 .cs-pull {
     font-size: 17px;
   }
+}
+
+/* ── The prototype, full screen ───────────────────────────────────────────
+   Tapping the panel on a phone opens the film at the size of the screen. */
+
+.cs-screen.is-tappable {
+  cursor: zoom-in;
+}
+
+.cs-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 14px;
+  background: #0b0908;
+  animation: csFade 220ms ease both;
+}
+
+@keyframes csFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cs-lightbox-stage {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.cs-lightbox-stage video,
+.cs-lightbox-stage img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* While we are asking for the phone to be turned, the film steps back so the
+   message is the thing being read. */
+.cs-lightbox-stage.is-rotate video,
+.cs-lightbox-stage.is-rotate img {
+  max-height: 46%;
+  opacity: 0.5;
+}
+
+.cs-rotate {
+  position: absolute;
+  left: 50%;
+  bottom: 16%;
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin: 0;
+  max-width: 22ch;
+  font-family: var(--font-label);
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+  text-align: center;
+  color: rgba(251, 248, 242, 0.82);
+}
+
+.cs-rotate svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  animation: csTurn 2.6s ease-in-out infinite;
+}
+
+@keyframes csTurn {
+  0%, 55%, 100% { rotate: 0deg; }
+  75%, 90% { rotate: -90deg; }
+}
+
+.cs-lightbox-x {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgba(251, 248, 242, 0.28);
+  border-radius: 50%;
+  background: rgba(11, 9, 8, 0.6);
+  color: rgba(251, 248, 242, 0.9);
+  cursor: pointer;
+}
+
+.cs-lightbox-x svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
 }

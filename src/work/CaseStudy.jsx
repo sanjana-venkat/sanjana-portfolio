@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import KolamMark from "../landing/KolamMark";
+import { useMediaQuery } from "../landing/useMediaQuery";
 import "./case.css";
 
 /**
@@ -39,6 +40,8 @@ export default function CaseStudy({ study }) {
   const scroller = useRef(null);
   const marks = useRef([]);
   const [active, setActive] = useState(0);
+  const [zoomed, setZoomed] = useState(false);
+  const isPhone = useMediaQuery("(max-width: 900px)");
 
   // Which section owns the reading line — a third of the way down, where the
   // eye actually is, rather than the top edge of the container.
@@ -101,7 +104,24 @@ export default function CaseStudy({ study }) {
             <div className={`cs-film is-${study.shape || "phone"}`}>
               {/* Each film carries its own aspect. Sharing one across a study
                   letterboxes some and crops others. */}
-              <div className="cs-screen" style={{ "--ar": film.aspect || "698 / 1418" }}>
+              <div
+                className={`cs-screen${isPhone ? " is-tappable" : ""}`}
+                style={{ "--ar": film.aspect || "698 / 1418" }}
+                onClick={isPhone ? () => setZoomed(true) : undefined}
+                role={isPhone ? "button" : undefined}
+                tabIndex={isPhone ? 0 : undefined}
+                aria-label={isPhone ? `Open ${film.label} full screen` : undefined}
+                onKeyDown={
+                  isPhone
+                    ? (e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          setZoomed(true);
+                        }
+                      }
+                    : undefined
+                }
+              >
                 {filmKeys.map((key) => {
                   const f = study.films[key];
                   const on = f === film;
@@ -124,7 +144,9 @@ export default function CaseStudy({ study }) {
             </div>
           </div>
 
-          {/* ── The kolam, drawn a stroke at a time ─────────────────── */}
+          {/* ── The kolam, drawn a stroke at a time. Desktop only: on a
+                 phone it is one more thing pinned to a small screen. ─────── */}
+          {!isPhone && (
           <div className="cs-rail">
             <div className="cs-rail-inner">
               <div className="cs-kolam">
@@ -139,6 +161,7 @@ export default function CaseStudy({ study }) {
               </div>
             </div>
           </div>
+          )}
         </div>
 
         {/* ── The writing ────────────────────────────────────────────── */}
@@ -158,6 +181,71 @@ export default function CaseStudy({ study }) {
           ))}
         </div>
       </div>
+
+      {zoomed && <Lightbox film={film} onClose={() => setZoomed(false)} />}
+    </div>
+  );
+}
+
+/* Tapping the prototype on a phone opens it at the size of the screen.
+   A portrait film fills a portrait phone. A landscape one cannot, so rather
+   than showing it postage-stamp sized we ask for the phone to be turned and
+   then use the whole screen. */
+function Lightbox({ film, onClose }) {
+  const portraitPhone = useMediaQuery("(orientation: portrait)");
+  const [w, h] = (film.aspect || "698 / 1418").split("/").map((n) => parseFloat(n));
+  const landscapeFilm = w / h > 1.05;
+  const askToRotate = landscapeFilm && portraitPhone;
+
+  useEffect(() => {
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const esc = (e) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", esc);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener("keydown", esc);
+    };
+  }, [onClose]);
+
+  return (
+    <div className="cs-lightbox" onClick={onClose}>
+      <button type="button" className="cs-lightbox-x" onClick={onClose} aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+
+      <div
+        className={`cs-lightbox-stage${askToRotate ? " is-rotate" : ""}`}
+        style={{ "--ar": film.aspect || "698 / 1418" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {film.src ? (
+          <video
+            src={film.src}
+            poster={film.poster}
+            autoPlay
+            muted
+            loop
+            playsInline
+            controls
+            aria-label={film.label}
+          />
+        ) : (
+          <img src={film.image} alt={film.label} />
+        )}
+      </div>
+
+      {askToRotate && (
+        <p className="cs-rotate">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4" y="2" width="16" height="20" rx="2.5" />
+            <path d="M2.5 15.5a9.5 9.5 0 0 0 3 4" />
+          </svg>
+          Turn your phone to watch this one
+        </p>
+      )}
     </div>
   );
 }
