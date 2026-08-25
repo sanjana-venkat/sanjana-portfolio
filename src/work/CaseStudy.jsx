@@ -27,6 +27,7 @@ import "./case.css";
  *   { p }                        a paragraph
  *   { h, p }                     a headed beat
  *   { img | video, alt, ... }    something to look at
+ *   { pair: [a, b] }             two of them, before and after
  *   { quote }                    someone else's words
  *   { cards, dense }             a set of short parallel points
  *   { list: { label, items } }   a run of questions
@@ -251,6 +252,14 @@ function Lightbox({ film, onClose }) {
 }
 
 function Block({ b }) {
+  if (b.pair)
+    return (
+      <div className="cs-pair">
+        {b.pair.map((one, i) => (
+          <Shot key={i} b={one} inPair />
+        ))}
+      </div>
+    );
   if (b.img || b.video) return <Shot b={b} />;
   if (b.quote) return <blockquote className="cs-quote">{b.quote}</blockquote>;
   if (b.pull) return <p className="cs-pull">{b.pull}</p>;
@@ -301,10 +310,12 @@ function Block({ b }) {
    as a rectangle someone pasted in, so they get a white plate with a hairline
    edge and the white becomes deliberate. Photographs and screens that already
    fill their own frame set `photo` and skip the plate. */
-function Shot({ b }) {
+function Shot({ b, inPair }) {
   const kind = b.photo ? " is-photo" : b.bare ? " is-bare" : " is-plate";
   return (
-    <figure className={`cs-shot${kind}${b.wide ? " is-wide" : ""}`}>
+    <figure
+      className={`cs-shot${kind}${b.wide && !inPair ? " is-wide" : ""}${inPair ? " in-pair" : ""}`}
+    >
       {b.video ? (
         <Clip src={b.video} alt={b.alt} />
       ) : (

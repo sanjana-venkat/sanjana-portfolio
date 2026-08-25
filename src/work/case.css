@@ -416,6 +416,26 @@ iframe.cs-video {
   color: var(--ink-400);
 }
 
+/* Two shots side by side, for a before and an after. They keep the same
+   height so the comparison is like for like, and stack on a phone where two
+   columns would make both unreadable. */
+.cs-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-items: start;
+  width: min(100%, 116%);
+  margin: 32px 0 40px;
+}
+
+.cs-pair .cs-shot {
+  margin: 0;
+}
+
+.cs-pair .cs-shot figcaption {
+  margin-top: 8px;
+}
+
 /* ── Principle cards ──────────────────────────────────────────────────── */
 
 .cs-cards {
@@ -632,6 +652,12 @@ iframe.cs-video {
 
   .cs-shot.is-wide {
     width: 100%;
+  }
+
+  .cs-pair {
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    gap: 18px;
   }
 
   .cs-cards.is-dense {
