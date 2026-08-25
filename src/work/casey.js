@@ -95,10 +95,27 @@ export const CASEY = {
       film: "demo",
       blocks: [
         { p: "The response strategy maps what the customer needs to what the agent should do next, so outreach is contextual instead of generic." },
-        { h: "Questions or concerns", p: "Answer directly, resolve what can be resolved, and make escalation clear when it cannot." },
-        { h: "More time", p: "Check in later without forcing the customer to restart or repeat what they already shared." },
-        { h: "More clarity", p: "Explain the application step by step and keep the customer oriented inside the journey." },
-        { p: "The result is a faster response loop and a cleaner handoff: the agent carries context forward, and the advisor enters when the conversation becomes personal, complex, or consequential." },
+        {
+          cards: [
+            {
+              name: "Questions or concerns",
+              lines: ["Answer directly, resolve what can be resolved, and make escalation clear when it cannot."],
+            },
+            {
+              name: "More time",
+              lines: ["Check in later without making the customer restart or repeat what they already shared."],
+            },
+            {
+              name: "More clarity",
+              lines: ["Explain the application step by step and keep the customer oriented inside the journey."],
+            },
+            {
+              name: "Human handoff",
+              lines: ["Carry context forward and involve an advisor when the conversation becomes personal, complex, or consequential."],
+            },
+          ],
+          dense: true,
+        },
         { pull: "AI keeps the journey moving. People stay responsible for the relationship." },
       ],
     },
