@@ -12,6 +12,7 @@
  */
 
 import { B2C } from "./b2c";
+import { CASEY } from "./casey";
 import { MUESLI } from "./muesli";
 import { OUTDONE } from "./outdone";
 import { RECSYS } from "./recsys";
@@ -130,6 +131,7 @@ export const AI_SEARCH = {
 export const CASE_STUDIES = {
   [AI_SEARCH.slug]: AI_SEARCH,
   [B2C.slug]: B2C,
+  [CASEY.slug]: CASEY,
   [MUESLI.slug]: MUESLI,
   [OUTDONE.slug]: OUTDONE,
   [RECSYS.slug]: RECSYS,

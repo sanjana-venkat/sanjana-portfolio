@@ -186,7 +186,7 @@ const PROJECTS = [
   // Rebuilt natively — see src/work/. To go back to the Framer page, add
   // `url: AI_FRAMER_URL` to this line; the embed path is untouched.
   { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", study: "ai-chat-journeys" },
-  { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", url: CASEY_AI_URL },
+  { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", study: "conversational-agentic-ai" },
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
   // frameHeight: the window height this embed is composed for. See the fitting
   // effect in WorkBrowserModal.
