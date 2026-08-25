@@ -8,9 +8,12 @@
 export const CASEY = {
   slug: "conversational-agentic-ai",
   shape: "wide",
-  kicker: "Product designer · Casey AI · Conversational AI + service design",
-  title: "Conversational AI agents for customer re-engagement strategy — in partnership with Bland AI",
+  kicker: "AI designer · Bland AI",
+  title: "Customer re-engagement\nConversational AI",
   lede: "When customers paused or exited an application with questions, concerns, or a need for more time or clarity, Casey re-engaged them with answers, proactive check-ins, and step-by-step guidance.",
+  links: [
+    { href: "https://www.bland.ai/", label: "Bland AI" },
+  ],
 
   films: {
     demo: {
