@@ -9,12 +9,11 @@ export const MUESLI = {
   slug: "muesli",
   shape: "wide",
   kicker: "Product designer · Muesli · Product design + SwiftUI",
-  title: "Making local-first dictation easier to understand",
-  lede: "Muesli already had a lot under the hood: local transcription, meeting summaries, custom dictionaries, multiple models, shortcuts, and privacy controls. I focused on making those capabilities easier to understand, set up, and navigate without making the product feel heavier.",
+  title: "Making dictation feel simple",
+  lede: "I redesigned Muesli’s setup and navigation to make its powerful local-first tools easier to understand and use.",
   note: "Open-source contribution, PR under review.",
   links: [
     { href: "https://github.com/Muesli-HQ/muesli/pull/329", label: "Implementation PR" },
-    { href: "https://www.figma.com/design/QO5TcpLfxmcheMMjcMYg6C/Muesli?node-id=17-5", label: "V1 → V2" },
   ],
 
   films: {
