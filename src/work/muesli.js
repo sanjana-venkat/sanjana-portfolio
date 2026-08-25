@@ -37,6 +37,7 @@ export const MUESLI = {
         { p: "I redesigned setup around what the user is trying to do. Each step says what a permission is for before it asks for it." },
         { p: "Muesli can open the right Mac settings window on its own, so I added visual instructions showing where to look and what to toggle once it does." },
         {
+          stack: true,
           pair: [
             { img: "/work/muesli/setup-old.jpg", alt: "Permission 2 of 3, asking for accessibility with no explanation", cap: "Before" },
             { img: "/work/muesli/setup-new.jpg", alt: "A few quick permissions, showing what to toggle and where", cap: "After" },
@@ -56,7 +57,7 @@ export const MUESLI = {
         { p: "Muesli asked for microphone access and then sent people into the product. There was no moment to confirm transcription was working, or to find out what using Muesli would feel like." },
         { p: "I put a microphone test inside onboarding, with live transcription running as you speak." },
         { p: "It confirms setup worked, and it gives people their first successful dictation before onboarding ends." },
-        { img: "/muesli-still-01.png", alt: "The microphone test, transcribing as you speak", wide: true },
+        { img: "/work/muesli/test.jpg", alt: "Muesli shortcut test transcribing a first dictation during onboarding", wide: true },
       ],
     },
 
@@ -70,6 +71,7 @@ export const MUESLI = {
         { p: "Some people want plain local dictation. Others want AI meeting summaries. Every dictation should not automatically become a summary, and that does not require meetings to sit in their own system." },
         { p: "I reorganized around the content. Dictations get clearer hierarchy with folders and categories, and summarization is something you apply when it is relevant." },
         {
+          stack: true,
           pair: [
             { img: "/work/muesli/summary-old.jpg", alt: "Meetings as its own area, separate from dictations", cap: "Before" },
             { img: "/work/muesli/summary-new.jpg", alt: "A dictation with summary and transcript on it", cap: "After" },
@@ -89,6 +91,7 @@ export const MUESLI = {
         { p: "I reorganized Settings, because settings do more work in a local-first product. People need to see and control how it behaves instead of reading a dense technical screen." },
         { p: "The model system now shows which local model is running, what else is available, and enough context to pick one." },
         {
+          stack: true,
           pair: [
             { img: "/work/muesli/insights-old.jpg", alt: "Insights before", cap: "Before" },
             { img: "/work/muesli/insights-new.jpg", alt: "Insights after", cap: "After" },

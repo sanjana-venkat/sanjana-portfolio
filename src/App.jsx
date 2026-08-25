@@ -190,7 +190,7 @@ const PROJECTS = [
   { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
   // frameHeight: the window height this embed is composed for. See the fitting
   // effect in WorkBrowserModal.
-  { slug: "fitcheck", label: "Hackathon Winner", title: "FitCheck", url: FITCHECK_URL, frameHeight: 1000 },
+  { slug: "fitcheck", label: "Hackathon Winner", title: "FitCheck", url: FITCHECK_URL, external: true },
   { slug: "muesli", label: "Speech-to-Text", title: "Muesli — Local-first dictation, made approachable", study: "muesli" },
 ];
 
@@ -591,15 +591,27 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
         </div>
 
         <div className="work-tabs no-scrollbar">
-          {PROJECTS.map((project) => (
-            <button
-              key={project.label}
-              onClick={() => selectProject(project)}
-              className={`pc-pill${activeProject.label === project.label ? " on" : ""}`}
-            >
-              {project.label}
-            </button>
-          ))}
+          {PROJECTS.map((project) =>
+            project.external ? (
+              <a
+                key={project.label}
+                href={project.url}
+                target="_blank"
+                rel="noreferrer"
+                className="pc-pill"
+              >
+                {project.label}
+              </a>
+            ) : (
+              <button
+                key={project.label}
+                onClick={() => selectProject(project)}
+                className={`pc-pill${activeProject.label === project.label ? " on" : ""}`}
+              >
+                {project.label}
+              </button>
+            )
+          )}
         </div>
 
         <div

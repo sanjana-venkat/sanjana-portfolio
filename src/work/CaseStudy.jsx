@@ -254,7 +254,7 @@ function Lightbox({ film, onClose }) {
 function Block({ b }) {
   if (b.pair)
     return (
-      <div className="cs-pair">
+      <div className={`cs-pair${b.stack ? " is-stack" : ""}`}>
         {b.pair.map((one, i) => (
           <Shot key={i} b={one} inPair />
         ))}

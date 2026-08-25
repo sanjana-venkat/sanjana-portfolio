@@ -428,6 +428,10 @@ iframe.cs-video {
   margin: 32px 0 40px;
 }
 
+.cs-pair.is-stack {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .cs-pair .cs-shot {
   margin: 0;
 }
