@@ -29,10 +29,10 @@ export const B2C = {
       film: "search",
       blocks: [
         { p: "We were given raw data showing conversion rates at different touch points. What story does this tell? People visit but don't convert." },
+        { img: "/work/b2c/clicks.jpg", alt: "Touch points and number of visits across the public pages", wide: true },
         { p: "I created this simple visualization to show the market we are missing. This helped illustrate the conversion bottleneck impact up to leadership and secured over $10,000 in investment for Home Lending Public experience re-design." },
         { img: "/work/b2c/funnel.jpg", alt: "8M potential customers, 300k getting started, 1k applications initiated", wide: true },
         { h: "Deeper look at data", p: "Let's analyze the points of friction and the clicks to try to understand customer intent and needs" },
-        { img: "/work/b2c/clicks.jpg", alt: "Touch points and number of visits across the public pages", wide: true },
         { h: "KYC Flow", p: "“Start online” takes customers through an account creation flow with sensitive questions like SSN" },
         { h: "Clicks", p: "Top clicks were for miscellaneous actions like hamburger menu, sign-in. The most desired (rates) was 4th click which is 3 scrolls below" },
         { h: "Outdated design", p: "Over 800 public pages, lack of branding and 20+ CTAs with unclear pathways" },
