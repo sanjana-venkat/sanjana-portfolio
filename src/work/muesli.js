@@ -8,8 +8,8 @@
 export const MUESLI = {
   slug: "muesli",
   shape: "wide",
-  kicker: "Product designer · Muesli · Product design + SwiftUI",
-  title: "Making dictation feel simple",
+  kicker: "Design engineer · SwiftUI",
+  title: "Make voice feel natural",
   lede: "I redesigned Muesli’s setup and navigation to make its powerful local-first tools easier to understand and use.",
   note: "Open-source contribution, PR under review.",
   links: [

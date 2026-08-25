@@ -20,7 +20,7 @@ import { SERVICE } from "./service";
 
 export const AI_SEARCH = {
   slug: "ai-chat-journeys",
-  kicker: "Designer · Visionary concepts, executive leadership pitch",
+  kicker: "Designer · Executive leadership pitch",
   title: "AI Search Interfaces",
   lede: "As ChatGPT and Gemini become the first place people ask financial questions, I explored what the model should do, how to move people to action, what should stay inside trusted banking systems.",
 

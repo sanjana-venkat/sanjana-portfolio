@@ -9,7 +9,7 @@
 
 export const SERVICE = {
   slug: "service-design",
-  kicker: "Lead designer · Chase MyHome · Apply & self-service",
+  kicker: "Lead designer · Apply & self-service",
   title: "Apply & Self-service",
   lede: "Mapping complex customer journeys, workflows, and backend systems. Used service design and testing to reduce friction and improve self-service experiences at scale.",
 
