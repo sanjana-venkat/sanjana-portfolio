@@ -96,7 +96,7 @@ export const MUESLI = {
             { img: "/work/muesli/insights-new.jpg", alt: "Insights after", cap: "After" },
           ],
         },
-        { pull: "The goal was to give complexity the right place in the product." },
+        { pull: "The build was complex. Using it should feel simple and smooth." },
       ],
     },
   ],
