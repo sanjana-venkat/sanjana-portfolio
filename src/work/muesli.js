@@ -30,7 +30,7 @@ export const MUESLI = {
     {
       id: "setup",
       eyebrow: "01",
-      title: "Make setup explain the why",
+      title: "Settings and permissions explained",
       film: "app",
       blocks: [
         { p: "The original onboarding was technical. It moved through permissions like microphone access and system settings, and mostly showed states like “granted” without explaining why each permission mattered or how it connected to using Muesli." },
@@ -38,8 +38,8 @@ export const MUESLI = {
         { p: "Muesli can open the right Mac settings window on its own, so I added visual instructions showing where to look and what to toggle once it does." },
         {
           pair: [
-            { img: "/muesli-v1-onboarding.png", alt: "Setup before", cap: "Before" },
-            { img: "/muesli-v2-onboarding.png", alt: "Setup after", cap: "After" },
+            { img: "/work/muesli/setup-old.jpg", alt: "Permission 2 of 3, asking for accessibility with no explanation", cap: "Before" },
+            { img: "/work/muesli/setup-new.jpg", alt: "A few quick permissions, showing what to toggle and where", cap: "After" },
           ],
         },
         { p: "Permissions also carry the local-first story. Microphone access reads as something Muesli needs to transcribe on your Mac, instead of a system requirement to get past." },
@@ -63,7 +63,7 @@ export const MUESLI = {
     {
       id: "structure",
       eyebrow: "03",
-      title: "Dictation is the content",
+      title: "Dictation and meeting don't have to be separate",
       film: "app",
       blocks: [
         { p: "The original product treated Meetings almost like a separate area from dictation. But a meeting is still captured speech. What changes is what you want Muesli to do with it afterward." },
@@ -71,8 +71,8 @@ export const MUESLI = {
         { p: "I reorganized around the content. Dictations get clearer hierarchy with folders and categories, and summarization is something you apply when it is relevant." },
         {
           pair: [
-            { img: "/muesli-v1-product.png", alt: "Meetings and dictations before", cap: "Before" },
-            { img: "/muesli-v2-product.png", alt: "Meetings and dictations after", cap: "After" },
+            { img: "/work/muesli/summary-old.jpg", alt: "Meetings as its own area, separate from dictations", cap: "Before" },
+            { img: "/work/muesli/summary-new.jpg", alt: "A dictation with summary and transcript on it", cap: "After" },
           ],
         },
       ],
@@ -81,14 +81,19 @@ export const MUESLI = {
     {
       id: "depth",
       eyebrow: "04",
-      title: "Give the depth a place",
+      title: "Show the product's value",
       film: "app",
       blocks: [
         { p: "Insights moved out of the top of the dashboard into its own area, so it can grow without competing with recording." },
         { p: "Dictionary became a clear place to manage words and vocabulary, which matters when the model has to get names right." },
         { p: "I reorganized Settings, because settings do more work in a local-first product. People need to see and control how it behaves instead of reading a dense technical screen." },
         { p: "The model system now shows which local model is running, what else is available, and enough context to pick one." },
-        { img: "/muesli-final-insights.png", alt: "Insights in the final visual system", wide: true },
+        {
+          pair: [
+            { img: "/work/muesli/insights-old.jpg", alt: "Insights before", cap: "Before" },
+            { img: "/work/muesli/insights-new.jpg", alt: "Insights after", cap: "After" },
+          ],
+        },
         { pull: "The goal was to give complexity the right place in the product." },
       ],
     },
