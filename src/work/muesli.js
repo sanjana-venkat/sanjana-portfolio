@@ -10,7 +10,7 @@ export const MUESLI = {
   shape: "wide",
   kicker: "Design engineer · SwiftUI",
   title: "Make voice feel natural",
-  lede: "I redesigned Muesli’s setup and navigation to make its powerful local-first tools easier to understand and use.",
+  lede: "I redesigned Muesli’s setup and navigation to make its powerful local-first tools easier to understand and use. The result is a clearer, more approachable voice experience that keeps privacy and speed at the center.",
   note: "Open-source contribution, PR under review.",
   links: [
     { href: "https://github.com/Muesli-HQ/muesli/pull/329", label: "Implementation PR" },
