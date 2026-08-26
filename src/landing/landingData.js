@@ -183,7 +183,7 @@ export const SNIPPETS = {
         name: "Intent-based recommendations",
         slug: "ai-personalization",
         summary:
-          "Millions of customer data points, and every customer still saw the same experience. I led the strategy behind a need-based recommendation framework so the model could infer what someone needed right now before deciding what to show them.",
+          "Millions of customer data points, and every customer still saw the same experience. I led the strategy behind need-based recommendations so the model could infer what someone needed right now before deciding what to show them.",
         metric: "17% CTR lift from the personalization model",
       },
       {
