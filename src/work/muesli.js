@@ -10,7 +10,7 @@ export const MUESLI = {
   shape: "wide",
   kicker: "Design engineer · SwiftUI",
   title: "Make voice feel natural",
-  lede: "I redesigned Muesli’s setup and navigation to make its powerful local-first tools easier to understand and use. The result is a clearer, more approachable voice experience that keeps privacy and speed at the center.",
+  lede: "We’re so used to typing that we forget voice is an option. I redesigned Muesli to make voice easier to discover and use, with clearer permissions, intuitive setup, and meeting notifications—all stored locally.",
   note: "Open-source contribution, PR under review.",
   links: [
     { href: "https://github.com/Muesli-HQ/muesli/pull/329", label: "Implementation PR" },
@@ -28,7 +28,7 @@ export const MUESLI = {
   sections: [
     {
       id: "setup",
-      eyebrow: "01",
+      eyebrow: "Onboarding",
       title: "Settings and permissions explained",
       film: "app",
       blocks: [
@@ -49,7 +49,7 @@ export const MUESLI = {
 
     {
       id: "test",
-      eyebrow: "02",
+      eyebrow: "First-run experience",
       title: "Try it before the app opens",
       film: "app",
       blocks: [
@@ -62,7 +62,7 @@ export const MUESLI = {
 
     {
       id: "structure",
-      eyebrow: "03",
+      eyebrow: "Product structure",
       title: "Dictation and meeting don't have to be separate",
       film: "app",
       blocks: [
@@ -81,7 +81,7 @@ export const MUESLI = {
 
     {
       id: "depth",
-      eyebrow: "04",
+      eyebrow: "Features",
       title: "Show the product's value",
       film: "app",
       blocks: [

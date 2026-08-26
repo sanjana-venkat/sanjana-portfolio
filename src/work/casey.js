@@ -27,7 +27,7 @@ export const CASEY = {
   sections: [
     {
       id: "problem",
-      eyebrow: "01 · Context",
+      eyebrow: "Context",
       title: "Advisors were managing systems instead of relationships",
       film: "demo",
       blocks: [
@@ -40,7 +40,7 @@ export const CASEY = {
 
     {
       id: "system",
-      eyebrow: "02 · Agent strategy",
+      eyebrow: "Agent strategy",
       title: "Design the system around two kinds of agents",
       film: "demo",
       blocks: [
@@ -70,7 +70,7 @@ export const CASEY = {
 
     {
       id: "casey",
-      eyebrow: "03 · Casey AI",
+      eyebrow: "Conversational AI",
       title: "Re-engage customers at the moment intent starts to fade",
       film: "demo",
       blocks: [
@@ -93,7 +93,7 @@ export const CASEY = {
 
     {
       id: "response",
-      eyebrow: "04 · Experience",
+      eyebrow: "Experience",
       title: "Turn the reason for leaving into the right next step",
       film: "demo",
       blocks: [

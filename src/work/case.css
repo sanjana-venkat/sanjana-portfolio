@@ -20,6 +20,19 @@
   scrollbar-width: thin;
 }
 
+/* Keep display copy and prose from leaving a single short word stranded on
+   its final line. Browsers that support the newer wrapping modes get a more
+   deliberate composition; older browsers retain the existing wrap. */
+.cs :is(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+.cs :is(p, li) {
+  text-wrap: pretty;
+  orphans: 2;
+  widows: 2;
+}
+
 /* ── The masthead ─────────────────────────────────────────────────────── */
 
 .cs-head {
@@ -70,12 +83,13 @@
   padding-bottom: 1px;
 }
 
-.cs-lede {
+.cs .cs-lede {
   margin: 22px auto 0;
   max-width: 64ch;
   font-size: clamp(16px, 1.4vw, 19px);
   line-height: 1.6;
   color: var(--ink-500, #5d554f);
+  text-wrap: balance;
 }
 
 /* ── The three columns ────────────────────────────────────────────────── */
