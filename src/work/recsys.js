@@ -7,15 +7,16 @@
 
 export const RECSYS = {
   slug: "ai-personalization",
-  shape: "phones",
+  shape: "phone",
   kicker: "Lead designer · Native mobile, product strategy, data science and research",
   title: "Intent-based recommendations",
   lede: "Years of customer data, but data alone couldn't answer “what does this customer actually need right now?” I led the strategy behind need-based recommendations that helped AI infer user intent before deciding what experience to show.",
 
   films: {
     final: {
-      image: "/work/recsys/hero.jpg",
-      aspect: "1 / 1",
+      src: "/work/recsys/experience.mp4",
+      poster: "/work/recsys/experience-poster.jpg",
+      aspect: "720 / 1330",
       label: "The intent-based experience",
     },
   },
