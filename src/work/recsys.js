@@ -38,6 +38,12 @@ export const RECSYS = {
             { name: "5%", lines: ["Out of 2M customers who have transacted (got a loan) with us, only 5% engaged with Chase MyHome 6 months prior to transaction"] },
           ],
         },
+        {
+          pair: [
+            { img: "/work/recsys/before.webp", alt: "Before: the original Chase MyHome account tile among generic account recommendations", cap: "Before" },
+            { img: "/work/recsys/after.webp", alt: "After: personalized Chase MyHome welcome and dashboard experiences", cap: "After" },
+          ],
+        },
       ],
     },
 
