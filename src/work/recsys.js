@@ -60,6 +60,7 @@ export const RECSYS = {
           h: "1-Day Discovery Workshop",
           p: "The design team led a workshop bringing together product, tech and marketing stakeholders. The business goal was to increase engagement into Chase My Home (CTR) and increase applications (Lead initiate rate)",
         },
+        { img: "/work/recsys/workshop.jpg", alt: "Product, tech and marketing in the room together", photo: true },
         {
           h: "Problem Discovery",
           p: "We did assumption mapping exercise for desirability (do people want it/need it), feasibility (can we do it) and viability (will it result in long-term profit)",
@@ -78,6 +79,7 @@ export const RECSYS = {
       film: "final",
       blocks: [
         { p: "Before building recommendations, we challenged every assumption around desirability, feasibility and business value. The goal wasn't to generate more messages. It was to make sure the system was making the right decision in the first place." },
+        { img: "/work/recsys/workshop-board.jpg", alt: "Mapping assumptions onto the board, desirability first", photo: true },
         { img: "/work/recsys/desirability.jpg", alt: "Assumption mapping — desirability", wide: true },
         { img: "/work/recsys/assumptions.jpg", alt: "Assumption mapping — feasibility", wide: true },
         { img: "/work/recsys/viability.jpg", alt: "Assumption mapping — viability", wide: true },
