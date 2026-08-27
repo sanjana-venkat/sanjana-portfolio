@@ -12,7 +12,7 @@ export const OUTDONE = {
   kicker: "Designer · Collab DeepMind researcher",
   title: "Model Design — Outdone",
   lede: "Designed and built Outdone to make travel planning easier based on how you feel today. Also explore a bigger AI personalization question: how do we help models understand current intent, not just past preference?",
-  note: "Presented in Stanford x Deepmind Hackathon and got up to semi-finalist",
+  note: "Semi-finalist in Stanford x DeepMind Hackathon",
   link: { href: "https://travel-dna-kohl.vercel.app/", label: "Try Outdone" },
 
   films: {
