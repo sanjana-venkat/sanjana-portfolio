@@ -179,6 +179,7 @@ Today, the experience is live and evolving with AI.`;
 const PROJECTS = [
   { slug: "b2c", label: "B2C", title: "Uncover User Needs", study: "b2c" },
   { slug: "ai-personalization", label: "RecSys", title: "Intent-based Recommendations", study: "ai-personalization" },
+  { slug: "muesli", label: "Speech-to-Text (Swift App)", title: "Muesli — Local-first dictation, made approachable", study: "muesli" },
   // Rebuilt natively — see src/work/. Add `url: OUTDONE_FRAMER_URL` back to
   // return to the Framer page.
   { slug: "model-design", label: "Personalized Travel", title: "Outdone, Context-Aware Personalization", study: "model-design" },
@@ -191,7 +192,6 @@ const PROJECTS = [
   // frameHeight: the window height this embed is composed for. See the fitting
   // effect in WorkBrowserModal.
   { slug: "fitcheck", label: "Hackathon Winner", title: "FitCheck", url: FITCHECK_URL, external: true },
-  { slug: "muesli", label: "Speech-to-Text", title: "Muesli — Local-first dictation, made approachable", study: "muesli" },
 ];
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
