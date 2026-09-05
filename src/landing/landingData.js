@@ -71,7 +71,7 @@ export const SELECTED_WORK = FEATURED;
 export const INTRO = {
   name: "Sanjana",
   wordmark: "Sanjana Venkat",
-  tagline: "Product designer + builder",
+  tagline: "Design engineer",
   portrait: "/profile.jpg",
   lead: "I turn ambiguity into reality. Let me show you.",
   role: "Designing AI interfaces, recommendation systems, and model behavior.",
