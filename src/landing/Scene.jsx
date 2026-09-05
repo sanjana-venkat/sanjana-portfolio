@@ -405,27 +405,24 @@ function Frame({ project, onOpen }) {
    letters on it at all. */
 function Board({ photos, onPhoto }) {
   return (
-    <>
-      <p className="rm-cap rm-cap-board">Story</p>
-      <div className="rm-board">
-        <div className="rm-board-inner">
-          {photos.map((m, i) => (
-            <button
-              key={m.id}
-              type="button"
-              className="rm-polaroid"
-              style={{ "--tilt": `${[-2.4, 1.8, -1.2, 2.6, -0.8, 1.4][i % 6]}deg` }}
-              aria-label={`Open the story around ${m.year}`}
-              onClick={() => onPhoto(m.id)}
-            >
-              <span className="rm-tack" />
-              <img src={m.image} alt="" decoding="async" />
-              <span className="rm-polaroid-cap">{m.year}</span>
-            </button>
-          ))}
-        </div>
+    <div className="rm-board">
+      <div className="rm-board-inner">
+        {photos.map((m, i) => (
+          <button
+            key={m.id}
+            type="button"
+            className="rm-polaroid"
+            style={{ "--tilt": `${[-2.4, 1.8, -1.2, 2.6, -0.8, 1.4][i % 6]}deg` }}
+            aria-label={`Open the story around ${m.year}`}
+            onClick={() => onPhoto(m.id)}
+          >
+            <span className="rm-tack" />
+            <img src={m.image} alt="" decoding="async" />
+            <span className="rm-polaroid-cap">{m.year}</span>
+          </button>
+        ))}
       </div>
-    </>
+    </div>
   );
 }
 
@@ -433,31 +430,39 @@ function Board({ photos, onPhoto }) {
    A box on the wall with the letters standing in it. Hovering lifts one out,
    which is the affordance the pinned postcards never had. */
 function Mailbox({ letters, onLetter }) {
+  const [hovered, setHovered] = useState(null);
+  const named = letters.find((s) => s.id === hovered);
+
   return (
-    <>
-      <p className="rm-cap rm-cap-mail">Letters</p>
-      <div className="rm-mail">
-        <div className="rm-mail-letters">
-          {letters.map((s, i) => (
-            <button
-              key={s.id}
-              type="button"
-              className="rm-envelope"
-              style={{ "--tilt": `${[-1.8, 1.2, -0.9][i % 3]}deg` }}
-              aria-label={`Read what ${s.attr} wrote`}
-              onClick={() => onLetter(s.id)}
-            >
-              <span className="rm-stamp" />
-              <span className="rm-envelope-cap">{s.attr}</span>
-              <span className="rm-script" />
-            </button>
-          ))}
-        </div>
-        <span className="rm-mail-front">
-          <span className="rm-mail-plate" />
-        </span>
+    <div className="rm-mail">
+      <div className="rm-mail-letters">
+        {letters.map((s, i) => (
+          <button
+            key={s.id}
+            type="button"
+            className="rm-envelope"
+            style={{
+              "--tilt": `${[-19, -2, 17][i % 3]}deg`,
+              "--dx": `${[-0.4, 0, 0.4][i % 3]}cqw`,
+            }}
+            aria-label={`Read what ${s.attr} wrote`}
+            onMouseEnter={() => setHovered(s.id)}
+            onMouseLeave={() => setHovered(null)}
+            onFocus={() => setHovered(s.id)}
+            onBlur={() => setHovered(null)}
+            onClick={() => onLetter(s.id)}
+          />
+        ))}
       </div>
-    </>
+
+      <span className="rm-mail-box">
+        <span className="rm-mail-slot" />
+      </span>
+
+      <p className={`rm-mail-cap${named ? " is-named" : ""}`}>
+        {named ? named.attr : "Letters"}
+      </p>
+    </div>
   );
 }
 

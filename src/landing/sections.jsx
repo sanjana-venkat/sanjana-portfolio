@@ -448,7 +448,7 @@ export function Statements({ initialId }) {
   return (
     <>
       {/* The title heads the whole section; the two columns sit beneath it. */}
-      <h2 className="pc-title pc-sheet-title">Statements</h2>
+      <h2 className="pc-title pc-sheet-title">What people say about me</h2>
 
       <div className="pc-zone pc-zone-l pc-fade">
         <div className="pc-stack" style={{ "--i": 0 }}>

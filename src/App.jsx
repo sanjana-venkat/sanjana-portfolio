@@ -195,6 +195,14 @@ const PROJECTS = [
   { slug: "exec-pitch", group: "Presentations", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
 ];
 
+function ChevronRightIcon({ className = "h-5 w-5" }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 6l6 6-6 6" />
+    </svg>
+  );
+}
+
 function ChevronDownIcon({ className = "h-5 w-5" }) {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
@@ -591,6 +599,16 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
     };
   }, [pickerOpen]);
 
+  // Wraps, so the last study hands you back to the first. External work is
+  // left out: it opens in a new tab, so it can never be the thing you land on
+  // next — it would dead-end the rotation. It stays in the picker.
+  const rotation = PROJECTS.filter((project) => !project.external);
+  const nextProject =
+    rotation[
+      (rotation.findIndex((p) => p.slug === activeProject.slug) + 1) %
+        rotation.length
+    ];
+
   const selectProject = (project) => {
     setActiveProject(project);
     setPickerOpen(false);
@@ -625,27 +643,44 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
     <div className={`work-shell${phase === "expanding" ? " is-expanding" : ""}`}>
       <div className="mx-auto w-full min-w-0 max-w-[1560px] overflow-hidden flex flex-col flex-1 min-h-0">
         <div className="work-head">
-          <button type="button" className="work-back" onClick={onClose} aria-label="Close work browser">
-            <ChevronLeftIcon className="h-[18px] w-[18px]" />
-          </button>
-          <h2 className="work-title">My Work</h2>
-        </div>
+          <div className="work-head-l">
+            <button type="button" className="work-back" onClick={onClose} aria-label="Close work browser">
+              <ChevronLeftIcon className="h-[18px] w-[18px]" />
+            </button>
 
-        <div className="work-nav">
-          <button
-            ref={pickerRef}
-            type="button"
-            className={`work-picker${pickerOpen ? " on" : ""}`}
-            onClick={togglePicker}
-            aria-haspopup="true"
-            aria-expanded={pickerOpen}
-          >
-            <span className="work-picker-text">
-              <span className="work-picker-co">{activeProject.group}</span>
-              <span className="work-picker-name">{activeProject.label}</span>
-            </span>
-            <ChevronDownIcon className="work-picker-caret" />
-          </button>
+            <button
+              ref={pickerRef}
+              type="button"
+              className={`work-picker${pickerOpen ? " on" : ""}`}
+              onClick={togglePicker}
+              aria-haspopup="true"
+              aria-expanded={pickerOpen}
+            >
+              <span className="work-picker-text">
+                <span className="work-picker-co">{activeProject.group}</span>
+                <span className="work-picker-name">{activeProject.label}</span>
+              </span>
+              <ChevronDownIcon className="work-picker-caret" />
+            </button>
+          </div>
+
+          <h2 className="work-title">Selected work</h2>
+
+          <div className="work-head-r">
+            {nextProject && (
+              <button
+                type="button"
+                className="work-next"
+                onClick={() => selectProject(nextProject)}
+              >
+                <span className="work-next-label">
+                  Next project
+                  <ChevronRightIcon className="work-next-caret" />
+                </span>
+                <span className="work-next-name">{nextProject.label}</span>
+              </button>
+            )}
+          </div>
         </div>
 
         {pickerOpen && (

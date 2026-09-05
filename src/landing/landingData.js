@@ -11,7 +11,7 @@ export const SECTIONS = [
   { id: "sanjana", title: "Sanjana" },
   { id: "story", title: "Story" },
   { id: "snippets", title: "Snippets" },
-  { id: "statements", title: "Statements" },
+  { id: "statements", title: "What people say about me" },
 ];
 
 /* ── Selected work ─────────────────────────────────────────────────────── */
