@@ -249,7 +249,7 @@ export const TESTIMONIALS = [
   [
     "Sanjana was one of the founding members of the Benefits Design Team, and from day one she helped set the tone and identity for the values that team grew to represent. She was highly autonomous for her position, and she also helped grow and maintain cross-department relationships\u2014frequently meeting with devs, PMs, and other key members to ensure cohesion from project to project. As a designer, her attention to detail was one of her strongest qualities, and I could always count on her to have thorough documentation/specifications ready for dev partners upon handoff.",
     "Jonathan Stricklin",
-    "Product Design Team Lead, Paycom"
+    "Manager, Paycom"
   ],
   [
     "I wanted to send a special thanks for all your hard work, patience and collaboration this year! You jumped into the Apply world with both feet and I've loved exploring ways to improve our customers' experience. You approach every challenge or change in direction with a smile and you're open to everyone's feedback. Thank you for always being there and for being a wonderful teammate.",
