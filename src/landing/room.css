@@ -503,25 +503,33 @@
   bottom: 2.5cqw;
   height: 5.2cqw;
   z-index: 2;
-  border: 0.15cqw solid var(--wood-700);
-  border-radius: 0.18cqw 0.18cqw 0.7cqw 0.7cqw;
-  /* Opaque, so the letters really do sit inside it, but the wall's own
-     colour rather than a slab of brown. */
-  background: var(--cream-50);
+  border-radius: 0.16cqw 0.16cqw 0.7cqw 0.7cqw;
+  background: var(--wood-mid);
+  box-shadow: 0 0.5cqw 1.1cqw -0.5cqw rgba(34, 27, 22, 0.34);
 }
 
-/* The lip the letters drop over: solid, so the box has a front edge and
-   reads as an object rather than a wireframe. The face below stays drawn. */
+/* The lip the letters drop over, catching the light from the upper left.
+   Flat shapes only — three wood values, no bevel. */
 .rm-mail-box::before {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
-  height: 0.85cqw;
-  border-radius: 0.06cqw 0.06cqw 0 0;
+  height: 0.8cqw;
+  border-radius: 0.16cqw 0.16cqw 0 0;
   background: var(--wood-lit);
-  box-shadow: 0 0.14cqw 0 var(--wood-700);
+}
+
+/* The relief channel under the lip. */
+.rm-mail-box::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0.8cqw;
+  height: 0.15cqw;
+  background: var(--wood-deep);
 }
 
 .rm-mail-slot {
@@ -531,7 +539,7 @@
   width: 1.05cqw;
   height: 1.05cqw;
   translate: -50% 0;
-  border: 0.13cqw solid var(--wood-700);
+  border: 0.13cqw solid var(--wood-deep);
   border-radius: 0.08cqw;
 }
 
