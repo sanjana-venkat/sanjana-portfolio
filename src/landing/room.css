@@ -271,7 +271,7 @@
 .rm-monitor,
 .rm-frame,
 .rm-polaroid,
-.rm-postcard,
+.rm-envelope,
 .rm-desk {
   position: absolute;
   border: 0;
@@ -283,9 +283,7 @@
 }
 
 .rm-polaroid:hover,
-.rm-polaroid:focus-visible,
-.rm-postcard:hover,
-.rm-postcard:focus-visible {
+.rm-polaroid:focus-visible {
   transform: translateY(-0.25cqw);
   filter: drop-shadow(0 0.62cqw 1.5cqw rgba(34, 27, 22, 0.18));
 }
@@ -400,9 +398,9 @@
 .rm-board {
   position: absolute;
   left: 68.5%;
-  top: 42%;
+  top: 41.4%;
   width: 29.5%;
-  height: 27%;
+  height: 13.2%;
   background: var(--cream-100);
   box-shadow: 0 0.5cqw 1.4cqw -0.6cqw rgba(34, 27, 22, 0.28);
   overflow: hidden;
@@ -410,16 +408,15 @@
 
 .rm-board-inner {
   position: absolute;
-  inset: 1.7cqw 0.9cqw 0.9cqw;
+  inset: 1.2cqw 0.8cqw 0.7cqw;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
   justify-content: center;
-  gap: 0.6cqw;
+  gap: 0.52cqw;
 }
 
-.rm-polaroid,
-.rm-postcard {
+.rm-polaroid {
   position: relative;
   rotate: var(--tilt);
   background: var(--jasmine);
@@ -428,14 +425,14 @@
 
 .rm-polaroid img {
   display: block;
-  width: 4.1cqw;
-  height: 4.1cqw;
+  width: 3.42cqw;
+  height: 3.42cqw;
   object-fit: cover;
   background: var(--cream-100);
 }
 
 .rm-polaroid-cap,
-.rm-postcard-cap {
+.rm-envelope-cap {
   display: block;
   padding: 0.28cqw 0 0.4cqw;
   font-size: 0.62cqw;
@@ -458,10 +455,52 @@
   box-shadow: 0 0.1cqw 0.2cqw rgba(34, 27, 22, 0.3);
 }
 
-.rm-postcard {
-  width: 6.4cqw;
-  padding: 0.62cqw 0.5cqw 0;
+/* ── Captions ─────────────────────────────────────────────────────────────
+   Each surface says what it is. Without them the board and the mailbox are
+   just shapes on a wall. */
+.rm-cap {
+  position: absolute;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.72cqw;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+}
+
+.rm-cap-board { left: 68.5%; top: 38.2%; }
+.rm-cap-mail { left: 68.5%; top: 57.6%; }
+
+/* ── The mailbox ──────────────────────────────────────────────────────────
+   The letters stand inside it: the front panel is painted over their lower
+   half so only the addressed top shows. */
+.rm-mail {
+  position: absolute;
+  left: 68.5%;
+  top: 60.4%;
+  width: 29.5%;
+  height: 14.4%;
+}
+
+.rm-mail-letters {
+  position: absolute;
+  inset: 0 1cqw auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.7cqw;
+  z-index: 1;
+}
+
+.rm-envelope {
+  position: relative;
+  width: 7.6cqw;
+  height: 7.1cqw;
+  padding: 0.42cqw 0.45cqw 0;
+  rotate: var(--tilt);
   background: var(--cream-50);
+  transition: translate 320ms var(--in);
   /* The airmail edge, from the reference — the only place blue appears. */
   border: 0.16cqw solid transparent;
   border-image: repeating-linear-gradient(
@@ -471,6 +510,61 @@
       #2f4a63 0.7cqw 1.05cqw,
       var(--jasmine) 1.05cqw 1.4cqw
     ) 8;
+}
+
+/* Hovering slides the letter up out of the box. */
+.rm-envelope:hover,
+.rm-envelope:focus-visible {
+  translate: 0 -0.85cqw;
+  filter: drop-shadow(0 0.62cqw 1.5cqw rgba(34, 27, 22, 0.18));
+}
+
+.rm-mail-front {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4.2cqw;
+  z-index: 2;
+  border-radius: 0.15cqw 0.15cqw 0.55cqw 0.55cqw;
+  background: var(--wood-mid);
+  box-shadow: 0 0.5cqw 1.2cqw -0.5cqw rgba(34, 27, 22, 0.34);
+}
+
+/* The rim the letters drop past, catching the light from the upper left.
+   Flat shapes only — three wood values, no bevel. */
+.rm-mail-front::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0.9cqw;
+  border-radius: 0.15cqw 0.15cqw 0 0;
+  background: var(--wood-lit);
+}
+
+/* The relief channel under the rim. */
+.rm-mail-front::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0.9cqw;
+  height: 0.17cqw;
+  background: var(--wood-deep);
+}
+
+.rm-mail-plate {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  width: 4.4cqw;
+  height: 0.8cqw;
+  translate: -50% -50%;
+  border-radius: 0.06cqw;
+  background: var(--brass);
+  box-shadow: inset 0 -0.14cqw 0 var(--brass-deep);
 }
 
 .rm-script {
@@ -490,10 +584,12 @@
   border: 1px dashed var(--lotus-600);
 }
 
-.rm-postcard-cap {
+.rm-envelope-cap {
   text-align: left;
   color: var(--ink-600);
-  font-size: 0.58cqw;
+  font-size: 0.56cqw;
+  line-height: 1.5;
+  padding: 0.1cqw 0 0.3cqw;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
