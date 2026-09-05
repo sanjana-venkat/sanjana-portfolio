@@ -1145,17 +1145,17 @@
 }
 
 /* Three notes lift off the horn while it is playing. */
+/* The notes drift whether or not anything is playing. Hidden until the
+   player opened, nobody knew the radio was a thing you could click. */
 .rm-music-note {
   position: absolute;
   left: 78%;
   bottom: 84%;
   display: flex;
   gap: 0.35cqw;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 300ms var(--in);
 }
-
-.rm-music-box.is-on .rm-music-note { opacity: 1; }
 
 .rm-music-note i {
   width: 0.34cqw;
