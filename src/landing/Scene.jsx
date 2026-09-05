@@ -54,7 +54,7 @@ function spotifyEmbed(url) {
 const BOARD_PHOTOS = STORY_MOMENTS.filter((m) =>
   ["childhood", "utd", "chetna", "uxclub", "jpmc", "bay"].includes(m.id)
 );
-const BOARD_LETTERS = STATEMENTS.slice(0, 3);
+const BOARD_LETTERS = STATEMENTS.slice(0, 4);
 
 export default function Scene({ chat, onOpenProject }) {
   const [open, setOpen] = useState(null); // "story" | "statements" | "chat" | null
@@ -404,25 +404,45 @@ function Frame({ project, onOpen }) {
    together read as one undifferentiated grid — you could not tell there were
    letters on it at all. */
 function Board({ photos, onPhoto }) {
+  const [hovered, setHovered] = useState(null);
+  const shown = photos.find((m) => m.id === hovered);
+
   return (
-    <div className="rm-board">
-      <div className="rm-board-inner">
-        {photos.map((m, i) => (
-          <button
-            key={m.id}
-            type="button"
-            className="rm-polaroid"
-            style={{ "--tilt": `${[-2.4, 1.8, -1.2, 2.6, -0.8, 1.4][i % 6]}deg` }}
-            aria-label={`Open the story around ${m.year}`}
-            onClick={() => onPhoto(m.id)}
-          >
-            <span className="rm-tack" />
-            <img src={m.image} alt="" decoding="async" />
-            <span className="rm-polaroid-cap">{m.year}</span>
-          </button>
-        ))}
+    <>
+      <div className="rm-board">
+        <div className="rm-board-inner">
+          {photos.map((m, i) => (
+            <button
+              key={m.id}
+              type="button"
+              className="rm-polaroid"
+              style={{ "--tilt": `${[-2.4, 1.8, -1.2, 2.6, -0.8, 1.4][i % 6]}deg` }}
+              aria-label={`${m.title}. Open the story around ${m.year}`}
+              onMouseEnter={() => setHovered(m.id)}
+              onMouseLeave={() => setHovered(null)}
+              onFocus={() => setHovered(m.id)}
+              onBlur={() => setHovered(null)}
+              onClick={() => onPhoto(m.id)}
+            >
+              <span className="rm-tack" />
+              <img src={m.image} alt="" decoding="async" />
+              <span className="rm-polaroid-cap">{m.year}</span>
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
+
+      {/* Reserves its space, so the room does not shift as you move across
+          the photographs. */}
+      <p className={`rm-board-cap${shown ? " is-shown" : ""}`}>
+        {shown && (
+          <>
+            <span className="rm-board-who">{shown.title}</span>
+            <span className="rm-board-copy">{shown.copy}</span>
+          </>
+        )}
+      </p>
+    </>
   );
 }
 
@@ -442,8 +462,8 @@ function Mailbox({ letters, onLetter }) {
             type="button"
             className="rm-envelope"
             style={{
-              "--tilt": `${[-19, -2, 17][i % 3]}deg`,
-              "--dx": `${[-0.4, 0, 0.4][i % 3]}cqw`,
+              "--tilt": `${[-21, -8, 7, 20][i % 4]}deg`,
+              "--dx": `${[-0.52, -0.18, 0.18, 0.52][i % 4]}cqw`,
             }}
             aria-label={`Read what ${s.attr} wrote`}
             onMouseEnter={() => setHovered(s.id)}
@@ -460,7 +480,14 @@ function Mailbox({ letters, onLetter }) {
       </span>
 
       <p className={`rm-mail-cap${named ? " is-named" : ""}`}>
-        {named ? named.attr : "Letters"}
+        {named ? (
+          <>
+            <span className="rm-mail-who">{named.attr}</span>
+            <span className="rm-mail-role">{named.role}</span>
+          </>
+        ) : (
+          "Letters"
+        )}
       </p>
     </div>
   );

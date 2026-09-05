@@ -234,7 +234,7 @@ export const TESTIMONIALS = [
   [
     "Sanjana is the best designer at Chase that I've worked with. She is proactive, thoughtful, eager to learn and produces ideas and designs at both a high quality and high volume, which is rare!",
     "Bart Piela",
-    "Marketing/Public Executive Director"
+    "Marketing ED"
   ],
   [
     " She really knows how to rally the team, push for excellence, and make sure we never lose sight of the bigger picture. Thank you for being such a force of positivity and progress. We’re lucky to have you!",
@@ -245,6 +245,11 @@ export const TESTIMONIALS = [
     "A very special call out and thank you to Sanjana for being such an amazing partner and consistently going above and beyond when it comes to projects we are working on. Sanjana has been instrumental in the Encompass build UX, providing solutions and quickly adjusting to our changing needs.",
     "Sonia Zacheo",
     "Product VP"
+  ],
+  [
+    "Sanjana was one of the founding members of the Benefits Design Team, and from day one she helped set the tone and identity for the values that team grew to represent. She was highly autonomous for her position, and she also helped grow and maintain cross-department relationships\u2014frequently meeting with devs, PMs, and other key members to ensure cohesion from project to project. As a designer, her attention to detail was one of her strongest qualities, and I could always count on her to have thorough documentation/specifications ready for dev partners upon handoff.",
+    "Jonathan Stricklin",
+    "Product Design Team Lead, Paycom"
   ],
   [
     "I wanted to send a special thanks for all your hard work, patience and collaboration this year! You jumped into the Apply world with both feet and I've loved exploring ways to improve our customers' experience. You approach every challenge or change in direction with a smile and you're open to everyone's feedback. Thank you for always being there and for being a wonderful teammate.",
