@@ -460,8 +460,8 @@
    light from the upper left, same as everything else hanging here. */
 .rm-mail {
   position: absolute;
-  left: 80.6%;
-  top: 56.8%;
+  left: 69.66%;
+  top: 59.6%;
   width: 5.4%;
   height: 19.4%;
 }
@@ -1280,13 +1280,7 @@
   position: fixed;
   inset: 0;
   z-index: 120;
-  background: rgba(33, 30, 26, 0.2);
-  animation: work-veil 200ms var(--in) both;
-}
-
-@keyframes work-veil {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  background: transparent;
 }
 
 .work-menu {
@@ -1297,6 +1291,7 @@
   width: var(--menu-w);
   max-height: min(70vh, 560px);
   overflow-y: auto;
+  overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
   gap: var(--s4);
