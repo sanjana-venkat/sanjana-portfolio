@@ -374,6 +374,10 @@ function Monitor({ project, onOpen }) {
       <span className="rm-cord" />
       <span className="rm-monitor-bezel">
         <img src={project.image} alt="" decoding="async" fetchPriority="high" />
+        <span className="rm-art-cap">
+          <span className="rm-art-who">{project.name}</span>
+          <span className="rm-art-copy">{project.blurb}</span>
+        </span>
       </span>
     </button>
   );
@@ -394,6 +398,10 @@ function Frame({ project, onOpen }) {
       <span className="rm-cord" />
       <span className="rm-frame-body">
         <img src={project.image} alt="" decoding="async" fetchPriority="high" />
+        <span className="rm-art-cap">
+          <span className="rm-art-who">{project.name}</span>
+          <span className="rm-art-copy">{project.blurb}</span>
+        </span>
       </span>
     </button>
   );
@@ -404,45 +412,25 @@ function Frame({ project, onOpen }) {
    together read as one undifferentiated grid — you could not tell there were
    letters on it at all. */
 function Board({ photos, onPhoto }) {
-  const [hovered, setHovered] = useState(null);
-  const shown = photos.find((m) => m.id === hovered);
-
   return (
-    <>
-      <div className="rm-board">
-        <div className="rm-board-inner">
-          {photos.map((m, i) => (
-            <button
-              key={m.id}
-              type="button"
-              className="rm-polaroid"
-              style={{ "--tilt": `${[-2.4, 1.8, -1.2, 2.6, -0.8, 1.4][i % 6]}deg` }}
-              aria-label={`${m.title}. Open the story around ${m.year}`}
-              onMouseEnter={() => setHovered(m.id)}
-              onMouseLeave={() => setHovered(null)}
-              onFocus={() => setHovered(m.id)}
-              onBlur={() => setHovered(null)}
-              onClick={() => onPhoto(m.id)}
-            >
-              <span className="rm-tack" />
-              <img src={m.image} alt="" decoding="async" />
-              <span className="rm-polaroid-cap">{m.year}</span>
-            </button>
-          ))}
-        </div>
+    <div className="rm-board">
+      <div className="rm-board-inner">
+        {photos.map((m, i) => (
+          <button
+            key={m.id}
+            type="button"
+            className="rm-polaroid"
+            style={{ "--tilt": `${[-2.4, 1.8, -1.2, 2.6, -0.8, 1.4][i % 6]}deg` }}
+            aria-label={`Open the story around ${m.year}`}
+            onClick={() => onPhoto(m.id)}
+          >
+            <span className="rm-tack" />
+            <img src={m.image} alt="" decoding="async" />
+            <span className="rm-polaroid-cap">{m.year}</span>
+          </button>
+        ))}
       </div>
-
-      {/* Reserves its space, so the room does not shift as you move across
-          the photographs. */}
-      <p className={`rm-board-cap${shown ? " is-shown" : ""}`}>
-        {shown && (
-          <>
-            <span className="rm-board-who">{shown.title}</span>
-            <span className="rm-board-copy">{shown.copy}</span>
-          </>
-        )}
-      </p>
-    </>
+    </div>
   );
 }
 
