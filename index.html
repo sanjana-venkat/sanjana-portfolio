@@ -4,10 +4,115 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sanjana Venkat</title>
+
+    <!-- Identity. The site renders client-side, so everything a crawler needs
+         to know who this is has to be in the served HTML, not only in the app.
+         Without a description Google writes its own from the page text, and the
+         first thing it finds is a testimonial signed by an Executive Director. -->
+    <title>Sanjana Venkat | AI Product Designer &amp; Design Engineer</title>
+    <meta
+      name="description"
+      content="Sanjana Venkat is an AI product designer and design engineer building AI-native experiences across conversational AI, personalization, fintech, and growth."
+    />
+    <meta name="author" content="Sanjana Venkat" />
+    <link rel="canonical" href="https://www.sanjanavenkat.com/" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <meta name="theme-color" content="#fbf8f2" />
+
+    <!-- Open Graph: LinkedIn, Slack, iMessage -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="Sanjana Venkat" />
+    <meta property="og:url" content="https://www.sanjanavenkat.com/" />
+    <meta property="og:title" content="Sanjana Venkat | AI Product Designer &amp; Design Engineer" />
+    <meta
+      property="og:description"
+      content="AI product designer and design engineer building AI-native experiences across conversational AI, personalization, fintech, and growth."
+    />
+    <meta property="og:image" content="https://www.sanjanavenkat.com/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Sanjana Venkat, AI Product Designer and Design Engineer" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="profile:first_name" content="Sanjana" />
+    <meta property="profile:last_name" content="Venkat" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sanjana Venkat | AI Product Designer &amp; Design Engineer" />
+    <meta
+      name="twitter:description"
+      content="AI product designer and design engineer building AI-native experiences across conversational AI, personalization, fintech, and growth."
+    />
+    <meta name="twitter:image" content="https://www.sanjanavenkat.com/og.jpg" />
+
+    <!-- Several people share this name. The structured data is what tells
+         Google which one this site is about. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://www.sanjanavenkat.com/#sanjana",
+            "name": "Sanjana Venkat",
+            "givenName": "Sanjana",
+            "familyName": "Venkat",
+            "url": "https://www.sanjanavenkat.com/",
+            "image": "https://www.sanjanavenkat.com/og.jpg",
+            "jobTitle": ["AI Product Designer", "Design Engineer"],
+            "description": "AI product designer and design engineer building AI-native experiences across conversational AI, personalization, fintech, and growth.",
+            "knowsAbout": [
+              "AI Product Design",
+              "Design Engineering",
+              "Conversational AI",
+              "AI Personalization",
+              "Recommendation Systems",
+              "Product Strategy",
+              "Rapid Prototyping",
+              "Fintech",
+              "UX Research"
+            ],
+            "sameAs": [
+              "https://www.linkedin.com/in/sanjana-venkat/",
+              "https://github.com/sanjana-venkat"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.sanjanavenkat.com/#website",
+            "url": "https://www.sanjanavenkat.com/",
+            "name": "Sanjana Venkat",
+            "description": "Portfolio of Sanjana Venkat, AI product designer and design engineer.",
+            "inLanguage": "en-US",
+            "publisher": { "@id": "https://www.sanjanavenkat.com/#sanjana" },
+            "about": { "@id": "https://www.sanjanavenkat.com/#sanjana" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Only reaches a reader with JavaScript off, but it means the served
+         HTML always states who this is even if the app never boots. -->
+    <noscript>
+      <h1>Sanjana Venkat, AI Product Designer &amp; Design Engineer</h1>
+      <p>
+        I work across product strategy, UX, AI and engineering to turn ambiguous
+        problems into shipped products.
+      </p>
+      <p>
+        Selected work: conversational AI, intent-based recommendations and
+        personalization, service design at scale, and local-first dictation
+        built in SwiftUI.
+      </p>
+      <p>
+        <a href="https://www.linkedin.com/in/sanjana-venkat/">LinkedIn</a> ·
+        <a href="https://github.com/sanjana-venkat">GitHub</a> ·
+        <a href="/SanjanaVenkat_Design-Engineer_Resume1.pdf">Résumé</a>
+      </p>
+    </noscript>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
