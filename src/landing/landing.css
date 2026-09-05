@@ -1030,8 +1030,20 @@
 }
 
 /* Reserved so switching statements never moves the page. */
-.pc-quote-slot {
-  min-height: 300px;
+/* No reserved height any more: the stack below is as tall as the longest
+   statement on its own, so switching never moves the page. 300px was a floor,
+   and Jonathan's ran past it. */
+.pc-quote-stack {
+  display: grid;
+}
+
+.pc-quote-stack > .pc-quote {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+
+.pc-quote-stack > .pc-quote.is-on {
+  visibility: visible;
 }
 
 .pc-attr {
@@ -1183,10 +1195,6 @@
   .pc-id-portrait {
     width: 36px;
     height: 36px;
-  }
-
-  .pc-quote-slot {
-    min-height: 0;
   }
 
   .pc-thread {

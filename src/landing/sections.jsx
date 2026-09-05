@@ -473,9 +473,21 @@ export function Statements({ initialId }) {
       <div className="pc-zone pc-zone-r pc-fade">
         {/* Fixed slot: switching statements must never move the page. */}
         <figure className="pc-quote-slot" style={{ margin: 0, "--i": 1 }} aria-live="polite">
-          <blockquote className="pc-quote" key={open.id}>
-            {open.text}
-          </blockquote>
+          {/* All of them share one grid cell, so the slot is always as tall
+              as the longest — at any width, without a magic number. Only the
+              open one is visible; visibility:hidden keeps the rest out of the
+              accessibility tree too. */}
+          <div className="pc-quote-stack">
+            {STATEMENTS.map((s) => (
+              <blockquote
+                key={s.id}
+                className={`pc-quote${s.id === open.id ? " is-on" : ""}`}
+                aria-hidden={s.id !== open.id}
+              >
+                {s.text}
+              </blockquote>
+            ))}
+          </div>
           <figcaption>
             <p className="pc-attr">{open.attr}</p>
             <p className="pc-role">{open.role}</p>
