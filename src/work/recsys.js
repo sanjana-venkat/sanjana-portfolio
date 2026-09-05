@@ -16,7 +16,7 @@ export const RECSYS = {
     final: {
       src: "/work/recsys/experience.mp4",
       poster: "/work/recsys/experience-poster.jpg",
-      aspect: "720 / 1330",
+      aspect: "640 / 1320",
       label: "The intent-based experience",
     },
   },

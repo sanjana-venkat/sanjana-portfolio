@@ -7,7 +7,7 @@
 
 export const B2C = {
   slug: "b2c",
-  shape: "phone",
+  shape: "wide",
   kicker: "Lead designer · Chase.com · Product strategy, data-driven design",
   title: "Home Lending Public Experience",
   lede: "Driving a 38% boost in conversions with need based segmentation.",
@@ -16,7 +16,7 @@ export const B2C = {
     search: {
       src: "/work/b2c/search.mp4",
       poster: "/work/b2c/search-poster.webp",
-      aspect: "640 / 1320",
+      aspect: "1448 / 890",
       label: "The public home lending experience",
     },
   },
