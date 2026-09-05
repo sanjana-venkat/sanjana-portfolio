@@ -176,23 +176,32 @@ In a few sprints, we pushed toward redesigning the full journey and got design s
 
 Today, the experience is live and evolving with AI.`;
 
+/* The work browser groups by where the work happened, so a visitor can tell
+   staff-level bank work from a hackathon build at a glance. Order here is the
+   order in the picker. */
+const WORK_GROUPS = ["JPMorgan Chase", "Startup", "Hackathon", "Presentations"];
+
 const PROJECTS = [
-  { slug: "b2c", label: "B2C", title: "Uncover User Needs", study: "b2c" },
-  { slug: "ai-personalization", label: "RecSys", title: "Intent-based Recommendations", study: "ai-personalization" },
-  { slug: "muesli", label: "Speech-to-Text (Swift App)", title: "Muesli — Local-first dictation, made approachable", study: "muesli" },
-  // Rebuilt natively — see src/work/. Add `url: OUTDONE_FRAMER_URL` back to
-  // return to the Framer page.
-  { slug: "model-design", label: "Personalized Travel", title: "Outdone, Context-Aware Personalization", study: "model-design" },
-  { slug: "service-design", label: "Service Design", title: "Designing Systems at Scale", study: "service-design" },
-  // Rebuilt natively — see src/work/. To go back to the Framer page, add
-  // `url: AI_FRAMER_URL` to this line; the embed path is untouched.
-  { slug: "ai-chat-journeys", label: "AI Search Interfaces", title: "Agentic Search Experiences", study: "ai-chat-journeys" },
-  { slug: "conversational-agentic-ai", label: "Casey Conversational AI", title: "Casey Conversational AI", study: "conversational-agentic-ai" },
-  { slug: "exec-pitch", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
+  { slug: "ai-personalization", group: "JPMorgan Chase", label: "RecSys", title: "Intent-based Recommendations", study: "ai-personalization" },
+  { slug: "service-design", group: "JPMorgan Chase", label: "Service Design", title: "Designing Systems at Scale", study: "service-design" },
+  { slug: "conversational-agentic-ai", group: "JPMorgan Chase", label: "Conversational AI", title: "Casey Conversational AI", study: "conversational-agentic-ai" },
+  { slug: "b2c", group: "JPMorgan Chase", label: "B2C Public Site", title: "Uncover User Needs", study: "b2c" },
+  { slug: "ai-chat-journeys", group: "JPMorgan Chase", label: "AI Search Interfaces", title: "Agentic Search Experiences", study: "ai-chat-journeys" },
+  { slug: "model-design", group: "Startup", label: "Travel Personalization", title: "Outdone, Context-Aware Personalization", study: "model-design" },
+  { slug: "muesli", group: "Startup", label: "Speech-to-Text (Swift App)", title: "Muesli \u2014 Local-first dictation, made approachable", study: "muesli" },
   // frameHeight: the window height this embed is composed for. See the fitting
   // effect in WorkBrowserModal.
-  { slug: "fitcheck", label: "Hackathon Winner", title: "FitCheck", url: FITCHECK_URL, external: true },
+  { slug: "fitcheck", group: "Hackathon", label: "Lovart Sponsor Winner", title: "FitCheck", url: FITCHECK_URL, external: true },
+  { slug: "exec-pitch", group: "Presentations", label: "Exec Pitch", title: "Executive Buy-in", url: FIGMA_DECK_URL },
 ];
+
+function ChevronDownIcon({ className = "h-5 w-5" }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
+}
 
 function ChevronLeftIcon({ className = "h-5 w-5" }) {
   return (
@@ -551,8 +560,40 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
     getProjectBySlug(initialSlug)
   );
 
+  // The picker is a real overlay rather than an inline dropdown: the column it
+  // lives in is overflow-hidden, so an absolutely positioned panel would be
+  // clipped. Fixed, anchored to the trigger's measured rect.
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [menuPos, setMenuPos] = useState({ x: 0, y: 0 });
+  const pickerRef = useRef(null);
+
+  const closePicker = () => setPickerOpen(false);
+
+  const togglePicker = () => {
+    const r = pickerRef.current?.getBoundingClientRect();
+    if (r) setMenuPos({ x: r.left, y: r.bottom + 10 });
+    setPickerOpen((open) => !open);
+  };
+
+  useEffect(() => {
+    if (!pickerOpen) return;
+    // Capture, so Escape closes the picker without also closing the browser.
+    const onKey = (e) => {
+      if (e.key !== "Escape") return;
+      e.stopPropagation();
+      closePicker();
+    };
+    window.addEventListener("keydown", onKey, true);
+    window.addEventListener("resize", closePicker);
+    return () => {
+      window.removeEventListener("keydown", onKey, true);
+      window.removeEventListener("resize", closePicker);
+    };
+  }, [pickerOpen]);
+
   const selectProject = (project) => {
     setActiveProject(project);
+    setPickerOpen(false);
     window.history.replaceState(null, "", `#work=${project.slug}`);
   };
 
@@ -590,29 +631,73 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
           <h2 className="work-title">My Work</h2>
         </div>
 
-        <div className="work-tabs no-scrollbar">
-          {PROJECTS.map((project) =>
-            project.external ? (
-              <a
-                key={project.label}
-                href={project.url}
-                target="_blank"
-                rel="noreferrer"
-                className="pc-pill"
-              >
-                {project.label}
-              </a>
-            ) : (
-              <button
-                key={project.label}
-                onClick={() => selectProject(project)}
-                className={`pc-pill${activeProject.label === project.label ? " on" : ""}`}
-              >
-                {project.label}
-              </button>
-            )
-          )}
+        <div className="work-nav">
+          <button
+            ref={pickerRef}
+            type="button"
+            className={`work-picker${pickerOpen ? " on" : ""}`}
+            onClick={togglePicker}
+            aria-haspopup="true"
+            aria-expanded={pickerOpen}
+          >
+            <span className="work-picker-text">
+              <span className="work-picker-co">{activeProject.group}</span>
+              <span className="work-picker-name">{activeProject.label}</span>
+            </span>
+            <ChevronDownIcon className="work-picker-caret" />
+          </button>
         </div>
+
+        {pickerOpen && (
+          <div className="work-overlay" onMouseDown={closePicker}>
+            <div
+              className="work-menu"
+              role="menu"
+              aria-label="All projects"
+              style={{ "--mx": `${menuPos.x}px`, "--my": `${menuPos.y}px` }}
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              {WORK_GROUPS.map((group) => {
+                const items = PROJECTS.filter((project) => project.group === group);
+                if (!items.length) return null;
+                return (
+                  <section className="work-group" key={group}>
+                    <p className="work-group-name">{group}</p>
+                    <ul>
+                      {items.map((project) =>
+                        project.external ? (
+                          <li key={project.slug}>
+                            <a
+                              className="work-item"
+                              href={project.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              onClick={closePicker}
+                            >
+                              <span className="work-item-label">{project.label}</span>
+                              <span className="work-item-title">{project.title}</span>
+                            </a>
+                          </li>
+                        ) : (
+                          <li key={project.slug}>
+                            <button
+                              type="button"
+                              className={`work-item${project.slug === activeProject.slug ? " on" : ""}`}
+                              onClick={() => selectProject(project)}
+                            >
+                              <span className="work-item-label">{project.label}</span>
+                              <span className="work-item-title">{project.title}</span>
+                            </button>
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </section>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         <div
           ref={stageRef}
@@ -743,7 +828,9 @@ export default function PortfolioHome() {
     addFavicon("icon", faviconPath);
     addFavicon("shortcut icon", faviconPath);
     addFavicon("apple-touch-icon", faviconPath);
-    document.title = "Sanjana Venkat";
+    // Matches the <title> in index.html. Leaving the short form here
+    // overwrote the indexed title as soon as the app mounted.
+    document.title = "Sanjana Venkat | AI Product Designer & Design Engineer";
   }, []);
 
   // Deep links such as /#work=muesli still open straight into a case study.

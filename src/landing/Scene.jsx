@@ -183,8 +183,12 @@ function RoomCanvas({ openWith, onOpenProject, setNearHer, ask, settled }) {
         <MusicBox />
 
         {/* ── Her name, and the kolam, painted on the wall ──────────── */}
+        {/* The wall only has room for the first name, but the heading
+            still has to say who this is: the full name and role ride
+            along for screen readers and crawlers. */}
         <h1 className="rm-name rm-settle" style={{ "--step": 0 }}>
-          {INTRO.name}
+          <span className="sr-only">Sanjana Venkat, AI Product Designer and Design Engineer</span>
+          <span aria-hidden="true">{INTRO.name}</span>
         </h1>
         <p className="rm-tagline">{INTRO.tagline}</p>
         <p className="rm-creed">
@@ -561,7 +565,10 @@ function RoomColumn({ onOpenProject, ask }) {
     <div className="rc">
       {/* ── The room ─────────────────────────────────────────────────── */}
       <header className="rc-hero">
-        <h1 className="rc-name">{INTRO.name}</h1>
+        <h1 className="rc-name">
+          <span className="sr-only">Sanjana Venkat, AI Product Designer and Design Engineer</span>
+          <span aria-hidden="true">{INTRO.name}</span>
+        </h1>
         <p className="rc-tagline">{INTRO.tagline}</p>
         <p className="rc-creed">
           meet people where they are and take them where they want to be. Both

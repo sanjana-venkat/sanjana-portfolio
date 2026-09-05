@@ -33,7 +33,10 @@ export function Sanjana() {
       <div className="pc-zone pc-zone-l pc-fade">
         <div style={{ "--i": 0 }}>
           <Eyebrow title="Sanjana" />
-          <h1 className="pc-title">{INTRO.name}</h1>
+          <h1 className="pc-title">
+            <span className="sr-only">Sanjana Venkat, AI Product Designer and Design Engineer</span>
+            <span aria-hidden="true">{INTRO.name}</span>
+          </h1>
           <p className="pc-lead">{INTRO.lead}</p>
         </div>
       </div>
