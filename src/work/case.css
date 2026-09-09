@@ -168,7 +168,11 @@
   max-height: 100%;
   max-width: 100%;
   aspect-ratio: var(--ar, 698 / 1418);
-  border-radius: 42px;
+  /* Recordings that carry a device frame also carry whatever was behind it.
+     The corner radius here is the device's own, so clipping to it drops the
+     simulator background out of the four corners and leaves just the phone. */
+  border-radius: 14.2%/6.7%;
+  overflow: hidden;
 }
 
 /* Anything that is not a tall phone is sized from its width, and the panel
@@ -853,4 +857,50 @@ iframe.cs-video {
   stroke: currentColor;
   stroke-width: 2;
   stroke-linecap: round;
+}
+
+
+/* ── Per-section film navigation ──────────────────────────────────────────
+   Only appears when a study cuts one recording into per-section moments. The
+   arrows move the reading, not the video: the film follows the section the
+   same way it does when you scroll there yourself. */
+.cs-film-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex: none;
+  margin-top: -4px;
+}
+
+.cs-film-nav button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.cs-film-nav button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: transparent;
+  color: #16120f;
+}
+
+.cs-film-nav button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.cs-film-nav span {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.5);
+  font-variant-numeric: tabular-nums;
 }

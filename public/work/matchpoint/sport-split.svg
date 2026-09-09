@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" width="920" height="430" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .lab{font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase}
+      .hd{font-size:19px;font-weight:800;letter-spacing:-0.3px}
+      .sub{font-size:12.5px;font-weight:500}
+      .k{font-size:11.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase}
+      .v{font-size:14px;font-weight:600}
+      .ink{fill:#16150F}.mut{fill:#16150F;opacity:.5}.crt{fill:#3F5240}
+    </style>
+  </defs>
+
+  <rect x="352" y="0" width="216" height="52" rx="26" fill="#16150F"/>
+  <text x="460" y="32" text-anchor="middle" class="hd" fill="#fff">Sport</text>
+  <text x="460" y="76" text-anchor="middle" class="sub mut">One enum. One question: what shape is it?</text>
+
+  <path d="M460 88 L460 104 Q460 116 448 116 L246 116 Q234 116 234 128 L234 148" fill="none" stroke="#16150F" stroke-opacity=".3" stroke-width="1.5"/>
+  <path d="M460 88 L460 104 Q460 116 472 116 L674 116 Q686 116 686 128 L686 148" fill="none" stroke="#16150F" stroke-opacity=".3" stroke-width="1.5"/>
+
+  <!-- individual -->
+  <rect x="20" y="148" width="428" height="266" rx="22" fill="#fff" stroke="#16150F" stroke-opacity=".14"/>
+  <rect x="20" y="148" width="428" height="4" rx="2" fill="#F4C22C"/>
+  <text x="48" y="184" class="lab crt">Individual and dual</text>
+  <text x="48" y="210" class="hd ink">Pickleball, badminton, ping pong</text>
+  <text x="48" y="232" class="sub mut">Two or four people. One scoreline. Both sides confirm it.</text>
+
+  <line x1="48" y1="252" x2="420" y2="252" stroke="#16150F" stroke-opacity=".1"/>
+  <text x="48" y="278" class="k mut">Match model</text><text x="230" y="278" class="v ink">Challenge, verified by both</text>
+  <text x="48" y="310" class="k mut">Skill</text><text x="230" y="310" class="v ink">MP rating, starts at 80</text>
+  <text x="48" y="342" class="k mut">Second tab</text><text x="230" y="342" class="v ink">Matches</text>
+  <text x="48" y="374" class="k mut">Create button</text><text x="230" y="374" class="v ink">Challenge · Upload scores</text>
+
+  <!-- group -->
+  <rect x="472" y="148" width="428" height="266" rx="22" fill="#fff" stroke="#16150F" stroke-opacity=".14"/>
+  <rect x="472" y="148" width="428" height="4" rx="2" fill="#3F5240"/>
+  <text x="500" y="184" class="lab crt">Group</text>
+  <text x="500" y="210" class="hd ink">Cricket, soccer, volleyball</text>
+  <text x="500" y="232" class="sub mut">A team, a ground, a window, and a result that is not yours.</text>
+
+  <line x1="500" y1="252" x2="872" y2="252" stroke="#16150F" stroke-opacity=".1"/>
+  <text x="500" y="278" class="k mut">Match model</text><text x="682" y="278" class="v ink">Fixture, with a written result</text>
+  <text x="500" y="310" class="k mut">Skill</text><text x="682" y="310" class="v ink">Teammate reviews, no rating</text>
+  <text x="500" y="342" class="k mut">Second tab</text><text x="682" y="342" class="v ink">Calendar</text>
+  <text x="500" y="374" class="k mut">Create button</text><text x="682" y="374" class="v ink">Add a game · Submit a review</text>
+</svg>

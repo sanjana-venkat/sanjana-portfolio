@@ -42,6 +42,13 @@ export default function CaseStudy({ study }) {
   const marks = useRef([]);
   const [active, setActive] = useState(0);
   const [zoomed, setZoomed] = useState(false);
+  /* A click on the film arrows sets the section immediately and holds it while
+     the smooth scroll runs, so two quick clicks move two sections rather than
+     reading whichever one the scroll is passing through. */
+  const held = useRef(0);
+  /* The intended section, updated synchronously. Reading `active` here would
+     give every click in one tick the same starting point. */
+  const idx = useRef(0);
   const isPhone = useMediaQuery("(max-width: 900px)");
 
   // Which section owns the reading line — a third of the way down, where the
@@ -57,6 +64,8 @@ export default function CaseStudy({ study }) {
     marks.current.forEach((el, i) => {
       if (el && el.getBoundingClientRect().top <= line) next = i;
     });
+    if (Date.now() < held.current) return;
+    idx.current = next;
     setActive((prev) => (prev === next ? prev : next));
   }, []);
 
@@ -68,10 +77,24 @@ export default function CaseStudy({ study }) {
     return () => cancelAnimationFrame(id);
   }, [measure, study]);
 
-  const film =
-    study.films[study.sections[active]?.film] || Object.values(study.films)[0];
-  const filmKeys = Object.keys(study.films);
   const all = [...study.sections, ...(study.reflection ? [study.reflection] : [])];
+  const film = study.films[all[active]?.film] || Object.values(study.films)[0];
+  const filmKeys = Object.keys(study.films);
+  // Studies that cut one recording into per-section moments carry the range on
+  // the section rather than on the film.
+  const clip = all[active]?.clip;
+  const clipped = all.some((sec) => sec.clip);
+  const caption = all[active]?.clipLabel || film.label;
+
+  const step = (delta) => {
+    const next = Math.max(0, Math.min(all.length - 1, idx.current + delta));
+    const el = marks.current[next];
+    if (!el || next === idx.current) return;
+    idx.current = next;
+    held.current = Date.now() + 1000;
+    setActive(next);
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <div
@@ -129,7 +152,7 @@ export default function CaseStudy({ study }) {
                   return f.vimeo ? (
                     <VimeoFilm key={key} film={f} on={on} />
                   ) : f.src ? (
-                    <Film key={key} film={f} on={on} />
+                    <Film key={key} film={f} on={on} clip={on ? clip : undefined} />
                   ) : (
                     <img
                       key={key}
@@ -141,7 +164,30 @@ export default function CaseStudy({ study }) {
                   );
                 })}
               </div>
-              <p className="cs-film-cap">{film.label}</p>
+              <p className="cs-film-cap">{caption}</p>
+              {clipped && (
+                <div className="cs-film-nav">
+                  <button
+                    type="button"
+                    onClick={() => step(-1)}
+                    disabled={active === 0}
+                    aria-label="Previous section"
+                  >
+                    &#8592;
+                  </button>
+                  <span aria-hidden="true">
+                    {active + 1} / {all.length}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => step(1)}
+                    disabled={active === all.length - 1}
+                    aria-label="Next section"
+                  >
+                    &#8594;
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -355,8 +401,30 @@ function Clip({ src, alt }) {
   );
 }
 
-function Film({ film, on }) {
+function Film({ film, on, clip }) {
   const ref = useRef(null);
+
+  /* A study can hand each section its own moment of one recording instead of a
+     separate file. Playback is then held inside [start, end] and loops there,
+     so the film only ever shows the part the section is talking about. */
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || !clip) return;
+    const [start, end] = clip;
+    const seat = () => {
+      if (v.currentTime < start - 0.25 || v.currentTime > end) v.currentTime = start;
+    };
+    const hold = () => {
+      if (v.currentTime >= end) v.currentTime = start;
+    };
+    if (v.readyState >= 1) v.currentTime = start;
+    v.addEventListener("loadedmetadata", seat);
+    v.addEventListener("timeupdate", hold);
+    return () => {
+      v.removeEventListener("loadedmetadata", seat);
+      v.removeEventListener("timeupdate", hold);
+    };
+  }, [clip]);
 
   useEffect(() => {
     const v = ref.current;
@@ -384,6 +452,14 @@ function Film({ film, on }) {
     const v = ref.current;
     if (on && v && v.paused) v.play().catch(() => {});
   }, [on]);
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || !clip) return;
+    // Loop mode would rewind to zero at the end of the file, which is somebody
+    // else's section. A clipped film manages its own ends.
+    v.loop = false;
+  }, [clip]);
 
   return (
     <video
