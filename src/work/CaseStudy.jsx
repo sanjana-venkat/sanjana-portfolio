@@ -74,7 +74,14 @@ export default function CaseStudy({ study }) {
     // The first pass can land before the stage has a height, which leaves the
     // sticky columns sized to nothing. Measure again on the next frame.
     const id = requestAnimationFrame(measure);
-    return () => cancelAnimationFrame(id);
+    // --port is the stage height, and the stage changes with the window. Without
+    // this the film keeps the height it had when the study opened, and on a
+    // shorter window it grows past the scrollport and takes the arrows with it.
+    window.addEventListener("resize", measure);
+    return () => {
+      cancelAnimationFrame(id);
+      window.removeEventListener("resize", measure);
+    };
   }, [measure, study]);
 
   const all = [...study.sections, ...(study.reflection ? [study.reflection] : [])];
