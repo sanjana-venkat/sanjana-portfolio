@@ -13,6 +13,7 @@
 
 import { B2C } from "./b2c";
 import { CASEY } from "./casey";
+import { MATCHPOINT } from "./matchpoint";
 import { MUESLI } from "./muesli";
 import { OUTDONE } from "./outdone";
 import { RECSYS } from "./recsys";
@@ -132,6 +133,7 @@ export const CASE_STUDIES = {
   [AI_SEARCH.slug]: AI_SEARCH,
   [B2C.slug]: B2C,
   [CASEY.slug]: CASEY,
+  [MATCHPOINT.slug]: MATCHPOINT,
   [MUESLI.slug]: MUESLI,
   [OUTDONE.slug]: OUTDONE,
   [RECSYS.slug]: RECSYS,
