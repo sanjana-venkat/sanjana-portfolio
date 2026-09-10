@@ -110,19 +110,20 @@ export default function CaseStudy({ study }) {
       onScroll={measure}
     >
       <header className="cs-head">
-        <p className="cs-kicker">{study.kicker}</p>
+        {/* One line, above the title: role, the number, and anywhere the
+            work actually lives. It used to repeat under the lede, which read
+            as a second eyebrow. */}
+        <p className="cs-kicker">
+          <span>{study.kicker}</span>
+          {study.win && <span className="cs-win">{study.win}</span>}
+          {[...(study.links || []), ...(study.link ? [study.link] : [])].map((l) => (
+            <a key={l.href} className="cs-kicker-link" href={l.href} target="_blank" rel="noreferrer">
+              {l.label}
+            </a>
+          ))}
+        </p>
         <h1 className="cs-title">{study.title}</h1>
         <p className="cs-lede">{study.lede}</p>
-        {(study.note || study.link || study.links) && (
-          <p className="cs-meta">
-            {study.note}
-            {[...(study.links || []), ...(study.link ? [study.link] : [])].map((l) => (
-              <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
-                {l.label}
-              </a>
-            ))}
-          </p>
-        )}
       </header>
 
       <div className="cs-body">
@@ -135,23 +136,21 @@ export default function CaseStudy({ study }) {
             <div className={`cs-film is-${study.shape || "phone"}`}>
               {/* Each film carries its own aspect. Sharing one across a study
                   letterboxes some and crops others. */}
+              {/* Opening the film full screen is not a phone affordance — the
+                  column is narrow on a desktop too. */}
               <div
-                className={`cs-screen${isPhone ? " is-tappable" : ""}`}
+                className="cs-screen is-tappable"
                 style={{ "--ar": film.aspect || "698 / 1418" }}
-                onClick={isPhone ? () => setZoomed(true) : undefined}
-                role={isPhone ? "button" : undefined}
-                tabIndex={isPhone ? 0 : undefined}
-                aria-label={isPhone ? `Open ${film.label} full screen` : undefined}
-                onKeyDown={
-                  isPhone
-                    ? (e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          setZoomed(true);
-                        }
-                      }
-                    : undefined
-                }
+                onClick={() => setZoomed(true)}
+                role="button"
+                tabIndex={0}
+                aria-label={`Open ${film.label} full screen`}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setZoomed(true);
+                  }
+                }}
               >
                 {filmKeys.map((key) => {
                   const f = study.films[key];

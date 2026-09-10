@@ -8,9 +8,14 @@
 export const B2C = {
   slug: "b2c",
   shape: "wide",
-  kicker: "Lead designer · Chase.com · Product strategy, data-driven design",
+  kicker: "Lead designer · Chase.com",
+  win: "38% increase in lead initiate",
   title: "Home Lending Public Experience",
   lede: "Driving a 38% boost in conversions with need based segmentation.",
+  link: {
+    href: "https://www.chase.com/personal/mortgage/calculators-resources/mortgage-calculator",
+    label: "See it live",
+  },
 
   films: {
     search: {

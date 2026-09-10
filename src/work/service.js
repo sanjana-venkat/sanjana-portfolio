@@ -9,7 +9,8 @@
 
 export const SERVICE = {
   slug: "service-design",
-  kicker: "Lead designer · Apply & self-service",
+  kicker: "Designer · Conversion rates",
+  win: "5.5% increase in lead submit",
   title: "Apply & Self-service",
   lede: "Mapping complex customer journeys, workflows, and backend systems. Used service design and testing to reduce friction and improve self-service experiences at scale.",
 

@@ -13,7 +13,8 @@
 export const MATCHPOINT = {
   slug: "matchpoint",
   shape: "phone",
-  kicker: "Product architecture, UX and SwiftUI · With Sashank Mullapudi",
+  kicker: "Design engineer · SwiftUI",
+  win: "Native iOS, end to end",
   title: "MatchPoint",
   lede: "A native iOS app for finding people at your level to play with. You find players and courts near you, send a challenge, sort the details out in chat, and confirm the score afterwards. Every sport you play carries its own skill rating, and it only moves when both people agree on who won.",
 

@@ -13,6 +13,9 @@
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  /* A fast flick used to run out of study and carry on scrolling the stage
+     underneath it, sliding this whole block and showing the stage behind. */
+  overscroll-behavior: contain;
   background: var(--cream-50);
   color: var(--ink-900);
   font-family: var(--font-body);
@@ -43,12 +46,54 @@
 }
 
 .cs-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 8px 14px;
   margin: 0 0 18px;
   font-family: var(--font-label);
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-400);
+}
+
+/* The result, set apart from the role so it reads first. */
+.cs-win {
+  position: relative;
+  padding-left: 15px;
+  color: var(--lotus-600);
+}
+
+.cs-win::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  translate: 0 -50%;
+  border-radius: 999px;
+  background: var(--lotus-600);
+}
+
+.cs-kicker-link {
+  color: var(--lotus-600);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: opacity 200ms var(--in, ease);
+}
+
+.cs-kicker-link:hover {
+  opacity: 0.7;
+}
+
+/* Stacked, the dot separator makes no sense. */
+@media (max-width: 720px) {
+  .cs-win { padding-left: 0; }
+  .cs-win::before { display: none; }
 }
 
 .cs-title {
@@ -753,7 +798,8 @@ iframe.cs-video {
 }
 
 /* ── The prototype, full screen ───────────────────────────────────────────
-   Tapping the panel on a phone opens the film at the size of the screen. */
+   Clicking the panel opens the film at the size of the window, on any device.
+   Escape or the X closes it. */
 
 .cs-screen.is-tappable {
   cursor: zoom-in;
@@ -764,6 +810,11 @@ iframe.cs-video {
   inset: 0;
   z-index: 90;
   display: grid;
+  /* minmax(0, 1fr), or the row grows to the film's intrinsic height and the
+     max-height below has nothing to cap against — a tall film ran off the
+     bottom of the window. */
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   padding: 14px;
   background: #0b0908;
@@ -780,15 +831,21 @@ iframe.cs-video {
   place-items: center;
   width: 100%;
   height: 100%;
+  min-width: 0;
+  min-height: 0;
 }
 
 .cs-lightbox-stage video,
 .cs-lightbox-stage img {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
+  /* Against the window, not the parent: a percentage max-height was not
+     capping the replaced element and tall films ran off the bottom. 28px is
+     the lightbox's padding, top and bottom. */
+  max-width: calc(100vw - 28px);
+  max-height: calc(100dvh - 28px);
   width: auto;
   height: auto;
+  object-fit: contain;
   border-radius: 4px;
 }
 

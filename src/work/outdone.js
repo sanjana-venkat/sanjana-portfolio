@@ -8,18 +8,18 @@
 
 export const OUTDONE = {
   slug: "model-design",
-  shape: "wide",
-  kicker: "Designer · Collab DeepMind researcher",
+  shape: "phone",
+  kicker: "Design engineer · React",
+  win: "Semi-finalist, Stanford × DeepMind",
   title: "Model Design — Outdone",
   lede: "Designed and built Outdone to make travel planning easier based on how you feel today. Also explore a bigger AI personalization question: how do we help models understand current intent, not just past preference?",
-  note: "Semi-finalist in Stanford x DeepMind Hackathon",
   link: { href: "https://travel-dna-kohl.vercel.app/", label: "Try Outdone" },
 
   films: {
     outdone: {
       src: "/work/outdone/outdone.mp4",
       poster: "/work/outdone/outdone-poster.webp",
-      aspect: "1360 / 812",
+      aspect: "638 / 1388",
       label: "Outdone",
     },
   },

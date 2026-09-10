@@ -9,9 +9,9 @@ export const MUESLI = {
   slug: "muesli",
   shape: "wide",
   kicker: "Design engineer · SwiftUI",
+  win: "Open-source PR, under review",
   title: "Make voice feel natural",
   lede: "We’re so used to typing that we forget voice is an option. I redesigned Muesli to make voice easier to discover and use, with clearer permissions, intuitive setup, and meeting notifications—all stored locally.",
-  note: "Open-source contribution, PR under review.",
   links: [
     { href: "https://github.com/Muesli-HQ/muesli/pull/329", label: "Implementation PR" },
   ],
@@ -104,7 +104,7 @@ export const MUESLI = {
   reflection: {
     id: "build",
     eyebrow: "Build",
-    title: "I didn't stop at the Figma file",
+    title: "My first open-source PR",
     blocks: [
       { p: "I translated the direction into SwiftUI against Muesli's existing architecture: onboarding, navigation, Dictations, Meetings, Insights, Dictionary, Models, Shortcuts, Settings and the floating dictation indicator." },
       { p: "Building it surfaced what a static frame hides. Window resizing, collapsed navigation, long histories, active recording, empty states and permission behaviour all had to hold up." },

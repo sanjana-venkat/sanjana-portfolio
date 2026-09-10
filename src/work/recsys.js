@@ -8,7 +8,8 @@
 export const RECSYS = {
   slug: "ai-personalization",
   shape: "phone",
-  kicker: "Lead designer · Native mobile, product strategy, data science and research",
+  kicker: "Lead designer · Native mobile",
+  win: "17% increase in CTR",
   title: "Intent-based recommendations",
   lede: "Years of customer data, but data alone couldn't answer “what does this customer actually need right now?” I led the strategy behind need-based recommendations that helped AI infer user intent before deciding what experience to show.",
 

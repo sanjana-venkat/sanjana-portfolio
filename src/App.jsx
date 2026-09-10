@@ -187,7 +187,7 @@ const PROJECTS = [
   { slug: "conversational-agentic-ai", group: "JPMorgan Chase", label: "Conversational AI", title: "Casey Conversational AI", study: "conversational-agentic-ai" },
   { slug: "b2c", group: "JPMorgan Chase", label: "B2C Public Site", title: "Uncover User Needs", study: "b2c" },
   { slug: "ai-chat-journeys", group: "JPMorgan Chase", label: "AI Search Interfaces", title: "Agentic Search Experiences", study: "ai-chat-journeys" },
-  { slug: "model-design", group: "Startup", label: "Travel Personalization", title: "Outdone, Context-Aware Personalization", study: "model-design" },
+  { slug: "model-design", group: "Hackathon", label: "Travel Personalization", title: "Outdone, Context-Aware Personalization", study: "model-design" },
   { slug: "matchpoint", group: "Startup", label: "Multi-sport iOS App", title: "MatchPoint \u2014 One app, very different sports", study: "matchpoint" },
   { slug: "muesli", group: "Startup", label: "Speech-to-Text (Swift App)", title: "Muesli \u2014 Local-first dictation, made approachable", study: "muesli" },
   // frameHeight: the window height this embed is composed for. See the fitting
