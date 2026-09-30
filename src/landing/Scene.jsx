@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import KolamMark from "./KolamMark";
 import { Statements, Story } from "./sections";
-import { FEATURED, INTRO, STATEMENTS, STORY_MOMENTS } from "./landingData";
+import { AWARD, FEATURED, INTRO, STATEMENTS, STORY_MOMENTS } from "./landingData";
 import { useMediaQuery, usePrefersReducedMotion } from "./useMediaQuery";
 import "./landing.css";
 import "./room.css";
@@ -37,6 +37,9 @@ const CANVAS_H = 900;
 
 const SETTLE_KEY = "sv-room-settled";
 
+/* The conversation has its own URL, so it is somewhere you can go back from. */
+const CHAT_HASH = "#chat";
+
 /* The music box on the sill.
    Paste a Spotify share link here — a playlist, album or track — and the box
    appears on the window sill and opens the player when tapped. Left empty the
@@ -57,7 +60,9 @@ const BOARD_PHOTOS = STORY_MOMENTS.filter((m) =>
 const BOARD_LETTERS = STATEMENTS.slice(0, 4);
 
 export default function Scene({ chat, onOpenProject }) {
-  const [open, setOpen] = useState(null); // "story" | "statements" | "chat" | null
+  const [open, setOpen] = useState(() =>
+    window.location.hash === CHAT_HASH ? "chat" : null
+  ); // "story" | "statements" | "chat" | null
   const [focusId, setFocusId] = useState(null);
   const [nearHer, setNearHer] = useState(false);
   const isPhone = useMediaQuery("(max-width: 900px)");
@@ -85,9 +90,33 @@ export default function Scene({ chat, onOpenProject }) {
   }, [open]);
 
   const close = useCallback(() => {
+    // Closing the conversation is the same as pressing back: it pops the
+    // entry that opening it pushed, rather than adding another on top.
+    if (window.location.hash === CHAT_HASH) {
+      if (window.history.state?.chat) window.history.back();
+      else window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
     setOpen(null);
     setFocusId(null);
     setNearHer(false);
+  }, []);
+
+  const ask = useCallback(() => {
+    if (window.location.hash !== CHAT_HASH) {
+      window.history.pushState({ chat: true }, "", CHAT_HASH);
+    }
+    setOpen("chat");
+    setNearHer(false);
+  }, []);
+
+  // Back and forward open and close the conversation.
+  useEffect(() => {
+    const sync = () => {
+      if (window.location.hash === CHAT_HASH) setOpen("chat");
+      else setOpen((o) => (o === "chat" ? null : o));
+    };
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
   }, []);
 
   useEffect(() => {
@@ -107,7 +136,7 @@ export default function Scene({ chat, onOpenProject }) {
   // Reaching for her nudges the shade; asking her pulls it the whole way.
   const shade = open === "chat" ? "down" : nearHer && !isPhone ? "peek" : "up";
 
-  const props = { openWith, onOpenProject, setNearHer, ask: () => setOpen("chat"), settled };
+  const props = { openWith, onOpenProject, setNearHer, ask, settled };
 
   return (
     <div className={`rm${open ? " is-open" : ""}`}>
@@ -116,7 +145,7 @@ export default function Scene({ chat, onOpenProject }) {
       {isPhone ? (
         <MobileChat open={open === "chat"} chat={chat} onClose={close} />
       ) : (
-        <Shade state={shade} onPull={() => setOpen("chat")} onDrop={close}>
+        <Shade state={shade} onPull={ask} onDrop={close}>
           {open === "chat" && <DeskChat chat={chat} />}
         </Shade>
       )}
@@ -211,6 +240,9 @@ function RoomCanvas({ openWith, onOpenProject, setNearHer, ask, settled }) {
           onLetter={(id) => openWith("statements", id)}
         />
 
+        {/* ── The medal, on its ribbon ──────────────────────────────── */}
+        <Medal award={AWARD} />
+
         {/* ── Sanjana, at her desk ──────────────────────────────────── */}
         <button
           type="button"
@@ -303,11 +335,31 @@ function Sanjana() {
    sits on the sill beside it rather than over the room. */
 function MusicBox() {
   const [open, setOpen] = useState(false);
+  const box = useRef(null);
   const embed = SPOTIFY_URL ? spotifyEmbed(SPOTIFY_URL) : null;
+
+  // Clicking anywhere else in the room puts the player away. Clicks inside
+  // the Spotify frame never reach this document, so using it keeps it open.
+  useEffect(() => {
+    if (!open) return undefined;
+    const onDown = (e) => {
+      if (!box.current?.contains(e.target)) setOpen(false);
+    };
+    const onKey = (e) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
   if (!embed) return null;
 
   return (
-    <div className="rm-music">
+    <div className="rm-music" ref={box}>
       <button
         type="button"
         className={`rm-music-box${open ? " is-on" : ""}`}
@@ -356,6 +408,93 @@ function MusicBox() {
         </div>
       )}
     </div>
+  );
+}
+
+/* ── The medal ───────────────────────────────────────────────────────────
+   First place, hung from a nail on its ribbon. Drawn for the same reason the
+   music box is: flat front elevation, solid fills, the room's own palette.
+   It catches the light now and then; hovering swings it and says what for;
+   tapping it opens the repo. */
+function MedalArt() {
+  return (
+    <svg viewBox="0 0 100 170" aria-hidden="true">
+      <defs>
+        <radialGradient id="rm-medal-gold" cx="38%" cy="32%" r="75%">
+          <stop offset="0%" stopColor="#f6e3a1" />
+          <stop offset="45%" stopColor="#dcb548" />
+          <stop offset="100%" stopColor="#a8823f" />
+        </radialGradient>
+        <clipPath id="rm-medal-clip">
+          <circle cx="50" cy="130" r="34" />
+        </clipPath>
+      </defs>
+
+      {/* Nail and the brass bar the ribbon hangs from */}
+      <circle cx="50" cy="4" r="3.4" fill="var(--brass)" />
+      <line x1="50" y1="6" x2="50" y2="12" stroke="var(--brass-600)" strokeWidth="1.4" />
+
+      {/* Ribbon: two straps crossing into a V over the ring */}
+      <polygon points="18,14 42,14 62,96 42,96" fill="var(--lotus-800)" />
+      <polygon points="58,14 82,14 58,96 38,96" fill="var(--lotus-600)" />
+      <polygon points="66,14 72,14 52,96 46,96" fill="var(--jasmine)" opacity="0.75" />
+      <rect x="14" y="10" width="72" height="6" rx="2" fill="var(--brass)" />
+
+      {/* Ring and disc */}
+      <circle cx="50" cy="96" r="4.6" fill="none" stroke="var(--brass-600)" strokeWidth="2.4" />
+      <circle cx="50" cy="130" r="34" fill="url(#rm-medal-gold)" />
+      <circle cx="50" cy="130" r="27" fill="none" stroke="#a8823f" strokeWidth="1.4" opacity="0.7" />
+
+      {/* Laurel, two sprigs meeting at the foot */}
+      {[0, 1, 2, 3, 4].map((i) => {
+        const t = 200 - i * 26;
+        const a = t * (Math.PI / 180);
+        const x = 50 + Math.cos(a) * 22.5;
+        const y = 130 - Math.sin(a) * 22.5;
+        const deg = 90 - t;
+        return (
+          <g key={i} fill="#9a7432" opacity="0.85">
+            <ellipse cx={x} cy={y} rx="1.8" ry="4" transform={`rotate(${deg} ${x} ${y})`} />
+            <ellipse cx={100 - x} cy={y} rx="1.8" ry="4" transform={`rotate(${-deg} ${100 - x} ${y})`} />
+          </g>
+        );
+      })}
+
+      <text x="50" y="140" textAnchor="middle" className="rm-medal-num">
+        1<tspan className="rm-medal-st" dy="-11">st</tspan>
+      </text>
+
+      {/* A glint crosses the face now and then */}
+      <g clipPath="url(#rm-medal-clip)">
+        <rect className="rm-medal-glint" x="10" y="90" width="14" height="80" fill="#fffdf8" opacity="0.55" />
+      </g>
+    </svg>
+  );
+}
+
+function Medal({ award }) {
+  return (
+    <a
+      className="rm-medal"
+      href={award.url}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`${award.title} at the ${award.event}. Open ${award.project} on GitHub`}
+    >
+      <span className="rm-medal-art">
+        <MedalArt />
+      </span>
+      <span className="rm-medal-plate" aria-hidden="true">
+        {award.place} place
+      </span>
+
+      <span className="rm-medal-cap" aria-hidden="true">
+        <span className="rm-medal-kicker">{award.title} · {award.event}</span>
+        <span className="rm-medal-who">{award.project}</span>
+        <span className="rm-medal-copy">{award.pitch}</span>
+        <span className="rm-medal-go">Open on GitHub ↗</span>
+      </span>
+    </a>
   );
 }
 
@@ -648,6 +787,27 @@ function RoomColumn({ onOpenProject, ask }) {
               <span className="rc-hang-cap">{p.name}</span>
             </button>
           ))}
+        </div>
+      </section>
+
+      {/* ── The medal ─────────────────────────────────────────────────── */}
+      <section className="rc-sec">
+        <h2 className="rc-h2">On the wall</h2>
+        <div className="rc-award">
+          <a className="rc-award-medal" href={AWARD.url} target="_blank" rel="noreferrer" aria-label={`Open ${AWARD.project} on GitHub`}>
+            <MedalArt />
+          </a>
+          <div className="rc-award-body">
+            <p className="rc-award-kicker">
+              {AWARD.title} ·{" "}
+              <a href={AWARD.eventUrl} target="_blank" rel="noreferrer">{AWARD.event}</a>
+            </p>
+            <h3 className="rc-award-who">{AWARD.project}</h3>
+            <p className="rc-award-copy">{AWARD.pitch}</p>
+            <a className="rc-award-go" href={AWARD.url} target="_blank" rel="noreferrer">
+              Open on GitHub ↗
+            </a>
+          </div>
         </div>
       </section>
 

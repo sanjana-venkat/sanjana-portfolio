@@ -35,6 +35,8 @@ const MUESLI_FIGMA_URL =
 
 const MUESLI_PR_URL = "https://github.com/Muesli-HQ/muesli/pull/329";
 
+const MINDSPACE_URL = "https://github.com/sanjana-venkat/mindspace";
+
 const WAYFARER_URL = TRAVEL_DNA_URL;
 
 const BODY = "[font-family:'Open_Sans',sans-serif]";
@@ -125,6 +127,8 @@ The result:
 
 I also prototype with tools like Codex, Google AI Studio, Claude, and Google Stitch.
 
+Most recently, I took 1st place at the Berkeley × DeepMind hackathon with Mindspace, a Mac app that lets you Cmd + F your brain: capture anything on screen, say why it mattered, and get it back when you need it.
+
 This portfolio itself was concepted, designed, and built in 2 days as an interactive pre-interview experience. Before AI tools, I was already building product ideas and prototypes in 24-hour hackathons, often as the only designer on the team.`,
 
   "tell me your story": `Here's how it happened.
@@ -187,6 +191,7 @@ const PROJECTS = [
   { slug: "conversational-agentic-ai", group: "JPMorgan Chase", label: "Conversational AI", title: "Casey Conversational AI", study: "conversational-agentic-ai" },
   { slug: "b2c", group: "JPMorgan Chase", label: "B2C Public Site", title: "Uncover User Needs", study: "b2c" },
   { slug: "ai-chat-journeys", group: "JPMorgan Chase", label: "AI Search Interfaces", title: "Agentic Search Experiences", study: "ai-chat-journeys" },
+  { slug: "mindspace", group: "Hackathon", label: "1st Place \u00b7 Berkeley \u00d7 DeepMind", title: "Mindspace \u2014 Cmd + F your brain", url: MINDSPACE_URL, external: true },
   { slug: "model-design", group: "Hackathon", label: "Travel Personalization", title: "Outdone, Context-Aware Personalization", study: "model-design" },
   { slug: "matchpoint", group: "Startup", label: "Multi-sport iOS App", title: "MatchPoint \u2014 One app, very different sports", study: "matchpoint" },
   { slug: "muesli", group: "Startup", label: "Speech-to-Text (Swift App)", title: "Muesli \u2014 Local-first dictation, made approachable", study: "muesli" },
@@ -524,7 +529,7 @@ function OutdoneCaseStudy() {
   );
 }
 
-function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
+function WorkBrowserModal({ onClose, slug = "b2c", onSelect, origin = null }) {
   const stageRef = useRef(null);
   const phase = origin ? "expanding" : "open";
 
@@ -565,9 +570,9 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
   const getProjectBySlug = (slug) =>
     PROJECTS.find((project) => project.slug === slug) || PROJECTS[0];
 
-  const [activeProject, setActiveProject] = useState(() =>
-    getProjectBySlug(initialSlug)
-  );
+  // The URL owns which project is showing, so back and forward step through
+  // the projects you looked at.
+  const activeProject = getProjectBySlug(slug);
 
   // The picker is a real overlay rather than an inline dropdown: the column it
   // lives in is overflow-hidden, so an absolutely positioned panel would be
@@ -611,9 +616,8 @@ function WorkBrowserModal({ onClose, initialSlug = "b2c", origin = null }) {
     ];
 
   const selectProject = (project) => {
-    setActiveProject(project);
     setPickerOpen(false);
-    window.history.replaceState(null, "", `#work=${project.slug}`);
+    if (project.slug !== activeProject.slug) onSelect(project.slug);
   };
 
   // Some embeds are composed against the window rather than reflowing to it, so
@@ -805,6 +809,13 @@ function linksForQuestion(question, open) {
     }));
   }
 
+  if (question === "how do you ship fast") {
+    return [
+      { label: "Mindspace, 1st place", onSelect: () => open("mindspace") },
+      { label: "what else have you been building?", onSelect: () => open("travel-dna-live") },
+    ];
+  }
+
   if (question === "let's talk AI") {
     return [
       { label: "agentic search experiences", onSelect: () => open("ai-framer") },
@@ -816,7 +827,6 @@ function linksForQuestion(question, open) {
     "uncovering user needs": ["show me the work", "b2c"],
     "product strategy thinking": ["show me the framework", "ai-personalization"],
     "designing systems at scale": ["show me the system", "service-design"],
-    "how do you ship fast": ["what have you been building?", "travel-dna-live"],
     "getting exec buy-in": ["walk me through the project", "exec-pitch"],
   }[question];
 
@@ -838,6 +848,7 @@ export default function PortfolioHome() {
   const [thinking, setThinking] = useState(false);
   const [workProjectSlug, setWorkProjectSlug] = useState("b2c");
   const [instantType, setInstantType] = useState(true);
+  const [workOrigin, setWorkOrigin] = useState(null);
   const isFirstLoad = useRef(true);
 
   useEffect(() => {
@@ -869,11 +880,22 @@ export default function PortfolioHome() {
     document.title = "Sanjana Venkat | AI Product Designer & Design Engineer";
   }, []);
 
-  // Deep links such as /#work=muesli still open straight into a case study.
+  // Every project has its own URL (/#work=muesli), and so does the
+  // conversation (/#chat). Each is a history entry, so back closes it.
   useEffect(() => {
+    // A deep link arrives with nothing behind it, so back would leave the
+    // site. Put the room behind it first, so back lands in the room.
+    const hash = window.location.hash || "";
+    if ((hash.startsWith("#work=") || hash === "#chat") && !window.history.state) {
+      const home = window.location.pathname + window.location.search;
+      window.history.replaceState(null, "", home);
+      window.history.pushState(hash === "#chat" ? { chat: true } : { workDepth: 1 }, "", hash);
+    }
+
     const openFromHash = () => {
       const hash = window.location.hash || "";
       if (hash.startsWith("#work=")) {
+        setWorkOrigin(null);
         setWorkProjectSlug(hash.replace("#work=", "") || "b2c");
         setProjectOpen("work-browser");
       } else {
@@ -903,19 +925,28 @@ export default function PortfolioHome() {
     return () => clearTimeout(timer);
   }, [active]);
 
-  const [workOrigin, setWorkOrigin] = useState(null);
-
   const openWorkProject = (slug, origin) => {
     setWorkOrigin(origin || null);
     setWorkProjectSlug(slug);
-    window.history.pushState(null, "", `#work=${slug}`);
+    window.history.pushState({ workDepth: 1 }, "", `#work=${slug}`);
     setProjectOpen("work-browser");
+  };
+
+  // Each project you move to is its own entry, counted, so closing can step
+  // back past all of them in one go instead of piling another entry on top.
+  const selectWorkProject = (slug) => {
+    const depth = (window.history.state?.workDepth || 0) + 1;
+    window.history.pushState({ workDepth: depth }, "", `#work=${slug}`);
+    setWorkProjectSlug(slug);
   };
 
   const closeWorkProject = () => {
     setProjectOpen(null);
-    if (window.location.hash.startsWith("#work=")) {
-      window.history.pushState(null, "", window.location.pathname);
+    const depth = window.history.state?.workDepth || 0;
+    if (depth > 0) {
+      window.history.go(-depth);
+    } else if (window.location.hash.startsWith("#work=")) {
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
     }
   };
 
@@ -939,6 +970,11 @@ export default function PortfolioHome() {
       return;
     }
 
+    if (target === "mindspace") {
+      window.open(MINDSPACE_URL, "_blank", "noreferrer");
+      return;
+    }
+
     openWorkProject(slugByTarget[target] || "b2c", origin);
   };
 
@@ -946,7 +982,8 @@ export default function PortfolioHome() {
     <main className={`bg-[#F7F4F2] text-[#221B16] ${BODY}`}>
       {projectOpen === "work-browser" && (
         <WorkBrowserModal
-          initialSlug={workProjectSlug}
+          slug={workProjectSlug}
+          onSelect={selectWorkProject}
           origin={workOrigin}
           onClose={closeWorkProject}
         />

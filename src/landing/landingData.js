@@ -65,6 +65,19 @@ export const MORE_WORK = [
   { slug: "exec-pitch", name: "Exec pitch" },
 ];
 
+/* ── The medal on the wall ─────────────────────────────────────────────
+   First place, so it hangs on its own ribbon beside the letters rather than
+   in the picker with everything else. Tapping it opens the repo. */
+export const AWARD = {
+  place: "1st",
+  title: "First place",
+  event: "Berkeley × DeepMind Hackathon",
+  eventUrl: "https://luma.com/vmqjw9hv",
+  project: "Mindspace",
+  pitch: "Cmd + F your brain. A personal digital twin for the Mac, grounded in what you capture, think and learn.",
+  url: "https://github.com/sanjana-venkat/mindspace",
+};
+
 /** Kept for anything still importing the old name. */
 export const SELECTED_WORK = FEATURED;
 

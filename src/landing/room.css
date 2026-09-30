@@ -1114,6 +1114,150 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
+   The medal, beside the letters
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Hung from its own nail, so it swings from the nail. */
+.rm-medal {
+  position: absolute;
+  left: 80%;
+  top: 57%;
+  width: 5.6cqw;
+  z-index: 2;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.rm-medal-art {
+  display: block;
+  transform-origin: 50% 2%;
+  filter: drop-shadow(0 0.14cqw 0.3cqw rgba(34, 27, 22, 0.22));
+  transition: filter 300ms var(--in);
+}
+
+.rm-medal-art svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+.rm-medal:hover .rm-medal-art,
+.rm-medal:focus-visible .rm-medal-art {
+  animation: rmMedalSwing 1500ms var(--out) both;
+  filter:
+    drop-shadow(0 0.5cqw 1cqw rgba(34, 27, 22, 0.22))
+    drop-shadow(0 0 0.9cqw rgba(201, 162, 39, 0.45));
+}
+
+@keyframes rmMedalSwing {
+  0% { rotate: 0deg; }
+  14% { rotate: 7deg; }
+  34% { rotate: -5deg; }
+  54% { rotate: 3deg; }
+  72% { rotate: -1.6deg; }
+  88% { rotate: 0.6deg; }
+  100% { rotate: 0deg; }
+}
+
+.rm-medal-num {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  fill: #7a5a1e;
+}
+
+.rm-medal-st { font-size: 12px; }
+
+/* The glint: a band of light across the face every few seconds. */
+.rm-medal-glint {
+  transform-box: view-box;
+  transform: translateX(-30px) skewX(-18deg);
+  animation: rmGlint 4.5s var(--in) infinite 1.2s;
+}
+
+@keyframes rmGlint {
+  0%, 70% { transform: translateX(-30px) skewX(-18deg); }
+  100% { transform: translateX(110px) skewX(-18deg); }
+}
+
+/* A small brass plate under it, the way a trophy says what it was for. */
+.rm-medal-plate {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 0.5cqw);
+  translate: -50% 0;
+  white-space: nowrap;
+  padding: 0.18cqw 0.5cqw;
+  border-radius: 0.2cqw;
+  background: linear-gradient(180deg, #e7cf86 0%, #c9a227 100%);
+  box-shadow: 0 0.08cqw 0.2cqw rgba(34, 27, 22, 0.3);
+  font-family: var(--font-label);
+  font-size: 0.62cqw;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #4a3812;
+}
+
+/* What it was for, to the left of the medal, on hover. */
+.rm-medal-cap {
+  position: absolute;
+  right: calc(100% + 1cqw);
+  top: 38%;
+  width: 14cqw;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3cqw;
+  padding: 0.9cqw 1cqw;
+  border-radius: 0.6cqw;
+  background: rgba(24, 19, 15, 0.92);
+  box-shadow: 0 0.6cqw 1.4cqw -0.4cqw rgba(34, 27, 22, 0.35);
+  opacity: 0;
+  translate: 0.4cqw 0;
+  transition: opacity 260ms var(--in), translate 260ms var(--in);
+  pointer-events: none;
+}
+
+.rm-medal:hover .rm-medal-cap,
+.rm-medal:focus-visible .rm-medal-cap {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.rm-medal-kicker {
+  font-family: var(--font-label);
+  font-size: 0.52cqw;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+.rm-medal-who {
+  font-family: var(--font-display);
+  font-size: 1.2cqw;
+  line-height: 1.1;
+  color: var(--jasmine);
+}
+
+.rm-medal-copy {
+  font-family: var(--font-body);
+  font-size: 0.66cqw;
+  line-height: 1.45;
+  color: rgba(255, 253, 248, 0.78);
+}
+
+.rm-medal-go {
+  margin-top: 0.2cqw;
+  font-family: var(--font-body);
+  font-size: 0.66cqw;
+  font-weight: 600;
+  color: var(--brass);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-medal-glint,
+  .rm-medal:hover .rm-medal-art { animation: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
    The music box on the sill
    ══════════════════════════════════════════════════════════════════════════ */
 
@@ -2115,6 +2259,66 @@
   font-size: 13px;
   font-weight: 500;
   color: var(--ink-600);
+}
+
+/* ── The medal ────────────────────────────────────────────────────────── */
+
+.rc-award {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin: 0 20px;
+  padding: 18px;
+  border-radius: 14px;
+  background: var(--jasmine);
+  border: 1px solid rgba(168, 130, 63, 0.35);
+  box-shadow: 0 10px 26px -16px rgba(34, 27, 22, 0.35);
+}
+
+.rc-award-medal {
+  flex: 0 0 72px;
+  display: block;
+  transform-origin: 50% 3%;
+  filter: drop-shadow(0 3px 5px rgba(34, 27, 22, 0.22));
+}
+
+.rc-award-medal svg { display: block; width: 100%; height: auto; }
+
+.rc-award-body { min-width: 0; }
+
+.rc-award-kicker {
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brass-600);
+}
+
+.rc-award-kicker a { color: inherit; text-underline-offset: 2px; }
+
+.rc-award-who {
+  margin: 6px 0 4px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.1;
+  color: var(--ink-900);
+}
+
+.rc-award-copy {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-600);
+}
+
+.rc-award-go {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--wood-deep);
+  text-underline-offset: 3px;
 }
 
 /* ── The photographs, on a string ─────────────────────────────────────── */
