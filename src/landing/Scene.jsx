@@ -37,8 +37,10 @@ const CANVAS_H = 900;
 
 const SETTLE_KEY = "sv-room-settled";
 
-/* The conversation has its own URL, so it is somewhere you can go back from. */
-const CHAT_HASH = "#chat";
+/* The conversation and the medal each have their own URL, so they are
+   somewhere you can go back from. */
+const HASH_SECTIONS = { "#chat": "chat", "#mindspace": "award" };
+const SECTION_HASHES = { chat: "#chat", award: "#mindspace" };
 
 /* The music box on the sill.
    Paste a Spotify share link here — a playlist, album or track — and the box
@@ -60,9 +62,9 @@ const BOARD_PHOTOS = STORY_MOMENTS.filter((m) =>
 const BOARD_LETTERS = STATEMENTS.slice(0, 4);
 
 export default function Scene({ chat, onOpenProject }) {
-  const [open, setOpen] = useState(() =>
-    window.location.hash === CHAT_HASH ? "chat" : null
-  ); // "story" | "statements" | "chat" | null
+  const [open, setOpen] = useState(
+    () => HASH_SECTIONS[window.location.hash] || null
+  ); // "story" | "statements" | "chat" | "award" | null
   const [focusId, setFocusId] = useState(null);
   const [nearHer, setNearHer] = useState(false);
   const isPhone = useMediaQuery("(max-width: 900px)");
@@ -90,10 +92,10 @@ export default function Scene({ chat, onOpenProject }) {
   }, [open]);
 
   const close = useCallback(() => {
-    // Closing the conversation is the same as pressing back: it pops the
+    // Closing something with a URL is the same as pressing back: it pops the
     // entry that opening it pushed, rather than adding another on top.
-    if (window.location.hash === CHAT_HASH) {
-      if (window.history.state?.chat) window.history.back();
+    if (HASH_SECTIONS[window.location.hash]) {
+      if (window.history.state?.room) window.history.back();
       else window.history.replaceState(null, "", window.location.pathname + window.location.search);
     }
     setOpen(null);
@@ -101,19 +103,23 @@ export default function Scene({ chat, onOpenProject }) {
     setNearHer(false);
   }, []);
 
-  const ask = useCallback(() => {
-    if (window.location.hash !== CHAT_HASH) {
-      window.history.pushState({ chat: true }, "", CHAT_HASH);
+  const go = useCallback((section) => {
+    const hash = SECTION_HASHES[section];
+    if (window.location.hash !== hash) {
+      window.history.pushState({ room: true }, "", hash);
     }
-    setOpen("chat");
+    setOpen(section);
     setNearHer(false);
   }, []);
+  const ask = useCallback(() => go("chat"), [go]);
+  const showAward = useCallback(() => go("award"), [go]);
 
-  // Back and forward open and close the conversation.
+  // Back and forward open and close the conversation and the medal.
   useEffect(() => {
     const sync = () => {
-      if (window.location.hash === CHAT_HASH) setOpen("chat");
-      else setOpen((o) => (o === "chat" ? null : o));
+      const section = HASH_SECTIONS[window.location.hash];
+      if (section) setOpen(section);
+      else setOpen((o) => (SECTION_HASHES[o] ? null : o));
     };
     window.addEventListener("popstate", sync);
     return () => window.removeEventListener("popstate", sync);
@@ -136,7 +142,7 @@ export default function Scene({ chat, onOpenProject }) {
   // Reaching for her nudges the shade; asking her pulls it the whole way.
   const shade = open === "chat" ? "down" : nearHer && !isPhone ? "peek" : "up";
 
-  const props = { openWith, onOpenProject, setNearHer, ask, settled };
+  const props = { openWith, onOpenProject, setNearHer, ask, showAward, settled };
 
   return (
     <div className={`rm${open ? " is-open" : ""}`}>
@@ -149,6 +155,8 @@ export default function Scene({ chat, onOpenProject }) {
           {open === "chat" && <DeskChat chat={chat} />}
         </Shade>
       )}
+
+      {open === "award" && <AwardSheet award={AWARD} onClose={close} />}
 
       {!isPhone && (open === "story" || open === "statements") && (
         <div className="rm-layer">
@@ -177,7 +185,7 @@ export default function Scene({ chat, onOpenProject }) {
    Desktop — the room on its canvas.
    ══════════════════════════════════════════════════════════════════════════ */
 
-function RoomCanvas({ openWith, onOpenProject, setNearHer, ask, settled }) {
+function RoomCanvas({ openWith, onOpenProject, setNearHer, ask, showAward, settled }) {
   return (
     <div className="rm-stage">
       {/* Corner wall art, hung off the true corner of the room. */}
@@ -240,8 +248,8 @@ function RoomCanvas({ openWith, onOpenProject, setNearHer, ask, settled }) {
           onLetter={(id) => openWith("statements", id)}
         />
 
-        {/* ── The medal, on its ribbon ──────────────────────────────── */}
-        <Medal award={AWARD} />
+        {/* ── The medal, framed ─────────────────────────────────────── */}
+        <Medal award={AWARD} onOpen={showAward} />
 
         {/* ── Sanjana, at her desk ──────────────────────────────────── */}
         <button
@@ -412,89 +420,117 @@ function MusicBox() {
 }
 
 /* ── The medal ───────────────────────────────────────────────────────────
-   First place, hung from a nail on its ribbon. Drawn for the same reason the
-   music box is: flat front elevation, solid fills, the room's own palette.
-   It catches the light now and then; hovering swings it and says what for;
-   tapping it opens the repo. */
+   First place, mounted in a small gilt shadow box and hung like the rest of
+   the work: same hook, same cord, same swing, same caption. Drawn flat, in
+   the room's own brass and wood, like the music box. */
 function MedalArt() {
   return (
-    <svg viewBox="0 0 100 170" aria-hidden="true">
-      <defs>
-        <radialGradient id="rm-medal-gold" cx="38%" cy="32%" r="75%">
-          <stop offset="0%" stopColor="#f6e3a1" />
-          <stop offset="45%" stopColor="#dcb548" />
-          <stop offset="100%" stopColor="#a8823f" />
-        </radialGradient>
-        <clipPath id="rm-medal-clip">
-          <circle cx="50" cy="130" r="34" />
-        </clipPath>
-      </defs>
-
-      {/* Nail and the brass bar the ribbon hangs from */}
-      <circle cx="50" cy="4" r="3.4" fill="var(--brass)" />
-      <line x1="50" y1="6" x2="50" y2="12" stroke="var(--brass-600)" strokeWidth="1.4" />
-
-      {/* Ribbon: two straps crossing into a V over the ring */}
-      <polygon points="18,14 42,14 62,96 42,96" fill="var(--lotus-800)" />
-      <polygon points="58,14 82,14 58,96 38,96" fill="var(--lotus-600)" />
-      <polygon points="66,14 72,14 52,96 46,96" fill="var(--jasmine)" opacity="0.75" />
-      <rect x="14" y="10" width="72" height="6" rx="2" fill="var(--brass)" />
-
-      {/* Ring and disc */}
-      <circle cx="50" cy="96" r="4.6" fill="none" stroke="var(--brass-600)" strokeWidth="2.4" />
-      <circle cx="50" cy="130" r="34" fill="url(#rm-medal-gold)" />
-      <circle cx="50" cy="130" r="27" fill="none" stroke="#a8823f" strokeWidth="1.4" opacity="0.7" />
-
-      {/* Laurel, two sprigs meeting at the foot */}
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="46" fill="var(--brass-600)" />
+      <circle cx="50" cy="50" r="41" fill="var(--brass)" />
+      <circle cx="50" cy="50" r="32" fill="none" stroke="var(--brass-600)" strokeWidth="1.6" />
+      {/* Laurel: two sprigs of five leaves, meeting at the foot */}
       {[0, 1, 2, 3, 4].map((i) => {
-        const t = 200 - i * 26;
-        const a = t * (Math.PI / 180);
-        const x = 50 + Math.cos(a) * 22.5;
-        const y = 130 - Math.sin(a) * 22.5;
-        const deg = 90 - t;
+        const t = 158 + i * 21;
+        const a = (t * Math.PI) / 180;
+        const x = 50 + Math.cos(a) * 25;
+        const y = 50 - Math.sin(a) * 25;
         return (
-          <g key={i} fill="#9a7432" opacity="0.85">
-            <ellipse cx={x} cy={y} rx="1.8" ry="4" transform={`rotate(${deg} ${x} ${y})`} />
-            <ellipse cx={100 - x} cy={y} rx="1.8" ry="4" transform={`rotate(${-deg} ${100 - x} ${y})`} />
+          <g key={i} fill="var(--brass-600)">
+            <ellipse cx={x} cy={y} rx="1.8" ry="3.8" transform={`rotate(${-t} ${x} ${y})`} />
+            <ellipse cx={100 - x} cy={y} rx="1.8" ry="3.8" transform={`rotate(${t} ${100 - x} ${y})`} />
           </g>
         );
       })}
-
-      <text x="50" y="140" textAnchor="middle" className="rm-medal-num">
-        1<tspan className="rm-medal-st" dy="-11">st</tspan>
-      </text>
-
+      <text x="50" y="61" textAnchor="middle" className="rm-medal-num">1</text>
       {/* A glint crosses the face now and then */}
-      <g clipPath="url(#rm-medal-clip)">
-        <rect className="rm-medal-glint" x="10" y="90" width="14" height="80" fill="#fffdf8" opacity="0.55" />
-      </g>
+      <clipPath id="rm-medal-face">
+        <circle cx="50" cy="50" r="41" />
+      </clipPath>
+      <rect className="rm-medal-glint" clipPath="url(#rm-medal-face)" x="-10" y="0" width="12" height="100" fill="var(--jasmine)" opacity="0.45" />
     </svg>
   );
 }
 
-function Medal({ award }) {
+function Medal({ award, onOpen }) {
   return (
-    <a
-      className="rm-medal"
-      href={award.url}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={`${award.title} at the ${award.event}. Open ${award.project} on GitHub`}
+    <button
+      type="button"
+      className="rm-frame rm-award"
+      aria-label={`${award.title} at the ${award.event}: ${award.project}`}
+      onClick={onOpen}
     >
-      <span className="rm-medal-art">
-        <MedalArt />
+      <span className="rm-hook" />
+      <span className="rm-cord" />
+      <span className="rm-frame-body">
+        <span className="rm-award-mat">
+          <MedalArt />
+          <span className="rm-award-plate">{award.place} place</span>
+        </span>
+        <span className="rm-art-cap">
+          <span className="rm-art-who">{award.project}</span>
+          <span className="rm-art-copy">{award.title} · {award.event}</span>
+        </span>
       </span>
-      <span className="rm-medal-plate" aria-hidden="true">
-        {award.place} place
-      </span>
+    </button>
+  );
+}
 
-      <span className="rm-medal-cap" aria-hidden="true">
-        <span className="rm-medal-kicker">{award.title} · {award.event}</span>
-        <span className="rm-medal-who">{award.project}</span>
-        <span className="rm-medal-copy">{award.pitch}</span>
-        <span className="rm-medal-go">Open on GitHub ↗</span>
-      </span>
-    </a>
+/* ── Mindspace, opened from the medal ────────────────────────────────────
+   The same cream sheet the story opens on: the demo in a thin brass frame on
+   the left, the short version and the way to everything else on the right. */
+function AwardSheet({ award, onClose }) {
+  return (
+    <div className="rm-layer is-award">
+      <button type="button" className="rm-scrim" aria-label="Close" onClick={onClose} />
+      <div className="rm-sheet" data-section="award" role="dialog" aria-label={award.project}>
+        <button type="button" className="rm-sheet-x" onClick={onClose} aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div className="rm-sheet-scroll">
+          <div className="aw-film">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${award.videoId}?rel=0&modestbranding=1`}
+              title={`${award.project} demo`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+
+          <div className="aw-copy">
+            <p className="aw-kicker">
+              <span className="aw-medal" aria-hidden="true"><MedalArt /></span>
+              {award.title} · {award.event}
+            </p>
+            <h2 className="aw-title">{award.project}</h2>
+            <p className="aw-hook">{award.hook}</p>
+            <p className="aw-pitch">{award.pitch}</p>
+            {award.story.map((para) => (
+              <p key={para.slice(0, 24)} className="aw-body">{para}</p>
+            ))}
+            <p className="aw-team">{award.team}</p>
+
+            <div className="aw-links">
+              <a className="aw-link is-primary" href={award.url} target="_blank" rel="noreferrer">
+                GitHub repo <span aria-hidden="true">↗</span>
+              </a>
+              <a className="aw-link" href={award.deckUrl} target="_blank" rel="noreferrer">
+                Pitch deck <span aria-hidden="true">↗</span>
+              </a>
+              <a className="aw-link" href={award.videoUrl} target="_blank" rel="noreferrer">
+                Watch on YouTube <span aria-hidden="true">↗</span>
+              </a>
+              <a className="aw-link" href={award.eventUrl} target="_blank" rel="noreferrer">
+                The hackathon <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -732,7 +768,7 @@ function Utils({ className }) {
  * it — the bracket in the corner is. It shakes now and then, and tapping it
  * draws a panel across from the right.
  */
-function RoomColumn({ onOpenProject, ask }) {
+function RoomColumn({ onOpenProject, ask, showAward }) {
   const [story, setStory] = useState(STORY_MOMENTS[0].id);
   const [letter, setLetter] = useState(null);
   const reel = useRef(null);
@@ -793,22 +829,17 @@ function RoomColumn({ onOpenProject, ask }) {
       {/* ── The medal ─────────────────────────────────────────────────── */}
       <section className="rc-sec">
         <h2 className="rc-h2">On the wall</h2>
-        <div className="rc-award">
-          <a className="rc-award-medal" href={AWARD.url} target="_blank" rel="noreferrer" aria-label={`Open ${AWARD.project} on GitHub`}>
+        <button type="button" className="rc-award" onClick={showAward}>
+          <span className="rc-award-frame" aria-hidden="true">
             <MedalArt />
-          </a>
-          <div className="rc-award-body">
-            <p className="rc-award-kicker">
-              {AWARD.title} ·{" "}
-              <a href={AWARD.eventUrl} target="_blank" rel="noreferrer">{AWARD.event}</a>
-            </p>
-            <h3 className="rc-award-who">{AWARD.project}</h3>
-            <p className="rc-award-copy">{AWARD.pitch}</p>
-            <a className="rc-award-go" href={AWARD.url} target="_blank" rel="noreferrer">
-              Open on GitHub ↗
-            </a>
-          </div>
-        </div>
+          </span>
+          <span className="rc-award-body">
+            <span className="rc-award-kicker">{AWARD.title} · {AWARD.event}</span>
+            <span className="rc-award-who">{AWARD.project}</span>
+            <span className="rc-award-copy">{AWARD.hook}</span>
+            <span className="rc-award-go">Demo, deck and repo →</span>
+          </span>
+        </button>
       </section>
 
       {/* ── The photographs, on their string ─────────────────────────── */}
@@ -823,7 +854,7 @@ function RoomColumn({ onOpenProject, ask }) {
               key={m.id}
               type="button"
               className={`rc-peg${m.id === story ? " is-on" : ""}`}
-              style={{ "--tilt": `${[-3.2, 2.4, -1.8, 3, -2.2, 1.6][i % 6]}deg`, "--drop": `${[0, 12, 4, 16, 6, 10][i % 6]}px` }}
+              style={{ "--tilt": `${[-3.2, 2.4, -1.8, 3, -2.2, 1.6][i % 6]}deg` }}
               aria-pressed={m.id === story}
               onClick={() => setStory(m.id)}
             >

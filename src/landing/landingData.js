@@ -66,15 +66,23 @@ export const MORE_WORK = [
 ];
 
 /* ── The medal on the wall ─────────────────────────────────────────────
-   First place, so it hangs on its own ribbon beside the letters rather than
-   in the picker with everything else. Tapping it opens the repo. */
+   First place. It hangs in its own small frame beside the letters, and
+   opening it gives the short version, the demo, the deck and the repo. */
 export const AWARD = {
   place: "1st",
   title: "First place",
   event: "Berkeley × DeepMind Hackathon",
   eventUrl: "https://luma.com/vmqjw9hv",
   project: "Mindspace",
-  pitch: "Cmd + F your brain. A personal digital twin for the Mac, grounded in what you capture, think and learn.",
+  hook: "Imagine you could Cmd + F your brain.",
+  pitch: "A personal digital twin, grounded in what you capture, think and learn.",
+  story: [
+    "It captures whatever is on your Mac with a keystroke and writes a Gemini summary beside your own notes, never over them. Then you talk to what you know: ask for the idea you half remember, see where the answer came from, and ask it to argue with you.",
+  ],
+  team: "Built with Abishek Sridhar, ML Engineer at Google DeepMind.",
+  videoId: "31xJv7tqQM8",
+  videoUrl: "https://youtu.be/31xJv7tqQM8",
+  deckUrl: "https://www.figma.com/slides/BEy7ZmZRyBVRGwZAdad0zl",
   url: "https://github.com/sanjana-venkat/mindspace",
 };
 

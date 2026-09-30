@@ -880,16 +880,18 @@ export default function PortfolioHome() {
     document.title = "Sanjana Venkat | AI Product Designer & Design Engineer";
   }, []);
 
-  // Every project has its own URL (/#work=muesli), and so does the
-  // conversation (/#chat). Each is a history entry, so back closes it.
+  // Every project has its own URL (/#work=muesli), and so do the
+  // conversation (/#chat) and the medal (/#mindspace). Each is a history
+  // entry, so back closes it.
   useEffect(() => {
     // A deep link arrives with nothing behind it, so back would leave the
     // site. Put the room behind it first, so back lands in the room.
     const hash = window.location.hash || "";
-    if ((hash.startsWith("#work=") || hash === "#chat") && !window.history.state) {
+    const inRoom = hash === "#chat" || hash === "#mindspace";
+    if ((hash.startsWith("#work=") || inRoom) && !window.history.state) {
       const home = window.location.pathname + window.location.search;
       window.history.replaceState(null, "", home);
-      window.history.pushState(hash === "#chat" ? { chat: true } : { workDepth: 1 }, "", hash);
+      window.history.pushState(inRoom ? { room: true } : { workDepth: 1 }, "", hash);
     }
 
     const openFromHash = () => {
@@ -970,8 +972,10 @@ export default function PortfolioHome() {
       return;
     }
 
+    // The medal lives in the room, so hand it the URL and let the room open it.
     if (target === "mindspace") {
-      window.open(MINDSPACE_URL, "_blank", "noreferrer");
+      window.history.pushState({ room: true }, "", "#mindspace");
+      window.dispatchEvent(new PopStateEvent("popstate"));
       return;
     }
 

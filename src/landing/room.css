@@ -38,6 +38,12 @@
   white-space: nowrap;
 }
 
+/* The app shell sets Plus Jakarta on every heading and button, which left
+   the room in three typefaces. Inside the room they take the room's type;
+   anything that names its own face (all single-class rules below) still
+   wins, because this is declared first at the same specificity. */
+.rm :where(button, h1, h2, h3, h4, h5, h6) { font-family: inherit; }
+
 /* Browser default focus rings leak blue into a warm room. */
 .rm :focus { outline: none; }
 .rm :focus-visible {
@@ -1117,144 +1123,194 @@
    The medal, beside the letters
    ══════════════════════════════════════════════════════════════════════════ */
 
-/* Hung from its own nail, so it swings from the nail. */
-.rm-medal {
-  position: absolute;
-  left: 80%;
-  top: 57%;
-  width: 5.6cqw;
-  z-index: 2;
+/* A small shadow box. It borrows everything from .rm-frame (hook, cord,
+   swing, caption) and only says where it hangs and what is on the mat. */
+.rm-frame.rm-award {
+  left: 78.4%;
+  top: 60.5%;
+  width: 7.6%;
+}
+
+.rm-award-mat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6cqw;
+  aspect-ratio: 4 / 5;
+  padding: 0.8cqw 0.5cqw;
+  background: var(--cream-100);
+  box-shadow: inset 0 0.1cqw 0.35cqw rgba(34, 27, 22, 0.14);
+}
+
+.rm-award-mat svg {
   display: block;
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
+  width: 84%;
+  height: auto;
+  filter: drop-shadow(0 0.08cqw 0.16cqw rgba(34, 27, 22, 0.25));
 }
 
-.rm-medal-art {
-  display: block;
-  transform-origin: 50% 2%;
-  filter: drop-shadow(0 0.14cqw 0.3cqw rgba(34, 27, 22, 0.22));
-  transition: filter 300ms var(--in);
-}
-
-.rm-medal-art svg { display: block; width: 100%; height: auto; overflow: visible; }
-
-.rm-medal:hover .rm-medal-art,
-.rm-medal:focus-visible .rm-medal-art {
-  animation: rmMedalSwing 1500ms var(--out) both;
-  filter:
-    drop-shadow(0 0.5cqw 1cqw rgba(34, 27, 22, 0.22))
-    drop-shadow(0 0 0.9cqw rgba(201, 162, 39, 0.45));
-}
-
-@keyframes rmMedalSwing {
-  0% { rotate: 0deg; }
-  14% { rotate: 7deg; }
-  34% { rotate: -5deg; }
-  54% { rotate: 3deg; }
-  72% { rotate: -1.6deg; }
-  88% { rotate: 0.6deg; }
-  100% { rotate: 0deg; }
+.rm-award-plate {
+  padding: 0.14cqw 0.45cqw;
+  border-radius: 0.12cqw;
+  background: var(--brass);
+  font-family: var(--font-label);
+  font-size: 0.5cqw;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: var(--brass-deep);
 }
 
 .rm-medal-num {
   font-family: var(--font-display);
-  font-size: 30px;
-  font-weight: 700;
-  fill: #7a5a1e;
+  font-size: 32px;
+  font-weight: 600;
+  fill: var(--wood-deep);
 }
-
-.rm-medal-st { font-size: 12px; }
 
 /* The glint: a band of light across the face every few seconds. */
 .rm-medal-glint {
   transform-box: view-box;
-  transform: translateX(-30px) skewX(-18deg);
-  animation: rmGlint 4.5s var(--in) infinite 1.2s;
+  transform: skewX(-18deg);
+  animation: rmGlint 5s var(--in) infinite 1.5s;
 }
 
 @keyframes rmGlint {
-  0%, 70% { transform: translateX(-30px) skewX(-18deg); }
-  100% { transform: translateX(110px) skewX(-18deg); }
-}
-
-/* A small brass plate under it, the way a trophy says what it was for. */
-.rm-medal-plate {
-  position: absolute;
-  left: 50%;
-  top: calc(100% + 0.5cqw);
-  translate: -50% 0;
-  white-space: nowrap;
-  padding: 0.18cqw 0.5cqw;
-  border-radius: 0.2cqw;
-  background: linear-gradient(180deg, #e7cf86 0%, #c9a227 100%);
-  box-shadow: 0 0.08cqw 0.2cqw rgba(34, 27, 22, 0.3);
-  font-family: var(--font-label);
-  font-size: 0.62cqw;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #4a3812;
-}
-
-/* What it was for, to the left of the medal, on hover. */
-.rm-medal-cap {
-  position: absolute;
-  right: calc(100% + 1cqw);
-  top: 38%;
-  width: 14cqw;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3cqw;
-  padding: 0.9cqw 1cqw;
-  border-radius: 0.6cqw;
-  background: rgba(24, 19, 15, 0.92);
-  box-shadow: 0 0.6cqw 1.4cqw -0.4cqw rgba(34, 27, 22, 0.35);
-  opacity: 0;
-  translate: 0.4cqw 0;
-  transition: opacity 260ms var(--in), translate 260ms var(--in);
-  pointer-events: none;
-}
-
-.rm-medal:hover .rm-medal-cap,
-.rm-medal:focus-visible .rm-medal-cap {
-  opacity: 1;
-  translate: 0 0;
-}
-
-.rm-medal-kicker {
-  font-family: var(--font-label);
-  font-size: 0.52cqw;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--brass);
-}
-
-.rm-medal-who {
-  font-family: var(--font-display);
-  font-size: 1.2cqw;
-  line-height: 1.1;
-  color: var(--jasmine);
-}
-
-.rm-medal-copy {
-  font-family: var(--font-body);
-  font-size: 0.66cqw;
-  line-height: 1.45;
-  color: rgba(255, 253, 248, 0.78);
-}
-
-.rm-medal-go {
-  margin-top: 0.2cqw;
-  font-family: var(--font-body);
-  font-size: 0.66cqw;
-  font-weight: 600;
-  color: var(--brass);
+  0%, 72% { translate: 0 0; }
+  100% { translate: 130px 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rm-medal-glint,
-  .rm-medal:hover .rm-medal-art { animation: none; }
+  .rm-medal-glint { animation: none; opacity: 0; }
+}
+
+/* ── Mindspace, on the sheet ──────────────────────────────────────────── */
+
+/* Above the phone's elephant (60) and its conversation (70), since the
+   conversation links here. */
+.rm-layer.is-award { z-index: 80; }
+
+.rm-sheet[data-section="award"] .rm-sheet-scroll {
+  grid-template-columns: minmax(0, 620px) minmax(0, 420px);
+  justify-content: center;
+}
+
+.aw-film {
+  padding: 9px;
+  background: var(--jasmine);
+  border: 2px solid var(--brass-600);
+  box-shadow: 0 18px 40px -22px rgba(34, 27, 22, 0.35);
+}
+
+.aw-film iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  background: var(--ink-900);
+}
+
+.aw-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--t-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass-600);
+}
+
+.aw-medal { flex: 0 0 22px; display: block; }
+.aw-medal svg { display: block; width: 100%; height: auto; }
+
+.aw-title {
+  margin: 14px 0 0;
+  font-family: var(--font-display);
+  font-size: var(--t-display);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ink-900);
+}
+
+.aw-hook {
+  margin: 14px 0 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1.3;
+  color: var(--lotus-800);
+}
+
+.aw-pitch,
+.aw-body,
+.aw-team {
+  margin: 12px 0 0;
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--ink-600);
+}
+
+.aw-pitch { color: var(--ink-900); }
+
+.aw-team {
+  font-size: var(--t-small);
+  color: var(--ink-400);
+}
+
+.aw-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.aw-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border: 1px solid var(--cream-200);
+  border-radius: 999px;
+  background: var(--jasmine);
+  font-size: var(--t-small);
+  font-weight: 500;
+  color: var(--ink-900);
+  text-decoration: none;
+  transition: border-color 180ms var(--in), color 180ms var(--in);
+}
+
+.aw-link:hover,
+.aw-link:focus-visible {
+  border-color: var(--lotus-600);
+  color: var(--lotus-800);
+}
+
+.aw-link.is-primary {
+  border-color: var(--wood-deep);
+  background: var(--wood-deep);
+  color: var(--jasmine);
+}
+
+.aw-link.is-primary:hover,
+.aw-link.is-primary:focus-visible {
+  border-color: var(--lotus-800);
+  background: var(--lotus-800);
+  color: var(--jasmine);
+}
+
+/* One column below the breakpoint: the film, then the words. */
+@media (max-width: 900px) {
+  .rm-sheet[data-section="award"] { inset: 0; }
+  .rm-sheet[data-section="award"] .rm-sheet-scroll {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    gap: 24px;
+    padding: 64px 20px 40px;
+  }
+  .aw-title { font-size: 2.6rem; }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -2128,12 +2184,19 @@
   color: var(--ink-400);
 }
 
+/* The kolam takes the middle of whatever room the screen leaves, so a tall
+   phone gets even space around it instead of one hole above her desk. */
 .rc-kolam {
   position: relative;
+  flex: 0 0 auto;
   width: min(132px, 37vw);
   height: min(132px, 37vw);
-  margin: 26px auto 0;
+  margin: auto;
 }
+
+/* The least the kolam may sit from the words above it, when the screen is
+   short enough that there is no spare room to share. */
+.rc-hero .rc-creed { margin-bottom: 26px; }
 
 .rc-kolam .km {
   position: absolute;
@@ -2146,7 +2209,6 @@
 /* She sits at the foot of the room. */
 .rc-girl {
   width: 100%;
-  margin-top: auto;
 }
 
 .rc-girl .rm-film,
@@ -2263,62 +2325,68 @@
 
 /* ── The medal ────────────────────────────────────────────────────────── */
 
+/* Framed the way the work above it is framed: cream mat, thin brass rule. */
 .rc-award {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 18px;
+  width: calc(100% - 40px);
   margin: 0 20px;
-  padding: 18px;
-  border-radius: 14px;
-  background: var(--jasmine);
-  border: 1px solid rgba(168, 130, 63, 0.35);
-  box-shadow: 0 10px 26px -16px rgba(34, 27, 22, 0.35);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
-.rc-award-medal {
-  flex: 0 0 72px;
-  display: block;
-  transform-origin: 50% 3%;
-  filter: drop-shadow(0 3px 5px rgba(34, 27, 22, 0.22));
+.rc-award-frame {
+  flex: 0 0 96px;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 5;
+  padding: 14px;
+  background: var(--cream-100);
+  border: 2px solid rgba(168, 130, 63, 0.45);
+  outline: 8px solid var(--cream-50);
+  box-shadow: 0 10px 26px -14px rgba(34, 27, 22, 0.32);
 }
 
-.rc-award-medal svg { display: block; width: 100%; height: auto; }
+.rc-award-frame svg { display: block; width: 100%; height: auto; }
 
-.rc-award-body { min-width: 0; }
+.rc-award-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
 
 .rc-award-kicker {
-  margin: 0;
   font-family: var(--font-label);
-  font-size: 10.5px;
-  letter-spacing: 0.1em;
+  font-size: 10px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--brass-600);
 }
 
-.rc-award-kicker a { color: inherit; text-underline-offset: 2px; }
-
 .rc-award-who {
-  margin: 6px 0 4px;
   font-family: var(--font-display);
-  font-size: 24px;
+  font-size: 1.55rem;
   line-height: 1.1;
   color: var(--ink-900);
 }
 
 .rc-award-copy {
-  margin: 0;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.45;
   color: var(--ink-600);
 }
 
 .rc-award-go {
-  display: inline-block;
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: 4px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--wood-deep);
-  text-underline-offset: 3px;
+  color: var(--lotus-800);
 }
 
 /* ── The photographs, on a string ─────────────────────────────────────── */
@@ -2353,11 +2421,14 @@
   pointer-events: none;
 }
 
+/* Every photograph hangs from the wire by its clip, so they all start at the
+   same height and tilt around the clip rather than their middle. Dropping
+   them by different amounts pulled the clips down off the wire. */
 .rc-peg {
   position: relative;
   flex: 0 0 auto;
-  margin-top: var(--drop, 0px);
   rotate: var(--tilt, 0deg);
+  transform-origin: 50% 0;
   border: 0;
   padding: 6px 6px 0;
   background: var(--jasmine);
@@ -2368,16 +2439,16 @@
 }
 
 .rc-peg.is-on {
-  transform: translateY(-5px);
+  transform: scale(1.04);
   box-shadow: 0 12px 24px -10px rgba(34, 27, 22, 0.4);
 }
 
 .rc-clip {
   position: absolute;
   left: 50%;
-  top: -11px;
+  top: -10px;
   width: 8px;
-  height: 15px;
+  height: 16px;
   translate: -50% 0;
   border-radius: 2px;
   background: var(--brass);
@@ -2622,11 +2693,15 @@ body.work-open .rc-elephant {
     linear-gradient(180deg, #fdfaf4 0%, var(--jasmine) 74%, #f5eee1 100%);
   overflow: hidden;
   translate: 100% 0;
-  transition: translate 520ms var(--in);
-  box-shadow: -18px 0 40px -20px rgba(34, 27, 22, 0.4);
+  transition: translate 520ms var(--in), box-shadow 520ms var(--in);
 }
 
-.rc-chat.is-on .rc-chat-sheet { translate: 0 0; }
+/* The shadow only while it is out. Parked off the right edge, a blur this
+   wide reached back into the page as a grey strip down every screen. */
+.rc-chat.is-on .rc-chat-sheet {
+  translate: 0 0;
+  box-shadow: -18px 0 40px -20px rgba(34, 27, 22, 0.4);
+}
 
 .rc-chat-head {
   display: flex;
