@@ -77,7 +77,7 @@ export const AWARD = {
   hook: "Imagine you could Cmd + F your brain.",
   pitch: "A personal digital twin, grounded in what you capture, think and learn.",
   story: [
-    "It captures whatever is on your Mac with a keystroke and writes a Gemini summary beside your own notes, never over them. Then you talk to what you know: ask for the idea you half remember, see where the answer came from, and ask it to argue with you.",
+    "It captures whatever is on your Mac with a keystroke and writes a Gemini summary beside your own notes, never over them. Then you talk to what you know: ask for the idea you half remember, see where the answer came from, and ask it to teach or brainstorm with you.",
   ],
   team: "Built with Abishek Sridhar, ML Engineer at Google DeepMind.",
   videoId: "31xJv7tqQM8",

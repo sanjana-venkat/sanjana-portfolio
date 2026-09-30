@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import KolamMark from "./KolamMark";
+import medalSvg from "./medal.svg?raw";
 import { Statements, Story } from "./sections";
 import { AWARD, FEATURED, INTRO, STATEMENTS, STORY_MOMENTS } from "./landingData";
 import { useMediaQuery, usePrefersReducedMotion } from "./useMediaQuery";
@@ -424,32 +425,9 @@ function MusicBox() {
    the work: same hook, same cord, same swing, same caption. Drawn flat, in
    the room's own brass and wood, like the music box. */
 function MedalArt() {
-  return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="46" fill="var(--brass-600)" />
-      <circle cx="50" cy="50" r="41" fill="var(--brass)" />
-      <circle cx="50" cy="50" r="32" fill="none" stroke="var(--brass-600)" strokeWidth="1.6" />
-      {/* Laurel: two sprigs of five leaves, meeting at the foot */}
-      {[0, 1, 2, 3, 4].map((i) => {
-        const t = 158 + i * 21;
-        const a = (t * Math.PI) / 180;
-        const x = 50 + Math.cos(a) * 25;
-        const y = 50 - Math.sin(a) * 25;
-        return (
-          <g key={i} fill="var(--brass-600)">
-            <ellipse cx={x} cy={y} rx="1.8" ry="3.8" transform={`rotate(${-t} ${x} ${y})`} />
-            <ellipse cx={100 - x} cy={y} rx="1.8" ry="3.8" transform={`rotate(${t} ${100 - x} ${y})`} />
-          </g>
-        );
-      })}
-      <text x="50" y="61" textAnchor="middle" className="rm-medal-num">1</text>
-      {/* A glint crosses the face now and then */}
-      <clipPath id="rm-medal-face">
-        <circle cx="50" cy="50" r="41" />
-      </clipPath>
-      <rect className="rm-medal-glint" clipPath="url(#rm-medal-face)" x="-10" y="0" width="12" height="100" fill="var(--jasmine)" opacity="0.45" />
-    </svg>
-  );
+  // Inlined rather than an <img>, so the numeral gets the room's display face
+  // and the glint can be animated from room.css.
+  return <span className="rm-medal-art" dangerouslySetInnerHTML={{ __html: medalSvg }} />;
 }
 
 function Medal({ award, onOpen }) {
@@ -465,7 +443,6 @@ function Medal({ award, onOpen }) {
       <span className="rm-frame-body">
         <span className="rm-award-mat">
           <MedalArt />
-          <span className="rm-award-plate">{award.place} place</span>
         </span>
         <span className="rm-art-cap">
           <span className="rm-art-who">{award.project}</span>
@@ -501,11 +478,13 @@ function AwardSheet({ award, onClose }) {
           </div>
 
           <div className="aw-copy">
-            <p className="aw-kicker">
-              <span className="aw-medal" aria-hidden="true"><MedalArt /></span>
-              {award.title} · {award.event}
-            </p>
             <h2 className="aw-title">{award.project}</h2>
+            {/* Said the way the story says where she was: the place in the
+                display face, the qualifier small beside it. */}
+            <p className="aw-where">
+              <span>{award.title}</span>
+              <span className="aw-region">{award.event}</span>
+            </p>
             <p className="aw-hook">{award.hook}</p>
             <p className="aw-pitch">{award.pitch}</p>
             {award.story.map((para) => (
@@ -834,8 +813,11 @@ function RoomColumn({ onOpenProject, ask, showAward }) {
             <MedalArt />
           </span>
           <span className="rc-award-body">
-            <span className="rc-award-kicker">{AWARD.title} · {AWARD.event}</span>
             <span className="rc-award-who">{AWARD.project}</span>
+            <span className="aw-where">
+              <span>{AWARD.title}</span>
+              <span className="aw-region">{AWARD.event}</span>
+            </span>
             <span className="rc-award-copy">{AWARD.hook}</span>
             <span className="rc-award-go">Demo, deck and repo →</span>
           </span>

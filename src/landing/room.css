@@ -1136,39 +1136,23 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.6cqw;
   aspect-ratio: 4 / 5;
-  padding: 0.8cqw 0.5cqw;
+  padding: 0.9cqw 0.8cqw 1.1cqw;
   background: var(--cream-100);
   box-shadow: inset 0 0.1cqw 0.35cqw rgba(34, 27, 22, 0.14);
 }
 
-.rm-award-mat svg {
-  display: block;
-  width: 84%;
-  height: auto;
+.rm-award-mat .rm-medal-art {
+  width: 100%;
   filter: drop-shadow(0 0.08cqw 0.16cqw rgba(34, 27, 22, 0.25));
-}
-
-.rm-award-plate {
-  padding: 0.14cqw 0.45cqw;
-  border-radius: 0.12cqw;
-  background: var(--brass);
-  font-family: var(--font-label);
-  font-size: 0.5cqw;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  white-space: nowrap;
-  text-transform: uppercase;
-  color: var(--brass-deep);
 }
 
 .rm-medal-num {
   font-family: var(--font-display);
-  font-size: 32px;
-  font-weight: 600;
-  fill: var(--wood-deep);
 }
+
+.rm-medal-art,
+.rm-medal-art svg { display: block; width: 100%; height: auto; }
 
 /* The glint: a band of light across the face every few seconds. */
 .rm-medal-glint {
@@ -1179,7 +1163,7 @@
 
 @keyframes rmGlint {
   0%, 72% { translate: 0 0; }
-  100% { translate: 130px 0; }
+  100% { translate: 110px 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1212,23 +1196,8 @@
   background: var(--ink-900);
 }
 
-.aw-kicker {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  font-family: var(--font-label);
-  font-size: var(--t-label);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--brass-600);
-}
-
-.aw-medal { flex: 0 0 22px; display: block; }
-.aw-medal svg { display: block; width: 100%; height: auto; }
-
 .aw-title {
-  margin: 14px 0 0;
+  margin: 0;
   font-family: var(--font-display);
   font-size: var(--t-display);
   font-weight: 500;
@@ -1236,8 +1205,28 @@
   color: var(--ink-900);
 }
 
+.aw-where {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--s3);
+  row-gap: var(--s1);
+  margin: 12px 0 0;
+  font-family: var(--font-display);
+  font-size: var(--t-h2);
+  color: var(--ink-900);
+}
+
+.aw-region {
+  font-family: var(--font-label);
+  font-size: var(--t-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-400);
+}
+
 .aw-hook {
-  margin: 14px 0 0;
+  margin: 22px 0 0;
   font-family: var(--font-display);
   font-size: 1.35rem;
   line-height: 1.3;
@@ -2341,32 +2330,30 @@
 }
 
 .rc-award-frame {
-  flex: 0 0 96px;
+  flex: 0 0 104px;
   display: grid;
   place-items: center;
   aspect-ratio: 4 / 5;
-  padding: 14px;
+  padding: 10px 12px 12px;
   background: var(--cream-100);
   border: 2px solid rgba(168, 130, 63, 0.45);
   outline: 8px solid var(--cream-50);
   box-shadow: 0 10px 26px -14px rgba(34, 27, 22, 0.32);
 }
 
-.rc-award-frame svg { display: block; width: 100%; height: auto; }
+.rc-award-frame .rm-medal-art { width: 100%; }
+
+/* The place line at phone size: smaller than on the sheet. */
+.rc-award .aw-where {
+  margin: 2px 0 6px;
+  font-size: 1.05rem;
+}
 
 .rc-award-body {
   display: flex;
   flex-direction: column;
   gap: 4px;
   min-width: 0;
-}
-
-.rc-award-kicker {
-  font-family: var(--font-label);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--brass-600);
 }
 
 .rc-award-who {
