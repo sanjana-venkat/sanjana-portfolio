@@ -1250,17 +1250,24 @@
 .rm-layer.is-award { z-index: 80; }
 
 /* One column: the film, then the words under it, at the film's width. */
+/* The words keep a fixed measure; the film is sized from the window's
+   height (see .aw-film), so the whole sheet fits on one screen. */
 .rm-sheet[data-section="award"] .rm-sheet-scroll {
   grid-template-columns: minmax(0, 580px);
   justify-content: center;
   /* safe: when it is taller than the window, start at the top rather than
      centring the film up out of reach. */
   align-content: safe center;
-  gap: 26px;
-  padding: 8px 24px 32px;
+  gap: 20px;
+  padding: 8px 24px 16px;
 }
 
+/* The words under the film take about 400px and the sheet is 92% of the
+   window, so the film gets whatever height is left, as 16:9, centred over
+   the words, and never wider than they are. */
 .aw-film {
+  justify-self: center;
+  width: min(100%, calc((92dvh - 400px) * 16 / 9 + 22px));
   padding: 9px;
   background: var(--jasmine);
   border: 2px solid var(--brass-600);
@@ -1278,7 +1285,7 @@
 .aw-title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: var(--t-display);
+  font-size: 2.6rem;
   font-weight: 500;
   line-height: 1;
   color: var(--ink-900);
@@ -1290,9 +1297,9 @@
   align-items: baseline;
   column-gap: var(--s3);
   row-gap: var(--s1);
-  margin: 12px 0 0;
+  margin: 8px 0 0;
   font-family: var(--font-display);
-  font-size: var(--t-h2);
+  font-size: 1.15rem;
   color: var(--ink-900);
 }
 
@@ -1305,9 +1312,9 @@
 }
 
 .aw-hook {
-  margin: 22px 0 0;
+  margin: 14px 0 0;
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: 1.15rem;
   line-height: 1.3;
   color: var(--lotus-800);
 }
@@ -1315,9 +1322,9 @@
 .aw-pitch,
 .aw-body,
 .aw-team {
-  margin: 12px 0 0;
-  font-size: var(--t-body);
-  line-height: 1.6;
+  margin: 8px 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
   color: var(--ink-600);
 }
 
@@ -1332,14 +1339,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 22px;
+  margin-top: 16px;
 }
 
 .aw-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 9px 16px;
+  padding: 8px 15px;
   border: 1px solid var(--cream-200);
   border-radius: 999px;
   background: var(--jasmine);
@@ -1372,11 +1379,13 @@
 /* One column below the breakpoint: the film, then the words. */
 @media (max-width: 900px) {
   .rm-sheet[data-section="award"] { inset: 0; }
+  /* A phone scrolls, so the film just takes the width. */
   .rm-sheet[data-section="award"] .rm-sheet-scroll {
-    gap: 24px;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    gap: 22px;
     padding: 64px 20px 40px;
   }
-  .aw-title { font-size: 2.6rem; }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
