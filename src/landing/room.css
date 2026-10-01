@@ -1123,28 +1123,101 @@
    The medal, beside the letters
    ══════════════════════════════════════════════════════════════════════════ */
 
-/* A small shadow box. It borrows everything from .rm-frame (hook, cord,
-   swing, caption) and only says where it hangs and what is on the mat. */
-.rm-frame.rm-award {
-  left: 78.4%;
-  top: 60.5%;
-  width: 7.6%;
+/* Hung on its own brass nail, straight on the wall, by the bar at the top
+   of its ribbon. It swings from the nail like the frames swing from their
+   hooks, and says what it is the way the mailbox does. */
+.rm-award {
+  position: absolute;
+  left: 79%;
+  top: 58%;
+  width: 6.2cqw;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
 }
 
-.rm-award-mat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 4 / 5;
-  padding: 0.9cqw 0.8cqw 1.1cqw;
-  background: var(--cream-100);
-  box-shadow: inset 0 0.1cqw 0.35cqw rgba(34, 27, 22, 0.14);
+.rm-award-swing {
+  position: relative;
+  display: block;
+  transform-origin: 50% 0.25cqw;
+  filter: drop-shadow(0 0.14cqw 0.3cqw rgba(34, 27, 22, 0.18));
+  transition: filter 300ms var(--in);
 }
 
-.rm-award-mat .rm-medal-art {
-  width: 100%;
-  filter: drop-shadow(0 0.08cqw 0.16cqw rgba(34, 27, 22, 0.25));
+.rm-award:hover .rm-award-swing,
+.rm-award:focus-visible .rm-award-swing {
+  animation: rmDangle 1200ms var(--out) both;
+  filter: drop-shadow(0 0.5cqw 1.2cqw rgba(34, 27, 22, 0.2));
+}
+
+.rm-award-nail {
+  position: absolute;
+  left: 50%;
+  top: 0.02cqw;
+  z-index: 1;
+  width: 0.42cqw;
+  height: 0.42cqw;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: var(--brass);
+  box-shadow: 0 0.08cqw 0.16cqw rgba(34, 27, 22, 0.4);
+}
+
+.rm-award-cap {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 0.9cqw);
+  width: 14cqw;
+  translate: -50% 0;
+  text-align: center;
+  font-family: var(--font-body);
+}
+
+.rm-award-who {
+  display: grid;
+  font-size: 0.72cqw;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* The two labels share a cell and cross-fade, so the line never jumps. */
+.rm-award-who > span {
+  grid-area: 1 / 1;
+  transition: opacity 240ms var(--in);
+}
+
+.rm-award-who .is-rest { color: var(--ink-400); }
+
+.rm-award-who .is-named {
+  opacity: 0;
+  letter-spacing: 0.1em;
+  color: var(--lotus-600);
+}
+
+.rm-award-role {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.62cqw;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--ink-400);
+  opacity: 0;
+  transition: opacity 240ms var(--in);
+}
+
+.rm-award:hover .is-rest,
+.rm-award:focus-visible .is-rest { opacity: 0; }
+
+.rm-award:hover .is-named,
+.rm-award:focus-visible .is-named,
+.rm-award:hover .rm-award-role,
+.rm-award:focus-visible .rm-award-role { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-award:hover .rm-award-swing { animation: none; }
 }
 
 .rm-medal-num {
@@ -1176,9 +1249,15 @@
    conversation links here. */
 .rm-layer.is-award { z-index: 80; }
 
+/* One column: the film, then the words under it, at the film's width. */
 .rm-sheet[data-section="award"] .rm-sheet-scroll {
-  grid-template-columns: minmax(0, 620px) minmax(0, 420px);
+  grid-template-columns: minmax(0, 580px);
   justify-content: center;
+  /* safe: when it is taller than the window, start at the top rather than
+     centring the film up out of reach. */
+  align-content: safe center;
+  gap: 26px;
+  padding: 8px 24px 32px;
 }
 
 .aw-film {
@@ -1294,8 +1373,6 @@
 @media (max-width: 900px) {
   .rm-sheet[data-section="award"] { inset: 0; }
   .rm-sheet[data-section="award"] .rm-sheet-scroll {
-    grid-template-columns: minmax(0, 1fr);
-    align-content: start;
     gap: 24px;
     padding: 64px 20px 40px;
   }
@@ -2330,15 +2407,9 @@
 }
 
 .rc-award-frame {
-  flex: 0 0 104px;
-  display: grid;
-  place-items: center;
-  aspect-ratio: 4 / 5;
-  padding: 10px 12px 12px;
-  background: var(--cream-100);
-  border: 2px solid rgba(168, 130, 63, 0.45);
-  outline: 8px solid var(--cream-50);
-  box-shadow: 0 10px 26px -14px rgba(34, 27, 22, 0.32);
+  flex: 0 0 84px;
+  display: block;
+  filter: drop-shadow(0 6px 10px rgba(34, 27, 22, 0.18));
 }
 
 .rc-award-frame .rm-medal-art { width: 100%; }

@@ -434,20 +434,21 @@ function Medal({ award, onOpen }) {
   return (
     <button
       type="button"
-      className="rm-frame rm-award"
+      className="rm-award"
       aria-label={`${award.title} at the ${award.event}: ${award.project}`}
       onClick={onOpen}
     >
-      <span className="rm-hook" />
-      <span className="rm-cord" />
-      <span className="rm-frame-body">
-        <span className="rm-award-mat">
-          <MedalArt />
+      <span className="rm-award-swing">
+        <span className="rm-award-nail" />
+        <MedalArt />
+      </span>
+      {/* Said the way the mailbox says "Letters": quiet until you reach for it. */}
+      <span className="rm-award-cap">
+        <span className="rm-award-who">
+          <span className="is-rest">{award.place} place</span>
+          <span className="is-named">{award.project}</span>
         </span>
-        <span className="rm-art-cap">
-          <span className="rm-art-who">{award.project}</span>
-          <span className="rm-art-copy">{award.title} · {award.event}</span>
-        </span>
+        <span className="rm-award-role">{award.event}</span>
       </span>
     </button>
   );
@@ -498,9 +499,6 @@ function AwardSheet({ award, onClose }) {
               </a>
               <a className="aw-link" href={award.deckUrl} target="_blank" rel="noreferrer">
                 Pitch deck <span aria-hidden="true">↗</span>
-              </a>
-              <a className="aw-link" href={award.videoUrl} target="_blank" rel="noreferrer">
-                Watch on YouTube <span aria-hidden="true">↗</span>
               </a>
               <a className="aw-link" href={award.eventUrl} target="_blank" rel="noreferrer">
                 The hackathon <span aria-hidden="true">↗</span>
