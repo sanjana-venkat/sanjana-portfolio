@@ -1128,9 +1128,9 @@
    hooks, and says what it is the way the mailbox does. */
 .rm-award {
   position: absolute;
-  left: 79%;
-  top: 58%;
-  width: 6.2cqw;
+  left: 80.2%;
+  top: 59%;
+  width: 4.2cqw;
   border: 0;
   padding: 0;
   background: none;
@@ -2407,7 +2407,7 @@
 }
 
 .rc-award-frame {
-  flex: 0 0 84px;
+  flex: 0 0 64px;
   display: block;
   filter: drop-shadow(0 6px 10px rgba(34, 27, 22, 0.18));
 }
